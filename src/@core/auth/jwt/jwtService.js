@@ -103,8 +103,24 @@ export default class JwtService {
   }
 
   refreshToken() {
-    return axios.post(this.jwtConfig.refreshEndpoint, {
-      refreshToken: this.getRefreshToken(),
-    })
+    return this.getRefreshToken()
+  }
+  // refreshToken() {
+  //   return axios.post(this.jwtConfig.refreshEndpoint, {
+  //     refreshToken: this.getRefreshToken(),
+  //   })
+  // }
+
+  axiosGet(url, ...args){
+    return axios.get(url, ...args)
+  }
+  axiosPost(url, ...args){
+    return axios.post(url, ...args)
+  }
+  axiosPut(url, ...args){
+    return axios.put(url, ...args)
+  }
+  axiosDelete(url, ...args){
+    return axios.delete(url, ...args)
   }
 }

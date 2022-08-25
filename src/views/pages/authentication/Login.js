@@ -81,13 +81,14 @@ const Login = () => {
     if (Object.values(data).every(field => field.length > 0)) {
       useJwt
         .login({ email: data.loginEmail, password: data.password })
-        .then(res => {
-          
+        .then((res) => {
+          // console.log("res", res.data)
           const data = { ...res.data.userInfo, accessToken: res.data.token.access, refreshToken: res.data.token.refresh }
-          // console.log(data)
+          console.log(data)
           dispatch(handleLogin(data))
           abilityCtx.update(res.data.userInfo.ability)
           // abilityCtx.update(dummyAbility)
+          console.log(getHomeRouteForLoggedInUser(data.role))
           navigate(getHomeRouteForLoggedInUser(data.role))
           toast(t => (
             <ToastContent t={t} role={data.role || 'admin'} name={data.name || 'John Doe'} />
@@ -170,29 +171,7 @@ const Login = () => {
               Welcome to Courier! 👋
             </CardTitle>
             <CardText className='mb-2'>Please sign-in to your account and start the adventure</CardText>
-            <Alert color='primary'>
-              <div className='alert-body font-small-2'>
-                <p>
-                  <small className='me-50'>
-                    <span className='fw-bold'>Admin:</span> admin@demo.com | admin
-                  </small>
-                </p>
-                <p>
-                  <small className='me-50'>
-                    <span className='fw-bold'>Client:</span> client@demo.com | client
-                  </small>
-                </p>
-              </div>
-              <HelpCircle
-                id='login-tip'
-                className='position-absolute'
-                size={18}
-                style={{ top: '10px', right: '10px' }}
-              />
-              <UncontrolledTooltip target='login-tip' placement='left'>
-                This is just for ACL demo purpose.
-              </UncontrolledTooltip>
-            </Alert>
+           
             <Form className='auth-login-form mt-2' onSubmit={handleSubmit(onSubmit)}>
               <div className='mb-1'>
                 <Label className='form-label' for='login-email'>

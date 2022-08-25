@@ -52,6 +52,7 @@ const MergeLayoutRoutes = (layout, defaultLayout) => {
   if (Routes) {
     Routes.filter(route => {
       let isBlank = false
+      // console.log("route", route)
       // ** Checks if Route layout or Default layout matches current layout
       if (
         (route.meta && route.meta.layout && route.meta.layout === layout) ||

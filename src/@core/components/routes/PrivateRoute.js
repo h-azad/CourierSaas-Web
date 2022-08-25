@@ -8,13 +8,14 @@ import { AbilityContext } from "@src/utility/context/Can"
 const PrivateRoute = ({ children, route }) => {
   // ** Hooks & Vars
   const ability = useContext(AbilityContext)
+  console.log("ability", ability)
   const user = JSON.parse(localStorage.getItem("userData"))
 
   if (route) {
     let action = null
     let resource = null
     let restrictedRoute = false
-
+    console.log("route.meta", route.meta)
     if (route.meta) {
       action = route.meta.action
       resource = route.meta.resource
@@ -29,9 +30,9 @@ const PrivateRoute = ({ children, route }) => {
     if (user && restrictedRoute && user.role === "client") {
       return <Navigate to="/access-control" />
     }
-    if (user && !ability.can(action || "read", resource)) {
-      return <Navigate to="/misc/not-authorized" replace />
-    }
+    // if (user && !ability.can(action || "read", resource)) {
+    //   return <Navigate to="/misc/not-authorized" replace />
+    // }
   }
 
   return <Suspense fallback={null}>{children}</Suspense>
