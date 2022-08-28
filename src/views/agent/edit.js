@@ -15,13 +15,13 @@ import toast from 'react-hot-toast'
 import { useForm, Controller } from 'react-hook-form'
 import { selectThemeColors } from "@utils"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, MARCHANT_EDIT, MARCHANT_DETAILS } from '@src/constants/apiUrls'
+import { getApi, AGENT_EDIT, AGENT_DETAILS } from '@src/constants/apiUrls'
 import ToastContent from "../../components/ToastContent"  
 import { useEffect, useState } from 'react'
 
-const EditMerchants = () => {
+const EditAgent = () => {
 
-  const [merchantInfo, setMerchantInfo] = useState(null)
+  const [agentInfo, setAgentInfo] = useState(null)
 
   let { id } = useParams()
   const navigate = useNavigate()
@@ -29,10 +29,10 @@ const EditMerchants = () => {
   useEffect(() => {
     console.log(id)
     useJwt
-      .axiosGet(getApi(MARCHANT_DETAILS) + id + "/")
+      .axiosGet(getApi(AGENT_DETAILS) + id + "/")
       .then((res) => {
         // console.log("res", res.data)
-        setMerchantInfo(res.data)
+        setAgentInfo(res.data)
         return res.data
       })
       .catch(err => console.log(err))
@@ -54,19 +54,19 @@ const EditMerchants = () => {
         user_name: data.user_name,
         business_name: data.business_name,
         email: data.email,
-        mobile: data.mobile,
-        status: 'approved'
+        phone_number: data.phone_number,
+        status: 'active'
       }
-      // console.log(getApi(MARCHANT_EDIT))
+      // console.log(getApi(RIDER_EDIT))
       useJwt
-        .axiosPut(getApi(MARCHANT_EDIT) + id + "/", formData)
+        .axiosPut(getApi(AGENT_EDIT) + id + "/", formData)
         .then((res) => {
           console.log("res", res.data)
           // handleReset()
           toast(t => (
-            <ToastContent t={t} type='SUCCESS' message={'Marchant Edited Successfully'} />
+            <ToastContent t={t} type='SUCCESS' message={'Agent Edited Successfully'} />
           ))
-          navigate("/merchants")
+          navigate("/agent")
         })
         .catch(err => console.log(err))
 
@@ -81,30 +81,22 @@ const EditMerchants = () => {
       }
     }
   }
-    const handleReset = () => {
-      reset({
-        user_name: '',
-        business_name: '',
-        email: '',
-        mobile: '',
-      })
-    } 
 
     return (
       <Card>
         <CardHeader>
-          <CardTitle tag="h4">Edit Merchant</CardTitle>
+          <CardTitle tag="h4">Edit Agent</CardTitle>
         </CardHeader>
   
         <CardBody>
-          {merchantInfo &&
+          {agentInfo &&
         <Form onSubmit={handleSubmit(onSubmit)}>
             <div className='mb-1'>
               <Label className='form-label' for='firstNameBasic'>
                 Full Name
               </Label>
               <Controller
-                defaultValue={merchantInfo.user_name}
+                defaultValue={agentInfo.user_name}
                 control={control}
                 id='user_name'
                 name='user_name'
@@ -116,7 +108,7 @@ const EditMerchants = () => {
                 Business Name
               </Label>
               <Controller
-                defaultValue={merchantInfo.business_name}
+                defaultValue={agentInfo.business_name}
                 control={control}
                 id='business_name'
                 name='business_name'
@@ -128,7 +120,7 @@ const EditMerchants = () => {
                 Email
               </Label>
               <Controller
-                defaultValue={merchantInfo.email}
+                defaultValue={agentInfo.email}
                 control={control}
                 id='email'
                 name='email'
@@ -147,15 +139,15 @@ const EditMerchants = () => {
                 Mobile
               </Label>
               <Controller
-                defaultValue={merchantInfo.mobile}
+                defaultValue={agentInfo.phone_number}
                 control={control}
-                id='mobile'
-                name='mobile'
+                id='phone_number'
+                name='phone_number'
                 render={({ field }) => (
                   <Input
                     type='text'
                     placeholder='017XXXXXXXXX'
-                    invalid={errors.mobile && true}
+                    invalid={errors.phone_number && true}
                     {...field}
                   />
                 )}
@@ -172,5 +164,5 @@ const EditMerchants = () => {
       </Card>
     )
   }
-  export default EditMerchants
+  export default EditAgent
         

@@ -24,6 +24,7 @@ const EditRider = () => {
   const [riderInfo, setRiderInfo] = useState(null)
 
   let { id } = useParams()
+  const navigate = useNavigate()
 
   useEffect(() => {
     console.log(id)

@@ -24,5 +24,11 @@ export default [
     title: "Rider",
     icon: <User size={20} />,
     navLink: "/rider"
+  },
+  {
+    id: "agent",
+    title: "Agent",
+    icon: <User size={20} />,
+    navLink: "/agent"
   }
 ]

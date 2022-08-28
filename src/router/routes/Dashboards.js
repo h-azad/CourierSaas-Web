@@ -8,6 +8,11 @@ import RiderList from "../../views/rider/list"
 import AddRider from "../../views/rider/add"
 import EditRider from "../../views/rider/edit"
 
+import AgentList from "../../views/agent/list"
+import AddAgent from "../../views/agent/add"
+import EditAgent from "../../views/agent/edit"
+
+
 const Home = lazy(() => import("../../views/Home"))
 const SecondPage = lazy(() => import("../../views/SecondPage"))
 const Error = lazy(() => import("../../views/Error"))
@@ -47,6 +52,19 @@ const DashboardRoutes = [
   {
     path: "/rider/edit/:id",
     element: <EditRider />
+  },
+
+  {
+    path: "/agent",
+    element: <AgentList />
+  },
+  {
+    path: "/agent/add",
+    element: <AddAgent />
+  },
+  {
+    path: "/agent/edit/:id",
+    element: <EditAgent />
   },
   {
     path: "/error",

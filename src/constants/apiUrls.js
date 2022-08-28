@@ -16,6 +16,13 @@ export const RIDER_LIST = '/api/user/rider/'
 export const RIDER_DELETE = '/api/user/rider/'
 export const RIDER_DETAILS = '/api/user/rider/'
 
+// Agents API's 
+export const AGENT_ADD = '/api/user/agent/'
+export const AGENT_EDIT = '/api/user/agent/'
+export const AGENT_LIST = '/api/user/agent/'
+export const AGENT_DELETE = '/api/user/agent/'
+export const AGENT_DETAILS = '/api/user/agent/'
+
 export const getApi = (api) => {
     return BASE_API + api
 }
