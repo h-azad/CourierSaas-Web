@@ -7,9 +7,9 @@ import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
 import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
 import useJwt from '@src/auth/jwt/useJwt'
 import ListTable from "./partials/list-table"
-import { getApi, MARCHANT_LIST } from "../../constants/apiUrls"
+import { getApi, RIDER_LIST } from "../../constants/apiUrls"
 
-function MerchantList() {
+function RiderList() {
 
   return (
     <Fragment>
@@ -50,10 +50,10 @@ function MerchantList() {
 
       <Row>
         <Col sm="12">
-          <Card title="Bordered">
+          <Card title="Bordered" noBody>
             <CardBody>
               <CardText>
-                <Link to={'/merchants/add'}><Button.Ripple color='primary'>Add Merchant</Button.Ripple></Link>
+                <Link to={'/rider/add'}><Button.Ripple color='primary'>Add Rider</Button.Ripple></Link>
               </CardText>
             </CardBody>
             <ListTable />
@@ -64,4 +64,4 @@ function MerchantList() {
   )
 }
 
-export default MerchantList
+export default RiderList

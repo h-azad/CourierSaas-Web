@@ -23,27 +23,27 @@ function ToastContent({ t, type, message }) {
 
 function success(message, heading='Success') {
     return (
-        <div className='p-3 bg-success my-2 rounded'>
+   
             <Toast>
-                <ToastHeader close={close}> {heading} </ToastHeader>
+                <ToastHeader close={close}  icon="success"> {heading} </ToastHeader>
                 <ToastBody>
                     {message}
                 </ToastBody>
             </Toast>
-        </div>
+ 
     )
 }
 
 function defaultToast(message, heading='INFO') {
     return (
-        <div className='p-3 bg-info my-2 rounded'>
+
           <Toast>
-            <ToastHeader close={close}>{ heading }</ToastHeader>
+            <ToastHeader close={close} icon="info">{ heading }</ToastHeader>
             <ToastBody>
               { message }
             </ToastBody>
           </Toast>
-        </div>
+
     )
 }
 

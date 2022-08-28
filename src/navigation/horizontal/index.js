@@ -18,5 +18,11 @@ export default [
     title: "Merchants",
     icon: <Mail size={20} />,
     navLink: "/second-page"
+  },
+  {
+    id: "rider",
+    title: "Rider",
+    icon: <Mail size={20} />,
+    navLink: "/second-page"
   }
 ]

@@ -17,7 +17,7 @@ export default class JwtService {
     // ** Request Interceptor
     axios.interceptors.request.use(
       (config) => {
-        // ** Get token from localStorage
+        // ** Get token from sessionStorage
         const accessToken = this.getToken()
 
         // ** If token is present add it to request's Authorization Header
@@ -45,7 +45,7 @@ export default class JwtService {
             this.refreshToken().then((r) => {
               this.isAlreadyFetchingAccessToken = false
 
-              // ** Update accessToken in localStorage
+              // ** Update accessToken in sessionStorage
               this.setToken(r.data.accessToken)
               this.setRefreshToken(r.data.refreshToken)
 
@@ -79,19 +79,19 @@ export default class JwtService {
   }
 
   getToken() {
-    return localStorage.getItem(this.jwtConfig.storageTokenKeyName)
+    return sessionStorage.getItem(this.jwtConfig.storageTokenKeyName)
   }
 
   getRefreshToken() {
-    return localStorage.getItem(this.jwtConfig.storageRefreshTokenKeyName)
+    return sessionStorage.getItem(this.jwtConfig.storageRefreshTokenKeyName)
   }
 
   setToken(value) {
-    localStorage.setItem(this.jwtConfig.storageTokenKeyName, value)
+    sessionStorage.setItem(this.jwtConfig.storageTokenKeyName, value)
   }
 
   setRefreshToken(value) {
-    localStorage.setItem(this.jwtConfig.storageRefreshTokenKeyName, value)
+    sessionStorage.setItem(this.jwtConfig.storageRefreshTokenKeyName, value)
   }
 
   login(...args) {

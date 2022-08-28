@@ -15,24 +15,23 @@ import toast from 'react-hot-toast'
 import { useForm, Controller } from 'react-hook-form'
 import { selectThemeColors } from "@utils"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, MARCHANT_EDIT, MARCHANT_DETAILS } from '@src/constants/apiUrls'
+import { getApi, RIDER_EDIT, RIDER_DETAILS } from '@src/constants/apiUrls'
 import ToastContent from "../../components/ToastContent"  
 import { useEffect, useState } from 'react'
 
-const EditMerchants = () => {
+const EditRider = () => {
 
-  const [merchantInfo, setMerchantInfo] = useState(null)
+  const [riderInfo, setRiderInfo] = useState(null)
 
   let { id } = useParams()
-  const navigate = useNavigate()
 
   useEffect(() => {
     console.log(id)
     useJwt
-      .axiosGet(getApi(MARCHANT_DETAILS) + id + "/")
+      .axiosGet(getApi(RIDER_DETAILS) + id + "/")
       .then((res) => {
         // console.log("res", res.data)
-        setMerchantInfo(res.data)
+        setRiderInfo(res.data)
         return res.data
       })
       .catch(err => console.log(err))
@@ -54,19 +53,19 @@ const EditMerchants = () => {
         user_name: data.user_name,
         business_name: data.business_name,
         email: data.email,
-        mobile: data.mobile,
-        status: 'approved'
+        phone_number: data.phone_number,
+        status: 'active'
       }
-      // console.log(getApi(MARCHANT_EDIT))
+      // console.log(getApi(RIDER_EDIT))
       useJwt
-        .axiosPut(getApi(MARCHANT_EDIT) + id + "/", formData)
+        .axiosPut(getApi(RIDER_EDIT) + id + "/", formData)
         .then((res) => {
           console.log("res", res.data)
           // handleReset()
           toast(t => (
-            <ToastContent t={t} type='SUCCESS' message={'Marchant Edited Successfully'} />
+            <ToastContent t={t} type='SUCCESS' message={'Rider Edited Successfully'} />
           ))
-          navigate("/merchants")
+          navigate("/rider")
         })
         .catch(err => console.log(err))
 
@@ -81,30 +80,22 @@ const EditMerchants = () => {
       }
     }
   }
-    const handleReset = () => {
-      reset({
-        user_name: '',
-        business_name: '',
-        email: '',
-        mobile: '',
-      })
-    } 
 
     return (
       <Card>
         <CardHeader>
-          <CardTitle tag="h4">Edit Merchant</CardTitle>
+          <CardTitle tag="h4">Edit Rider</CardTitle>
         </CardHeader>
   
         <CardBody>
-          {merchantInfo &&
+          {riderInfo &&
         <Form onSubmit={handleSubmit(onSubmit)}>
             <div className='mb-1'>
               <Label className='form-label' for='firstNameBasic'>
                 Full Name
               </Label>
               <Controller
-                defaultValue={merchantInfo.user_name}
+                defaultValue={riderInfo.user_name}
                 control={control}
                 id='user_name'
                 name='user_name'
@@ -116,7 +107,7 @@ const EditMerchants = () => {
                 Business Name
               </Label>
               <Controller
-                defaultValue={merchantInfo.business_name}
+                defaultValue={riderInfo.business_name}
                 control={control}
                 id='business_name'
                 name='business_name'
@@ -128,7 +119,7 @@ const EditMerchants = () => {
                 Email
               </Label>
               <Controller
-                defaultValue={merchantInfo.email}
+                defaultValue={riderInfo.email}
                 control={control}
                 id='email'
                 name='email'
@@ -147,15 +138,15 @@ const EditMerchants = () => {
                 Mobile
               </Label>
               <Controller
-                defaultValue={merchantInfo.mobile}
+                defaultValue={riderInfo.phone_number}
                 control={control}
-                id='mobile'
-                name='mobile'
+                id='phone_number'
+                name='phone_number'
                 render={({ field }) => (
                   <Input
                     type='text'
                     placeholder='017XXXXXXXXX'
-                    invalid={errors.mobile && true}
+                    invalid={errors.phone_number && true}
                     {...field}
                   />
                 )}
@@ -165,9 +156,6 @@ const EditMerchants = () => {
               <Button className='me-1' color='primary' type='submit'>
                 Submit
               </Button>
-              <Button outline color='secondary' type='reset' onClick={handleReset}>
-                Reset
-              </Button>
             </div>
           </Form>
           }
@@ -175,5 +163,5 @@ const EditMerchants = () => {
       </Card>
     )
   }
-  export default EditMerchants
+  export default EditRider
         
