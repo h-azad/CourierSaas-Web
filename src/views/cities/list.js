@@ -7,9 +7,9 @@ import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
 import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
 import useJwt from '@src/auth/jwt/useJwt'
 import ListTable from "./partials/list-table"
-import { getApi, RIDER_LIST } from "../../constants/apiUrls"
+import { getApi, CITIES_LIST } from "../../constants/apiUrls"
 
-function RiderList() {
+function CitiesList() {
 
   return (
     <Fragment>
@@ -53,7 +53,7 @@ function RiderList() {
           <Card title="Bordered">
             <CardBody>
               <CardText>
-                <Link to={'/rider/add'}><Button.Ripple color='primary'>Add Rider</Button.Ripple></Link>
+                <Link to={'/cities/add'}><Button.Ripple color='primary'>Add Cities</Button.Ripple></Link>
               </CardText>
             </CardBody>
             <ListTable />
@@ -64,4 +64,4 @@ function RiderList() {
   )
 }
 
-export default RiderList
+export default CitiesList

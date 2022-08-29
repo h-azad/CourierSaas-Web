@@ -13,38 +13,38 @@ import { useEffect, useState } from "react"
 import toast from 'react-hot-toast'
 import ToastContent from "../../../components/ToastContent"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, MARCHANT_LIST, MARCHANT_DELETE } from "../../../constants/apiUrls"
+import { getApi, CITIES_LIST, CITIES_DELETE } from "../../../constants/apiUrls"
 
 const ListTable = () => {
-  const [merchants, setMerchants] = useState([])
+  const [cities, setCities] = useState([])
 
   const deleteAction = (e, id) => {
     e.preventDefault()
     console.log("Deleted", id)
 
     useJwt
-      .axiosDelete(getApi(MARCHANT_DELETE+id+'/'))
+      .axiosDelete(getApi(CITIES_DELETE+id+'/'))
       .then((res) => {
         // console.log("res", res.data)
         toast(t => (
-          <ToastContent t={t} message={'Marchant Deleted Successfully'} />
+          <ToastContent t={t} message={'City Deleted Successfully'} />
         ))
-        fetchMerchantsData()
+        fetchCitiesData()
         // return res.data
       })
       .catch(err => console.log(err))
   }
 
   useEffect(() => {
-    fetchMerchantsData()
+    fetchCitiesData()
   }, [])
 
-  const fetchMerchantsData = () => {
+  const fetchCitiesData = () => {
     return useJwt
-      .axiosGet(getApi(MARCHANT_LIST))
+      .axiosGet(getApi(CITIES_LIST))
       .then((res) => {
         // console.log("res", res.data)
-        setMerchants(res.data)
+        setCities(res.data)
         return res.data
       })
       .catch(err => console.log(err))
@@ -55,23 +55,17 @@ const ListTable = () => {
       <thead>
         <tr>
           <th>Name</th>
-          <th>Bussiness Name</th>
-          <th>Phone</th>
-          <th>Address</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        {merchants &&
-          merchants.map((info) => (
+        {cities &&
+          cities.map((info) => (
             <tr key={info.id}>
               <td>
-                <span className="align-middle fw-bold">{info.user_name}</span>
+                <span className="align-middle fw-bold">{info.cities_name}</span>
               </td>
-              <td>{info.business_name}</td>
-              <td>{info.mobile}</td>
-              <td>{info.address}</td>
               <td>
                 <Badge pill color="light-primary" className="me-1">
                   {info.status}
@@ -88,7 +82,7 @@ const ListTable = () => {
                     <MoreVertical size={15} />
                   </DropdownToggle>
                   <DropdownMenu>
-                    <DropdownItem href={"/merchants/edit/" + info.id}>
+                    <DropdownItem href={"/cities/edit/" + info.id}>
                       <Edit className="me-50" size={15} />{" "}
                       <span className="align-middle">Edit</span>
                     </DropdownItem>

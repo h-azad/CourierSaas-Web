@@ -30,5 +30,17 @@ export default [
     title: "Agent",
     icon: <User size={20} />,
     navLink: "/agent"
+  },
+  {
+    id: "cities",
+    title: "Cities",
+    icon: <User size={20} />,
+    navLink: "/cities"
+  },
+  {
+    id: "areas",
+    title: "Areas",
+    icon: <User size={20} />,
+    navLink: "/areas"
   }
 ]

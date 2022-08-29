@@ -55,6 +55,7 @@ const EditMerchants = () => {
         business_name: data.business_name,
         email: data.email,
         mobile: data.mobile,
+        address: data.address,
         status: 'approved'
       }
       // console.log(getApi(MARCHANT_EDIT))
@@ -81,14 +82,7 @@ const EditMerchants = () => {
       }
     }
   }
-    const handleReset = () => {
-      reset({
-        user_name: '',
-        business_name: '',
-        email: '',
-        mobile: '',
-      })
-    } 
+
 
     return (
       <Card>
@@ -159,6 +153,18 @@ const EditMerchants = () => {
                     {...field}
                   />
                 )}
+              />
+            </div>
+            <div className='mb-1'>
+              <Label className='form-label' for='firstNameBasic'>
+               Address
+              </Label>
+              <Controller
+                defaultValue={merchantInfo.address}
+                control={control}
+                id='address'
+                name='address'
+                render={({ field }) => <Input placeholder='Dhaka, Bangladesh' invalid={errors.address && true} {...field} />}
               />
             </div>
             <div className='d-flex'>

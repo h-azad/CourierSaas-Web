@@ -12,6 +12,13 @@ import AgentList from "../../views/agent/list"
 import AddAgent from "../../views/agent/add"
 import EditAgent from "../../views/agent/edit"
 
+import CitiesList from "../../views/cities/list"
+import AddCities from "../../views/cities/add"
+import EditCities from "../../views/cities/edit"
+
+import AreasList from "../../views/areas/list"
+import AddAreas from "../../views/areas/add"
+import EditAreas from "../../views/areas/edit"
 
 const Home = lazy(() => import("../../views/Home"))
 const SecondPage = lazy(() => import("../../views/SecondPage"))
@@ -41,6 +48,7 @@ const DashboardRoutes = [
     element: <EditMerchants />
   },
   
+
   {
     path: "/rider",
     element: <RiderList />
@@ -54,6 +62,7 @@ const DashboardRoutes = [
     element: <EditRider />
   },
 
+
   {
     path: "/agent",
     element: <AgentList />
@@ -66,7 +75,37 @@ const DashboardRoutes = [
     path: "/agent/edit/:id",
     element: <EditAgent />
   },
+  
   {
+    path: "/cities",
+    element: <CitiesList />
+  },
+  {
+    path: "/cities/add",
+    element: <AddCities />
+  },
+  {
+    path: "/cities/edit/:id",
+    element: <EditCities />
+  },
+
+
+
+  {
+    path: "/areas",
+    element: <AreasList />
+  },
+  {
+    path: "/areas/add",
+    element: <AddAreas />
+  },
+  {
+    path: "/areas/edit/:id",
+    element: <EditAreas />
+  },
+
+  {
+  
     path: "/error",
     element: <Error />,
     meta: {

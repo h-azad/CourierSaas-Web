@@ -50,7 +50,7 @@ function AgentList() {
 
       <Row>
         <Col sm="12">
-          <Card title="Bordered" noBody>
+          <Card title="Bordered">
             <CardBody>
               <CardText>
                 <Link to={'/agent/add'}><Button.Ripple color='primary'>Add Agent</Button.Ripple></Link>

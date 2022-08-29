@@ -52,9 +52,9 @@ const EditRider = () => {
     if (Object.values(data).every(field => field.length > 0)) {
       let formData = {
         user_name: data.user_name,
-        business_name: data.business_name,
         email: data.email,
         phone_number: data.phone_number,
+        address: data.address,
         status: 'active'
       }
       // console.log(getApi(RIDER_EDIT))
@@ -104,18 +104,6 @@ const EditRider = () => {
               />
             </div>
             <div className='mb-1'>
-              <Label className='form-label' for='lastNameBasic'>
-                Business Name
-              </Label>
-              <Controller
-                defaultValue={riderInfo.business_name}
-                control={control}
-                id='business_name'
-                name='business_name'
-                render={({ field }) => <Input placeholder='Test Shop' invalid={errors.business_name && true} {...field} />}
-              />
-            </div>
-            <div className='mb-1'>
               <Label className='form-label' for='emailBasic'>
                 Email
               </Label>
@@ -151,6 +139,18 @@ const EditRider = () => {
                     {...field}
                   />
                 )}
+              />
+            </div>
+            <div className='mb-1'>
+              <Label className='form-label' for='firstNameBasic'>
+                Address
+              </Label>
+              <Controller
+                defaultValue={riderInfo.address}
+                control={control}
+                id='address'
+                name='address'
+                render={({ field }) => <Input placeholder='Dhaka, Bangladesh' invalid={errors.address && true} {...field} />}
               />
             </div>
             <div className='d-flex'>

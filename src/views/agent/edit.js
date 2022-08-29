@@ -52,9 +52,9 @@ const EditAgent = () => {
     if (Object.values(data).every(field => field.length > 0)) {
       let formData = {
         user_name: data.user_name,
-        business_name: data.business_name,
         email: data.email,
         phone_number: data.phone_number,
+        address: data.address,
         status: 'active'
       }
       // console.log(getApi(RIDER_EDIT))
@@ -103,18 +103,7 @@ const EditAgent = () => {
                 render={({ field }) => <Input placeholder='Partho Roy' invalid={errors.user_name && true} {...field} />}
               />
             </div>
-            <div className='mb-1'>
-              <Label className='form-label' for='lastNameBasic'>
-                Business Name
-              </Label>
-              <Controller
-                defaultValue={agentInfo.business_name}
-                control={control}
-                id='business_name'
-                name='business_name'
-                render={({ field }) => <Input placeholder='Test Shop' invalid={errors.business_name && true} {...field} />}
-              />
-            </div>
+            
             <div className='mb-1'>
               <Label className='form-label' for='emailBasic'>
                 Email
@@ -151,6 +140,18 @@ const EditAgent = () => {
                     {...field}
                   />
                 )}
+              />
+            </div>
+            <div className='mb-1'>
+              <Label className='form-label' for='firstNameBasic'>
+                Address
+              </Label>
+              <Controller
+                defaultValue={agentInfo.address}
+                control={control}
+                id='address'
+                name='address'
+                render={({ field }) => <Input placeholder='Dhaka , Bangladesh' invalid={errors.address && true} {...field} />}
               />
             </div>
             <div className='d-flex'>

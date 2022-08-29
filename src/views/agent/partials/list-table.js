@@ -55,8 +55,8 @@ const ListTable = () => {
       <thead>
         <tr>
           <th>Name</th>
-          <th>Bussiness Name</th>
           <th>Phone</th>
+          <th>Address</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
@@ -68,8 +68,8 @@ const ListTable = () => {
               <td>
                 <span className="align-middle fw-bold">{info.user_name}</span>
               </td>
-              <td>{info.business_name}</td>
               <td>{info.phone_number}</td>
+              <td>{info.address}</td>
               <td>
                 <Badge pill color="light-primary" className="me-1">
                   {info.status}

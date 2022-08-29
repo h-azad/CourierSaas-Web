@@ -34,9 +34,9 @@ const AddAgent = () => {
     if (Object.values(data).every(field => field.length > 0)) {
       let formData = {
         user_name: data.user_name,
-        business_name: data.business_name,
         email: data.email,
         phone_number: data.phone_number,
+        address: data.address,
         status: 'active'
       }
 
@@ -64,15 +64,6 @@ const AddAgent = () => {
     }
   }
 
-  // const handleReset = () => {
-  //   reset({
-  //     user_name: '',
-  //     business_name: '',
-  //     email: '',
-  //     phone_number: '',
-  //   })
-  // }
-
   return (
     <Card>
       <CardHeader>
@@ -93,18 +84,7 @@ const AddAgent = () => {
               render={({ field }) => <Input placeholder='Bruce Wayne' invalid={errors.user_name && true} {...field} />}
             />
           </div>
-          <div className='mb-1'>
-            <Label className='form-label' for='lastNameBasic'>
-              Business Name
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='business_name'
-              name='business_name'
-              render={({ field }) => <Input placeholder='Test Shop' invalid={errors.business_name && true} {...field} />}
-            />
-          </div>
+          
           <div className='mb-1'>
             <Label className='form-label' for='emailBasic'>
               Email
@@ -141,6 +121,18 @@ const AddAgent = () => {
                   {...field}
                 />
               )}
+            />
+          </div>
+          <div className='mb-1'>
+            <Label className='form-label' for='firstNameBasic'>
+             Address
+            </Label>
+            <Controller
+              defaultValue=''
+              control={control}
+              id='address'
+              name='address'
+              render={({ field }) => <Input placeholder='Dhaka, Bangladessh' invalid={errors.address && true} {...field} />}
             />
           </div>
           <div className='d-flex'>

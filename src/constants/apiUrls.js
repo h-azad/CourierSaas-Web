@@ -23,6 +23,20 @@ export const AGENT_LIST = '/api/user/agent/'
 export const AGENT_DELETE = '/api/user/agent/'
 export const AGENT_DETAILS = '/api/user/agent/'
 
+// Cities API's 
+export const CITIES_ADD = '/cities/cities/'
+export const CITIES_EDIT = '/cities/cities/'
+export const CITIES_LIST = '/cities/cities/'
+export const CITIES_DELETE = '/cities/cities/'
+export const CITIES_DETAILS = '/cities/cities/'
+
+// Areas API's 
+export const AREAS_ADD = '/cities/areas/'
+export const AREAS_EDIT = '/cities/areas/'
+export const AREAS_LIST = '/cities/areas/'
+export const AREAS_DELETE = '/cities/areas/'
+export const AREAS_DETAILS = '/cities/areas/'
+
 export const getApi = (api) => {
     return BASE_API + api
 }

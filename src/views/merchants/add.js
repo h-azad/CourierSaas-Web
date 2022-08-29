@@ -37,6 +37,7 @@ const AddMerchants = () => {
         business_name: data.business_name,
         email: data.email,
         mobile: data.mobile,
+        address: data.address,
         status: 'approved'
       }
 
@@ -63,16 +64,6 @@ const AddMerchants = () => {
       }
     }
   }
-
-  const handleReset = () => {
-    reset({
-      user_name: '',
-      business_name: '',
-      email: '',
-      mobile: '',
-    })
-  }
-
   return (
     <Card>
       <CardHeader>
@@ -143,13 +134,23 @@ const AddMerchants = () => {
               )}
             />
           </div>
+          <div className='mb-1'>
+            <Label className='form-label' for='firstNameBasic'>
+              Address
+            </Label>
+            <Controller
+              defaultValue=''
+              control={control}
+              id='address'
+              name='address'
+              render={({ field }) => <Input placeholder='Dhaka , Bangladesh' invalid={errors.address && true} {...field} />}
+            />
+          </div>
           <div className='d-flex'>
             <Button className='me-1' color='primary' type='submit'>
               Submit
             </Button>
-            <Button outline color='secondary' type='reset' onClick={handleReset}>
-              Reset
-            </Button>
+            
           </div>
         </Form>
       </CardBody>
