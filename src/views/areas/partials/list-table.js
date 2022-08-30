@@ -11,28 +11,37 @@ import {
 } from "reactstrap"
 import { useEffect, useState } from "react"
 import toast from 'react-hot-toast'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 import ToastContent from "../../../components/ToastContent"
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, AREAS_LIST, AREAS_DELETE } from "../../../constants/apiUrls"
+import SwalAlert from "../../../components/SwalAlert"
+import SwalConfirm from "../../../components/SwalConfirm"
 
 const ListTable = () => {
   const [areas, setAreas] = useState([])
+  const MySwal = withReactContent(Swal)
 
   const deleteAction = (e, id) => {
     e.preventDefault()
-    console.log("Deleted", id)
+    // console.log("Deleted", id)
+    return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
+      if (result.value) {
 
-    useJwt
-      .axiosDelete(getApi(AREAS_DELETE+id+'/'))
-      .then((res) => {
-        // console.log("res", res.data)
-        toast(t => (
-          <ToastContent t={t} message={'Area Deleted Successfully'} />
-        ))
-        fetchAreasData()
-        // return res.data
-      })
-      .catch(err => console.log(err))
+      useJwt
+        .axiosDelete(getApi(AREAS_DELETE+id+'/'))
+        .then((res) => {
+          // console.log("res", res.data)
+          SwalAlert("Deleted Successfully")
+          
+          // return res.data
+        })
+        .finally(() => fetchAreasData())
+        
+      }
+    })
+   
   }
 
   useEffect(() => {
@@ -43,7 +52,7 @@ const ListTable = () => {
     return useJwt
       .axiosGet(getApi(AREAS_LIST))
       .then((res) => {
-        // console.log("res", res.data)
+        console.log("res", res.data)
         setAreas(res.data)
         return res.data
       })
@@ -68,7 +77,7 @@ const ListTable = () => {
                 <span className="align-middle fw-bold">{info.areas_name}</span>
               </td>
               <td>
-                <span className="align-middle fw-bold">{info.cities_name}</span>
+                <span className="align-middle fw-bold">{info.cities_name.cities_name}</span>
               </td>
               <td>
                 <Badge pill color="light-primary" className="me-1">

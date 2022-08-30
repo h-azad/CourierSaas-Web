@@ -14,11 +14,14 @@ import {
 import { useNavigate } from "react-router-dom"
 import Select from "react-select"
 import toast from 'react-hot-toast'
+import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import { selectThemeColors } from "@utils"
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, CITIES_ADD } from '@src/constants/apiUrls'
 import ToastContent from "../../components/ToastContent"
+import { useEffect, useState } from "react"
+import SwalAlert from "../../components/SwalAlert"
 
 const AddCities = () => {
   const navigate = useNavigate()
@@ -31,33 +34,45 @@ const AddCities = () => {
   } = useForm()
   
   const onSubmit = data => {
-    if (Object.values(data).every(field => field.length > 0)) {
+    // setData(data)
+    if (data.cities_name !== null) {
+      // console.log("data", data)
+
       let formData = {
         cities_name: data.cities_name,
         status: 'active'
       }
+
+      console.log("formData", formData)
+
+    // if (Object.values(data).every(field => field.length > 0)) {
+    //   let formData = {
+    //     cities_name: data.cities_name,
+    //     status: 'active'
+    //   }
 
       useJwt
         .axiosPost(getApi(CITIES_ADD), formData)
         .then((res) => {
           console.log("res", res.data)
           // handleReset()
-          toast(t => (
-            <ToastContent t={t} type='SUCCESS' message={'City Added Successfully'} />
-          ))
+          // toast(t => (
+          //   <ToastContent t={t} type='SUCCESS' message={'City Added Successfully'} />
+          // ))
+          SwalAlert("City Added Successfully")
           navigate("/cities")
         })
         .catch(err => console.log(err))
 
       // console.log(formData)
-    } else {
-      for (const key in data) {
-        if (data[key].length === 0) {
-          setError(key, {
-            type: 'manual'
-          })
-        }
-      }
+    // } else {
+    //   for (const key in data) {
+    //     if (data[key].length === 0) {
+    //       setError(key, {
+    //         type: 'manual'
+    //       })
+    //     }
+    //   }
     }
   }
 

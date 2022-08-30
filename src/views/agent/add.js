@@ -19,6 +19,8 @@ import { selectThemeColors } from "@utils"
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, AGENT_ADD } from '@src/constants/apiUrls'
 import ToastContent from "../../components/ToastContent"
+import SwalAlert from "../../components/SwalAlert"
+
 
 const AddAgent = () => {
   const navigate = useNavigate()
@@ -45,9 +47,10 @@ const AddAgent = () => {
         .then((res) => {
           console.log("res", res.data)
           // handleReset()
-          toast(t => (
-            <ToastContent t={t} type='SUCCESS' message={'Agent Added Successfully'} />
-          ))
+          // toast(t => (
+          //   <ToastContent t={t} type='SUCCESS' message={'Agent Added Successfully'} />
+          // ))
+          SwalAlert("Agent Added Successfully")
           navigate("/agent")
         })
         .catch(err => console.log(err))

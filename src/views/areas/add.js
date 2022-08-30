@@ -14,51 +14,87 @@ import {
 import { useNavigate } from "react-router-dom"
 import Select from "react-select"
 import toast from 'react-hot-toast'
+import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import { selectThemeColors } from "@utils"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, AREAS_ADD } from '@src/constants/apiUrls'
+import { getApi, AREAS_ADD, CITIES_LIST } from '@src/constants/apiUrls'
 import ToastContent from "../../components/ToastContent"
+import { useEffect, useState } from "react"
+import SwalAlert from "../../components/SwalAlert"
 
 const AddAreas = () => {
+  const [selectboxOptions, setSelectboxOptions] = useState([])
+  const [data, setData] = useState(null)
   const navigate = useNavigate()
   const {
     reset,
     control,
     setError,
+    setValue,
     handleSubmit,
     formState: { errors }
-  } = useForm()
+  } = useForm({
+    defaultValues: {
+      areas_name: '',
+      cities_name: {}
+    }
+  })
+
+  useEffect(() => {
+    fetchCitiesData()
+  },[])
+
+  const fetchCitiesData = () => {
+    return useJwt
+      .axiosGet(getApi(CITIES_LIST))
+      .then((res) => {
+        // console.log("res", res.data)
+        let cityData = []
+
+        res.data.map(data => {
+          cityData.push({value: data.id, label: data.cities_name})
+        })
+
+        setSelectboxOptions(cityData)
+        return res.data
+      })
+      .catch(err => console.log(err))
+  }
+
+  const handleCityChange = (city) => {
+    setValue('cities_name', city)
+  }
+
   
   const onSubmit = data => {
-    if (Object.values(data).every(field => field.length > 0)) {
+    // console.log("data", data)
+    setData(data)
+    if (data.cities_name !== null && data.areas_name !== null) {
+      // console.log("data", data)
+
       let formData = {
         areas_name: data.areas_name,
-        cities_name: data.cities_name,
+        cities_name: data.cities_name.value,
         status: 'active'
       }
+
+      console.log("formData", formData)
 
       useJwt
         .axiosPost(getApi(AREAS_ADD), formData)
         .then((res) => {
           console.log("res", res.data)
           // handleReset()
-          toast(t => (
-            <ToastContent t={t} type='SUCCESS' message={'Area Added Successfully'} />
-          ))
+          // toast(t => (
+          //   <ToastContent t={t} type='SUCCESS' message={'Area Added Successfully'} />
+          // ))
+          SwalAlert("Area Added Successfully")
           navigate("/areas")
         })
         .catch(err => console.log(err))
 
       // console.log(formData)
-    } else {
-      for (const key in data) {
-        if (data[key].length === 0) {
-          setError(key, {
-            type: 'manual'
-          })
-        }
-      }
     }
   }
 
@@ -71,7 +107,24 @@ const AddAreas = () => {
       <CardBody>
       <Form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-1'>
-            <Label className='form-label' for='firstNameBasic'>
+              <Label className='form-label' for='cities_name'>
+                City Name
+              </Label>
+              <Controller
+                  id="cities_name"
+                  name="cities_name"
+                  control={control}
+                  render={({ field }) => <Select 
+                    isClearable
+                    className={classnames('react-select', { 'is-invalid': data !== null && data.cities_name === null })} 
+                    classNamePrefix='select'
+                    options={selectboxOptions} 
+                    {...field} 
+                  />}
+                />
+          </div>
+          <div className='mb-1'>
+            <Label className='form-label' for='areas_name'>
               Area Name
             </Label>
             <Controller
@@ -80,18 +133,6 @@ const AddAreas = () => {
               id='areas_name'
               name='areas_name'
               render={({ field }) => <Input placeholder='Mirpur' invalid={errors.areas_name && true} {...field} />}
-            />
-          </div>
-          <div className='mb-1'>
-            <Label className='form-label' for='firstNameBasic'>
-              City Name
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='cities_name'
-              name='cities_name'
-              render={({ field }) => <Input placeholder='Dhaka' invalid={errors.cities_name && true} {...field} />}
             />
           </div>
           <div className='d-flex'>
