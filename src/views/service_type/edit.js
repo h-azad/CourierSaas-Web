@@ -3,27 +3,21 @@ import { Card,
   CardHeader,
   CardTitle,
   CardBody,
-  Row,
-  Col,
   Input,
   Form,
   Button,
   Label,} from 'reactstrap'
 import { Router, useNavigate, useParams} from "react-router-dom"
-import Select from "react-select"
-import toast from 'react-hot-toast'
 import { useForm, Controller } from 'react-hook-form'
-import { selectThemeColors } from "@utils"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, CITIES_EDIT, CITIES_DETAILS } from '@src/constants/apiUrls'
-import ToastContent from "../../components/ToastContent"  
+import { getApi, SERVICE_TYPE_EDIT, SERVICE_TYPE_DETAILS } from '@src/constants/apiUrls'
 import { useEffect, useState } from 'react'
 import SwalAlert from "../../components/SwalAlert"
 
 
-const EditCities = () => {
+const EditServiceType = () => {
 
-  const [citiesInfo, setCitiesInfo] = useState(null)
+  const [servicetypeInfo, setServicetypeInfo] = useState(null)
 
   let { id } = useParams()
   const navigate = useNavigate()
@@ -31,46 +25,37 @@ const EditCities = () => {
   useEffect(() => {
     console.log(id)
     useJwt
-      .axiosGet(getApi(CITIES_DETAILS) + id + "/")
+      .axiosGet(getApi(SERVICE_TYPE_DETAILS) + id + "/")
       .then((res) => {
-        // console.log("res", res.data)
-        setCitiesInfo(res.data)
+        setServicetypeInfo(res.data)
         return res.data
       })
       .catch(err => console.log(err))
   }, [])
 
   const {
-    reset,
     control,
     setError,
     handleSubmit,
     formState: { errors }
   } = useForm()
 
-
   
   const onSubmit = data => {
     if (Object.values(data).every(field => field.length > 0)) {
       let formData = {
-        cities_name: data.cities_name,
+        service_type: data.service_type,
         status: 'active'
       }
-      
       useJwt
-        .axiosPut(getApi(CITIES_EDIT) + id + "/", formData)
+        .axiosPut(getApi(SERVICE_TYPE_EDIT) + id + "/", formData)
         .then((res) => {
           console.log("res", res.data)
-          // handleReset()
-          // toast(t => (
-          //   <ToastContent t={t} type='SUCCESS' message={'City Edited Successfully'} />
-          // ))
-          SwalAlert("City Edited Successfully")
-          navigate("/cities")
+          SwalAlert("Service Type Edited Successfully")
+          navigate("/service_type")
         })
         .catch(err => console.log(err))
 
-      // console.log(formData)
     } else {
       for (const key in data) {
         if (data[key].length === 0) {
@@ -85,22 +70,22 @@ const EditCities = () => {
     return (
       <Card>
         <CardHeader>
-          <CardTitle tag="h4">Edit Cities</CardTitle>
+          <CardTitle tag="h4">Edit Service Type</CardTitle>
         </CardHeader>
   
         <CardBody>
-          {citiesInfo &&
+          {servicetypeInfo &&
         <Form onSubmit={handleSubmit(onSubmit)}>
             <div className='mb-1'>
               <Label className='form-label' for='firstNameBasic'>
-                Cities Name
+               Service Type
               </Label>
               <Controller
-                defaultValue={citiesInfo.cities_name}
+                defaultValue={servicetypeInfo.service_type}
                 control={control}
-                id='cities_name'
-                name='cities_name'
-                render={({ field }) => <Input placeholder='Dhaka' invalid={errors.cities_name && true} {...field} />}
+                id='service_type'
+                name='service_type'
+                render={({ field }) => <Input placeholder='' invalid={errors.service_type && true} {...field} />}
               />
             </div>
             
@@ -115,5 +100,5 @@ const EditCities = () => {
       </Card>
     )
   }
-  export default EditCities
+  export default EditServiceType
         

@@ -15,16 +15,16 @@ import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import { selectThemeColors } from "@utils"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, AREAS_EDIT, AREAS_DETAILS, CITIES_LIST } from '@src/constants/apiUrls'
+import { getApi, SHIPMENT_TYPE_EDIT, SHIPMENT_TYPE_DETAILS, SERVICE_TYPE_LIST } from '@src/constants/apiUrls'
 import ToastContent from "../../components/ToastContent"  
 import { useEffect, useState } from 'react'
 import SwalAlert from "../../components/SwalAlert"
 
 
-const EditAreas = () => {
+const EditShipmentType = () => {
   const [selectboxOptions, setSelectboxOptions] = useState([])
   const [data, setData] = useState(null)
-  const [areasInfo, setAreasInfo] = useState(null)
+  const [shipmentInfo, setShipmentInfo] = useState(null)
 
   let { id } = useParams()
   const navigate = useNavigate()
@@ -32,31 +32,31 @@ const EditAreas = () => {
   useEffect(() => {
     console.log(id)
     useJwt
-      .axiosGet(getApi(AREAS_DETAILS) + id + "/")
+      .axiosGet(getApi(SHIPMENT_TYPE_DETAILS) + id + "/")
       .then((res) => {
         console.log("res", res.data)
-        setAreasInfo({
-          cities_name: res.data.cities_name,
-          areas_name: res.data.areas_name
+        setShipmentInfo({
+          service_type: res.data.service_type,
+          shipment_type: res.data.shipment_type
         })
         return res.data
       })
       .catch(err => console.log(err))
-      fetchCitiesData()
+      fetchServiceData()
   }, [])
 
-  const fetchCitiesData = () => {
+  const fetchServiceData = () => {
     return useJwt
-      .axiosGet(getApi(CITIES_LIST))
+      .axiosGet(getApi(SERVICE_TYPE_LIST))
       .then((res) => {
         // console.log("res", res.data)
-        let cityData = []
+        let serviceData = []
 
         res.data.map(data => {
-          cityData.push({value: data.id, label: data.cities_name})
+          serviceData.push({value: data.id, label: data.service_type})
         })
 
-        setSelectboxOptions(cityData)
+        setSelectboxOptions(serviceData)
         return res.data
       })
       .catch(err => console.log(err))
@@ -70,30 +70,30 @@ const EditAreas = () => {
     handleSubmit,
     formState: { errors }
   } = useForm({
-    defaultValues: areasInfo
+    defaultValues: shipmentInfo
   })
   
   const onSubmit = data => {
     setData(data)
-    if (data.cities_name !== null && data.areas_name !== null) {
+    if (data.service_type !== null && data.shipment_type !== null) {
       
       let formData = {
-        areas_name: data.areas_name,
-        cities_name: data.cities_name.value,
+        shipment_type: data.shipment_type,
+        service_type: data.service_type.value,
         status: 'active'
       }
               
       console.log('formData',formData)
       useJwt
-        .axiosPut(getApi(AREAS_EDIT) + id + "/", formData)
+        .axiosPut(getApi(SHIPMENT_TYPE_EDIT) + id + "/", formData)
         .then((res) => {
           console.log("res", res.data)
           // handleReset()
           // toast(t => (
           //   <ToastContent t={t} type='SUCCESS' message={'Areas Edited Successfully'} />
           // ))
-          SwalAlert("Area Edited Successfully")
-          navigate("/areas")
+          SwalAlert("Shipment Type Edited Successfully")
+          navigate("/shipment_type")
         })
         .catch(err => console.log(err))
 
@@ -104,25 +104,25 @@ const EditAreas = () => {
     return (
       <Card>
         <CardHeader>
-          <CardTitle tag="h4">Edit Areas</CardTitle>
+          <CardTitle tag="h4">Edit Shipment Type</CardTitle>
         </CardHeader>
   
         <CardBody>
-          {areasInfo &&
+          {shipmentInfo &&
         <Form onSubmit={handleSubmit(onSubmit)}>
             <div className='mb-1'>
-              <Label className='form-label' for='cities_name'>
-                City Name
+              <Label className='form-label' for='service_type'>
+               Service Type
               </Label>
               <Controller
-                  id="cities_name"
-                  defaultValue={{label: areasInfo.cities_name.cities_name, value: areasInfo.cities_name.id}}
-                  name="cities_name"
+                  id="service_type"
+                  defaultValue={{label: shipmentInfo.service_type.service_type, value: shipmentInfo.service_type.id}}
+                  name="service_type"
                   control={control}
                   render={({ field }) => <Select 
                     isClearable
-                    defaultValue={areasInfo.cities_name}
-                    className={classnames('react-select', { 'is-invalid': data !== null && data.cities_name === null })} 
+                    defaultValue={shipmentInfo.service_type}
+                    className={classnames('react-select', { 'is-invalid': data !== null && data.service_type === null })} 
                     classNamePrefix='select'
                     options={selectboxOptions} 
                     {...field} 
@@ -130,15 +130,15 @@ const EditAreas = () => {
                 />
           </div>
             <div className='mb-1'>
-              <Label className='form-label' for='firstNameBasic'>
-                Areas Name
+              <Label className='form-label' for='shipment_type'>
+                Shipment Type
               </Label>
               <Controller
-                defaultValue={areasInfo.areas_name}
+                defaultValue={shipmentInfo.shipment_type}
                 control={control}
-                id='areas_name'
-                name='areas_name'
-                render={({ field }) => <Input placeholder='Mirpur' invalid={errors.areas_name && true} {...field} />}
+                id='shipment_type'
+                name='shipment_type'
+                render={({ field }) => <Input placeholder='Regular' invalid={errors.shipment_type && true} {...field} />}
               />
             </div>
             
@@ -153,5 +153,5 @@ const EditAreas = () => {
       </Card>
     )
   }
-  export default EditAreas
+  export default EditShipmentType
         

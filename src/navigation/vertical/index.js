@@ -42,5 +42,17 @@ export default [
     title: "Areas",
     icon: <User size={20} />,
     navLink: "/areas"
+  },
+  {
+    id: "service_type",
+    title: "Service Type",
+    icon: <User size={20} />,
+    navLink: "/service_type"
+  },
+  {
+    id: "shipment_type",
+    title: "shipment_type",
+    icon: <User size={20} />,
+    navLink: "/shipment_type"
   }
 ]

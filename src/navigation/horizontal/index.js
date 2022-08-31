@@ -42,5 +42,17 @@ export default [
     title: "Areas",
     icon: <Mail size={20} />,
     navLink: "/second-page"
+  },
+  {
+    id: "service_type",
+    title: "service_type",
+    icon: <Mail size={20} />,
+    navLink: "/second-page"
+  },
+  {
+    id: "shipment_type",
+    title: "shipment_type",
+    icon: <Mail size={20} />,
+    navLink: "/second-page"
   }
 ]

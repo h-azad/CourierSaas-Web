@@ -18,6 +18,8 @@ import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, MARCHANT_EDIT, MARCHANT_DETAILS } from '@src/constants/apiUrls'
 import ToastContent from "../../components/ToastContent"  
 import { useEffect, useState } from 'react'
+import SwalAlert from "../../components/SwalAlert"
+
 
 const EditMerchants = () => {
 
@@ -64,9 +66,10 @@ const EditMerchants = () => {
         .then((res) => {
           console.log("res", res.data)
           // handleReset()
-          toast(t => (
-            <ToastContent t={t} type='SUCCESS' message={'Marchant Edited Successfully'} />
-          ))
+          // toast(t => (
+          //   <ToastContent t={t} type='SUCCESS' message={'Marchant Edited Successfully'} />
+          // ))
+          SwalAlert("Marchant Edited Successfully")
           navigate("/merchants")
         })
         .catch(err => console.log(err))

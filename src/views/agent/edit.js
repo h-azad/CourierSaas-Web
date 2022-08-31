@@ -18,6 +18,8 @@ import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, AGENT_EDIT, AGENT_DETAILS } from '@src/constants/apiUrls'
 import ToastContent from "../../components/ToastContent"  
 import { useEffect, useState } from 'react'
+import SwalAlert from "../../components/SwalAlert"
+
 
 const EditAgent = () => {
 
@@ -63,9 +65,10 @@ const EditAgent = () => {
         .then((res) => {
           console.log("res", res.data)
           // handleReset()
-          toast(t => (
-            <ToastContent t={t} type='SUCCESS' message={'Agent Edited Successfully'} />
-          ))
+          // toast(t => (
+          //   <ToastContent t={t} type='SUCCESS' message={'Agent Edited Successfully'} />
+          // ))
+          SwalAlert("Agent Edited Successfully")
           navigate("/agent")
         })
         .catch(err => console.log(err))

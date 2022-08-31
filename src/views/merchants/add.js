@@ -19,6 +19,8 @@ import { selectThemeColors } from "@utils"
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, MARCHANT_ADD } from '@src/constants/apiUrls'
 import ToastContent from "../../components/ToastContent"
+import SwalAlert from "../../components/SwalAlert"
+
 
 const AddMerchants = () => {
   const navigate = useNavigate()
@@ -46,9 +48,11 @@ const AddMerchants = () => {
         .then((res) => {
           console.log("res", res.data)
           // handleReset()
-          toast(t => (
-            <ToastContent t={t} type='SUCCESS' message={'Marchant Added Successfully'} />
-          ))
+          // toast(t => (
+          //   <ToastContent t={t} type='SUCCESS' message={'Marchant Added Successfully'} />
+          // ))
+          SwalAlert("Marchant Added Successfully")
+
           navigate("/merchants")
         })
         .catch(err => console.log(err))

@@ -6,7 +6,7 @@ import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
 import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
 import ListTable from "./partials/list-table"
 
-function RiderList() {
+function ServiceTypeList() {
 
   return (
     <Fragment>
@@ -50,7 +50,7 @@ function RiderList() {
           <Card title="Bordered">
             <CardBody>
               <CardText>
-                <Link to={'/rider/add'}><Button.Ripple color='primary'>Add Rider</Button.Ripple></Link>
+                <Link to={'/service_type/add'}><Button.Ripple color='primary'>Add Service Type</Button.Ripple></Link>
               </CardText>
             </CardBody>
             <ListTable />
@@ -61,4 +61,4 @@ function RiderList() {
   )
 }
 
-export default RiderList
+export default ServiceTypeList

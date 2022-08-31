@@ -20,6 +20,15 @@ import AreasList from "../../views/areas/list"
 import AddAreas from "../../views/areas/add"
 import EditAreas from "../../views/areas/edit"
 
+import ServiceTypeList from "../../views/service_type/list"
+import AddServiceType from "../../views/service_type/add"
+import EditServiceType from "../../views/service_type/edit"
+
+import ShipmentTypeList from "../../views/shipment_type/list"
+import AddShipmentType from "../../views/shipment_type/add"
+import EditShipmentType from "../../views/shipment_type/edit"
+
+
 const Home = lazy(() => import("../../views/Home"))
 const SecondPage = lazy(() => import("../../views/SecondPage"))
 const Error = lazy(() => import("../../views/Error"))
@@ -89,8 +98,6 @@ const DashboardRoutes = [
     element: <EditCities />
   },
 
-
-
   {
     path: "/areas",
     element: <AreasList />
@@ -103,6 +110,37 @@ const DashboardRoutes = [
     path: "/areas/edit/:id",
     element: <EditAreas />
   },
+
+
+
+  {
+    path: "/service_type",
+    element: <ServiceTypeList />
+  },
+  {
+    path: "/service_type/add",
+    element: <AddServiceType />
+  },
+  {
+    path: "/service_type/edit/:id",
+    element: <EditServiceType/>
+  },
+
+
+
+  {
+    path: "/shipment_type",
+    element: <ShipmentTypeList />
+  },
+  {
+    path: "/shipment_type/add",
+    element: <AddShipmentType />
+  },
+  {
+    path: "/shipment_type/edit/:id",
+    element: <EditShipmentType/>
+  },
+
 
   {
   

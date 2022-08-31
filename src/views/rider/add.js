@@ -4,26 +4,21 @@ import {
   CardHeader,
   CardTitle,
   CardBody,
-  Row,
-  Col,
   Input,
   Form,
   Button,
   Label,
 } from "reactstrap"
 import { useNavigate } from "react-router-dom"
-import Select from "react-select"
-import toast from 'react-hot-toast'
 import { useForm, Controller } from 'react-hook-form'
-import { selectThemeColors } from "@utils"
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, RIDER_ADD } from '@src/constants/apiUrls'
-import ToastContent from "../../components/ToastContent"
+import SwalAlert from "../../components/SwalAlert"
+
 
 const AddRiders = () => {
   const navigate = useNavigate()
   const {
-    reset,
     control,
     setError,
     handleSubmit,
@@ -45,15 +40,11 @@ const AddRiders = () => {
         .axiosPost(getApi(RIDER_ADD), formData)
         .then((res) => {
           console.log("res", res.data)
-          // handleReset()
-          toast(t => (
-            <ToastContent t={t} type='SUCCESS' message={'Rider Added Successfully'} />
-          ))
+          SwalAlert("Rider Added Successfully")
           navigate("/rider")
         })
         .catch(err => console.log(err))
 
-      // console.log(formData)
     } else {
       for (const key in data) {
         if (data[key].length === 0) {

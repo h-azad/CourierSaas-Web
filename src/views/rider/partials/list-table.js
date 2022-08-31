@@ -11,29 +11,40 @@ import {
 } from "reactstrap"
 import { useEffect, useState } from "react"
 import toast from 'react-hot-toast'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 import ToastContent from "../../../components/ToastContent"
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, RIDER_LIST, RIDER_DELETE } from "../../../constants/apiUrls"
+import SwalAlert from "../../../components/SwalAlert"
+import SwalConfirm from "../../../components/SwalConfirm"
 
 const ListTable = () => {
   const [rider, setRider] = useState([])
+  const MySwal = withReactContent(Swal)
 
   const deleteAction = (e, id) => {
     e.preventDefault()
-    console.log("Deleted", id)
+    // console.log("Deleted", id)
 
-    useJwt
-      .axiosDelete(getApi(RIDER_DELETE+id+'/'))
-      .then((res) => {
-        // console.log("res", res.data)
-        toast(t => (
-          <ToastContent t={t} message={'Rider Deleted Successfully'} />
-        ))
-        fetchRiderData()
-        // return res.data
-      })
-      .catch(err => console.log(err))
+    return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
+      if (result.value) {
+
+      useJwt
+        .axiosDelete(getApi(RIDER_DELETE+id+'/'))
+        .then((res) => {
+          // console.log("res", res.data)
+          SwalAlert("Deleted Successfully")
+          
+          // return res.data
+        })
+        .finally(() => fetchRiderData())
+        
+      }
+    })
+   
   }
+  
 
   useEffect(() => {
     fetchRiderData()

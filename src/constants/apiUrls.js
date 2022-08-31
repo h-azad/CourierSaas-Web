@@ -37,6 +37,21 @@ export const AREAS_LIST = '/cities/areas/'
 export const AREAS_DELETE = '/cities/areas/'
 export const AREAS_DETAILS = '/cities/areas/'
 
+// Service Type API's 
+export const SERVICE_TYPE_ADD = '/service_type/service_type/'
+export const SERVICE_TYPE_EDIT = '/service_type/service_type/'
+export const SERVICE_TYPE_LIST = '/service_type/service_type/'
+export const SERVICE_TYPE_DELETE = '/service_type/service_type/'
+export const SERVICE_TYPE_DETAILS = '/service_type/service_type/'
+
+
+// Shipment Type API's 
+export const SHIPMENT_TYPE_ADD = '/shipment_type/shipment_type/'
+export const SHIPMENT_TYPE_EDIT = '/shipment_type/shipment_type/'
+export const SHIPMENT_TYPE_LIST = '/shipment_type/shipment_type/'
+export const SHIPMENT_TYPE_DELETE = '/shipment_type/shipment_type/'
+export const SHIPMENT_TYPE_DETAILS = '/shipment_type/shipment_type/'
+
 export const getApi = (api) => {
     return BASE_API + api
 }

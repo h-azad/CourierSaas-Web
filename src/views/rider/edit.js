@@ -3,21 +3,17 @@ import { Card,
   CardHeader,
   CardTitle,
   CardBody,
-  Row,
-  Col,
   Input,
   Form,
   Button,
   Label,} from 'reactstrap'
 import { Router, useNavigate, useParams} from "react-router-dom"
-import Select from "react-select"
-import toast from 'react-hot-toast'
 import { useForm, Controller } from 'react-hook-form'
-import { selectThemeColors } from "@utils"
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, RIDER_EDIT, RIDER_DETAILS } from '@src/constants/apiUrls'
-import ToastContent from "../../components/ToastContent"  
 import { useEffect, useState } from 'react'
+import SwalAlert from "../../components/SwalAlert"
+
 
 const EditRider = () => {
 
@@ -31,7 +27,6 @@ const EditRider = () => {
     useJwt
       .axiosGet(getApi(RIDER_DETAILS) + id + "/")
       .then((res) => {
-        // console.log("res", res.data)
         setRiderInfo(res.data)
         return res.data
       })
@@ -39,13 +34,11 @@ const EditRider = () => {
   }, [])
 
   const {
-    reset,
     control,
     setError,
     handleSubmit,
     formState: { errors }
   } = useForm()
-
 
   
   const onSubmit = data => {
@@ -57,20 +50,15 @@ const EditRider = () => {
         address: data.address,
         status: 'active'
       }
-      // console.log(getApi(RIDER_EDIT))
       useJwt
         .axiosPut(getApi(RIDER_EDIT) + id + "/", formData)
         .then((res) => {
           console.log("res", res.data)
-          // handleReset()
-          toast(t => (
-            <ToastContent t={t} type='SUCCESS' message={'Rider Edited Successfully'} />
-          ))
+          SwalAlert("Rider Edited Successfully")
           navigate("/rider")
         })
         .catch(err => console.log(err))
 
-      // console.log(formData)
     } else {
       for (const key in data) {
         if (data[key].length === 0) {

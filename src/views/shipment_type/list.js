@@ -2,11 +2,14 @@ import React, { Fragment, useEffect, useState } from "react"
 // ** Reactstrap Imports
 import { Row, Col, Card, CardBody, CardText, Button } from "reactstrap"
 import { Link } from 'react-router-dom'
+import Breadcrumbs from "@components/breadcrumbs"
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
 import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
+import useJwt from '@src/auth/jwt/useJwt'
 import ListTable from "./partials/list-table"
+import { getApi, SHIPMENT_TYPE_LIST } from "../../constants/apiUrls"
 
-function RiderList() {
+function ShipmentTypeList() {
 
   return (
     <Fragment>
@@ -50,7 +53,7 @@ function RiderList() {
           <Card title="Bordered">
             <CardBody>
               <CardText>
-                <Link to={'/rider/add'}><Button.Ripple color='primary'>Add Rider</Button.Ripple></Link>
+                <Link to={'/areas/add'}><Button.Ripple color='primary'>Add Shipment Type</Button.Ripple></Link>
               </CardText>
             </CardBody>
             <ListTable />
@@ -61,4 +64,4 @@ function RiderList() {
   )
 }
 
-export default RiderList
+export default ShipmentTypeList

@@ -15,62 +15,45 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import ToastContent from "../../../components/ToastContent"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, MARCHANT_LIST, MARCHANT_DELETE } from "../../../constants/apiUrls"
+import { getApi, SHIPMENT_TYPE_LIST, SHIPMENT_TYPE_DELETE } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 
 const ListTable = () => {
-  const [merchants, setMerchants] = useState([])
+  const [shipment, setShipment] = useState([])
   const MySwal = withReactContent(Swal)
 
   const deleteAction = (e, id) => {
     e.preventDefault()
     // console.log("Deleted", id)
-
     return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
       if (result.value) {
 
       useJwt
-        .axiosDelete(getApi(MARCHANT_DELETE+id+'/'))
+        .axiosDelete(getApi(SHIPMENT_TYPE_DELETE+id+'/'))
         .then((res) => {
           // console.log("res", res.data)
           SwalAlert("Deleted Successfully")
           
           // return res.data
         })
-        .finally(() => fetchMerchantsData())
+        .finally(() => fetchShipmentData())
         
       }
     })
    
   }
-  // const deleteAction = (e, id) => {
-  //   e.preventDefault()
-  //   console.log("Deleted", id)
-
-  //   useJwt
-  //     .axiosDelete(getApi(MARCHANT_DELETE+id+'/'))
-  //     .then((res) => {
-  //       // console.log("res", res.data)
-  //       toast(t => (
-  //         <ToastContent t={t} message={'Marchant Deleted Successfully'} />
-  //       ))
-  //       fetchMerchantsData()
-  //       // return res.data
-  //     })
-  //     .catch(err => console.log(err))
-  // }
 
   useEffect(() => {
-    fetchMerchantsData()
+    fetchShipmentData()
   }, [])
 
-  const fetchMerchantsData = () => {
+  const fetchShipmentData = () => {
     return useJwt
-      .axiosGet(getApi(MARCHANT_LIST))
+      .axiosGet(getApi(SHIPMENT_TYPE_LIST))
       .then((res) => {
-        // console.log("res", res.data)
-        setMerchants(res.data)
+        console.log("res", res.data)
+        setShipment(res.data)
         return res.data
       })
       .catch(err => console.log(err))
@@ -80,24 +63,22 @@ const ListTable = () => {
     <Table bordered>
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Bussiness Name</th>
-          <th>Phone</th>
-          <th>Address</th>
+          <th>Shipment Name</th>
+          <th>Service Name</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        {merchants &&
-          merchants.map((info) => (
+        {shipment &&
+          shipment.map((info) => (
             <tr key={info.id}>
               <td>
-                <span className="align-middle fw-bold">{info.user_name}</span>
+                <span className="align-middle fw-bold">{info.shipment_type}</span>
               </td>
-              <td>{info.business_name}</td>
-              <td>{info.mobile}</td>
-              <td>{info.address}</td>
+              <td>
+                <span className="align-middle fw-bold">{info.service_type.service_type}</span>
+              </td>
               <td>
                 <Badge pill color="light-primary" className="me-1">
                   {info.status}
@@ -114,7 +95,7 @@ const ListTable = () => {
                     <MoreVertical size={15} />
                   </DropdownToggle>
                   <DropdownMenu>
-                    <DropdownItem href={"/merchants/edit/" + info.id}>
+                    <DropdownItem href={"/areas/edit/" + info.id}>
                       <Edit className="me-50" size={15} />{" "}
                       <span className="align-middle">Edit</span>
                     </DropdownItem>
