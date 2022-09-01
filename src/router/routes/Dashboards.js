@@ -28,6 +28,10 @@ import ShipmentTypeList from "../../views/shipment_type/list"
 import AddShipmentType from "../../views/shipment_type/add"
 import EditShipmentType from "../../views/shipment_type/edit"
 
+import ProductTypeList from "../../views/product_type/list"
+import AddProductType from "../../views/product_type/add"
+import EditProductType from "../../views/product_type/edit"
+
 
 const Home = lazy(() => import("../../views/Home"))
 const SecondPage = lazy(() => import("../../views/SecondPage"))
@@ -140,6 +144,20 @@ const DashboardRoutes = [
     path: "/shipment_type/edit/:id",
     element: <EditShipmentType/>
   },
+
+  {
+    path: "/product_type",
+    element: <ProductTypeList />
+  },
+  {
+    path: "/product_type/add",
+    element: <AddProductType />
+  },
+  {
+    path: "/product_type/edit/:id",
+    element: <EditProductType/>
+  },
+
 
 
   {

@@ -45,13 +45,19 @@ export default [
   },
   {
     id: "service_type",
-    title: "service_type",
+    title: "Service Type",
     icon: <Mail size={20} />,
     navLink: "/second-page"
   },
   {
     id: "shipment_type",
-    title: "shipment_type",
+    title: "Shipment type",
+    icon: <Mail size={20} />,
+    navLink: "/second-page"
+  },
+  {
+    id: "product_type",
+    title: "Product type",
     icon: <Mail size={20} />,
     navLink: "/second-page"
   }

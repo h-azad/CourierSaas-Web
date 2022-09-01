@@ -7,9 +7,9 @@ import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
 import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
 import useJwt from '@src/auth/jwt/useJwt'
 import ListTable from "./partials/list-table"
-import { getApi, SHIPMENT_TYPE_LIST } from "../../constants/apiUrls"
+import { getApi, PRODUCT_TYPE_LIST } from "../../constants/apiUrls"
 
-function ShipmentTypeList() {
+function ProductTypeList() {
 
   return (
     <Fragment>
@@ -53,7 +53,7 @@ function ShipmentTypeList() {
           <Card title="Bordered">
             <CardBody>
               <CardText>
-                <Link to={'/shipment_type/add'}><Button.Ripple color='primary'>Add Shipment Type</Button.Ripple></Link>
+                <Link to={'/product_type/add'}><Button.Ripple color='primary'>Add Product Type</Button.Ripple></Link>
               </CardText>
             </CardBody>
             <ListTable />
@@ -64,4 +64,4 @@ function ShipmentTypeList() {
   )
 }
 
-export default ShipmentTypeList
+export default ProductTypeList

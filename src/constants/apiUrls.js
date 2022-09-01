@@ -52,6 +52,16 @@ export const SHIPMENT_TYPE_LIST = '/shipment_type/shipment_type/'
 export const SHIPMENT_TYPE_DELETE = '/shipment_type/shipment_type/'
 export const SHIPMENT_TYPE_DETAILS = '/shipment_type/shipment_type/'
 
+
+// Product Type API's 
+
+export const PRODUCT_TYPE_ADD = '/product_type/product_type/'
+export const PRODUCT_TYPE_EDIT = '/product_type/product_type/'
+export const PRODUCT_TYPE_LIST = '/product_type/product_type/'
+export const PRODUCT_TYPE_DELETE = '/product_type/product_type/'
+export const PRODUCT_TYPE_DETAILS = '/product_type/product_type/'
+
+
 export const getApi = (api) => {
     return BASE_API + api
 }

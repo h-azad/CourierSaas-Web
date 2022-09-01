@@ -51,8 +51,14 @@ export default [
   },
   {
     id: "shipment_type",
-    title: "shipment_type",
+    title: "Shipment Type",
     icon: <User size={20} />,
     navLink: "/shipment_type"
+  },
+  {
+    id: "product_type",
+    title: "Product Type",
+    icon: <User size={20} />,
+    navLink: "/product_type"
   }
 ]
