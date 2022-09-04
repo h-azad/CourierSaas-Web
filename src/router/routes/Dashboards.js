@@ -32,6 +32,9 @@ import ProductTypeList from "../../views/product_type/list"
 import AddProductType from "../../views/product_type/add"
 import EditProductType from "../../views/product_type/edit"
 
+import VolumetricPolicyList from "../../views/volumetric_policy/list"
+import AddVolumetricPolicy from "../../views/volumetric_policy/add"
+import EditVolumetricPolicy from "../../views/volumetric_policy/edit"
 
 const Home = lazy(() => import("../../views/Home"))
 const SecondPage = lazy(() => import("../../views/SecondPage"))
@@ -158,6 +161,18 @@ const DashboardRoutes = [
     element: <EditProductType/>
   },
 
+  {
+    path: "/volumetric_policy",
+    element: <VolumetricPolicyList />
+  },
+  {
+    path: "/volumetric_policy/add",
+    element: <AddVolumetricPolicy />
+  },
+  {
+    path: "/volumetric_policy/edit/:id",
+    element: <EditVolumetricPolicy/>
+  },
 
 
   {

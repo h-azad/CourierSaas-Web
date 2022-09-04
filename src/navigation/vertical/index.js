@@ -60,5 +60,11 @@ export default [
     title: "Product Type",
     icon: <User size={20} />,
     navLink: "/product_type"
+  },
+  {
+    id: "volumetric_policy",
+    title: "Volumetric Policy",
+    icon:  <User size={20} />,
+    navLink: "/volumetric_policy"
   }
 ]

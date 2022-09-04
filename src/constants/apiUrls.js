@@ -62,6 +62,15 @@ export const PRODUCT_TYPE_DELETE = '/product_type/product_type/'
 export const PRODUCT_TYPE_DETAILS = '/product_type/product_type/'
 
 
+//Volumetric Policy API's 
+
+export const VOLUMETRIC_POLICY_ADD = '/volumetric_policy/volumetric_policy/'
+export const VOLUMETRIC_POLICY_EDIT = '/volumetric_policy/volumetric_policy/'
+export const VOLUMETRIC_POLICY_LIST = '/volumetric_policy/volumetric_policy/'
+export const VOLUMETRIC_POLICY_DELETE = '/volumetric_policy/volumetric_policy/'
+export const VOLUMETRIC_POLICY_DETAILS = '/volumetric_policy/volumetric_policy/'
+
+
 export const getApi = (api) => {
     return BASE_API + api
 }

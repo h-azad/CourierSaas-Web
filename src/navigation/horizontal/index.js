@@ -60,5 +60,11 @@ export default [
     title: "Product type",
     icon: <Mail size={20} />,
     navLink: "/second-page"
+  },
+  {
+    id: "volumetric_policy",
+    title: "Volumetric Policy",
+    icon: <Mail size={20} />,
+    navLink: "/second-page"
   }
 ]
