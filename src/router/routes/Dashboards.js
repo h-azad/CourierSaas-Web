@@ -78,7 +78,6 @@ const DashboardRoutes = [
     element: <EditRider />
   },
 
-
   {
     path: "/agent",
     element: <AgentList />
@@ -118,9 +117,7 @@ const DashboardRoutes = [
     element: <EditAreas />
   },
 
-
-
-  {
+ {
     path: "/service_type",
     element: <ServiceTypeList />
   },
@@ -132,8 +129,6 @@ const DashboardRoutes = [
     path: "/service_type/edit/:id",
     element: <EditServiceType/>
   },
-
-
 
   {
     path: "/shipment_type",
@@ -173,7 +168,6 @@ const DashboardRoutes = [
     path: "/volumetric_policy/edit/:id",
     element: <EditVolumetricPolicy/>
   },
-
 
   {
   

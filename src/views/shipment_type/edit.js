@@ -21,8 +21,9 @@ import SwalAlert from "../../components/SwalAlert"
 
 const EditShipmentType = () => {
   const [selectboxOptions, setSelectboxOptions] = useState([])
-  const [data, setData] = useState(null)
   const [shipmentInfo, setShipmentInfo] = useState(null)
+  const [data, setData] = useState(null)
+
 
   let { id } = useParams()
   const navigate = useNavigate()

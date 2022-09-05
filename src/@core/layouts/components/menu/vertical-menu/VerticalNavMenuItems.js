@@ -4,7 +4,7 @@ import VerticalNavMenuGroup from "./VerticalNavMenuGroup"
 import VerticalNavMenuSectionHeader from "./VerticalNavMenuSectionHeader"
 
 // ** Utils
-import { resolveVerticalNavMenuItemComponent as resolveNavItemComponent } from "@layouts/utils"
+import { resolveVerticalNavMenuItemComponent as resolveNavItemComponent, canViewMenuGroup } from "@layouts/utils"
 
 const VerticalMenuNavItems = (props) => {
   // ** Components Object

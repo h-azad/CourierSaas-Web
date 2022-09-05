@@ -1,6 +1,26 @@
-import { Mail, Home, User } from "react-feather"
+import { Mail, Home, User, Truck, ShoppingBag,Filter, Gift, Map, MapPin, Users, Sidebar, ShoppingCart, Shield, Circle } from "react-feather"
 
 export default [
+
+  // {
+  //   id: 'roles-permissions',
+  //   title: 'Roles & Permissions',
+  //   icon: <Shield size={20} />,
+  //   children: [
+  //     {
+  //       id: 'roles',
+  //       title: 'Roles',
+  //       icon: <Circle size={12} />,
+  //       navLink: '/apps/roles'
+  //     },
+  //     {
+  //       id: 'permissions',
+  //       title: 'Permissions',
+  //       icon: <Circle size={12} />,
+  //       navLink: '/apps/permissions'
+  //     }
+  //   ]
+  // },
   {
     id: "home",
     title: "Home",
@@ -10,13 +30,16 @@ export default [
   {
     id: "secondPage",
     title: "Second Page",
-    icon: <Mail size={20} />,
+    icon: <Sidebar size={20} />,
     navLink: "/second-page"
+  },
+  {
+    header: 'Accounts'
   },
   {
     id: "merchants",
     title: "Merchants",
-    icon: <User size={20} />,
+    icon: <Users size={20} />,
     navLink: "/merchants"
   },
   {
@@ -32,39 +55,45 @@ export default [
     navLink: "/agent"
   },
   {
+    header: 'Locations'
+  },
+  {
     id: "cities",
     title: "Cities",
-    icon: <User size={20} />,
+    icon: <Map size={20} />,
     navLink: "/cities"
   },
   {
     id: "areas",
     title: "Areas",
-    icon: <User size={20} />,
+    icon: <MapPin size={20} />,
     navLink: "/areas"
+  },
+  {
+    header: 'Settings'
   },
   {
     id: "service_type",
     title: "Service Type",
-    icon: <User size={20} />,
+    icon: <Gift size={20} />,
     navLink: "/service_type"
   },
   {
     id: "shipment_type",
     title: "Shipment Type",
-    icon: <User size={20} />,
+    icon: <Truck size={20} />,
     navLink: "/shipment_type"
   },
   {
     id: "product_type",
     title: "Product Type",
-    icon: <User size={20} />,
+    icon: <ShoppingCart size={20} />,
     navLink: "/product_type"
   },
   {
     id: "volumetric_policy",
     title: "Volumetric Policy",
-    icon:  <User size={20} />,
+    icon:  <Filter size={20} />,
     navLink: "/volumetric_policy"
   }
 ]

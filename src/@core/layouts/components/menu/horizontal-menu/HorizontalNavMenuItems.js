@@ -1,7 +1,7 @@
 // ** Menu Components Imports
 import HorizontalNavMenuLink from "./HorizontalNavMenuLink"
 import HorizontalNavMenuGroup from "./HorizontalNavMenuGroup"
-import { resolveHorizontalNavMenuItemComponent as resolveNavItemComponent } from "@layouts/utils"
+import { resolveHorizontalNavMenuItemComponent as resolveNavItemComponent, canViewMenuGroup } from "@layouts/utils"
 
 const HorizontalNavMenuItems = (props) => {
   // ** Components Object

@@ -4,7 +4,7 @@ import { Row, Col, Card, CardBody, CardText, Button } from "reactstrap"
 import { Link } from 'react-router-dom'
 import Breadcrumbs from "@components/breadcrumbs"
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
-import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
+import { Cpu, Search, User, UserCheck, UserPlus, UserX } from "react-feather"
 import useJwt from '@src/auth/jwt/useJwt'
 import ListTable from "./partials/list-table"
 import { getApi, MARCHANT_LIST } from "../../constants/apiUrls"
@@ -55,6 +55,10 @@ function MerchantList() {
               <CardText>
                 <Link to={'/merchants/add'}><Button.Ripple color='primary'>Add Merchant</Button.Ripple></Link>
               </CardText>
+              <input placeholder="Search Marchant" name="user_name" type="text" class="form-control" value=""></input>
+              <Button.Ripple className='btn-icon' outline color='primary'>
+                  <Search size={16} />
+              </Button.Ripple>
             </CardBody>
             <ListTable />
           </Card>

@@ -44,23 +44,6 @@ const ListTable = () => {
     })
    
   }
-  // const deleteAction = (e, id) => {
-  //   e.preventDefault()
-  //   console.log("Deleted", id)
-
-  //   useJwt
-  //     .axiosDelete(getApi(MARCHANT_DELETE+id+'/'))
-  //     .then((res) => {
-  //       // console.log("res", res.data)
-  //       toast(t => (
-  //         <ToastContent t={t} message={'Marchant Deleted Successfully'} />
-  //       ))
-  //       fetchMerchantsData()
-  //       // return res.data
-  //     })
-  //     .catch(err => console.log(err))
-  // }
-
   useEffect(() => {
     fetchMerchantsData()
   }, [])

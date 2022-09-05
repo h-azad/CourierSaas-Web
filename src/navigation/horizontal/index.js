@@ -1,6 +1,7 @@
-import { Mail, Home } from "react-feather"
+import { Mail, Home, Truck,ShoppingBag, Filter, Gift, Map, MapPin, Users, Sidebar, ShoppingCart, Copy, Shield, Circle } from "react-feather"
 
 export default [
+  
   {
     id: "home",
     title: "Home",
@@ -10,13 +11,16 @@ export default [
   {
     id: "secondPage",
     title: "Second Page",
-    icon: <Mail size={20} />,
+    icon: <Sidebar size={20} />,
     navLink: "/second-page"
+  },
+  {
+    header: 'Accounts'
   },
   {
     id: "merchants",
     title: "Merchants",
-    icon: <Mail size={20} />,
+    icon: <Users size={20} />,
     navLink: "/second-page"
   },
   {
@@ -32,39 +36,45 @@ export default [
     navLink: "/second-page"
   },
   {
-    id: "cities",
-    title: "Cities",
-    icon: <Mail size={20} />,
-    navLink: "/second-page"
+    header: 'Locations'
   },
-  {
-    id: "areas",
-    title: "Areas",
-    icon: <Mail size={20} />,
-    navLink: "/second-page"
-  },
-  {
-    id: "service_type",
-    title: "Service Type",
-    icon: <Mail size={20} />,
-    navLink: "/second-page"
-  },
-  {
-    id: "shipment_type",
-    title: "Shipment type",
-    icon: <Mail size={20} />,
-    navLink: "/second-page"
-  },
-  {
-    id: "product_type",
-    title: "Product type",
-    icon: <Mail size={20} />,
-    navLink: "/second-page"
-  },
-  {
-    id: "volumetric_policy",
-    title: "Volumetric Policy",
-    icon: <Mail size={20} />,
-    navLink: "/second-page"
-  }
+{
+  id: "cities",
+  title: "Cities",
+  icon: <Map size={20} />,
+  navLink: "/second-page"
+},
+{
+  id: "areas",
+  title: "Areas",
+  icon: <MapPin size={20} />,
+  navLink: "/second-page"
+},
+{
+  header: 'Settings'
+},
+{
+  id: "service_type",
+  title: "Service Type",
+  icon: <Gift size={20} />,
+  navLink: "/second-page"
+},
+{
+  id: "shipment_type",
+  title: "Shipment type",
+  icon: <Truck size={20} />,
+  navLink: "/second-page"
+},
+{
+  id: "product_type",
+  title: "Product type",
+  icon: <ShoppingCart size={20} />,
+  navLink: "/second-page"
+},
+{
+  id: "volumetric_policy",
+  title: "Volumetric Policy",
+  icon: <Filter size={20} />,
+  navLink: "/second-page"
+}
 ]

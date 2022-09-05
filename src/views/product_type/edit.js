@@ -33,12 +33,7 @@ const EditProductType = () => {
       .axiosGet(getApi(PRODUCT_TYPE_DETAILS) + id + "/")
       .then((res) => {
         console.log("res", res.data)
-        setProductInfo({
-          service: res.data.service,
-          product_type: res.data.product_type,
-          shipment_type: res.data.shipment_type
-
-        })
+        setProductInfo(res.data)
         return res.data
       })
       .catch(err => console.log(err))
@@ -93,6 +88,27 @@ const EditProductType = () => {
   })
   
   const onSubmit = data => {
+
+    let isFormValid = true
+
+    if(!(data.service_type && data.service_type.value)) {
+      setError('service_type', { type: 'required', message: 'Service Type must be added' })
+      isFormValid = false
+    }
+    if(!(data.shipment_type && data.shipment_type.value)) {
+      setError('shipment_type', { type: 'required', message: 'Shipment Type must be added' })
+      isFormValid = false
+    }
+
+    if(!(data.product_type )) {
+      setError('product_type', { type: 'required', message: 'Product Type must be added' })
+      isFormValid = false
+    }
+   
+    if(!isFormValid) {
+      return false
+    }
+
     setData(data)
     if (data.service_type !== null && data.product_type !== null && data.shipment_type !== null) {
       
@@ -132,18 +148,19 @@ const EditProductType = () => {
               </Label>
               <Controller
                   id="service_type"
-                  defaultValue={{label: productInfo.service.service_type, value: productInfo.service.id}}
+                  defaultValue={{label: productInfo.service && productInfo.service.service_type ? productInfo.service.service_type : "" , value: productInfo.service?.id}}
                   name="service_type"
                   control={control}
                   render={({ field }) => <Select 
                     isClearable
                     defaultValue={productInfo.service_type}
-                    className={classnames('react-select', { 'is-invalid': data !== null && data.service_type === null })} 
+                    className={classnames('react-select', { 'is-invalid':errors.service_type && true })} 
                     classNamePrefix='select'
                     options={selectboxService} 
                     {...field} 
                   />}
                 />
+                {errors && errors.service_type && <span>{errors.service_type.message}</span>}
           </div>
           <div className='mb-1'>
               <Label className='form-label' for='shipment_type'>
@@ -151,18 +168,19 @@ const EditProductType = () => {
               </Label>
               <Controller
                   id="shipment_type"
-                  // defaultValue={{label: productInfo.shipment.shipment_type, value: productInfo.shipment.id}}
+                  defaultValue={{label: productInfo.shipment && productInfo.shipment.shipment_type? productInfo.shipment.shipment_type : "", value: productInfo.shipment?.id}}
                   name="shipment_type"
                   control={control}
                   render={({ field }) => <Select 
                     isClearable
                     defaultValue={productInfo.shipment_type}
-                    className={classnames('react-select', { 'is-invalid': data !== null && data.shipment_type === null })} 
+                    className={classnames('react-select', { 'is-invalid': errors.shipment_type && true })} 
                     classNamePrefix='select'
                     options={selectboxShipment} 
                     {...field} 
                   />}
                 />
+                {errors && errors.shipment_type && <span>{errors.shipment_type.message}</span>}
           </div>
             <div className='mb-1'>
               <Label className='form-label' for='product_type'>
@@ -175,6 +193,7 @@ const EditProductType = () => {
                 name='product_type'
                 render={({ field }) => <Input placeholder='Electronics' invalid={errors.product_type && true} {...field} />}
               />
+              {errors && errors.product_type && <span>{errors.product_type.message}</span>}
             </div>
             
             <div className='d-flex'>
