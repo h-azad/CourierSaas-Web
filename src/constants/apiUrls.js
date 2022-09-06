@@ -8,6 +8,8 @@ export const MARCHANT_EDIT = '/api/user/marchant/'
 export const MARCHANT_LIST = '/api/user/marchant/'
 export const MARCHANT_DELETE = '/api/user/marchant/'
 export const MARCHANT_DETAILS = '/api/user/marchant/'
+export const MARCHANT_SEARCH = '/search-marchant/'
+
 
 // Riders API's 
 export const RIDER_ADD = '/api/user/rider/'
