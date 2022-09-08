@@ -48,12 +48,9 @@ function ServiceTypeList() {
       <Row>
         <Col sm="12">
           <Card title="Bordered">
-            <CardBody>
-              <CardText>
-                <Link to={'/service_type/add'}><Button.Ripple color='primary'>Add Service Type</Button.Ripple></Link>
-              </CardText>
+            <CardBody>                          
+              <ListTable />
             </CardBody>
-            <ListTable />
           </Card>
         </Col>
       </Row>

@@ -1,9 +1,7 @@
-import React, { Fragment, useEffect, useState } from "react"
-// ** Reactstrap Imports
-import { Row, Col, Card, CardBody, CardText, Button } from "reactstrap"
-import { Link } from 'react-router-dom'
+import React, { Fragment } from "react"
+import { Row, Col, Card, CardBody } from "reactstrap"
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
-import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
+import { User, UserCheck, UserPlus, UserX } from "react-feather"
 import ListTable from "./partials/list-table"
 
 function RiderList() {
@@ -48,12 +46,9 @@ function RiderList() {
       <Row>
         <Col sm="12">
           <Card title="Bordered">
-            <CardBody>
-              <CardText>
-                <Link to={'/rider/add'}><Button.Ripple color='primary'>Add Rider</Button.Ripple></Link>
-              </CardText>
+            <CardBody>                          
+              <ListTable />
             </CardBody>
-            <ListTable />
           </Card>
         </Col>
       </Row>

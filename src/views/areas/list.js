@@ -51,12 +51,9 @@ function AreasList() {
       <Row>
         <Col sm="12">
           <Card title="Bordered">
-            <CardBody>
-              <CardText>
-                <Link to={'/areas/add'}><Button.Ripple color='primary'>Add Areas</Button.Ripple></Link>
-              </CardText>
+            <CardBody>                          
+              <ListTable />
             </CardBody>
-            <ListTable />
           </Card>
         </Col>
       </Row>

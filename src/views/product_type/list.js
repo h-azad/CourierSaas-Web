@@ -51,12 +51,9 @@ function ProductTypeList() {
       <Row>
         <Col sm="12">
           <Card title="Bordered">
-            <CardBody>
-              <CardText>
-                <Link to={'/product_type/add'}><Button.Ripple color='primary'>Add Product Type</Button.Ripple></Link>
-              </CardText>
+            <CardBody>                          
+              <ListTable />
             </CardBody>
-            <ListTable />
           </Card>
         </Col>
       </Row>

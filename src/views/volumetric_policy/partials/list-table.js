@@ -1,6 +1,5 @@
-import AvatarGroup from "@components/avatar-group"
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash } from "react-feather"
+import { MoreVertical, Edit, Trash,Search } from "react-feather"
 import {
   Table,
   Badge,
@@ -8,12 +7,14 @@ import {
   DropdownMenu,
   DropdownItem,
   DropdownToggle,
+  Button,
+  CardText,
 } from "reactstrap"
 import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, VOLUMETRIC_POLICY_LIST, VOLUMETRIC_POLICY_DELETE } from "../../../constants/apiUrls"
+import { getApi, VOLUMETRIC_POLICY_LIST, VOLUMETRIC_POLICY_DELETE ,SEARCH_VOLUMETRIC_POLICY } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 
@@ -57,65 +58,132 @@ const ListTable = () => {
       .catch(err => console.log(err))
   }
 
+  const fetchSearchVolumetricPolicyData = searchTerm => {
+    return useJwt
+      .axiosGet(getApi(SEARCH_VOLUMETRIC_POLICY)+'?search='+ searchTerm)
+      .then((res) => {
+        return res.data
+      })
+      .catch((err) => console.log(err))
+  }
+
+  const handleSearch = debounce(e => {
+    console.log(e.target.value)
+    const searchTerm = e.target.value
+    if (searchTerm.length > 0) {
+      fetchSearchVolumetricPolicyData(searchTerm)
+        .then(data => {
+          if (data.length > 0) {
+            console.log('res', data)
+            setVolumetricPolicy(data)
+          }else{
+            console.log("No data")
+          }
+        })
+    }
+    
+  }, 300)
+
+  function debounce (fn, time) {
+    let timeoutId
+    return wrapper
+    function wrapper (...args) {
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+      timeoutId = setTimeout(() => {
+        timeoutId = null
+        fn(...args)
+      }, time)
+    }
+  }
+
   return (
-    <Table bordered>
-      <thead>
-        <tr>
-          <th>Volumetric Policy</th>
-          <th>Product Type</th>
-          <th>Shipment Type</th>
-          <th>Service Type</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {volumetricpolicy &&
-          volumetricpolicy.map((info) => (
-            <tr key={info.id}>
-              <td>
-                <span className="align-middle fw-bold">{info.volumetric_policy}</span>
-              </td>
-              <td>
-                <span className="align-middle fw-bold">{info.product.product_type}</span>
-              </td>
-              <td>
-                <span className="align-middle fw-bold">{info.shipment.shipment_type}</span>
-              </td>
-              <td>
-                <span className="align-middle fw-bold">{info.service.service_type}</span>
-              </td>
-              <td>
-                <Badge pill color="light-primary" className="me-1">
-                  {info.status}
-                </Badge>
-              </td>
-              <td>
-                <UncontrolledDropdown>
-                  <DropdownToggle
-                    className="icon-btn hide-arrow"
-                    color="transparent"
-                    size="sm"
-                    caret
-                  >
-                    <MoreVertical size={15} />
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem href={"/volumetric_policy/edit/" + info.id}>
-                      <Edit className="me-50" size={15} />{" "}
-                      <span className="align-middle">Edit</span>
-                    </DropdownItem>
-                    <DropdownItem href="/" onClick={e=>deleteAction(e, info.id)}>
-                      <Trash className="me-50" size={15} />{" "}
-                      <span className="align-middle">Delete</span>
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              </td>
-            </tr>
-          ))}
-      </tbody>
-    </Table>
+    <>
+      <CardText>
+        <div className="row justify-content-between">
+          <div className="col-lg-5">
+            <div className="d-flex align-items-center">
+              <Link to={'/volumetric_policy/add'}>
+                <Button.Ripple color="primary">Add Volumetric Policy</Button.Ripple>
+              </Link>
+            </div>
+          </div>
+          <div className="col-lg-5">
+            <div className="d-flex align-items-center ">
+              <input
+                placeholder="Search Volumetric Policy "
+                name="user_name"
+                type="text"
+                class="form-control"
+                onChange={handleSearch}
+              />
+              <Button.Ripple className="btn-icon ms-1" outline color="primary">
+                <Search size={16} />
+              </Button.Ripple>
+            </div>
+          </div>
+        </div>
+      </CardText>
+      <Table bordered>
+        <thead>
+          <tr>
+            <th>Volumetric Policy</th>
+            <th>Product Type</th>
+            <th>Shipment Type</th>
+            <th>Service Type</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {volumetricpolicy &&
+            volumetricpolicy.map((info) => (
+              <tr key={info.id}>
+                <td>
+                  <span className="align-middle fw-bold">{info.volumetric_policy}</span>
+                </td>
+                <td>
+                  <span className="align-middle fw-bold">{info.product.product_type}</span>
+                </td>
+                <td>
+                  <span className="align-middle fw-bold">{info.shipment.shipment_type}</span>
+                </td>
+                <td>
+                  <span className="align-middle fw-bold">{info.service.service_type}</span>
+                </td>
+                <td>
+                  <Badge pill color="light-primary" className="me-1">
+                    {info.status}
+                  </Badge>
+                </td>
+                <td>
+                  <UncontrolledDropdown>
+                    <DropdownToggle
+                      className="icon-btn hide-arrow"
+                      color="transparent"
+                      size="sm"
+                      caret
+                    >
+                      <MoreVertical size={15} />
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      <DropdownItem href={"/volumetric_policy/edit/" + info.id}>
+                        <Edit className="me-50" size={15} />{" "}
+                        <span className="align-middle">Edit</span>
+                      </DropdownItem>
+                      <DropdownItem href="/" onClick={e=>deleteAction(e, info.id)}>
+                        <Trash className="me-50" size={15} />{" "}
+                        <span className="align-middle">Delete</span>
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </Table>
+    </>
   )
 }
 

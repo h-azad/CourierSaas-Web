@@ -25,13 +25,10 @@ import SwalConfirm from "../../../components/SwalConfirm"
 
 const ListTable = () => {
   const [merchants, setMerchants] = useState([])
-  const [searchMerchants, setSearchMerchants] = useState([])
-
   const MySwal = withReactContent(Swal)
 
   const deleteAction = (e, id) => {
     e.preventDefault()
-    // console.log("Deleted", id)
 
     return SwalConfirm(`You won't be able to revert this!`, "Delete").then(
       function (result) {
