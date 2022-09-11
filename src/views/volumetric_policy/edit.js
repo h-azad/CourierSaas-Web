@@ -12,15 +12,16 @@ import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import { selectThemeColors } from "@utils"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, VOLUMETRIC_POLICY_EDIT, VOLUMETRIC_POLICY_DETAILS, SERVICE_TYPE_LIST, SHIPMENT_TYPE_LIST,PRODUCT_TYPE_LIST} from '@src/constants/apiUrls'
+// import { getApi, VOLUMETRIC_POLICY_EDIT, VOLUMETRIC_POLICY_DETAILS, SERVICE_TYPE_LIST, SHIPMENT_TYPE_LIST,PRODUCT_TYPE_LIST} from '@src/constants/apiUrls'
+import { getApi, VOLUMETRIC_POLICY_EDIT, VOLUMETRIC_POLICY_DETAILS} from '@src/constants/apiUrls'
 import { useEffect, useState } from 'react'
 import SwalAlert from "../../components/SwalAlert"
 
 
 const EditVolumetricPolicy = () => {
-  const [selectboxService, setSelectboxService] = useState([])
-  const [selectboxShipment, setSelectboxShipment] = useState([])
-  const [selectboxProduct, setSelectboxProduct] = useState([])
+  // const [selectboxService, setSelectboxService] = useState([])
+  // const [selectboxShipment, setSelectboxShipment] = useState([])
+  // const [selectboxProduct, setSelectboxProduct] = useState([])
   const [volumetricInfo, setVolumetricInfo] = useState(null)
   const [data, setData] = useState(null)
 
@@ -37,62 +38,62 @@ const EditVolumetricPolicy = () => {
         return res.data
       })
       .catch(err => console.log(err))
-      fetchServiceData(),
-      fetchShipmentData(),
-      fetchProductData()
+      // fetchServiceData(),
+      // fetchShipmentData(),
+      // fetchProductData()
 
   }, [])
 
-  const fetchServiceData = () => {
-    return useJwt
-      .axiosGet(getApi(SERVICE_TYPE_LIST))
-      .then((res) => {
-        // console.log("res", res.data)
-        let serviceData = []
+  // const fetchServiceData = () => {
+  //   return useJwt
+  //     .axiosGet(getApi(SERVICE_TYPE_LIST))
+  //     .then((res) => {
+  //       // console.log("res", res.data)
+  //       let serviceData = []
 
-        res.data.map(data => {
-          serviceData.push({value: data.id, label: data.service_type})
-        })
+  //       res.data.map(data => {
+  //         serviceData.push({value: data.id, label: data.service_type})
+  //       })
 
-        setSelectboxService(serviceData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
+  //       setSelectboxService(serviceData)
+  //       return res.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
-  const fetchShipmentData = () => {
-    return useJwt
-      .axiosGet(getApi(SHIPMENT_TYPE_LIST))
-      .then((res) => {
-        // console.log("res", res.data)
-        let shipmentData = []
+  // const fetchShipmentData = () => {
+  //   return useJwt
+  //     .axiosGet(getApi(SHIPMENT_TYPE_LIST))
+  //     .then((res) => {
+  //       // console.log("res", res.data)
+  //       let shipmentData = []
 
-        res.data.map(data => {
-          shipmentData.push({value: data.id, label: data.shipment_type})
-        })
+  //       res.data.map(data => {
+  //         shipmentData.push({value: data.id, label: data.shipment_type})
+  //       })
 
-        setSelectboxShipment(shipmentData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
+  //       setSelectboxShipment(shipmentData)
+  //       return res.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
-  const fetchProductData = () => {
-    return useJwt
-      .axiosGet(getApi(PRODUCT_TYPE_LIST))
-      .then((res) => {
-        // console.log("res", res.data)
-        let productData = []
+  // const fetchProductData = () => {
+  //   return useJwt
+  //     .axiosGet(getApi(PRODUCT_TYPE_LIST))
+  //     .then((res) => {
+  //       // console.log("res", res.data)
+  //       let productData = []
 
-        res.data.map(data => {
-          productData.push({value: data.id, label: data.product_type})
-        })
+  //       res.data.map(data => {
+  //         productData.push({value: data.id, label: data.product_type})
+  //       })
 
-        setSelectboxProduct(productData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
+  //       setSelectboxProduct(productData)
+  //       return res.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
   const {
     reset,
     control,
@@ -108,19 +109,19 @@ const EditVolumetricPolicy = () => {
 
     let isFormValid = true
 
-    if(!(data.service_type && data.service_type.value)) {
-      setError('service_type', { type: 'required', message: 'Service Type must be added' })
-      isFormValid = false
-    }
-    if(!(data.shipment_type && data.shipment_type.value)) {
-      setError('shipment_type', { type: 'required', message: 'Shipment Type must be added' })
-      isFormValid = false
-    }
+    // if(!(data.service_type && data.service_type.value)) {
+    //   setError('service_type', { type: 'required', message: 'Service Type must be added' })
+    //   isFormValid = false
+    // }
+    // if(!(data.shipment_type && data.shipment_type.value)) {
+    //   setError('shipment_type', { type: 'required', message: 'Shipment Type must be added' })
+    //   isFormValid = false
+    // }
 
-    if(!(data.product_type && data.product_type.value)) {
-      setError('product_type', { type: 'required', message: 'Product Type must be added' })
-      isFormValid = false
-    }
+    // if(!(data.product_type && data.product_type.value)) {
+    //   setError('product_type', { type: 'required', message: 'Product Type must be added' })
+    //   isFormValid = false
+    // }
 
     if(!data.volumetric_policy) {
       setError('volumetric_policy', { type: 'required', message: 'Volumetric Policy must be added' })
@@ -132,13 +133,14 @@ const EditVolumetricPolicy = () => {
     }
 
     setData(data)
-    if (data.service_type !== null && data.volumetric_policy !== null && data.shipment_type !== null && data.product_type !== null)  {
+    // if (data.service_type !== null && data.volumetric_policy !== null && data.shipment_type !== null && data.product_type !== null)  {
+    if ( data.product_type !== null)  {
       
       let formData = {
         volumetric_policy: data.volumetric_policy,
-        service: data.service_type.value,
-        shipment: data.shipment_type.value,
-        product: data.product_type.value,
+        // service: data.service_type.value,
+        // shipment: data.shipment_type.value,
+        // product: data.product_type.value,
         status: 'active'
       }
               
@@ -162,7 +164,7 @@ const EditVolumetricPolicy = () => {
         <CardBody>
           {volumetricInfo &&
         <Form onSubmit={handleSubmit(onSubmit)}>
-            <div className='mb-1'>
+            {/* <div className='mb-1'>
               <Label className='form-label' for='service_type'>
                Service Type
               </Label>
@@ -221,7 +223,7 @@ const EditVolumetricPolicy = () => {
                   />}
                 />
                 {errors && errors.product_type && <span>{errors.product_type.message}</span>}
-          </div>
+          </div> */}
             <div className='mb-1'>
               <Label className='form-label' for='product_type'>
                Volumetric Policy

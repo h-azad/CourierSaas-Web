@@ -4,27 +4,22 @@ import {
   CardHeader,
   CardTitle,
   CardBody,
-  Row,
-  Col,
   Input,
   Form,
   Button,
   Label,
 } from "reactstrap"
 import { useNavigate } from "react-router-dom"
-import Select from "react-select"
-import toast from 'react-hot-toast'
-import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
-import { selectThemeColors } from "@utils"
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, CITIES_ADD } from '@src/constants/apiUrls'
-import ToastContent from "../../components/ToastContent"
-import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
+import { useEffect, useState } from "react"
+
 
 const AddCities = () => {
   const navigate = useNavigate()
+  const [data, setData] = useState(null)
   const {
     reset,
     control,
@@ -34,9 +29,18 @@ const AddCities = () => {
   } = useForm()
   
   const onSubmit = data => {
-    // setData(data)
-    if (data.cities_name !== null) {
-      // console.log("data", data)
+    let isFormValid = true
+
+    if(!( data.cities_name)) {
+      setError('cities_name', { type: 'required', message: 'City name must be added' })
+      isFormValid = false
+    }
+    if(!isFormValid) {
+      return false
+    }
+
+    setData(data)
+    if ( data.cities_name !== null) {
 
       let formData = {
         cities_name: data.cities_name,
@@ -45,36 +49,35 @@ const AddCities = () => {
 
       console.log("formData", formData)
 
-    // if (Object.values(data).every(field => field.length > 0)) {
-    //   let formData = {
-    //     cities_name: data.cities_name,
-    //     status: 'active'
-    //   }
-
       useJwt
         .axiosPost(getApi(CITIES_ADD), formData)
         .then((res) => {
           console.log("res", res.data)
-          // handleReset()
-          // toast(t => (
-          //   <ToastContent t={t} type='SUCCESS' message={'City Added Successfully'} />
-          // ))
           SwalAlert("City Added Successfully")
           navigate("/cities")
         })
         .catch(err => console.log(err))
 
-      // console.log(formData)
-    // } else {
-    //   for (const key in data) {
-    //     if (data[key].length === 0) {
-    //       setError(key, {
-    //         type: 'manual'
-    //       })
-    //     }
-    //   }
     }
   }
+  //   if (data.cities_name !== null) {
+
+  //     let formData = {
+  //       cities_name: data.cities_name,
+  //       status: 'active'
+  //     }
+
+  //     console.log("formData", formData)
+  //     useJwt
+  //       .axiosPost(getApi(CITIES_ADD), formData)
+  //       .then((res) => {
+  //         console.log("res", res.data)
+  //         SwalAlert("City Added Successfully")
+  //         navigate("/cities")
+  //       })
+  //       .catch(err => console.log(err))
+  //   }
+  // }
 
   return (
     <Card>
@@ -95,6 +98,7 @@ const AddCities = () => {
               name='cities_name'
               render={({ field }) => <Input placeholder='Dhaka' invalid={errors.cities_name && true} {...field} />}
             />
+            {errors && errors.cities_name && <span>{errors.cities_name.message}</span>}
           </div>
           <div className='d-flex'>
             <Button className='me-1' color='primary' type='submit'>

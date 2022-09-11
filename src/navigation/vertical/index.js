@@ -72,12 +72,12 @@ export default [
   {
     header: 'Settings'
   },
-  {
-    id: "service_type",
-    title: "Service Type",
-    icon: <Gift size={20} />,
-    navLink: "/service_type"
-  },
+  // {
+  //   id: "service_type",
+  //   title: "Service Type",
+  //   icon: <Gift size={20} />,
+  //   navLink: "/service_type"
+  // },
   {
     id: "shipment_type",
     title: "Shipment Type",

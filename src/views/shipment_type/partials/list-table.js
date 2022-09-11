@@ -129,7 +129,7 @@ const ListTable = () => {
         <thead>
           <tr>
             <th>Shipment Type</th>
-            <th>Service Type</th>
+            {/* <th>Service Type</th> */}
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -141,9 +141,9 @@ const ListTable = () => {
                 <td>
                   <span className="align-middle fw-bold">{info.shipment_type}</span>
                 </td>
-                <td>
+                {/* <td>
                   <span className="align-middle fw-bold">{info.service.service_type}</span>
-                </td>
+                </td> */}
                 <td>
                   <Badge pill color="light-primary" className="me-1">
                     {info.status}

@@ -94,7 +94,6 @@ const ListTable = () => {
     }
   }
 
-
   return (
     <>
       <CardText>
@@ -126,8 +125,8 @@ const ListTable = () => {
         <thead>
           <tr>
             <th>Product Type</th>
-            <th>Shipment Type</th>
-            <th>Service Type</th>
+            <th>Volume Unit</th>
+            <th>Weight Unit</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -140,10 +139,10 @@ const ListTable = () => {
                   <span className="align-middle fw-bold">{info.product_type}</span>
                 </td>
                 <td>
-                  <span className="align-middle fw-bold">{info.shipment.shipment_type}</span>
-                </td>
+                  <span className="align-middle fw-bold">{info.volume_unit}</span>
+                </td>             
                 <td>
-                  <span className="align-middle fw-bold">{info.service.service_type}</span>
+                  <span className="align-middle fw-bold">{info.weight_unit}</span>
                 </td>
                 <td>
                   <Badge pill color="light-primary" className="me-1">

@@ -1,30 +1,22 @@
-// ** Reactstrap Imports
 import {
   Card,
   CardHeader,
   CardTitle,
   CardBody,
-  Row,
-  Col,
   Input,
   Form,
   Button,
   Label,
 } from "reactstrap"
 import { useNavigate } from "react-router-dom"
-import Select from "react-select"
-import toast from 'react-hot-toast'
-import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
-import { selectThemeColors } from "@utils"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, SHIPMENT_TYPE_ADD, SERVICE_TYPE_LIST } from '@src/constants/apiUrls'
-import ToastContent from "../../components/ToastContent"
+import { getApi, SHIPMENT_TYPE_ADD } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
 
 const AddShipmentType = () => {
-  const [selectboxOptions, setSelectboxOptions] = useState([])
+  // const [selectboxOptions, setSelectboxOptions] = useState([])
   const [data, setData] = useState(null)
   const navigate = useNavigate()
   const {
@@ -37,45 +29,25 @@ const AddShipmentType = () => {
   } = useForm({
     defaultValues: {
       shipment_type: '',
-      service_type: {}
     }
   })
 
-  useEffect(() => {
-    fetchServiceData()
-  },[])
-
-  const fetchServiceData = () => {
-    return useJwt
-      .axiosGet(getApi(SERVICE_TYPE_LIST))
-      .then((res) => {
-        // console.log("res", res.data)
-        let serviceTypeData = []
-
-        res.data.map(data => {
-          serviceTypeData.push({value: data.id, label: data.service_type})
-        })
-
-        setSelectboxOptions(serviceTypeData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
-
-  const handleServiceChange = (service) => {
-    setValue('service_type', service)
-  }
-
-  
   const onSubmit = data => {
-    // console.log("data", data)
+    let isFormValid = true
+
+    if(!( data.shipment_type)) {
+      setError('shipment_type', { type: 'required', message: 'Shipment Type must be added' })
+      isFormValid = false
+    }
+    if(!isFormValid) {
+      return false
+    }
+
     setData(data)
-    if (data.service_type !== null && data.shipment_type !== null) {
-      // console.log("data", data)
+    if ( data.shipment_type !== null) {
 
       let formData = {
         shipment_type: data.shipment_type,
-        service: data.service_type.value,
         status: 'active'
       }
 
@@ -101,23 +73,7 @@ const AddShipmentType = () => {
 
       <CardBody>
       <Form onSubmit={handleSubmit(onSubmit)}>
-          <div className='mb-1'>
-              <Label className='form-label' for='service_type'>
-                Service Type
-              </Label>
-              <Controller
-                  id="service_type"
-                  name="service_type"
-                  control={control}
-                  render={({ field }) => <Select 
-                    isClearable
-                    className={classnames('react-select', { 'is-invalid': data !== null && data.service_type === null })} 
-                    classNamePrefix='select'
-                    options={selectboxOptions} 
-                    {...field} 
-                  />}
-                />
-          </div>
+          
           <div className='mb-1'>
             <Label className='form-label' for='shipment_type'>
               Shipment Type
@@ -129,6 +85,7 @@ const AddShipmentType = () => {
               name='shipment_type'
               render={({ field }) => <Input placeholder='Regular' invalid={errors.shipment_type && true} {...field} />}
             />
+            {errors && errors.shipment_type && <span>{errors.shipment_type.message}</span>}
           </div>
           <div className='d-flex'>
             <Button className='me-1' color='primary' type='submit'>

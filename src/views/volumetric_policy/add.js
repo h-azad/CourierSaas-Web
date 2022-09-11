@@ -18,9 +18,9 @@ import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
 
 const AddVolumetricPolicy = () => {
-  const [selectboxService, setSelectboxService] = useState([])
-  const [selectboxShipment, setSelectboxShipment] = useState([])
-  const [selectboxProduct, setSelectboxProduct] = useState([])
+  // const [selectboxService, setSelectboxService] = useState([])
+  // const [selectboxShipment, setSelectboxShipment] = useState([])
+  // const [selectboxProduct, setSelectboxProduct] = useState([])
   const [data, setData] = useState(null)
   const navigate = useNavigate()
   const {
@@ -33,70 +33,70 @@ const AddVolumetricPolicy = () => {
   } = useForm({
     defaultValues: {
       volumetric_policy: '',
-      service_type: {},
-      shipment_type:{},
-      product_type:{}
+      // service_type: {},
+      // shipment_type:{},
+      // product_type:{}
 
     }
   })
 
-  useEffect(() => {
-    fetchServiceData()
-  },[])
+  // useEffect(() => {
+  //   fetchServiceData()
+  // },[])
 
-  const fetchServiceData = () => {
-    return useJwt
-      .axiosGet(getApi(SERVICE_TYPE_LIST))
-      .then((res) => {
-        let serviceTypeData = []
-        res.data.map(data => {
-          serviceTypeData.push({value: data.id, label: data.service_type})
-        })
-        setSelectboxService(serviceTypeData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
+  // const fetchServiceData = () => {
+  //   return useJwt
+  //     .axiosGet(getApi(SERVICE_TYPE_LIST))
+  //     .then((res) => {
+  //       let serviceTypeData = []
+  //       res.data.map(data => {
+  //         serviceTypeData.push({value: data.id, label: data.service_type})
+  //       })
+  //       setSelectboxService(serviceTypeData)
+  //       return res.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
-  useEffect(() => {
-    fetchShipmentData()
-  },[])
+  // useEffect(() => {
+  //   fetchShipmentData()
+  // },[])
 
-  const fetchShipmentData = () => {
-    return useJwt
-      .axiosGet(getApi(SHIPMENT_TYPE_LIST))
-      .then((res) => {
-        let shimmentTypeData = []
+  // const fetchShipmentData = () => {
+  //   return useJwt
+  //     .axiosGet(getApi(SHIPMENT_TYPE_LIST))
+  //     .then((res) => {
+  //       let shimmentTypeData = []
 
-        res.data.map(data => {
-          shimmentTypeData.push({value: data.id, label: data.shipment_type})
-        })
+  //       res.data.map(data => {
+  //         shimmentTypeData.push({value: data.id, label: data.shipment_type})
+  //       })
 
-        setSelectboxShipment(shimmentTypeData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
+  //       setSelectboxShipment(shimmentTypeData)
+  //       return res.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
-  useEffect(() => {
-    fetchProductData()
-  },[])
+  // useEffect(() => {
+  //   fetchProductData()
+  // },[])
 
-  const fetchProductData = () => {
-    return useJwt
-      .axiosGet(getApi(PRODUCT_TYPE_LIST))
-      .then((res) => {
-        let productData = []
+  // const fetchProductData = () => {
+  //   return useJwt
+  //     .axiosGet(getApi(PRODUCT_TYPE_LIST))
+  //     .then((res) => {
+  //       let productData = []
 
-        res.data.map(data => {
-          productData.push({value: data.id, label: data.product_type})
-        })
+  //       res.data.map(data => {
+  //         productData.push({value: data.id, label: data.product_type})
+  //       })
 
-        setSelectboxProduct(productData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
+  //       setSelectboxProduct(productData)
+  //       return res.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
 
   const onSubmit = data => {
@@ -104,19 +104,19 @@ const AddVolumetricPolicy = () => {
 
     let isFormValid = true
 
-    if(!(data.service_type && data.service_type.value)) {
-      setError('service_type', { type: 'required', message: 'Service Type must be added' })
-      isFormValid = false
-    }
-    if(!(data.shipment_type && data.shipment_type.value)) {
-      setError('shipment_type', { type: 'required', message: 'Shipment Type must be added' })
-      isFormValid = false
-    }
+    // if(!(data.service_type && data.service_type.value)) {
+    //   setError('service_type', { type: 'required', message: 'Service Type must be added' })
+    //   isFormValid = false
+    // }
+    // if(!(data.shipment_type && data.shipment_type.value)) {
+    //   setError('shipment_type', { type: 'required', message: 'Shipment Type must be added' })
+    //   isFormValid = false
+    // }
 
-    if(!(data.product_type && data.product_type.value)) {
-      setError('product_type', { type: 'required', message: 'Product Type must be added' })
-      isFormValid = false
-    }
+    // if(!(data.product_type && data.product_type.value)) {
+    //   setError('product_type', { type: 'required', message: 'Product Type must be added' })
+    //   isFormValid = false
+    // }
 
     if(!data.volumetric_policy) {
       setError('volumetric_policy', { type: 'required', message: 'Volumetric Policy must be added' })
@@ -128,13 +128,15 @@ const AddVolumetricPolicy = () => {
     }
 
     setData(data)
-    if (data.service_type !== null && data.product_type !== null && data.shipment_type !== null  && data.volumetric_policy !== null) {
+    // if (data.service_type !== null && data.product_type !== null && data.shipment_type !== null  && data.volumetric_policy !== null) 
+    if ( data.volumetric_policy !== null) 
+    {
 
       let formData = {
         volumetric_policy: data.volumetric_policy,
-        service: data.service_type.value,
-        shipment: data.shipment_type.value,
-        product: data.product_type.value,
+        // service: data.service_type.value,
+        // shipment: data.shipment_type.value,
+        // product: data.product_type.value,
 
         status: 'active'
       }
@@ -161,7 +163,7 @@ const AddVolumetricPolicy = () => {
 
       <CardBody>
       <Form onSubmit={handleSubmit(onSubmit)}>
-          <div className='mb-1'>
+          {/* <div className='mb-1'>
               <Label className='form-label' for='service_type'>
                 Service Type
               </Label>
@@ -215,7 +217,7 @@ const AddVolumetricPolicy = () => {
                   />}
                 />
               {errors && errors.product_type && <span>{errors.product_type.message}</span>}
-          </div>
+          </div> */}
 
           <div className='mb-1'>
             <Label className='form-label' for='volumetric_policy'>

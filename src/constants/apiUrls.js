@@ -48,12 +48,12 @@ export const AREAS_SEARCH = '/search-area/'
 
 
 // Service Type API's 
-export const SERVICE_TYPE_ADD = '/service_type/service_type/'
-export const SERVICE_TYPE_EDIT = '/service_type/service_type/'
-export const SERVICE_TYPE_LIST = '/service_type/service_type/'
-export const SERVICE_TYPE_DELETE = '/service_type/service_type/'
-export const SERVICE_TYPE_DETAILS = '/service_type/service_type/'
-export const SEARCH_SERVICE = '/search_service/'
+// export const SERVICE_TYPE_ADD = '/service_type/service_type/'
+// export const SERVICE_TYPE_EDIT = '/service_type/service_type/'
+// export const SERVICE_TYPE_LIST = '/service_type/service_type/'
+// export const SERVICE_TYPE_DELETE = '/service_type/service_type/'
+// export const SERVICE_TYPE_DETAILS = '/service_type/service_type/'
+// export const SEARCH_SERVICE = '/search_service/'
 
 
 

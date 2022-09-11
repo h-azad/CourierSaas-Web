@@ -12,13 +12,14 @@ import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import { selectThemeColors } from "@utils"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, PRODUCT_TYPE_EDIT, PRODUCT_TYPE_DETAILS, SERVICE_TYPE_LIST, SHIPMENT_TYPE_LIST} from '@src/constants/apiUrls'
+import { getApi, PRODUCT_TYPE_EDIT, PRODUCT_TYPE_DETAILS, SHIPMENT_TYPE_LIST} from '@src/constants/apiUrls'
+// import { getApi, PRODUCT_TYPE_EDIT, PRODUCT_TYPE_DETAILS, SERVICE_TYPE_LIST, SHIPMENT_TYPE_LIST} from '@src/constants/apiUrls'
 import { useEffect, useState } from 'react'
 import SwalAlert from "../../components/SwalAlert"
 
 
 const EditProductType = () => {
-  const [selectboxService, setSelectboxService] = useState([])
+  // const [selectboxService, setSelectboxService] = useState([])
   const [selectboxShipment, setSelectboxShipment] = useState([])
   const [productInfo, setProductInfo] = useState(null)
   const [data, setData] = useState(null)
@@ -37,27 +38,27 @@ const EditProductType = () => {
         return res.data
       })
       .catch(err => console.log(err))
-      fetchServiceData(),
+      // fetchServiceData(),
       fetchShipmentData()
 
   }, [])
 
-  const fetchServiceData = () => {
-    return useJwt
-      .axiosGet(getApi(SERVICE_TYPE_LIST))
-      .then((res) => {
-        // console.log("res", res.data)
-        let serviceData = []
+  // const fetchServiceData = () => {
+  //   return useJwt
+  //     .axiosGet(getApi(SERVICE_TYPE_LIST))
+  //     .then((res) => {
+  //       // console.log("res", res.data)
+  //       let serviceData = []
 
-        res.data.map(data => {
-          serviceData.push({value: data.id, label: data.service_type})
-        })
+  //       res.data.map(data => {
+  //         serviceData.push({value: data.id, label: data.service_type})
+  //       })
 
-        setSelectboxService(serviceData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
+  //       setSelectboxService(serviceData)
+  //       return res.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
   const fetchShipmentData = () => {
     return useJwt
@@ -91,10 +92,10 @@ const EditProductType = () => {
 
     let isFormValid = true
 
-    if(!(data.service_type && data.service_type.value)) {
-      setError('service_type', { type: 'required', message: 'Service Type must be added' })
-      isFormValid = false
-    }
+    // if(!(data.service_type && data.service_type.value)) {
+    //   setError('service_type', { type: 'required', message: 'Service Type must be added' })
+    //   isFormValid = false
+    // }
     if(!(data.shipment_type && data.shipment_type.value)) {
       setError('shipment_type', { type: 'required', message: 'Shipment Type must be added' })
       isFormValid = false
@@ -110,11 +111,12 @@ const EditProductType = () => {
     }
 
     setData(data)
-    if (data.service_type !== null && data.product_type !== null && data.shipment_type !== null) {
+    // if (data.service_type !== null && data.product_type !== null && data.shipment_type !== null) {
+    if (data.product_type !== null && data.shipment_type !== null) {
       
       let formData = {
         product_type: data.product_type,
-        service: data.service_type.value,
+        // service: data.service_type.value,
         shipment: data.shipment_type.value,
 
         status: 'active'
@@ -142,7 +144,7 @@ const EditProductType = () => {
         <CardBody>
           {productInfo &&
         <Form onSubmit={handleSubmit(onSubmit)}>
-            <div className='mb-1'>
+            {/* <div className='mb-1'>
               <Label className='form-label' for='service_type'>
                Service Type
               </Label>
@@ -161,7 +163,7 @@ const EditProductType = () => {
                   />}
                 />
                 {errors && errors.service_type && <span>{errors.service_type.message}</span>}
-          </div>
+          </div> */}
           <div className='mb-1'>
               <Label className='form-label' for='shipment_type'>
                Shipment Type

@@ -20,9 +20,9 @@ import AreasList from "../../views/areas/list"
 import AddAreas from "../../views/areas/add"
 import EditAreas from "../../views/areas/edit"
 
-import ServiceTypeList from "../../views/service_type/list"
-import AddServiceType from "../../views/service_type/add"
-import EditServiceType from "../../views/service_type/edit"
+// import ServiceTypeList from "../../views/service_type/list"
+// import AddServiceType from "../../views/service_type/add"
+// import EditServiceType from "../../views/service_type/edit"
 
 import ShipmentTypeList from "../../views/shipment_type/list"
 import AddShipmentType from "../../views/shipment_type/add"
@@ -117,18 +117,18 @@ const DashboardRoutes = [
     element: <EditAreas />
   },
 
- {
-    path: "/service_type",
-    element: <ServiceTypeList />
-  },
-  {
-    path: "/service_type/add",
-    element: <AddServiceType />
-  },
-  {
-    path: "/service_type/edit/:id",
-    element: <EditServiceType/>
-  },
+//  {
+//     path: "/service_type",
+//     element: <ServiceTypeList />
+//   },
+  // {
+  //   path: "/service_type/add",
+  //   element: <AddServiceType />
+  // },
+  // {
+  //   path: "/service_type/edit/:id",
+  //   element: <EditServiceType/>
+  // },
 
   {
     path: "/shipment_type",

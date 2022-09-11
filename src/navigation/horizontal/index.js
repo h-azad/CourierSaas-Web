@@ -53,12 +53,12 @@ export default [
 {
   header: 'Settings'
 },
-{
-  id: "service_type",
-  title: "Service Type",
-  icon: <Gift size={20} />,
-  navLink: "/second-page"
-},
+// {
+//   id: "service_type",
+//   title: "Service Type",
+//   icon: <Gift size={20} />,
+//   navLink: "/second-page"
+// },
 {
   id: "shipment_type",
   title: "Shipment type",
