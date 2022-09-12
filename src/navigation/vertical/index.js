@@ -92,7 +92,7 @@ export default [
   },
   {
     id: "volumetric_policy",
-    title: "Volumetric Policy",
+    title: "Pricing Policy",
     icon:  <Filter size={20} />,
     navLink: "/volumetric_policy"
   }

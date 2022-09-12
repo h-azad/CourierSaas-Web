@@ -17,6 +17,7 @@ import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, PRODUCT_TYPE_ADD } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
+import { volumeUnit, weightUnit } from "../../constants/data/unit"
 
 const AddProductType = () => {
   // const [selectboxService, setSelectboxService] = useState([])
@@ -37,59 +38,6 @@ const AddProductType = () => {
       // shipment_type:{}
     }
   })
-
-  const volumeUnit = [
-    {
-      value: 'cm',
-      label: 'cm'
-    },
-    {
-      value: 'inch',
-      label: 'Inch'
-    },
-    {
-      value: 'feet',
-      label: 'Feet'
-    },
-    {
-      value: 'meter',
-      label: 'Meter'
-    },
-  ]
-
-  const weightUnit = [
-    {
-      value: 'gm',
-      label: 'Gram'
-    },
-    {
-      value: 'kg',
-      label: 'Kilogram'
-    },
-    {
-      value: 'pound',
-      label: 'Pound'
-    }
-  ]
-  // useEffect(() => {
-  //   fetchShipmentData()
-  // },[])
-
-  // const fetchShipmentData = () => {
-  //   return useJwt
-  //     .axiosGet(getApi(SHIPMENT_TYPE_LIST))
-  //     .then((res) => {
-  //       let shimmentTypeData = []
-
-  //       res.data.map(data => {
-  //         shimmentTypeData.push({value: data.id, label: data.shipment_type})
-  //       })
-
-  //       setSelectboxShipment(shimmentTypeData)
-  //       return res.data
-  //     })
-  //     .catch(err => console.log(err))
-  // }
 
   const onSubmit = data => {
     console.log("data", data)
@@ -120,8 +68,8 @@ const AddProductType = () => {
         product_type: data.product_type,
         // service: data.service_type.value,
         // shipment: data.shipment_type.value,
-        weight_unit: data.weight_unit,
-        volume_unit: data.volume_unit,
+        weight_unit: data.weight_unit?.value,
+        volume_unit: data.volume_unit?.value,
         status: 'active'
       }
 

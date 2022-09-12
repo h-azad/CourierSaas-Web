@@ -12,15 +12,17 @@ import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import { selectThemeColors } from "@utils"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, PRODUCT_TYPE_EDIT, PRODUCT_TYPE_DETAILS, SHIPMENT_TYPE_LIST} from '@src/constants/apiUrls'
+import { getApi, PRODUCT_TYPE_EDIT, PRODUCT_TYPE_DETAILS} from '@src/constants/apiUrls'
 // import { getApi, PRODUCT_TYPE_EDIT, PRODUCT_TYPE_DETAILS, SERVICE_TYPE_LIST, SHIPMENT_TYPE_LIST} from '@src/constants/apiUrls'
 import { useEffect, useState } from 'react'
 import SwalAlert from "../../components/SwalAlert"
+import { volumeUnit, weightUnit } from "../../constants/data/unit"
+
 
 
 const EditProductType = () => {
   // const [selectboxService, setSelectboxService] = useState([])
-  const [selectboxShipment, setSelectboxShipment] = useState([])
+  // const [selectboxShipment, setSelectboxShipment] = useState([])
   const [productInfo, setProductInfo] = useState(null)
   const [data, setData] = useState(null)
 
@@ -39,43 +41,9 @@ const EditProductType = () => {
       })
       .catch(err => console.log(err))
       // fetchServiceData(),
-      fetchShipmentData()
+      // fetchShipmentData()
 
   }, [])
-
-  // const fetchServiceData = () => {
-  //   return useJwt
-  //     .axiosGet(getApi(SERVICE_TYPE_LIST))
-  //     .then((res) => {
-  //       // console.log("res", res.data)
-  //       let serviceData = []
-
-  //       res.data.map(data => {
-  //         serviceData.push({value: data.id, label: data.service_type})
-  //       })
-
-  //       setSelectboxService(serviceData)
-  //       return res.data
-  //     })
-  //     .catch(err => console.log(err))
-  // }
-
-  const fetchShipmentData = () => {
-    return useJwt
-      .axiosGet(getApi(SHIPMENT_TYPE_LIST))
-      .then((res) => {
-        // console.log("res", res.data)
-        let shipmentData = []
-
-        res.data.map(data => {
-          shipmentData.push({value: data.id, label: data.shipment_type})
-        })
-
-        setSelectboxShipment(shipmentData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
 
   const {
     reset,
@@ -92,17 +60,16 @@ const EditProductType = () => {
 
     let isFormValid = true
 
-    // if(!(data.service_type && data.service_type.value)) {
-    //   setError('service_type', { type: 'required', message: 'Service Type must be added' })
-    //   isFormValid = false
-    // }
-    if(!(data.shipment_type && data.shipment_type.value)) {
-      setError('shipment_type', { type: 'required', message: 'Shipment Type must be added' })
-      isFormValid = false
-    }
-
     if(!(data.product_type )) {
       setError('product_type', { type: 'required', message: 'Product Type must be added' })
+      isFormValid = false
+    }
+    if(!data.weight_unit) {
+      setError('weight_unit', { type: 'required', message: 'Weight Unit must be added' })
+      isFormValid = false
+    }
+    if(!data.volume_unit) {
+      setError('volume_unit', { type: 'required', message: 'Volume Unit must be added' })
       isFormValid = false
     }
    
@@ -111,18 +78,16 @@ const EditProductType = () => {
     }
 
     setData(data)
-    // if (data.service_type !== null && data.product_type !== null && data.shipment_type !== null) {
-    if (data.product_type !== null && data.shipment_type !== null) {
-      
+    if ( data.product_type !== null &&  data.weight_unit !== null &&  data.volume_unit !== null ) {
+
       let formData = {
         product_type: data.product_type,
-        // service: data.service_type.value,
-        shipment: data.shipment_type.value,
-
+        weight_unit: data.weight_unit?.value,
+        volume_unit: data.volume_unit?.value,
         status: 'active'
       }
-              
-      console.log('formData',formData)
+
+      console.log("formData", formData)
       useJwt
         .axiosPut(getApi(PRODUCT_TYPE_EDIT) + id + "/", formData)
         .then((res) => {
@@ -144,46 +109,6 @@ const EditProductType = () => {
         <CardBody>
           {productInfo &&
         <Form onSubmit={handleSubmit(onSubmit)}>
-            {/* <div className='mb-1'>
-              <Label className='form-label' for='service_type'>
-               Service Type
-              </Label>
-              <Controller
-                  id="service_type"
-                  defaultValue={{label: productInfo.service && productInfo.service.service_type ? productInfo.service.service_type : "" , value: productInfo.service?.id}}
-                  name="service_type"
-                  control={control}
-                  render={({ field }) => <Select 
-                    isClearable
-                    defaultValue={productInfo.service_type}
-                    className={classnames('react-select', { 'is-invalid':errors.service_type && true })} 
-                    classNamePrefix='select'
-                    options={selectboxService} 
-                    {...field} 
-                  />}
-                />
-                {errors && errors.service_type && <span>{errors.service_type.message}</span>}
-          </div> */}
-          <div className='mb-1'>
-              <Label className='form-label' for='shipment_type'>
-               Shipment Type
-              </Label>
-              <Controller
-                  id="shipment_type"
-                  defaultValue={{label: productInfo.shipment && productInfo.shipment.shipment_type? productInfo.shipment.shipment_type : "", value: productInfo.shipment?.id}}
-                  name="shipment_type"
-                  control={control}
-                  render={({ field }) => <Select 
-                    isClearable
-                    defaultValue={productInfo.shipment_type}
-                    className={classnames('react-select', { 'is-invalid': errors.shipment_type && true })} 
-                    classNamePrefix='select'
-                    options={selectboxShipment} 
-                    {...field} 
-                  />}
-                />
-                {errors && errors.shipment_type && <span>{errors.shipment_type.message}</span>}
-          </div>
             <div className='mb-1'>
               <Label className='form-label' for='product_type'>
                Product Type
@@ -197,6 +122,44 @@ const EditProductType = () => {
               />
               {errors && errors.product_type && <span>{errors.product_type.message}</span>}
             </div>
+            <div className='mb-1'>
+              <Label className='form-label' for='volume_unit'>
+                Volume Unit
+              </Label>
+              <Controller
+                  id="volume_unit"
+                  name="volume_unit"
+                  control={control}
+                  render={({ field }) => <Select 
+                    isClearable
+                    className={classnames('react-select', { 'is-invalid': errors.volume_unit && true })} 
+                    classNamePrefix='select'
+                    options={volumeUnit} 
+                    {...field} 
+                  />}
+                />
+              {errors && errors.volume_unit && <span>{errors.volume_unit.message}</span>}
+          </div>
+
+          <div className='mb-1'>
+              <Label className='form-label' for='weight_unit'>
+                Weight Unit
+              </Label>
+              <Controller
+                  id="weight_unit"
+                  name="weight_unit"
+                  control={control}
+                  render={({ field }) => <Select 
+                    isClearable
+                    className={classnames('react-select', { 'is-invalid': errors.weight_unit && true })} 
+                    classNamePrefix='select'
+                    options={weightUnit} 
+                    {...field} 
+                  />}
+                />
+              {errors && errors.weight_unit && <span>{errors.weight_unit.message}</span>}
+          </div>
+
             
             <div className='d-flex'>
               <Button className='me-1' color='primary' type='submit'>
