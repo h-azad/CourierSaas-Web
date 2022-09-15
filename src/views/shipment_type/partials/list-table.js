@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash,Search } from "react-feather"
+import { MoreVertical, Edit, Trash,Search, Edit3 } from "react-feather"
 import {
   Table,
   Badge,
@@ -9,32 +9,37 @@ import {
   DropdownToggle,
   Button,
   CardText,
+  Label,
+  Input,
 } from "reactstrap"
 import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, SHIPMENT_TYPE_LIST, SHIPMENT_TYPE_DELETE,SEARCH_SHIPMENT } from "../../../constants/apiUrls"
+import { getApi, SHIPMENT_TYPE_LIST, SHIPMENT_TYPE_DELETE,SEARCH_SHIPMENT,SHIPMENT_UPDATE_STATUS} from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
+import StatusModal from "../../../components/StatusModal"
+
 
 const ListTable = () => {
   const [shipment, setShipment] = useState([])
+  const [statusModalState, setStatusModalState] = useState(false)
+  const [selectedStatus, setSelectedStatus] = useState(null)
+  const [selectedInfo, setSelectedInfo] = useState(null)
+
   const MySwal = withReactContent(Swal)
 
   const deleteAction = (e, id) => {
     e.preventDefault()
-    // console.log("Deleted", id)
     return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
       if (result.value) {
 
       useJwt
         .axiosDelete(getApi(SHIPMENT_TYPE_DELETE+id+'/'))
         .then((res) => {
-          // console.log("res", res.data)
           SwalAlert("Deleted Successfully")
-          
-          // return res.data
+        
         })
         .finally(() => fetchShipmentData())
         
@@ -43,9 +48,41 @@ const ListTable = () => {
    
   }
 
+  const updateStatusAction = (e) => {
+    e.preventDefault()
+    console.log("selectedInfo", selectedInfo)
+    console.log("selectedStatus", selectedStatus)
+  return false
+  useJwt
+  .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
+  .then((res) => {
+    console.log("res", res.data)
+    setStatusModalState(false)
+    // SwalAlert("Deleted Successfully")
+  
+  })
+  .finally(() => fetchShipmentData())
+  
+}
+
+
+  const changeStatusAction = (e, info) => {
+    e.preventDefault()
+    setStatusModalState(true)
+    setSelectedStatus(info.status)
+    setSelectedInfo(info)
+  }
+
   useEffect(() => {
     fetchShipmentData()
   }, [])
+
+  useEffect(() => {
+    if(!statusModalState) {
+      clearData()
+    }
+    fetchShipmentData()
+  }, [statusModalState])
 
   const fetchShipmentData = () => {
     return useJwt
@@ -83,6 +120,13 @@ const ListTable = () => {
     }
     
   }, 300)
+
+  const clearData = () => {
+    setSelectedInfo(null)
+    setSelectedStatus(null)
+  }
+
+  
 
   function debounce (fn, time) {
     let timeoutId
@@ -125,6 +169,7 @@ const ListTable = () => {
             </div>
           </div>
         </CardText>
+
       <Table bordered>
         <thead>
           <tr>
@@ -168,6 +213,10 @@ const ListTable = () => {
                         <Trash className="me-50" size={15} />{" "}
                         <span className="align-middle">Delete</span>
                       </DropdownItem>
+                      <DropdownItem href="/" onClick={e=>changeStatusAction(e, info)}>
+                        <Edit3 className="me-50" size={15} />{" "}
+                        <span className="align-middle">Change Status</span>
+                      </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
                 </td>
@@ -175,6 +224,34 @@ const ListTable = () => {
             ))}
         </tbody>
       </Table>
+
+      <StatusModal
+        statusModalState={statusModalState}
+        setStatusModalState={setStatusModalState}
+        updateStatusAction={updateStatusAction}
+        title={"Chnage Shipment Status"}
+      >
+        <div className='demo-inline-spacing'>
+          <div className='form-check'>
+            <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "active" ? true : false} onChange={() => setSelectedStatus("active")} />
+            <Label className='form-check-label' for='ex1-active'>
+              Active
+            </Label>
+          </div>
+          <div className='form-check'>
+            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "inctive" ? true : false} onChange={() => setSelectedStatus("inctive")} />
+            <Label className='form-check-label' for='ex1-inactive'>
+             Inctive
+            </Label>
+          </div>
+          <div className='form-check'>
+            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "pending" ? true : false} onChange={() => setSelectedStatus("pending")} />
+            <Label className='form-check-label' for='ex1-inactive'>
+             Pending
+            </Label>
+          </div>
+        </div>
+      </StatusModal>
     </>
   )
 }

@@ -13,7 +13,7 @@ import Select from "react-select"
 import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, VOLUMETRIC_POLICY_ADD, SERVICE_TYPE_LIST, SHIPMENT_TYPE_LIST,PRODUCT_TYPE_LIST } from '@src/constants/apiUrls'
+import { getApi, VOLUMETRIC_POLICY_ADD, PRODUCT_TYPE_LIST } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
 
@@ -31,8 +31,7 @@ const AddVolumetricPolicy = () => {
   } = useForm({
     defaultValues: {
       volumetric_policy: '',
-      product_type: {},
-      
+      product_type: {},   
 
     }
   })
@@ -57,7 +56,6 @@ const AddVolumetricPolicy = () => {
       .catch(err => console.log(err))
   }
 
-
   const onSubmit = data => {
     console.log("data", data)
 
@@ -69,16 +67,9 @@ const AddVolumetricPolicy = () => {
     }
 
     if(!(data.product_type && data.product_type.value)) {
-      setError('product_type', { type: 'required', message: 'Product Type must be added' })
+      setError('product_type', { type: 'required', message: 'Product Type is required' })
       isFormValid = false
     }
-
-    // if(!data.volumetric_policy) {
-    //   setError('volumetric_policy', { type: 'required', message: 'Volumetric Policy is required' })
-    //   isFormValid = false
-    // }
-    
-     
     if(!data.delivary_charge) {
       setError('delivary_charge', { type: 'required', message: 'Delivary Charge is required' })
       isFormValid = false
@@ -113,14 +104,18 @@ const AddVolumetricPolicy = () => {
     }
 
     setData(data)
-    // if (data.service_type !== null && data.product_type !== null && data.shipment_type !== null  && data.volumetric_policy !== null) 
-    if ( data.volumetric_policy !== null && data.product_type !== null) 
     {
 
       let formData = {
-        volumetric_policy: data.volumetric_policy,
+        policy_title: data.policy_title,
         product: data.product_type.value,
-
+        delivary_charge: data.delivary_charge,
+        min_dimention: data.min_dimention,
+        max_dimention: data.max_dimention,
+        max_weight: data.max_weight,
+        additional_charge: data.additional_charge,
+        per_dimention: data.per_dimention,
+        cod_charge: data.cod_charge,
         status: 'active'
       }
 
@@ -163,21 +158,7 @@ const AddVolumetricPolicy = () => {
                   />}
                 />
               {errors && errors.product_type && <span>{errors.product_type.message}</span>}
-          </div> 
-
-          {/* <div className='mb-1'>
-            <Label className='form-label' for='volumetric_policy'>
-              Volumetric Policy
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='volumetric_policy'
-              name='volumetric_policy'
-              render={({ field }) => <Input placeholder='KG' invalid={errors.volumetric_policy && true} {...field} />}
-            />
-            {errors && errors.volumetric_policy && <span>{errors.volumetric_policy.message}</span>}
-          </div> */}
+          </div>
           <div className='mb-1'>
             <Label className='form-label' for='policy_title'>
               Policy Title
@@ -234,7 +215,7 @@ const AddVolumetricPolicy = () => {
                   name='max_dimention'
                   render={({ field }) => <Input placeholder='' invalid={errors.max_dimention && true} {...field} />}
                 />
-                {errors && errors.volumetric_policy && <span>{errors.max_dimention.message}</span>}
+                {errors && errors.max_dimention && <span>{errors.max_dimention.message}</span>}
               </div>
             </div>
             <div class="col-lg-4">

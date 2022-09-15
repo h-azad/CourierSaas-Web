@@ -24,17 +24,13 @@ const ListTable = () => {
 
   const deleteAction = (e, id) => {
     e.preventDefault()
-    // console.log("Deleted", id)
     return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
       if (result.value) {
 
       useJwt
         .axiosDelete(getApi(VOLUMETRIC_POLICY_DELETE+id+'/'))
         .then((res) => {
-          // console.log("res", res.data)
           SwalAlert("Deleted Successfully")
-          
-          // return res.data
         })
         .finally(() => fetchVolumetricPolicyData())
         
@@ -134,7 +130,7 @@ const ListTable = () => {
               <th>Delivary Charge</th>
               <th>Min Dimention</th>
               <th>Max Dimention</th>
-              <th>Max Weight</th>
+              <th>Max Weight/Kg</th>
               <th>Additional Charge</th>
               <th>Per Dimention</th>
               <th>COD Charge</th>

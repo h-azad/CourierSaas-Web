@@ -63,6 +63,7 @@ export const SHIPMENT_TYPE_EDIT = '/shipment_type/shipment_type/'
 export const SHIPMENT_TYPE_LIST = '/shipment_type/shipment_type/'
 export const SHIPMENT_TYPE_DELETE = '/shipment_type/shipment_type/'
 export const SHIPMENT_TYPE_DETAILS = '/shipment_type/shipment_type/'
+export const SHIPMENT_UPDATE_STATUS= '/shipment_type/shipment_type/'
 export const SEARCH_SHIPMENT = '/search_shipment/'
 
 

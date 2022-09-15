@@ -36,6 +36,7 @@ const EditShipmentType = () => {
       })
       .catch(err => console.log(err))
   }, [])
+  
   const {
     reset,
     control,
