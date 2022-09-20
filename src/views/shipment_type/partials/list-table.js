@@ -174,7 +174,6 @@ const ListTable = () => {
         <thead>
           <tr>
             <th>Shipment Type</th>
-            {/* <th>Service Type</th> */}
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -186,9 +185,6 @@ const ListTable = () => {
                 <td>
                   <span className="align-middle fw-bold">{info.shipment_type}</span>
                 </td>
-                {/* <td>
-                  <span className="align-middle fw-bold">{info.service.service_type}</span>
-                </td> */}
                 <td>
                   <Badge pill color="light-primary" className="me-1">
                     {info.status}
@@ -229,7 +225,7 @@ const ListTable = () => {
         statusModalState={statusModalState}
         setStatusModalState={setStatusModalState}
         updateStatusAction={updateStatusAction}
-        title={"Chnage Shipment Status"}
+        title={"Change Shipment Type Status"}
       >
         <div className='demo-inline-spacing'>
           <div className='form-check'>
@@ -239,9 +235,9 @@ const ListTable = () => {
             </Label>
           </div>
           <div className='form-check'>
-            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "inctive" ? true : false} onChange={() => setSelectedStatus("inctive")} />
+            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "inactive" ? true : false} onChange={() => setSelectedStatus("inactive")} />
             <Label className='form-check-label' for='ex1-inactive'>
-             Inctive
+             Inactive
             </Label>
           </div>
           <div className='form-check'>

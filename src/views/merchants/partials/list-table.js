@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash, Search } from "react-feather"
+import { MoreVertical, Edit, Trash, Search, Edit3 } from "react-feather"
 import {
   Table,
   Badge,
@@ -9,6 +9,8 @@ import {
   DropdownToggle,
   Button,
   CardText,
+  Label,
+  Input,
 } from "reactstrap"
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2"
@@ -22,10 +24,15 @@ import {
 } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
+import StatusModal from "../../../components/StatusModal"
+
 
 const ListTable = () => {
   const [merchants, setMerchants] = useState([])
   const MySwal = withReactContent(Swal)
+  const [statusModalState, setStatusModalState] = useState(false)
+  const [selectedStatus, setSelectedStatus] = useState(null)
+  const [selectedInfo, setSelectedInfo] = useState(null)
 
   const deleteAction = (e, id) => {
     e.preventDefault()
@@ -43,9 +50,43 @@ const ListTable = () => {
       }
     )
   }
+
+  const updateStatusAction = (e) => {
+    e.preventDefault()
+    console.log("selectedInfo", selectedInfo)
+    console.log("selectedStatus", selectedStatus)
+  return false
+  // useJwt
+  // .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
+  // .then((res) => {
+  //   console.log("res", res.data)
+  //   setStatusModalState(false)
+  //   // SwalAlert("Deleted Successfully")
+  
+  // })
+  // .finally(() => fetchShipmentData())
+  
+}
+
+
+  const changeStatusAction = (e, info) => {
+    e.preventDefault()
+    setStatusModalState(true)
+    setSelectedStatus(info.status)
+    setSelectedInfo(info)
+  }
+
   useEffect(() => {
     fetchMerchantsData()
   }, [])
+
+  
+  useEffect(() => {
+    if(!statusModalState) {
+      clearData()
+    }
+    fetchMerchantsData()
+  }, [statusModalState])
 
   const fetchMerchantsData = () => {
     return useJwt
@@ -82,6 +123,11 @@ const ListTable = () => {
     }
     
   }, 300)
+
+  const clearData = () => {
+    setSelectedInfo(null)
+    setSelectedStatus(null)
+  }
 
   function debounce (fn, time) {
     let timeoutId
@@ -125,14 +171,27 @@ const ListTable = () => {
           </div>
         </div>
       </CardText>
-
+      <div class="table-responsive">
       <Table bordered>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Bussiness Name</th>
-            <th>Phone</th>
+            <th>Full Name</th>
+            <th>Contact Number 1*</th>
+            <th>Contact Number 2*</th>
+            <th>Identity</th>
+            <th>Identity No*</th>
+            <th>Email</th>
+            <th>Preferred Payment Method*</th>
+            <th>Bank Name</th>
+            <th>Bank Account Name</th>
+            <th>Account Number</th>
+            <th>City Name</th>
+            <th>Area Name</th>
+            <th>Business Name</th>
             <th>Address</th>
+            <th>Pickup Address</th>
+            <th>Password</th>
+            <th>Confirm Password</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -142,11 +201,24 @@ const ListTable = () => {
             merchants.map((info) => (
               <tr key={info.id}>
                 <td>
-                  <span className="align-middle fw-bold">{info.user_name}</span>
+                  <span className="align-middle fw-bold">{info.full_name}</span>
                 </td>
+                <td>{info.contact_no}</td>
+                <td>{info.contact_no_two}</td>
+                <td>{info.identity}</td>
+                <td>{info.identity_no}</td>
+                <td>{info.email}</td>
+                <td>{info.payment_method}</td>
+                <td>{info.bank_name}</td>
+                <td>{info.bank_account_name}</td>
+                <td>{info.bank_account_num}</td>
+                <td>{info.city}</td>
+                <td>{info.area}</td>
                 <td>{info.business_name}</td>
-                <td>{info.mobile}</td>
                 <td>{info.address}</td>
+                <td>{info.pickup_address}</td>
+                <td>{info.password}</td>
+                <td>{info.confirm_password}</td>
                 <td>
                   <Badge pill color="light-primary" className="me-1">
                     {info.status}
@@ -174,6 +246,10 @@ const ListTable = () => {
                         <Trash className="me-50" size={15} />{" "}
                         <span className="align-middle">Delete</span>
                       </DropdownItem>
+                      <DropdownItem href="/" onClick={e=>changeStatusAction(e, info)}>
+                        <Edit3 className="me-50" size={15} />{" "}
+                        <span className="align-middle">Change Status</span>
+                      </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
                 </td>
@@ -181,6 +257,35 @@ const ListTable = () => {
             ))}
         </tbody>
       </Table>
+      </div>
+     
+      <StatusModal
+        statusModalState={statusModalState}
+        setStatusModalState={setStatusModalState}
+        updateStatusAction={updateStatusAction}
+        title={"Change Marchant Status"}
+      >
+        <div className='demo-inline-spacing'>
+          <div className='form-check'>
+            <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "approved" ? true : false} onChange={() => setSelectedStatus("approved")} />
+            <Label className='form-check-label' for='ex1-active'>
+            Approved
+            </Label>
+          </div>
+          <div className='form-check'>
+            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "inactive" ? true : false} onChange={() => setSelectedStatus("inactive")} />
+            <Label className='form-check-label' for='ex1-inactive'>
+             Inactive
+            </Label>
+          </div>
+          <div className='form-check'>
+            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "pending" ? true : false} onChange={() => setSelectedStatus("pending")} />
+            <Label className='form-check-label' for='ex1-inactive'>
+             Pending
+            </Label>
+          </div>
+        </div>
+      </StatusModal>
     </>
   )
 }

@@ -46,17 +46,6 @@ export const AREAS_DELETE = '/cities/areas/'
 export const AREAS_DETAILS = '/cities/areas/'
 export const AREAS_SEARCH = '/search-area/'
 
-
-// Service Type API's 
-// export const SERVICE_TYPE_ADD = '/service_type/service_type/'
-// export const SERVICE_TYPE_EDIT = '/service_type/service_type/'
-// export const SERVICE_TYPE_LIST = '/service_type/service_type/'
-// export const SERVICE_TYPE_DELETE = '/service_type/service_type/'
-// export const SERVICE_TYPE_DETAILS = '/service_type/service_type/'
-// export const SEARCH_SERVICE = '/search_service/'
-
-
-
 // Shipment Type API's 
 export const SHIPMENT_TYPE_ADD = '/shipment_type/shipment_type/'
 export const SHIPMENT_TYPE_EDIT = '/shipment_type/shipment_type/'
@@ -88,6 +77,24 @@ export const VOLUMETRIC_POLICY_DETAILS = '/volumetric_policy/volumetric_policy/'
 export const SEARCH_VOLUMETRIC_POLICY = '/search_volumetric_policy/'
 
 
+//Create Order API's 
+
+export const CREATE_ORDER_ADD = '/create_order/create_order/'
+export const CREATE_ORDER_EDIT = '/create_order/create_order/'
+export const CREATE_ORDER_LIST = '/create_order/create_order/'
+export const CREATE_ORDER_DELETE = '/create_order/create_order/'
+export const CREATE_ORDER_DETAILS = '/create_order/create_order/'
+export const SEARCH_CREATE_ORDER = '/search_create_order/'
+
+
+//Payment Method API's 
+
+export const PAYMENT_METHOD_ADD = '/payment_method/payment_method/'
+export const PAYMENT_METHOD_EDIT = '/payment_method/payment_method/'
+export const PAYMENT_METHOD_LIST = '/payment_method/payment_method/'
+export const PAYMENT_METHOD_DELETE = '/payment_method/payment_method/'
+export const PAYMENT_METHOD_DETAILS = '/payment_method/payment_method/'
+export const SEARCH_PAYMENT_METHOD = '/search_payment_method/'
 
 export const getApi = (api) => {
     return BASE_API + api

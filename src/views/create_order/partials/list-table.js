@@ -16,13 +16,13 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, VOLUMETRIC_POLICY_LIST, VOLUMETRIC_POLICY_DELETE ,SEARCH_VOLUMETRIC_POLICY } from "../../../constants/apiUrls"
+import { getApi, CREATE_ORDER_LIST, CREATE_ORDER_DELETE ,SEARCH_CREATE_ORDER } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
 
 const ListTable = () => {
-  const [volumetricpolicy, setVolumetricPolicy] = useState([])
+  const [createOrder, setCreateOrder] = useState([])
   const MySwal = withReactContent(Swal)
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
@@ -34,11 +34,11 @@ const ListTable = () => {
       if (result.value) {
 
       useJwt
-        .axiosDelete(getApi(VOLUMETRIC_POLICY_DELETE+id+'/'))
+        .axiosDelete(getApi(CREATE_ORDER_DELETE+id+'/'))
         .then((res) => {
           SwalAlert("Deleted Successfully")
         })
-        .finally(() => fetchVolumetricPolicyData())
+        .finally(() => fetchCreateOrderData())
         
       }
     })
@@ -50,15 +50,15 @@ const ListTable = () => {
     console.log("selectedInfo", selectedInfo)
     console.log("selectedStatus", selectedStatus)
   return false
-  useJwt
-  .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
-  .then((res) => {
-    console.log("res", res.data)
-    setStatusModalState(false)
-    // SwalAlert("Deleted Successfully")
+  // useJwt
+  // .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
+  // .then((res) => {
+  //   console.log("res", res.data)
+  //   setStatusModalState(false)
+  //   // SwalAlert("Deleted Successfully")
   
-  })
-  .finally(() => fetchShipmentData())
+  // })
+  // .finally(() => fetchShipmentData())
   
 }
 
@@ -71,15 +71,15 @@ const changeStatusAction = (e, info) => {
 }
 
   useEffect(() => {
-    fetchVolumetricPolicyData()
+    fetchCreateOrderData()
   }, [])
 
-  const fetchVolumetricPolicyData = () => {
+  const fetchCreateOrderData = () => {
     return useJwt
-      .axiosGet(getApi(VOLUMETRIC_POLICY_LIST))
+      .axiosGet(getApi(CREATE_ORDER_LIST))
       .then((res) => {
         console.log("res", res.data)
-        setVolumetricPolicy(res.data)
+        setCreateOrder(res.data)
         return res.data
       })
       .catch(err => console.log(err))
@@ -88,12 +88,12 @@ const changeStatusAction = (e, info) => {
     if(!statusModalState) {
       clearData()
     }
-    fetchVolumetricPolicyData()
+    fetchCreateOrderData()
   }, [statusModalState])
 
-  const fetchSearchVolumetricPolicyData = searchTerm => {
+  const fetchSearchCreateOrderData = searchTerm => {
     return useJwt
-      .axiosGet(getApi(SEARCH_VOLUMETRIC_POLICY)+'?search='+ searchTerm)
+      .axiosGet(getApi(SEARCH_CREATE_ORDER)+'?search='+ searchTerm)
       .then((res) => {
         return res.data
       })
@@ -104,11 +104,11 @@ const changeStatusAction = (e, info) => {
     console.log(e.target.value)
     const searchTerm = e.target.value
     if (searchTerm.length > 0) {
-      fetchSearchVolumetricPolicyData(searchTerm)
+      fetchSearchCreateOrderData(searchTerm)
         .then(data => {
           if (data.length > 0) {
             console.log('res', data)
-            setVolumetricPolicy(data)
+            setCreateOrder(data)
           }else{
             console.log("No data")
           }
@@ -142,15 +142,15 @@ const changeStatusAction = (e, info) => {
         <div className="row justify-content-between">
           <div className="col-lg-5">
             <div className="d-flex align-items-center">
-              <Link to={'/volumetric_policy/add'}>
-                <Button.Ripple color="primary">Add Pricing Policy</Button.Ripple>
+              <Link to={'/create_order/add'}>
+                <Button.Ripple color="primary">Add Order</Button.Ripple>
               </Link>
             </div>
           </div>
           <div className="col-lg-5">
             <div className="d-flex align-items-center ">
               <input
-                placeholder="Search Volumetric Policy "
+                placeholder="Search Order "
                 name="user_name"
                 type="text"
                 class="form-control"
@@ -167,49 +167,52 @@ const changeStatusAction = (e, info) => {
         <Table bordered>
           <thead>
             <tr>
-              <th>Policy Title</th>
-              <th>Product Type</th>
+              <th>Marchant Name</th>
+              <th>Recipient Name</th>
+              <th>Phone Number</th>
+              <th>Delivary Address</th>
+              <th>Amounr to be Collected</th>
+              <th>Product type</th>
+              <th>Dimention</th>
+              <th>Delivary Area</th>
               <th>Delivary Charge</th>
-              <th>Min Dimention</th>
-              <th>Max Dimention</th>
-              <th>Max Weight/Kg</th>
-              <th>Additional Charge</th>
-              <th>Per Dimention</th>
-              <th>COD Charge</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {volumetricpolicy &&
-              volumetricpolicy.map((info) => (
+            {createOrder &&
+              createOrder.map((info) => (
                 <tr key={info.id}>
                   <td>
-                    <span className="align-middle fw-bold">{info.policy_title}</span>
+                    <span className="align-middle fw-bold">{info.marchant_name}</span>
+                  </td>
+                  {/* <td>
+                    <span className="align-middle fw-bold">{info.product.product_type}</span>
+                  </td> */}
+                  <td>
+                    <span className="align-middle fw-bold">{info.product_type}</span>
                   </td>
                   <td>
-                    <span className="align-middle fw-bold">{info.product.product_type}</span>
+                    <span className="align-middle fw-bold">{info.recipient_name}</span>
+                  </td>
+                  <td>
+                    <span className="align-middle fw-bold">{info.phone_number}</span>
+                  </td>
+                  <td>
+                    <span className="align-middle fw-bold">{info.delivary_address}</span>
+                  </td>
+                  <td>
+                    <span className="align-middle fw-bold">{info.amount_to_be_collected}</span>
+                  </td>
+                  <td>
+                    <span className="align-middle fw-bold">{info.dimention}</span>
+                  </td>
+                  <td>
+                    <span className="align-middle fw-bold">{info.delivary_area}</span>
                   </td>
                   <td>
                     <span className="align-middle fw-bold">{info.delivary_charge}</span>
-                  </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.min_dimention}</span>
-                  </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.max_dimention}</span>
-                  </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.max_weight}</span>
-                  </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.additional_charge}</span>
-                  </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.per_dimention}</span>
-                  </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.cod_charge}</span>
                   </td>
                   <td>
                     <Badge pill color="light-primary" className="me-1">
@@ -227,7 +230,7 @@ const changeStatusAction = (e, info) => {
                         <MoreVertical size={15} />
                       </DropdownToggle>
                       <DropdownMenu>
-                        <DropdownItem href={"/volumetric_policy/edit/" + info.id}>
+                        <DropdownItem href={"/create_order/edit/" + info.id}>
                           <Edit className="me-50" size={15} />{" "}
                           <span className="align-middle">Edit</span>
                         </DropdownItem>
@@ -259,12 +262,12 @@ const changeStatusAction = (e, info) => {
               Active
             </Label>
           </div>
-          <div className='form-check'>
+          {/* <div className='form-check'>
             <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "inactive" ? true : false} onChange={() => setSelectedStatus("inactive")} />
             <Label className='form-check-label' for='ex1-inactive'>
              Inactive
             </Label>
-          </div>
+          </div> */}
           <div className='form-check'>
             <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "pending" ? true : false} onChange={() => setSelectedStatus("pending")} />
             <Label className='form-check-label' for='ex1-inactive'>

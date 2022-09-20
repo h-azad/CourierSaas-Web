@@ -1,4 +1,4 @@
-import { Mail, Home, Truck,ShoppingBag, Filter, Gift, Map, MapPin, Users, Sidebar, ShoppingCart, Copy, Shield, Circle } from "react-feather"
+import { Mail, Home, Truck,ShoppingBag, Filter, Gift, Map, MapPin, Users, Sidebar, ShoppingCart, Copy, Shield, Circle, CreditCard, Send } from "react-feather"
 
 export default [
   
@@ -12,6 +12,15 @@ export default [
     id: "secondPage",
     title: "Second Page",
     icon: <Sidebar size={20} />,
+    navLink: "/second-page"
+  },
+  {
+    header: 'Orders'
+  },
+  {
+    id: "create_order",
+    title: "Create Order",
+    icon:  <CreditCard size={20} />,
     navLink: "/second-page"
   },
   {
@@ -53,12 +62,7 @@ export default [
 {
   header: 'Settings'
 },
-// {
-//   id: "service_type",
-//   title: "Service Type",
-//   icon: <Gift size={20} />,
-//   navLink: "/second-page"
-// },
+
 {
   id: "shipment_type",
   title: "Shipment type",
@@ -76,5 +80,12 @@ export default [
   title: "Pricing Policy",
   icon: <Filter size={20} />,
   navLink: "/second-page"
-}
+},
+{
+  id: "payment_method",
+  title: "Payment Method",
+  icon:  <Send size={20} />,
+  navLink: "/payment_method"
+},
+
 ]

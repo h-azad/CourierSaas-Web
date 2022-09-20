@@ -20,10 +20,6 @@ import AreasList from "../../views/areas/list"
 import AddAreas from "../../views/areas/add"
 import EditAreas from "../../views/areas/edit"
 
-// import ServiceTypeList from "../../views/service_type/list"
-// import AddServiceType from "../../views/service_type/add"
-// import EditServiceType from "../../views/service_type/edit"
-
 import ShipmentTypeList from "../../views/shipment_type/list"
 import AddShipmentType from "../../views/shipment_type/add"
 import EditShipmentType from "../../views/shipment_type/edit"
@@ -35,6 +31,14 @@ import EditProductType from "../../views/product_type/edit"
 import VolumetricPolicyList from "../../views/volumetric_policy/list"
 import AddVolumetricPolicy from "../../views/volumetric_policy/add"
 import EditVolumetricPolicy from "../../views/volumetric_policy/edit"
+
+import CreateOrderList from "../../views/create_order/list"
+import AddCreateOrder from "../../views/create_order/add"
+import EditCreateOrder from "../../views/create_order/edit"
+
+import PaymentMethodList from "../../views/payment_method/list"
+import AddPaymentMethod from "../../views/payment_method/add"
+import EditPaymentMethod from "../../views/payment_method/edit"
 
 const Home = lazy(() => import("../../views/Home"))
 const SecondPage = lazy(() => import("../../views/SecondPage"))
@@ -117,19 +121,6 @@ const DashboardRoutes = [
     element: <EditAreas />
   },
 
-//  {
-//     path: "/service_type",
-//     element: <ServiceTypeList />
-//   },
-  // {
-  //   path: "/service_type/add",
-  //   element: <AddServiceType />
-  // },
-  // {
-  //   path: "/service_type/edit/:id",
-  //   element: <EditServiceType/>
-  // },
-
   {
     path: "/shipment_type",
     element: <ShipmentTypeList />
@@ -167,6 +158,32 @@ const DashboardRoutes = [
   {
     path: "/volumetric_policy/edit/:id",
     element: <EditVolumetricPolicy/>
+  },
+
+  {
+    path: "/create_order",
+    element: <CreateOrderList />
+  },
+  {
+    path: "/create_order/add",
+    element: <AddCreateOrder />
+  },
+  {
+    path: "/create_order/edit/:id",
+    element: <EditCreateOrder/>
+  },
+
+  {
+    path: "/payment_method",
+    element: <PaymentMethodList />
+  },
+  {
+    path: "/payment_method/add",
+    element: <AddPaymentMethod />
+  },
+  {
+    path: "/payment_method/edit/:id",
+    element: <EditPaymentMethod/>
   },
 
   {

@@ -1,5 +1,5 @@
-import { MoreVertical, Edit, Trash, Search, Edit3  } from "react-feather"
-
+import { Link } from "react-router-dom"
+import { MoreVertical, Edit, Trash,Search, Edit3 } from "react-feather"
 import {
   Table,
   Badge,
@@ -16,54 +16,52 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { 
-  getApi, 
-  AGENT_LIST, 
-  AGENT_DELETE ,
-  AGENT_SEARCH ,
-}from "../../../constants/apiUrls"
+import { getApi, PAYMENT_METHOD_LIST, PAYMENT_METHOD_DELETE} from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
-import { Link } from "react-router-dom"
 import StatusModal from "../../../components/StatusModal"
 
 
 const ListTable = () => {
-  const [agent, setAgent] = useState([])
-  const MySwal = withReactContent(Swal)
+  const [payment, setPayment] = useState([])
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
   const [selectedInfo, setSelectedInfo] = useState(null)
 
+  const MySwal = withReactContent(Swal)
+
   const deleteAction = (e, id) => {
     e.preventDefault()
-
     return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
       if (result.value) {
 
       useJwt
-        .axiosDelete(getApi(AGENT_DELETE+id+'/'))
+        .axiosDelete(getApi(PAYMENT_METHOD_DELETE+id+'/'))
         .then((res) => {
           SwalAlert("Deleted Successfully")
+        
         })
-        .finally(() => fetchAgentData())
+        .finally(() => fetchPaymentMethodData())
+        
       }
     })
+   
   }
+
   const updateStatusAction = (e) => {
     e.preventDefault()
     console.log("selectedInfo", selectedInfo)
     console.log("selectedStatus", selectedStatus)
   return false
-  useJwt
-  .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
-  .then((res) => {
-    console.log("res", res.data)
-    setStatusModalState(false)
-    // SwalAlert("Deleted Successfully")
+  // useJwt
+  // .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
+  // .then((res) => {
+  //   console.log("res", res.data)
+  //   setStatusModalState(false)
+  //   // SwalAlert("Deleted Successfully")
   
-  })
-  .finally(() => fetchShipmentData())
+  // })
+  // .finally(() => fetchShipmentData())
   
 }
 
@@ -76,117 +74,115 @@ const ListTable = () => {
   }
 
   useEffect(() => {
-    fetchAgentData()
+    fetchPaymentMethodData()
   }, [])
 
   useEffect(() => {
     if(!statusModalState) {
       clearData()
     }
-    fetchAgentData()
+    fetchPaymentMethodData()
   }, [statusModalState])
 
-  const fetchAgentData = () => {
+  const fetchPaymentMethodData = () => {
     return useJwt
-      .axiosGet(getApi(AGENT_LIST))
+      .axiosGet(getApi(PAYMENT_METHOD_LIST))
       .then((res) => {
-        setAgent(res.data)
+        console.log("res", res.data)
+        setPayment(res.data)
         return res.data
       })
       .catch(err => console.log(err))
   }
 
-  const fetchSearchAgentData = searchTerm => {
-    return useJwt
-      .axiosGet(getApi(AGENT_SEARCH)+'?search='+ searchTerm)
-      .then((res) => {
-        return res.data
-      })
-      .catch((err) => console.log(err))
-  }
+  // const fetchSearchShipmentData = searchTerm => {
+  //   return useJwt
+  //     .axiosGet(getApi(SEARCH_SHIPMENT)+'?search='+ searchTerm)
+  //     .then((res) => {
+  //       return res.data
+  //     })
+  //     .catch((err) => console.log(err))
+  // }
 
-  const handleSearch = debounce(e => {
-    console.log(e.target.value)
-    const searchTerm = e.target.value
-    if (searchTerm.length > 2) {
-      fetchSearchAgentData(searchTerm)
-        .then(data => {
-          if (data.length > 0) {
-            console.log('res', data)
-            setAgent(data)
-          }else{
-            console.log("No data")
-          }
-        })
-    }
+  // const handleSearch = debounce(e => {
+  //   console.log(e.target.value)
+  //   const searchTerm = e.target.value
+  //   if (searchTerm.length > 2) {
+  //     fetchSearchShipmentData(searchTerm)
+  //       .then(data => {
+  //         if (data.length > 0) {
+  //           console.log('res', data)
+  //           setShipment(data)
+  //         }else{
+  //           console.log("No data")
+  //         }
+  //       })
+  //   }
     
-  }, 300)
+  // }, 300)
 
   const clearData = () => {
     setSelectedInfo(null)
     setSelectedStatus(null)
   }
 
-  function debounce (fn, time) {
-    let timeoutId
-    return wrapper
-    function wrapper (...args) {
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-      }
-      timeoutId = setTimeout(() => {
-        timeoutId = null
-        fn(...args)
-      }, time)
-    }
-  }
+  // function debounce (fn, time) {
+  //   let timeoutId
+  //   return wrapper
+  //   function wrapper (...args) {
+  //     if (timeoutId) {
+  //       clearTimeout(timeoutId)
+  //     }
+  //     timeoutId = setTimeout(() => {
+  //       timeoutId = null
+  //       fn(...args)
+  //     }, time)
+  //   }
+  // }
 
   return (
     <>
       <CardText>
-        <div className="row justify-content-between">
-          <div className="col-lg-5">
-            <div className="d-flex align-items-center">
-              <Link to={'/agent/add'}>
-                <Button.Ripple color="primary">Add Agent</Button.Ripple>
-              </Link>
+          <div className="row justify-content-between">
+            <div className="col-lg-5">
+              <div className="d-flex align-items-center">
+                <Link to={'/payment_method/add'}>
+                  <Button.Ripple color="primary">Add Payment Method</Button.Ripple>
+                </Link>
+              </div>
             </div>
+            {/* <div className="col-lg-5">
+              <div className="d-flex align-items-center ">
+                <input
+                  placeholder="Search Shipment"
+                  name="user_name"
+                  type="text"
+                  class="form-control"
+                  onChange={handleSearch}
+                />
+                <Button.Ripple className="btn-icon ms-1" outline color="primary">
+                  <Search size={16} />
+                </Button.Ripple>
+              </div>
+            </div> */}
           </div>
-          <div className="col-lg-5">
-            <div className="d-flex align-items-center ">
-              <input
-                placeholder="Search Agent"
-                name="user_name"
-                type="text"
-                class="form-control"
-                onChange={handleSearch}
-              />
-              <Button.Ripple className="btn-icon ms-1" outline color="primary">
-                <Search size={16} />
-              </Button.Ripple>
-            </div>
-          </div>
-        </div>
-      </CardText>
+        </CardText>
+
       <Table bordered>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Address</th>
+            <th>Payment Method Name</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {agent &&
-            agent.map((info) => (
+          {payment &&
+            payment.map((info) => (
               <tr key={info.id}>
                 <td>
-                  <span className="align-middle fw-bold">{info.user_name}</span>
+                  <span className="align-middle fw-bold">{info.method_name}</span>
                 </td>
-                <td>{info.phone_number}</td>
-                <td>{info.address}</td>
                 <td>
                   <Badge pill color="light-primary" className="me-1">
                     {info.status}
@@ -203,7 +199,7 @@ const ListTable = () => {
                       <MoreVertical size={15} />
                     </DropdownToggle>
                     <DropdownMenu>
-                      <DropdownItem href={"/agent/edit/" + info.id}>
+                      <DropdownItem href={"/payment_method/edit/" + info.id}>
                         <Edit className="me-50" size={15} />{" "}
                         <span className="align-middle">Edit</span>
                       </DropdownItem>
@@ -222,11 +218,12 @@ const ListTable = () => {
             ))}
         </tbody>
       </Table>
+
       <StatusModal
         statusModalState={statusModalState}
         setStatusModalState={setStatusModalState}
         updateStatusAction={updateStatusAction}
-        title={"Change Agent Status"}
+        title={"Change Payment method Status"}
       >
         <div className='demo-inline-spacing'>
           <div className='form-check'>
@@ -239,12 +236,6 @@ const ListTable = () => {
             <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "inactive" ? true : false} onChange={() => setSelectedStatus("inactive")} />
             <Label className='form-check-label' for='ex1-inactive'>
              Inactive
-            </Label>
-          </div>
-          <div className='form-check'>
-            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "pending" ? true : false} onChange={() => setSelectedStatus("pending")} />
-            <Label className='form-check-label' for='ex1-inactive'>
-             Pending
             </Label>
           </div>
         </div>
