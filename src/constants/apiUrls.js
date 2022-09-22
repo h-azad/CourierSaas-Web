@@ -45,6 +45,7 @@ export const AREAS_LIST = '/cities/areas/'
 export const AREAS_DELETE = '/cities/areas/'
 export const AREAS_DETAILS = '/cities/areas/'
 export const AREAS_SEARCH = '/search-area/'
+export const AREAS_BY_CITY = '/cities/get-area/'
 
 // Shipment Type API's 
 export const SHIPMENT_TYPE_ADD = '/shipment_type/shipment_type/'

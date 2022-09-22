@@ -61,7 +61,6 @@ const AddProductType = () => {
     }
 
     setData(data)
-    // if (data.service_type !== null && data.product_type !== null && data.shipment_type !== null) {
     if ( data.product_type !== null &&  data.weight_unit !== null &&  data.volume_unit !== null ) {
 
       let formData = {

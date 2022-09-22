@@ -50,15 +50,15 @@ const ListTable = () => {
     console.log("selectedInfo", selectedInfo)
     console.log("selectedStatus", selectedStatus)
   return false
-  useJwt
-  .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
-  .then((res) => {
-    console.log("res", res.data)
-    setStatusModalState(false)
-    // SwalAlert("Deleted Successfully")
+  // useJwt
+  // .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
+  // .then((res) => {
+  //   console.log("res", res.data)
+  //   setStatusModalState(false)
+  //   // SwalAlert("Deleted Successfully")
   
-  })
-  .finally(() => fetchShipmentData())
+  // })
+  // .finally(() => fetchShipmentData())
   
 }
 
