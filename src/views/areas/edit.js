@@ -88,16 +88,11 @@ const EditAreas = () => {
         .axiosPut(getApi(AREAS_EDIT) + id + "/", formData)
         .then((res) => {
           console.log("res", res.data)
-          // handleReset()
-          // toast(t => (
-          //   <ToastContent t={t} type='SUCCESS' message={'Areas Edited Successfully'} />
-          // ))
           SwalAlert("Area Edited Successfully")
           navigate("/areas")
         })
         .catch(err => console.log(err))
 
-      // console.log(formData)
     }
   }
 

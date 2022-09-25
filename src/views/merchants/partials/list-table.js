@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash, Search, Edit3 } from "react-feather"
+import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
 import {
   Table,
   Badge,
@@ -177,21 +177,21 @@ const ListTable = () => {
           <tr>
             <th>Full Name</th>
             <th>Contact Number 1*</th>
-            <th>Contact Number 2*</th>
+            {/* <th>Contact Number 2*</th>
             <th>Identity</th>
-            <th>Identity No*</th>
+            <th>Identity No*</th> */}
             <th>Email</th>
-            <th>Preferred Payment Method*</th>
+            {/* <th>Preferred Payment Method*</th>
             <th>Bank Name</th>
             <th>Bank Account Name</th>
-            <th>Account Number</th>
+            <th>Account Number</th> */}
             <th>City Name</th>
             <th>Area Name</th>
-            <th>Business Name</th>
+            {/* <th>Business Name</th>
             <th>Address</th>
             <th>Pickup Address</th>
             <th>Password</th>
-            <th>Confirm Password</th>
+            <th>Confirm Password</th> */}
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -204,21 +204,21 @@ const ListTable = () => {
                   <span className="align-middle fw-bold">{info.full_name}</span>
                 </td>
                 <td>{info.contact_no}</td>
-                <td>{info.contact_no_two}</td>
+                {/* <td>{info.contact_no_two}</td>
                 <td>{info.identity}</td>
-                <td>{info.identity_no}</td>
+                <td>{info.identity_no}</td> */}
                 <td>{info.email}</td>
-                <td>{info.payment_method}</td>
+                {/* <td>{info.payment_method}</td>
                 <td>{info.bank_name}</td>
                 <td>{info.bank_account_name}</td>
-                <td>{info.bank_account_num}</td>
+                <td>{info.bank_account_num}</td> */}
                 <td>{info.city}</td>
                 <td>{info.area}</td>
-                <td>{info.business_name}</td>
+                {/* <td>{info.business_name}</td>
                 <td>{info.address}</td>
                 <td>{info.pickup_address}</td>
                 <td>{info.password}</td>
-                <td>{info.confirm_password}</td>
+                <td>{info.confirm_password}</td> */}
                 <td>
                   <Badge pill color="light-primary" className="me-1">
                     {info.status}
@@ -235,6 +235,10 @@ const ListTable = () => {
                       <MoreVertical size={15} />
                     </DropdownToggle>
                     <DropdownMenu>
+                      <DropdownItem href={"/merchants/view/" + info.id} >
+                        <Eye className="me-50" size={15} />{" "}
+                        <span className="align-middle">View</span>
+                      </DropdownItem>
                       <DropdownItem href={"/merchants/edit/" + info.id}>
                         <Edit className="me-50" size={15} />{" "}
                         <span className="align-middle">Edit</span>

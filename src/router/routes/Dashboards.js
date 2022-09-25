@@ -3,6 +3,7 @@ import { lazy } from 'react'
 import MerchantList from "../../views/merchants/list"
 import AddMerchants from "../../views/merchants/add"
 import EditMerchants from "../../views/merchants/edit"
+import MarchantView from "../../views/merchants/view"
 
 import RiderList from "../../views/rider/list"
 import AddRider from "../../views/rider/add"
@@ -66,6 +67,10 @@ const DashboardRoutes = [
   {
     path: "/merchants/edit/:id",
     element: <EditMerchants />
+  },
+  {
+    path: "/merchants/view/:id",
+    element: <MarchantView />
   },
   
 
