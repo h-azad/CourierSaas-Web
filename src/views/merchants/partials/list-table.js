@@ -92,6 +92,7 @@ const ListTable = () => {
     return useJwt
       .axiosGet(getApi(MARCHANT_LIST))
       .then((res) => {
+        console.log(res.data)
         setMerchants(res.data)
         return res.data
       })
@@ -177,21 +178,9 @@ const ListTable = () => {
           <tr>
             <th>Full Name</th>
             <th>Contact Number 1*</th>
-            {/* <th>Contact Number 2*</th>
-            <th>Identity</th>
-            <th>Identity No*</th> */}
             <th>Email</th>
-            {/* <th>Preferred Payment Method*</th>
-            <th>Bank Name</th>
-            <th>Bank Account Name</th>
-            <th>Account Number</th> */}
             <th>City Name</th>
             <th>Area Name</th>
-            {/* <th>Business Name</th>
-            <th>Address</th>
-            <th>Pickup Address</th>
-            <th>Password</th>
-            <th>Confirm Password</th> */}
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -204,21 +193,9 @@ const ListTable = () => {
                   <span className="align-middle fw-bold">{info.full_name}</span>
                 </td>
                 <td>{info.contact_no}</td>
-                {/* <td>{info.contact_no_two}</td>
-                <td>{info.identity}</td>
-                <td>{info.identity_no}</td> */}
                 <td>{info.email}</td>
-                {/* <td>{info.payment_method}</td>
-                <td>{info.bank_name}</td>
-                <td>{info.bank_account_name}</td>
-                <td>{info.bank_account_num}</td> */}
-                <td>{info.city}</td>
-                <td>{info.area}</td>
-                {/* <td>{info.business_name}</td>
-                <td>{info.address}</td>
-                <td>{info.pickup_address}</td>
-                <td>{info.password}</td>
-                <td>{info.confirm_password}</td> */}
+                <td>{info.city?.cities_name}</td>
+                <td>{info.area?.areas_name}</td>
                 <td>
                   <Badge pill color="light-primary" className="me-1">
                     {info.status}

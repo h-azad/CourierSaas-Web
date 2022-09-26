@@ -19,6 +19,7 @@ import { selectThemeColors } from '@utils'
 
 // ** Styles
 import '@styles/react/libs/react-select/_react-select.scss'
+import { useNavigate } from 'react-router-dom'
 
 const roleColors = {
   merchant: 'light-info',
@@ -45,7 +46,7 @@ const MySwal = withReactContent(Swal)
 const UserInfoCard = ({ selectedUser }) => {
   // ** State
   const [show, setShow] = useState(false)
-
+  const navigate = useNavigate()
   // ** Hook
   const {
     reset,
@@ -161,16 +162,20 @@ const UserInfoCard = ({ selectedUser }) => {
                   <span>{selectedUser?.email}</span>
                 </li>
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'>Contact:</span>
+                  <span className='fw-bolder me-25'>Phone:</span>
                   <span >{selectedUser?.contact_no}</span>
                 </li>
               </ul>
             ) : null}
           </div>
           <div className='d-flex justify-content-center pt-2'>
-            <Button color='primary' onClick={() => setShow(true)}>
+            <Button color='primary' onClick={() => { navigate("/merchants/edit/" + selectedUser.id) }}>
               Edit
             </Button>
+            {/* <DropdownItem href={"/merchants/edit/" + info.id}>
+                        <Edit className="me-50" size={15} />{" "}
+                        <span className="align-middle">Edit</span>
+                      </DropdownItem> */}
             <Button className='ms-1' color='danger' outline>
               Change Status
             </Button>

@@ -13,60 +13,60 @@ import useJwt from '@src/auth/jwt/useJwt'
 import '@styles/react/libs/tables/react-dataTable-component.scss'
 import { useEffect } from 'react'
 
-const marchantsArr = [
-  {
-    title: 'Business Name',
-    totalTasks: '233/240',  
-  },
-  {
-    title: 'Payment Method',
-    totalTasks: '9/50',    
-  },
+// const marchantsArr = [
+//   {
+//     title: 'Business Name',
+//     totalTasks: '233/240',  
+//   },
+//   {
+//     title: 'Payment Method',
+//     totalTasks: '9/50',    
+//   },
  
-  {
-    title: 'Bank Name',
-    totalTasks: '100/190', 
-  },
+//   {
+//     title: 'Bank Name',
+//     totalTasks: '100/190', 
+//   },
 
-  {
-    title: 'Bank Account Name',
-    totalTasks: '214/627',  
-  },
-  {
-    title: 'Bank Account Number',
-    totalTasks: '214/627',  
-  },
-  {
-    title: 'Address',
-    totalTasks: '9/50',    
-  },
-  {
-    title: 'Pickup Address',
-    totalTasks: '9/50',    
-  },
-]
+//   {
+//     title: 'Bank Account Name',
+//     totalTasks: '214/627',  
+//   },
+//   {
+//     title: 'Bank Account Number',
+//     totalTasks: '214/627',  
+//   },
+//   {
+//     title: 'Address',
+//     totalTasks: '9/50',    
+//   },
+//   {
+//     title: 'Pickup Address',
+//     totalTasks: '9/50',    
+//   },
+// ]
 
-export const columns = [
-  {
-    sortable: true,
-    minWidth: '300px',
-    name: 'Properties',
-    selector: row => row.properties,
-    cell: row => {
-      return (
-        <div className='d-flex justify-content-left align-items-center'>
-          <div className='d-flex flex-column'>
-            <span className='text-truncate fw-bolder'>{row.properties}</span>
-          </div>
-        </div>
-      )
-    }
-  },
-  {
-    name: 'Values',
-    selector: row => row.values
-  },
-]
+// export const columns = [
+//   {
+//     sortable: true,
+//     minWidth: '300px',
+//     name: 'Properties',
+//     selector: row => row.properties,
+//     cell: row => {
+//       return (
+//         <div className='d-flex justify-content-left align-items-center'>
+//           <div className='d-flex flex-column'>
+//             <span className='text-truncate fw-bolder'>{row.properties}</span>
+//           </div>
+//         </div>
+//       )
+//     }
+//   },
+//   {
+//     name: 'Values',
+//     selector: row => row.values
+//   },
+// ]
 
 const MarchantInfoList = ({userInfo}) => {
   // useEffect(() => {
@@ -114,14 +114,18 @@ const MarchantInfoList = ({userInfo}) => {
             </tr>
             <tr>
               <th>Payment Method:</th>
-              <th>{userInfo.payment_method}</th>
+              <th>{userInfo.payment_method?.method_name}</th>
             </tr>
             <tr>
               <th>City:</th>
-              <th>{userInfo.city}</th>
+              <th>{userInfo.city?.cities_name}</th>
             </tr><tr>
               <th>Area:</th>
-              <th>{userInfo.area}</th>
+              <th>{userInfo.area?.areas_name}</th>
+            </tr>
+            <tr>
+              <th>Contact(Optional):</th>
+              <th>{userInfo.contact_no_two}</th>
             </tr>
           </tbody>
         </Table>
