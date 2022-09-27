@@ -8,10 +8,13 @@ import MarchantView from "../../views/merchants/view"
 import RiderList from "../../views/rider/list"
 import AddRider from "../../views/rider/add"
 import EditRider from "../../views/rider/edit"
+import RiderView from "../../views/rider/view"
+
 
 import AgentList from "../../views/agent/list"
 import AddAgent from "../../views/agent/add"
 import EditAgent from "../../views/agent/edit"
+import AgentView from "../../views/agent/view"
 
 import CitiesList from "../../views/cities/list"
 import AddCities from "../../views/cities/add"
@@ -86,6 +89,10 @@ const DashboardRoutes = [
     path: "/rider/edit/:id",
     element: <EditRider />
   },
+  {
+    path: "/rider/view/:id",
+    element: <RiderView />
+  },
 
   {
     path: "/agent",
@@ -98,6 +105,10 @@ const DashboardRoutes = [
   {
     path: "/agent/edit/:id",
     element: <EditAgent />
+  },
+  {
+    path: "/agent/view/:id",
+    element: <AgentView />
   },
   
   {

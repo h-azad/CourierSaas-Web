@@ -260,8 +260,8 @@ const ListTable = () => {
             </Label>
           </div>
           <div className='form-check'>
-            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "pending" ? true : false} onChange={() => setSelectedStatus("pending")} />
-            <Label className='form-check-label' for='ex1-inactive'>
+            <Input type='radio' name='ex1' id='ex1-pending' checked={selectedStatus == "pending" ? true : false} onChange={() => setSelectedStatus("pending")} />
+            <Label className='form-check-label' for='ex1-pending'>
              Pending
             </Label>
           </div>
