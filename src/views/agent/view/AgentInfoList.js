@@ -21,17 +21,9 @@ const AgentInfoList = ({userInfo}) => {
         {userInfo && (
           <Table responsive>
           <tbody>
-            {/* <tr>
-              <th>Business Name</th>
-              <th>{userInfo.business_name}</th>
-            </tr> */}
             <tr>
               <th>Address</th>
               <th>{userInfo.address}</th>
-            </tr>
-            <tr>
-              <th>Pickup</th>
-              <th>{userInfo.pickup_address}</th>
             </tr>
             <tr>
               <th>Identity</th>

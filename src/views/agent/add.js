@@ -174,10 +174,10 @@ const AddAgent = () => {
       setError('address', { type: 'required', message: ' Address is required' })
       isFormValid = false
     }
-    if(!data.pickup_address) {
-      setError('pickup_address', { type: 'required', message: 'Pickup address is required' })
-      isFormValid = false
-    }
+    // if(!data.pickup_address) {
+    //   setError('pickup_address', { type: 'required', message: 'Pickup address is required' })
+    //   isFormValid = false
+    // }
     if(!data.password) {
       setError('password', { type: 'required', message: 'Password is required' })
       isFormValid = false
@@ -196,8 +196,7 @@ const AddAgent = () => {
       && data.identity !== null &&  data.identity_no !== null &&  data.email !== null
       && data.payment_method.value !== null &&  data.bank_name !== null &&  data.bank_account_name !== null 
       && data.bank_account_num !== null &&  data.city.value !== null &&  data.area.value!== null
-      && data.address !== null &&  data.pickup_address !== null
-      && data.password !== null &&  data.confirm_password !== null  ) {
+      && data.address !== null && data.password !== null &&  data.confirm_password !== null  ) {
 
 
     // if (Object.values(data).every(field => field.length > 0)) {
@@ -215,7 +214,6 @@ const AddAgent = () => {
         city: data.city.value,
         area: data.area.value,
         address: data.address,
-        pickup_address: data.pickup_address,
         password: data.password,
         confirm_password: data.confirm_password,
         status: 'active'
@@ -232,16 +230,6 @@ const AddAgent = () => {
         .catch(err => console.log(err))
 
     }
-    // else {
-    //   for (const key in data) {
-    //     console.log(key, data[key])
-    //     if (data?.[key]?.length === 0) {
-    //       setError(key, {
-    //         type: 'requred'
-    //       })
-    //     }
-    //   }
-    // }
   }
 
   console.log("errors", errors)
@@ -394,16 +382,7 @@ const AddAgent = () => {
                     {...field} 
                   />}
                 />
-                {/* <Controller
-                  defaultValue=''
-                  control={control}
-                  id='payment_method'
-                  name='payment_method'
-                  render={({ field }) => <Input placeholder='Bank/bKash/Nogod' invalid={errors.payment_method && true} {...field} />}
-                /> */}
-                {/* {errors && errors.payment_method && <span>{errors.payment_method.message}</span>} */}
-            {errors && errors.payment_method && <span className="invalid-feedback">{errors.payment_method.message}</span>}
-
+                {errors && errors.payment_method && <span className="invalid-feedback">{errors.payment_method.message}</span>}
               </div>
             </div>
             
@@ -500,20 +479,6 @@ const AddAgent = () => {
             </div>
             
           </div>        
-          {/* <div className='mb-1'>
-            <Label className='form-label' for='business_name'>
-              Business Name
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='business_name'
-              name='business_name'
-              render={({ field }) => <Input placeholder='Test Shop' invalid={errors.business_name && true} {...field} />}
-            />
-            {errors && errors.business_name && <span className="invalid-feedback">{errors.business_name.message}</span>}
-
-          </div> */}
           <div className='mb-1'>
             <Label className='form-label' for='address'>
               Address
@@ -528,21 +493,6 @@ const AddAgent = () => {
             {errors && errors.address && <span className="invalid-feedback">{errors.address.message}</span>}
 
           </div>
-          <div className='mb-1'>
-            <Label className='form-label' for='pickup_address'>
-              Pickup Address
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='pickup_address'
-              name='pickup_address'
-              render={({ field }) => <Input placeholder='Dhaka , Bangladesh' invalid={errors.pickup_address && true} {...field} />}
-            />
-            {errors && errors.pickup_address && <span className="invalid-feedback">{errors.pickup_address.message}</span>}
-
-          </div>
-
           <div class="row">
             <div class="col-lg-6">
             <div className='mb-1'>

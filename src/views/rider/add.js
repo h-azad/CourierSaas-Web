@@ -174,10 +174,10 @@ const AddRiders = () => {
       setError('address', { type: 'required', message: ' Address is required' })
       isFormValid = false
     }
-    if(!data.pickup_address) {
-      setError('pickup_address', { type: 'required', message: 'Pickup address is required' })
-      isFormValid = false
-    }
+    // if(!data.pickup_address) {
+    //   setError('pickup_address', { type: 'required', message: 'Pickup address is required' })
+    //   isFormValid = false
+    // }
     if(!data.password) {
       setError('password', { type: 'required', message: 'Password is required' })
       isFormValid = false
@@ -196,8 +196,7 @@ const AddRiders = () => {
       && data.identity !== null &&  data.identity_no !== null &&  data.email !== null
       && data.payment_method.value !== null &&  data.bank_name !== null &&  data.bank_account_name !== null 
       && data.bank_account_num !== null &&  data.city.value !== null &&  data.area.value!== null
-      && data.address !== null &&  data.pickup_address !== null
-      && data.password !== null &&  data.confirm_password !== null  ) {
+      && data.address !== null && data.password !== null &&  data.confirm_password !== null  ) {
 
 
     // if (Object.values(data).every(field => field.length > 0)) {
@@ -215,7 +214,7 @@ const AddRiders = () => {
         city: data.city.value,
         area: data.area.value,
         address: data.address,
-        pickup_address: data.pickup_address,
+        // pickup_address: data.pickup_address,
         password: data.password,
         confirm_password: data.confirm_password,
         status: 'active'
@@ -528,7 +527,7 @@ const AddRiders = () => {
             {errors && errors.address && <span className="invalid-feedback">{errors.address.message}</span>}
 
           </div>
-          <div className='mb-1'>
+          {/* <div className='mb-1'>
             <Label className='form-label' for='pickup_address'>
               Pickup Address
             </Label>
@@ -541,7 +540,7 @@ const AddRiders = () => {
             />
             {errors && errors.pickup_address && <span className="invalid-feedback">{errors.pickup_address.message}</span>}
 
-          </div>
+          </div> */}
 
           <div class="row">
             <div class="col-lg-6">

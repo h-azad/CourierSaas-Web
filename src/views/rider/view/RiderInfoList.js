@@ -23,10 +23,10 @@ const RiderInfoList = ({userInfo}) => {
               <th>Address</th>
               <th>{userInfo.address}</th>
             </tr>
-            <tr>
+            {/* <tr>
               <th>Pickup</th>
               <th>{userInfo.pickup_address}</th>
-            </tr>
+            </tr> */}
             <tr>
               <th>Identity</th>
               <th>{userInfo.identity}</th>

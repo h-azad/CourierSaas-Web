@@ -177,7 +177,7 @@ const UserInfoCard = ({ selectedUser }) => {
             ) : null}
           </div>
           <div className='d-flex justify-content-center pt-2'>
-            <Button color='primary' onClick={() => { navigate("/merchants/edit/" + selectedUser.id) }}>
+            <Button color='primary' onClick={() => { navigate("/rider/edit/" + selectedUser.id) }}>
               Edit
             </Button>
             <Button className='ms-1' color='danger' outline onClick={e=>changeStatusAction(e, selectedUser)}>
@@ -191,13 +191,13 @@ const UserInfoCard = ({ selectedUser }) => {
         statusModalState={statusModalState}
         setStatusModalState={setStatusModalState}
         updateStatusAction={updateStatusAction}
-        title={"Change Marchant Status"}
+        title={"Change Rider Status"}
       >
         <div className='demo-inline-spacing'>
           <div className='form-check'>
-            <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "approved" ? true : false} onChange={() => setSelectedStatus("approved")} />
+            <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "active" ? true : false} onChange={() => setSelectedStatus("active")} />
             <Label className='form-check-label' for='ex1-active'>
-            Approved
+            Active
             </Label>
           </div>
           <div className='form-check'>

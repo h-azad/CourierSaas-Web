@@ -120,6 +120,9 @@ export default class JwtService {
   axiosPut(url, ...args){
     return axios.put(url, ...args)
   }
+  axiosPatch(url, ...args){
+    return axios.put(url, ...args)
+  }
   axiosDelete(url, ...args){
     return axios.delete(url, ...args)
   }

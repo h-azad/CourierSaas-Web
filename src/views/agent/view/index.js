@@ -12,24 +12,24 @@ import UserInfoCard from './UserInfoCard'
 
 // ** Styles
 import '@styles/react/apps/app-users.scss'
-import { getApi, RIDER_DETAILS } from '../../../constants/apiUrls'
+import { getApi, AGENT_DETAILS } from '../../../constants/apiUrls'
 
-const RiderView = () => {
+const AgentView = () => {
 
   // ** Hooks
   const { id } = useParams()
 
-  const [riderInfo, setRiderInfo] = useState(null)
+  const [agentInfo, setAgentInfo] = useState(null)
   
   const [active, setActive] = useState('1')
 
   useEffect(() => {
     console.log(id)
     useJwt
-      .axiosGet(getApi(RIDER_DETAILS) + id + "/")
+      .axiosGet(getApi(AGENT_DETAILS) + id + "/")
       .then((res) => {
         console.log("res", res.data)
-        setRiderInfo(res.data)
+        setAgentInfo(res.data)
         return res.data
       })
       .catch(err => console.log(err))
@@ -43,18 +43,18 @@ const RiderView = () => {
 
   return  (
     <div className='app-user-view'>
-      {riderInfo &&
+      {agentInfo &&
       <Row>
         <Col xl='4' lg='5' xs={{ order: 1 }} md={{ order: 0, size: 5 }}>
-          <UserInfoCard selectedUser={riderInfo} />
+          <UserInfoCard selectedUser={agentInfo} />
           {/* <PlanCard /> */}
         </Col>
         <Col xl='8' lg='7' xs={{ order: 0 }} md={{ order: 1, size: 7 }}>
-          <UserTabs active={active} toggleTab={toggleTab} userInfo={riderInfo} />
+          <UserTabs active={active} toggleTab={toggleTab} userInfo={agentInfo} />
         </Col>
       </Row>
       }
     </div>
   )
 }
-export default RiderView
+export default AgentView

@@ -190,14 +190,6 @@ const EditMerchants = () => {
       setError('pickup_address', { type: 'required', message: 'Pickup address is required' })
       isFormValid = false
     }
-    // if(!data.password) {
-    //   setError('password', { type: 'required', message: 'Password is required' })
-    //   isFormValid = false
-    // }
-    // if(!data.confirm_password) {
-    //   setError('confirm_password', { type: 'required', message: 'Confirm password is required' })
-    //   isFormValid = false
-    // }
     if(!isFormValid) {
       return false
     }
@@ -211,7 +203,6 @@ const EditMerchants = () => {
       && data.business_name !== null &&  data.address !== null &&  data.pickup_address !== null  ) {
 
 
-    // if (Object.values(data).every(field => field.length > 0)) {
       let formData = {
         full_name: data.full_name,
         contact_no: data.contact_no,
@@ -228,35 +219,22 @@ const EditMerchants = () => {
         business_name: data.business_name,
         address: data.address,
         pickup_address: data.pickup_address,
-        // password: data.password,
-        // confirm_password: data.confirm_password,
+ 
         status: 'approved'
       }
       console.log("formData", formData)
-      // return false
+    
       useJwt
-        .axiosPost(getApi(MARCHANT_EDIT), formData)
+        .axiosPut(getApi(MARCHANT_EDIT) + id + "/", formData)
         .then((res) => {
           console.log("res", res.data)
-          SwalAlert("Marchant Added Successfully")
+          SwalAlert("Marchant Edited Successfully")
           navigate("/merchants")
         })
         .catch(err => console.log(err))
 
     }
-    // else {
-    //   for (const key in data) {
-    //     console.log(key, data[key])
-    //     if (data?.[key]?.length === 0) {
-    //       setError(key, {
-    //         type: 'requred'
-    //       })
-    //     }
-    //   }
-    // }
   }
-
-  // console.log("errors", errors)
 
   return (
     <Card>
@@ -552,50 +530,6 @@ const EditMerchants = () => {
             {errors && errors.pickup_address && <span className="invalid-feedback">{errors.pickup_address.message}</span>}
 
           </div>
-
-          {/* <div class="row">
-            <div class="col-lg-6">
-            <div className='mb-1'>
-            <Label className='form-label' for='password'>
-              Password
-            </Label>
-            <input
-                className={`form-control  ${errors.password ? "is-invalid" : ""}`}
-                type="password"
-                {...register("password", {
-                  required: "You must specify a password",
-                  minLength: {
-                    value: 6,
-                    message: "Password must have at least 6 characters"
-                  }
-                })}
-                placeholder='******'
-                invalid={errors.password && true}
-          
-              />
-            {errors && errors.password && <span className="invalid-feedback">{errors.password.message}</span>}
-
-          </div>
-            </div>
-            <div class="col-lg-6">
-              <div className='mb-1'>
-                <Label className='form-label' for='confirm_password'>
-                Confirm Password
-                </Label>
-                <input
-                    className={`form-control  ${errors.confirm_password ? "is-invalid" : ""}`}
-                    type="password"
-                    placeholder='******'
-                    {...register("confirm_password", {
-                      required: "Confirm Password is required",
-                      validate: (value) => value === watch('password') || "Password not match"
-                    })}
-                  />
-                {errors && errors.confirm_password && <span className="invalid-feedback" >{errors.confirm_password.message}</span>}
-              </div>
-            </div>
-          </div> */}
-
           <div className='d-flex'>
             <Button className='me-1' color='primary' type='submit'>
               Submit

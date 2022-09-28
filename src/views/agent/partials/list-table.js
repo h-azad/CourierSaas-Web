@@ -158,7 +158,7 @@ const ListTable = () => {
           <div className="col-lg-5">
             <div className="d-flex align-items-center ">
               <input
-                placeholder="Search Rider"
+                placeholder="Search Agent"
                 name="user_name"
                 type="text"
                 class="form-control"

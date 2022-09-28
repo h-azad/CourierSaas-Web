@@ -21,6 +21,7 @@ import {
   MARCHANT_LIST,
   MARCHANT_DELETE,
   MARCHANT_SEARCH,
+  MARCHANT_UPDATE_STATUS
 } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
@@ -55,16 +56,16 @@ const ListTable = () => {
     e.preventDefault()
     console.log("selectedInfo", selectedInfo)
     console.log("selectedStatus", selectedStatus)
-  return false
-  // useJwt
-  // .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
-  // .then((res) => {
-  //   console.log("res", res.data)
-  //   setStatusModalState(false)
-  //   // SwalAlert("Deleted Successfully")
+  // return false
+  useJwt
+  .axiosPatch(getApi(MARCHANT_UPDATE_STATUS) + selectedInfo.id + "/")
+  .then((res) => {
+    console.log("res", res.data)
+    setStatusModalState(false)
+    // SwalAlert("Deleted Successfully")
   
-  // })
-  // .finally(() => fetchShipmentData())
+  })
+  .finally(() => fetchMerchantsData())
   
 }
 
