@@ -395,14 +395,6 @@ const AddMerchants = () => {
                     {...field} 
                   />}
                 />
-                {/* <Controller
-                  defaultValue=''
-                  control={control}
-                  id='payment_method'
-                  name='payment_method'
-                  render={({ field }) => <Input placeholder='Bank/bKash/Nogod' invalid={errors.payment_method && true} {...field} />}
-                /> */}
-                {/* {errors && errors.payment_method && <span>{errors.payment_method.message}</span>} */}
             {errors && errors.payment_method && <span className="invalid-feedback">{errors.payment_method.message}</span>}
 
               </div>

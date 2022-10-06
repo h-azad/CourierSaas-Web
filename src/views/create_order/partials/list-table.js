@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash,Search, Edit3 } from "react-feather"
+import { MoreVertical, Edit, Trash,Search, Edit3, Eye } from "react-feather"
 import {
   Table,
   Badge,
@@ -167,15 +167,15 @@ const changeStatusAction = (e, info) => {
         <Table bordered>
           <thead>
             <tr>
-              <th>Marchant Name</th>
+              <th>Marchant </th>
               <th>Recipient Name</th>
-              <th>Phone Number</th>
-              <th>Delivary Address</th>
-              <th>Amounr to be Collected</th>
-              <th>Product type</th>
-              <th>Dimention</th>
+              {/* <th>Phone Number</th> */}
+              {/* <th>Delivary Address</th> */}
+              {/* <th>Amounr to be Collected</th> */}
+              {/* <th>Product type</th> */}
+              {/* <th>Dimention</th> */}
               <th>Delivary Area</th>
-              <th>Delivary Charge</th>
+              {/* <th>Delivary Charge</th> */}
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -185,18 +185,18 @@ const changeStatusAction = (e, info) => {
               createOrder.map((info) => (
                 <tr key={info.id}>
                   <td>
-                    <span className="align-middle fw-bold">{info.marchant_name}</span>
+                    <span className="align-middle fw-bold">{info.marchant.full_name}</span>
                   </td>
                   {/* <td>
                     <span className="align-middle fw-bold">{info.product.product_type}</span>
                   </td> */}
-                  <td>
+                  {/* <td>
                     <span className="align-middle fw-bold">{info.product_type}</span>
-                  </td>
+                  </td> */}
                   <td>
                     <span className="align-middle fw-bold">{info.recipient_name}</span>
                   </td>
-                  <td>
+                  {/* <td>
                     <span className="align-middle fw-bold">{info.phone_number}</span>
                   </td>
                   <td>
@@ -207,13 +207,13 @@ const changeStatusAction = (e, info) => {
                   </td>
                   <td>
                     <span className="align-middle fw-bold">{info.dimention}</span>
-                  </td>
+                  </td> */}
                   <td>
-                    <span className="align-middle fw-bold">{info.delivary_area}</span>
+                    <span className="align-middle fw-bold">{info.delivary_area.areas_name}</span>
                   </td>
-                  <td>
+                  {/* <td>
                     <span className="align-middle fw-bold">{info.delivary_charge}</span>
-                  </td>
+                  </td> */}
                   <td>
                     <Badge pill color="light-primary" className="me-1">
                       {info.status}
@@ -230,6 +230,10 @@ const changeStatusAction = (e, info) => {
                         <MoreVertical size={15} />
                       </DropdownToggle>
                       <DropdownMenu>
+                        <DropdownItem href={"/create_order/view/" + info.id} >
+                          <Eye className="me-50" size={15} />{" "}
+                          <span className="align-middle">View</span>
+                        </DropdownItem>
                         <DropdownItem href={"/create_order/edit/" + info.id}>
                           <Edit className="me-50" size={15} />{" "}
                           <span className="align-middle">Edit</span>
@@ -257,21 +261,21 @@ const changeStatusAction = (e, info) => {
       >
         <div className='demo-inline-spacing'>
           <div className='form-check'>
-            <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "active" ? true : false} onChange={() => setSelectedStatus("active")} />
+            <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "accepted" ? true : false} onChange={() => setSelectedStatus("accepted")} />
             <Label className='form-check-label' for='ex1-active'>
-              Active
+            Accepted
             </Label>
           </div>
-          {/* <div className='form-check'>
-            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "inactive" ? true : false} onChange={() => setSelectedStatus("inactive")} />
-            <Label className='form-check-label' for='ex1-inactive'>
-             Inactive
-            </Label>
-          </div> */}
           <div className='form-check'>
             <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "pending" ? true : false} onChange={() => setSelectedStatus("pending")} />
             <Label className='form-check-label' for='ex1-inactive'>
-             Pending
+            Pending
+            </Label>
+          </div>
+          <div className='form-check'>
+            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "delivered" ? true : false} onChange={() => setSelectedStatus("delivered")} />
+            <Label className='form-check-label' for='ex1-inactive'>
+            Delivered
             </Label>
           </div>
         </div>

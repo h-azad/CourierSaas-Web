@@ -39,6 +39,8 @@ import EditVolumetricPolicy from "../../views/volumetric_policy/edit"
 import CreateOrderList from "../../views/create_order/list"
 import AddCreateOrder from "../../views/create_order/add"
 import EditCreateOrder from "../../views/create_order/edit"
+import CreateOrderView from "../../views/create_order/view"
+
 
 import PaymentMethodList from "../../views/payment_method/list"
 import AddPaymentMethod from "../../views/payment_method/add"
@@ -187,6 +189,10 @@ const DashboardRoutes = [
   {
     path: "/create_order/edit/:id",
     element: <EditCreateOrder/>
+  },
+  {
+    path: "/create_order/view/:id",
+    element: <CreateOrderView />
   },
 
   {
