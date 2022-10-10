@@ -28,7 +28,6 @@ const CreateOrderView = () => {
     useJwt
       .axiosGet(getApi(CREATE_ORDER_DETAILS) + id + "/")
       .then((res) => {
-        console.log("res", res.data)
         setCreateOrderInfo(res.data)
         return res.data
       })

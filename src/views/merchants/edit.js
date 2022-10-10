@@ -388,7 +388,7 @@ const EditMerchants = () => {
                   />}
                 />
               
-            {errors && errors.payment_method && <span className="invalid-feedback">{errors.payment_method.message}</span>}
+              {errors && errors.payment_method && <span className="invalid-feedback">{errors.payment_method.message}</span>}
 
               </div>
             </div>

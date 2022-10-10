@@ -4,19 +4,16 @@ import { Card, CardHeader, Progress, Table } from 'reactstrap'
 // ** Third Party Components
 import { ChevronDown } from 'react-feather'
 import DataTable from 'react-data-table-component'
-
 import useJwt from '@src/auth/jwt/useJwt'
-
 
 
 // ** Styles
 import '@styles/react/libs/tables/react-dataTable-component.scss'
 import { useEffect } from 'react'
 
-
 const CreateOrderInfoList = ({userInfo}) => {
   // useEffect(() => {
-  //   console.log(userInfo)
+    console.log(userInfo)
   // }, [userInfo])
 
   return (
@@ -26,53 +23,35 @@ const CreateOrderInfoList = ({userInfo}) => {
         {userInfo && (
           <Table responsive>
           <tbody>
+            
             <tr>
-              <th>Business Name</th>
-              <th>{userInfo.business_name}</th>
+              <th>Marchant</th>
+              <th>{userInfo.marchant?.full_name}</th>
+            </tr> 
+            <tr>
+              <th>Product Type</th>
+              <th>
+                {userInfo.product_type?.product_type}
+              </th>
             </tr>
             <tr>
-              <th>Address</th>
-              <th>{userInfo.address}</th>
+              <th>Delivary Area</th>
+              <th>{userInfo.delivary_area?.areas_name}</th>
+            </tr>
+
+            <tr>
+              <th>Dimention</th>
+              <th>{userInfo.dimention}</th>
             </tr>
             <tr>
-              <th>Pickup</th>
-              <th>{userInfo.pickup_address}</th>
+              <th>Amount to be collected</th>
+              <th>{userInfo.amount_to_be_collected}</th>
             </tr>
             <tr>
-              <th>Identity</th>
-              <th>{userInfo.identity}</th>
+              <th>Delivary Charge</th>
+              <th>{userInfo.delivary_charge}</th>
             </tr>
-            <tr>
-              <th>Identity Number</th>
-              <th>{userInfo.identity_no}</th>
-            </tr>
-            <tr>
-              <th>Bank Name:</th>
-              <th>{userInfo.bank_name}</th>
-            </tr>
-            <tr>
-              <th>Bank A/C Name:</th>
-              <th>{userInfo.bank_account_name}</th>
-            </tr>
-            <tr>
-              <th>Bank A/C Number:</th>
-              <th>{userInfo.bank_account_num}</th>
-            </tr>
-            <tr>
-              <th>Payment Method:</th>
-              <th>{userInfo.payment_method?.method_name}</th>
-            </tr>
-            <tr>
-              <th>City:</th>
-              <th>{userInfo.city?.cities_name}</th>
-            </tr><tr>
-              <th>Area:</th>
-              <th>{userInfo.area?.areas_name}</th>
-            </tr>
-            <tr>
-              <th>Contact(Optional):</th>
-              <th>{userInfo.contact_no_two}</th>
-            </tr>
+            
           </tbody>
         </Table>
         )}

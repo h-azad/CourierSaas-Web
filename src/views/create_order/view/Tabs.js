@@ -11,7 +11,7 @@ import { User, Lock, Bookmark, Bell, Link } from 'react-feather'
 import SecurityTab from './SecurityTab'
 import BillingPlanTab from './BillingTab'
 import Notifications from './Notifications'
-import MarchantInfoList from './CreateOrderInfoList'
+import CreateOrderInfoList from './CreateOrderInfoList'
 
 const UserTabs = ({ active, toggleTab, userInfo }) => {
   return (
@@ -44,7 +44,7 @@ const UserTabs = ({ active, toggleTab, userInfo }) => {
       </Nav>
       <TabContent activeTab={active}>
         <TabPane tabId='1'>
-          <MarchantInfoList userInfo={userInfo} />
+          <CreateOrderInfoList userInfo={userInfo} />
         </TabPane>
         <TabPane tabId='2'>
           <SecurityTab />

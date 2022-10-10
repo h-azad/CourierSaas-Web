@@ -80,7 +80,7 @@ const UserInfoCard = ({ selectedUser }) => {
           initials
           color={selectedUser?.avatarColor|| 'light-primary'}
           className='rounded mt-3 mb-2'
-          content={selectedUser?.fullName}
+          content={selectedUser?.recipient_name}
           contentStyles={{
             borderRadius: 0,
             fontSize: 'calc(48px)',
@@ -130,7 +130,7 @@ const UserInfoCard = ({ selectedUser }) => {
               {renderUserImg()}
               <div className='d-flex flex-column align-items-center text-center'>
                 <div className='user-info'>
-                  <h4>{selectedUser?.full_name}</h4>
+                  <h4>{selectedUser?.recipient_name}</h4>
                   
                   <Badge color={roleColors['Order']} className='text-capitalize'>
                       {selectedUser.status}
@@ -166,16 +166,12 @@ const UserInfoCard = ({ selectedUser }) => {
             {selectedUser !== null ? (
               <ul className='list-unstyled'>
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'> Marchant :</span>
-                  <span>{selectedUser?.marchant}</span>
+                  <span className='fw-bolder me-25'> Phone Number:</span>
+                  <span>{selectedUser?.phone_number}</span>
                 </li>
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'>Recipient :</span>
-                  <span >{selectedUser?.recipient_name}</span>
-                </li>
-                <li className='mb-75'>
-                  <span className='fw-bolder me-25'>Phone:</span>
-                  <span >{selectedUser?.phone_number}</span>
+                  <span className='fw-bolder me-25'>Delivery Address:</span>
+                  <span >{selectedUser?.delivary_address}</span>
                 </li>
               </ul>
             ) : null}
@@ -195,19 +191,19 @@ const UserInfoCard = ({ selectedUser }) => {
         statusModalState={statusModalState}
         setStatusModalState={setStatusModalState}
         updateStatusAction={updateStatusAction}
-        title={"Change Marchant Status"}
+        title={"Change Order Status"}
       >
         <div className='demo-inline-spacing'>
           <div className='form-check'>
-            <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "approved" ? true : false} onChange={() => setSelectedStatus("approved")} />
+            <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "accepted" ? true : false} onChange={() => setSelectedStatus("accepted")} />
             <Label className='form-check-label' for='ex1-active'>
-            Approved
+            Accepted
             </Label>
           </div>
           <div className='form-check'>
-            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "inactive" ? true : false} onChange={() => setSelectedStatus("inactive")} />
+            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "delivered" ? true : false} onChange={() => setSelectedStatus("delivered")} />
             <Label className='form-check-label' for='ex1-inactive'>
-             Inactive
+            Delivered
             </Label>
           </div>
           <div className='form-check'>
