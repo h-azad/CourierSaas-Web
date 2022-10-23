@@ -35,6 +35,8 @@ import EditProductType from "../../views/product_type/edit"
 import VolumetricPolicyList from "../../views/volumetric_policy/list"
 import AddVolumetricPolicy from "../../views/volumetric_policy/add"
 import EditVolumetricPolicy from "../../views/volumetric_policy/edit"
+import VolumetricPolicyView from "../../views/volumetric_policy/view"
+
 
 import CreateOrderList from "../../views/create_order/list"
 import AddCreateOrder from "../../views/create_order/add"
@@ -176,6 +178,10 @@ const DashboardRoutes = [
   {
     path: "/volumetric_policy/edit/:id",
     element: <EditVolumetricPolicy/>
+  },
+  {
+    path: "/volumetric_policy/view/:id",
+    element: <VolumetricPolicyView />
   },
 
   {

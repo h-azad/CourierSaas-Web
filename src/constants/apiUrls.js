@@ -88,6 +88,9 @@ export const CREATE_ORDER_LIST = '/create_order/create_order/'
 export const CREATE_ORDER_DELETE = '/create_order/create_order/'
 export const CREATE_ORDER_DETAILS = '/create_order/create_order/'
 export const SEARCH_CREATE_ORDER = '/search_create_order/'
+export const DIMENTION_BY_PRODUCT = '/create_order/get-dimention/'
+export const VOLUMETRIC_POLICY_BY_PRODUCT = '/create_order/get-price-policy/'
+
 
 
 //Payment Method API's 

@@ -191,13 +191,15 @@ const EditCreateOrder = () => {
         .axiosGet(getApi(CREATE_ORDER_EDIT), formData)
         .then((res) => {
           console.log("res", res.data)
-          SwalAlert("Order Added Successfully")
+          SwalAlert("Order Edited Successfully")
           navigate("/create_order")
         })
         .catch(err => console.log(err))
 
     }
   }
+
+  // console.log("createOrderInfo.product_type.product_type", createOrderInfo && createOrderInfo.product_type.product_type)
 
   return (
     <Card>
@@ -291,13 +293,15 @@ const EditCreateOrder = () => {
             {errors && errors.amount_to_be_collected && <span className="invalid-feedback">{errors.amount_to_be_collected.message}</span>}
           </div>
           <div class="row">
+
+
             <div class="col-lg-6">
               <div className='mb-1'>
                   <Label className='form-label' for='product_type'>
                     Product Type
                   </Label>
                   <Controller
-              defaultValue={{value: createOrderInfo.product_type.id, label: createOrderInfo.product_type.product_type}}
+              defaultValue={ createOrderInfo && createOrderInfo.product_type.product_type}
               id="product_type"
               name="product_type"
               control={control}
@@ -313,6 +317,8 @@ const EditCreateOrder = () => {
           {errors && errors.product_type && <span className="invalid-feedback">{errors.product_type.message}</span>}
               </div>
             </div>
+
+
               <div class="col-lg-6">
                 <div className='mb-1'>
                   <Label className='form-label' for='dimention'>

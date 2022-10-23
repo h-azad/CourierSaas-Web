@@ -15,17 +15,22 @@ import { useForm, Controller } from 'react-hook-form'
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, CREATE_ORDER_ADD,MARCHANT_LIST, PRODUCT_TYPE_LIST ,AREAS_LIST} from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
+import { DIMENTION_BY_PRODUCT, VOLUMETRIC_POLICY_BY_PRODUCT } from "../../constants/apiUrls"
 import SwalAlert from "../../components/SwalAlert"
 
 const AddCreateOrder = () => {
   const [selectboxMarchant, setSelectboxMarchant] = useState([])
   const [selectboxProduct, setSelectboxProduct] = useState([])
   const [selectboxArea, setSelectboxArea] = useState([])
+  const [selectboxDimention, setSelectboxDimention] = useState([])
+
   const [data, setData] = useState(null)
   const navigate = useNavigate()
   const {
     reset,
     control,
+    watch,
+    resetField,
     setError,
     setValue,
     handleSubmit,
@@ -33,7 +38,9 @@ const AddCreateOrder = () => {
   } = useForm({
     defaultValues: {
       product_type: {},
-      marchant: {},   
+      marchant: {},
+      // dimention: {},   
+
 
     }
   })
@@ -44,6 +51,18 @@ const AddCreateOrder = () => {
     fetchAreaData()
 
   },[])
+
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => { 
+      console.log(value, name, type)
+      if(name == 'product_type' && type=='change'){
+        resetField('dimention')
+        fetchDimentionData(value.product_type.value)
+      }
+    })
+    
+    return () => subscription.unsubscribe()
+  }, [watch])
 
   const fetchMarchantData = () => {
     return useJwt
@@ -77,6 +96,24 @@ const AddCreateOrder = () => {
       })
       .catch(err => console.log(err))
   }
+
+  const fetchDimentionData = (productTypeId) => {
+
+    return useJwt
+      .axiosGet(getApi(VOLUMETRIC_POLICY_BY_PRODUCT) + productTypeId + '/')
+      .then((res) => {
+        let dimentionData = []
+
+        res.data.map(data => {
+          dimentionData.push({value: data.id, label: data.policy_title})
+        })
+
+        setSelectboxDimention(dimentionData)
+        return res.data
+      })
+      .catch(err => console.log(err))
+  }
+
 
   const fetchAreaData = () => {
     return useJwt
@@ -123,7 +160,7 @@ const AddCreateOrder = () => {
       isFormValid = false
     }
    
-    if(!data.dimention) {
+    if(!data.dimention  && data.dimention.value) {
       setError('dimention', { type: 'required', message: 'Dimention is required' })
       isFormValid = false
     } 
@@ -145,7 +182,7 @@ const AddCreateOrder = () => {
     if ( data.marchant.value !== null &&  data.recipient_name !== null &&  data.phone_number !== null 
       && data.delivary_address !== null &&  data.amount_to_be_collected !== null 
       &&  data.product_type.value !== null
-      && data.dimention !== null &&  data.delivary_area.value !== null && 
+      && data.dimention.value !== null &&  data.delivary_area.value !== null && 
        data.delivary_charge !== null
       ) 
     {
@@ -157,7 +194,7 @@ const AddCreateOrder = () => {
         delivary_address: data.delivary_address,
         amount_to_be_collected: data.amount_to_be_collected,
         product_type: data.product_type.value,
-        dimention: data.dimention,
+        dimention: data.dimention.value,
         delivary_area: data.delivary_area.value,
         delivary_charge: data.delivary_charge,
         status: 'accepted'
@@ -288,19 +325,39 @@ const AddCreateOrder = () => {
               </div>
             </div>
               <div class="col-lg-6">
-                <div className='mb-1'>
+              <div className='mb-1'>
+                <Label className='form-label' for='area'>
+                Percel Type
+                </Label>
+                <Controller
+                  id="dimention"
+                  name="dimention"
+                  control={control}
+                  render={({ field }) => <Select 
+                    isClearable
+                    className={classnames('react-select', { 'is-invalid': errors.dimention && true })} 
+                    classNamePrefix='select'
+                    options={selectboxDimention} 
+                    {...field} 
+                  />}
+                />
+                {errors && errors.dimention && <span className="invalid-feedback">{errors.dimention.message}</span>}
+
+              </div>
+                {/* <div className='mb-1'>
                   <Label className='form-label' for='dimention'>
                   Dimention
                   </Label>
                   <Controller
-                    defaultValue=''
-                    control={control}
                     id='dimention'
                     name='dimention'
-                    render={({ field }) => <Input placeholder='' invalid={errors.dimention && true} {...field} />}
+                    control={control}
+                    render={({ field }) => 
+                    <Input 
+                    placeholder='' invalid={errors.dimention && true} {...field} />}
                   />
                   {errors && errors.dimention && <span>{errors.dimention.message}</span>}
-                </div>
+                </div> */}
             </div>
           </div>
           <div class="row">

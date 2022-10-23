@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash,Search, Edit3 } from "react-feather"
+import { MoreVertical, Edit, Trash,Search, Edit3, Eye } from "react-feather"
 import {
   Table,
   Badge,
@@ -170,12 +170,12 @@ const changeStatusAction = (e, info) => {
               <th>Policy Title</th>
               <th>Product Type</th>
               <th>Delivary Charge</th>
-              <th>Min Dimention</th>
+              {/* <th>Min Dimention</th>
               <th>Max Dimention</th>
               <th>Max Weight/Kg</th>
               <th>Additional Charge</th>
               <th>Per Dimention</th>
-              <th>COD Charge</th>
+              <th>COD Charge</th> */}
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -193,7 +193,7 @@ const changeStatusAction = (e, info) => {
                   <td>
                     <span className="align-middle fw-bold">{info.delivary_charge}</span>
                   </td>
-                  <td>
+                  {/* <td>
                     <span className="align-middle fw-bold">{info.min_dimention}</span>
                   </td>
                   <td>
@@ -210,7 +210,7 @@ const changeStatusAction = (e, info) => {
                   </td>
                   <td>
                     <span className="align-middle fw-bold">{info.cod_charge}</span>
-                  </td>
+                  </td> */}
                   <td>
                     <Badge pill color="light-primary" className="me-1">
                       {info.status}
@@ -227,6 +227,10 @@ const changeStatusAction = (e, info) => {
                         <MoreVertical size={15} />
                       </DropdownToggle>
                       <DropdownMenu>
+                      <DropdownItem href={"/volumetric_policy/view/" + info.id} >
+                        <Eye className="me-50" size={15} />{" "}
+                        <span className="align-middle">View</span>
+                      </DropdownItem>
                         <DropdownItem href={"/volumetric_policy/edit/" + info.id}>
                           <Edit className="me-50" size={15} />{" "}
                           <span className="align-middle">Edit</span>
