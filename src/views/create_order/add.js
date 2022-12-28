@@ -23,6 +23,7 @@ const AddCreateOrder = () => {
   const [selectboxProduct, setSelectboxProduct] = useState([])
   const [selectboxArea, setSelectboxArea] = useState([])
   const [selectboxDimention, setSelectboxDimention] = useState([])
+  const [policiesData, setPoliciesData] = useState(null)
 
   const [data, setData] = useState(null)
   const navigate = useNavigate()
@@ -54,10 +55,17 @@ const AddCreateOrder = () => {
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) => { 
-      console.log(value, name, type)
+      // console.log(value, name, type)
       if(name == 'product_type' && type=='change'){
-        resetField('dimention')
-        fetchDimentionData(value.product_type.value)
+        resetField('parcel_type')
+        setSelectboxDimention([])
+        fetchPolicyData(value.product_type.value)
+      }
+      if(name == 'parcel_type' && type=='change'){
+        resetField('delivary_charge')
+        if(value.parcel_type.value){
+          setDeliveryCharge(value.parcel_type.value)
+        }
       }
     })
     
@@ -97,7 +105,7 @@ const AddCreateOrder = () => {
       .catch(err => console.log(err))
   }
 
-  const fetchDimentionData = (productTypeId) => {
+  const fetchPolicyData = (productTypeId) => {
 
     return useJwt
       .axiosGet(getApi(VOLUMETRIC_POLICY_BY_PRODUCT) + productTypeId + '/')
@@ -109,9 +117,25 @@ const AddCreateOrder = () => {
         })
 
         setSelectboxDimention(dimentionData)
+        setPoliciesData(res.data)
         return res.data
       })
       .catch(err => console.log(err))
+  }
+
+  useEffect(() => {
+    console.log(policiesData)
+  }, [policiesData])
+
+  function setDeliveryCharge(policyID){
+    console.log(policyID)
+    if (policiesData && policyID) {
+      const parcelInfo = policiesData.find(x => x.id == policyID)
+      console.log('policiesData', policiesData)
+      console.log('parcelInfo', policyID, parcelInfo)
+      parcelInfo ? setValue('delivary_charge', parcelInfo.delivary_charge) : null
+    }
+
   }
 
 
@@ -327,21 +351,21 @@ const AddCreateOrder = () => {
               <div class="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='area'>
-                Percel Type
+                  Percel Type
                 </Label>
                 <Controller
-                  id="dimention"
-                  name="dimention"
+                  id="parcel_type"
+                  name="parcel_type"
                   control={control}
                   render={({ field }) => <Select 
-                    isClearable
-                    className={classnames('react-select', { 'is-invalid': errors.dimention && true })} 
+                    // isClearable
+                    className={classnames('react-select', { 'is-invalid': errors.parcel_type && true })} 
                     classNamePrefix='select'
                     options={selectboxDimention} 
                     {...field} 
                   />}
                 />
-                {errors && errors.dimention && <span className="invalid-feedback">{errors.dimention.message}</span>}
+                {errors && errors.parcel_type && <span className="invalid-feedback">{errors.parcel_type.message}</span>}
 
               </div>
                 {/* <div className='mb-1'>

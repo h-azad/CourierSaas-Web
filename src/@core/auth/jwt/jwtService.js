@@ -17,13 +17,14 @@ export default class JwtService {
     // ** Request Interceptor
     axios.interceptors.request.use(
       (config) => {
-        // ** Get token from sessionStorage
+        // ** Get token from localStorage
         const accessToken = this.getToken()
 
         // ** If token is present add it to request's Authorization Header
         if (accessToken) {
           // ** eslint-disable-next-line no-param-reassign
           config.headers.Authorization = `${this.jwtConfig.tokenType} ${accessToken}`
+
         }
         return config
       },
@@ -45,7 +46,7 @@ export default class JwtService {
             this.refreshToken().then((r) => {
               this.isAlreadyFetchingAccessToken = false
 
-              // ** Update accessToken in sessionStorage
+              // ** Update accessToken in localStorage
               this.setToken(r.data.accessToken)
               this.setRefreshToken(r.data.refreshToken)
 
@@ -58,7 +59,7 @@ export default class JwtService {
               // ** Check: https://pixinvent.ticksy.com/ticket/2413870
               // ** Change Authorization header
               originalRequest.headers.Authorization = `${this.jwtConfig.tokenType} ${accessToken}`
-              resolve(this.axios(originalRequest))
+                  resolve(this.axios(originalRequest))
             })
           })
           return retryOriginalRequest
@@ -79,19 +80,19 @@ export default class JwtService {
   }
 
   getToken() {
-    return sessionStorage.getItem(this.jwtConfig.storageTokenKeyName)
+    return localStorage.getItem(this.jwtConfig.storageTokenKeyName)
   }
 
   getRefreshToken() {
-    return sessionStorage.getItem(this.jwtConfig.storageRefreshTokenKeyName)
+    return localStorage.getItem(this.jwtConfig.storageRefreshTokenKeyName)
   }
 
   setToken(value) {
-    sessionStorage.setItem(this.jwtConfig.storageTokenKeyName, value)
+    localStorage.setItem(this.jwtConfig.storageTokenKeyName, value)
   }
 
   setRefreshToken(value) {
-    sessionStorage.setItem(this.jwtConfig.storageRefreshTokenKeyName, value)
+    localStorage.setItem(this.jwtConfig.storageRefreshTokenKeyName, value)
   }
 
   login(...args) {

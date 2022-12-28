@@ -7,7 +7,7 @@ import useJwt from '@src/auth/jwt/useJwt'
 const config = useJwt.jwtConfig
 
 const initialUser = () => {
-  const item = window.sessionStorage.getItem('userData')
+  const item = window.localStorage.getItem('userData')
   //** Parse stored json or if none return initialValue
   return item ? JSON.parse(item) : {}
 }
@@ -19,22 +19,22 @@ export const authSlice = createSlice({
   },
   reducers: {
     handleLogin: (state, action) => {
-      // console.log('action.payload: ',action.payload)
+      console.log('action.payload: ',action.payload)
       state.userData = action.payload
       state[config.storageTokenKeyName] = action.payload[config.storageTokenKeyName]
       state[config.storageRefreshTokenKeyName] = action.payload[config.storageRefreshTokenKeyName]
-      sessionStorage.setItem('userData', JSON.stringify(action.payload))
-      sessionStorage.setItem(config.storageTokenKeyName, action.payload.accessToken)
-      sessionStorage.setItem(config.storageRefreshTokenKeyName, action.payload.refreshToken)
+      localStorage.setItem('userData', JSON.stringify(action.payload))
+      localStorage.setItem(config.storageTokenKeyName, action.payload.accessToken)
+      localStorage.setItem(config.storageRefreshTokenKeyName, action.payload.refreshToken)
     },
     handleLogout: state => {
       state.userData = {}
       state[config.storageTokenKeyName] = null
       state[config.storageRefreshTokenKeyName] = null
       // ** Remove user, accessToken & refreshToken from sessionStorage
-      sessionStorage.removeItem('userData')
-      sessionStorage.removeItem(config.storageTokenKeyName)
-      sessionStorage.removeItem(config.storageRefreshTokenKeyName)
+      localStorage.removeItem('userData')
+      localStorage.removeItem(config.storageTokenKeyName)
+      localStorage.removeItem(config.storageRefreshTokenKeyName)
     }
   }
 })

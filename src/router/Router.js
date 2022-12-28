@@ -15,10 +15,13 @@ import { getUserData, getHomeRouteForLoggedInUser } from '../utility/Utils'
 
 // ** GetRoutes
 import { getRoutes } from './routes'
+import CreateOrganization from '../views/pages/authentication/CreateOrganization'
 
 // ** Components
 const Error = lazy(() => import('../views/pages/misc/Error'))
 const Login = lazy(() => import('../views/pages/authentication/Login'))
+// const RegisterCopy = lazy(() => import("../views/pages/authentication/RegisterCopy"))
+const Register = lazy(() => import("../views/pages/authentication/Register"))
 const NotAuthorized = lazy(() => import('../views/pages/misc/NotAuthorized'))
 
 const Router = () => {
@@ -37,26 +40,43 @@ const Router = () => {
 
   const routes = useRoutes([
     {
-      path: '/',
+      path: "/",
       index: true,
-      element: <Navigate replace to={getHomeRoute()} />
+      element: <Navigate replace to={getHomeRoute()} />,
     },
     {
-      path: '/login',
+      path: "/login",
       element: <BlankLayout />,
-      children: [{ path: '/login', element: <Login /> }]
+      children: [{ path: "/login", element: <Login /> }],
+    },
+    // {
+    //   path: "/registercopy",
+    //   element: <BlankLayout />,
+    //   children: [{ path: "/registercopy", element: <RegisterCopy /> }],
+    // },
+    {
+      path: "create_organization",
+      element: <BlankLayout />,
+      children: [
+        { path: "/create_organization", element: <CreateOrganization /> },
+      ],
     },
     {
-      path: '/auth/not-auth',
+      path: "register",
       element: <BlankLayout />,
-      children: [{ path: '/auth/not-auth', element: <NotAuthorized /> }]
+      children: [{ path: "/register", element: <Register /> }],
     },
     {
-      path: '*',
+      path: "/auth/not-auth",
       element: <BlankLayout />,
-      children: [{ path: '*', element: <Error /> }]
+      children: [{ path: "/auth/not-auth", element: <NotAuthorized /> }],
     },
-    ...allRoutes
+    {
+      path: "*",
+      element: <BlankLayout />,
+      children: [{ path: "*", element: <Error /> }],
+    },
+    ...allRoutes,
   ])
 
   return routes

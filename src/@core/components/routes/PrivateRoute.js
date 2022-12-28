@@ -9,7 +9,7 @@ const PrivateRoute = ({ children, route }) => {
   // ** Hooks & Vars
   const ability = useContext(AbilityContext)
   // console.log("ability", ability)
-  const user = JSON.parse(sessionStorage.getItem("userData"))
+  const user = JSON.parse(localStorage.getItem("userData"))
 
   if (route) {
     let action = null

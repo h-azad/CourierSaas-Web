@@ -1,1 +1,1 @@
-export const apiBaseUrl = 'http://127.0.0.1:8000' //No Trailing Slash
+export const apiBaseUrl = 'http://localhost:8000' //No Trailing Slash

@@ -199,7 +199,7 @@ const EditCreateOrder = () => {
     }
   }
 
-  // console.log("createOrderInfo.product_type.product_type", createOrderInfo && createOrderInfo.product_type.product_type)
+  // console.log("createOrderInfo.product_type.  product_type", createOrderInfo && createOrderInfo.product_type.product_type)
 
   return (
     <Card>

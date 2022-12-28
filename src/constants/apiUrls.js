@@ -102,6 +102,11 @@ export const PAYMENT_METHOD_DELETE = '/payment_method/payment_method/'
 export const PAYMENT_METHOD_DETAILS = '/payment_method/payment_method/'
 export const SEARCH_PAYMENT_METHOD = '/search_payment_method/'
 
+//Create Organization
+export const CREATE_ORGANIZATION = "/api/user/create-tanent"
+
+
+
 export const getApi = (api) => {
     return BASE_API + api
 }
