@@ -34,8 +34,8 @@ const AddPaymentMethod = () => {
   const onSubmit = data => {
     let isFormValid = true
 
-    if(!( data.method_name)) {
-      setError('method_name', { type: 'required', message: 'Payment Method is required' })
+    if (!(data.payment_method_name)) {
+      setError('payment_method_name', { type: 'required', message: 'Payment Method is required' })
       isFormValid = false
     }
     if(!isFormValid) {
@@ -43,10 +43,10 @@ const AddPaymentMethod = () => {
     }
 
     setData(data)
-    if ( data.method_name !== null) {
+    if (data.payment_method_name !== null) {
 
       let formData = {
-        method_name: data.method_name,
+        payment_method_name: data.payment_method_name,
         status: 'active'
       }
 
@@ -74,17 +74,17 @@ const AddPaymentMethod = () => {
       <Form onSubmit={handleSubmit(onSubmit)}>
           
           <div className='mb-1'>
-            <Label className='form-label' for='method_name'>
+            <Label className='form-label' for='payment_method_name'>
               Payment Method
             </Label>
             <Controller
               defaultValue=''
               control={control}
-              id='method_name'
-              name='method_name'
-              render={({ field }) => <Input placeholder='bKash' invalid={errors.method_name && true} {...field} />}
+              id='payment_method_name'
+              name='payment_method_name'
+              render={({ field }) => <Input placeholder='bKash' invalid={errors.payment_method_name && true} {...field} />}
             />
-            {errors && errors.method_name && <span>{errors.method_name.message}</span>}
+            {errors && errors.payment_method_name && <span>{errors.payment_method_name.message}</span>}
           </div>
           <div className='d-flex'>
             <Button className='me-1' color='primary' type='submit'>

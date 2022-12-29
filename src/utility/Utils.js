@@ -68,9 +68,9 @@ export const getHomeRouteForLoggedInUser = (userRole) => {
   const user = getUserData()
   // if (userRole === "admin") return DefaultRoute
   // if (userRole === "client") return "/access-control"
-  if (!user.org_created) {
-   return "/create_organization"
-  }
+  // if (!user.org_created) {
+  //  return "/create_organization"
+  // }
 
   return DefaultRoute
 }

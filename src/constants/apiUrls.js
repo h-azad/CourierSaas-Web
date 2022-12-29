@@ -3,13 +3,23 @@ import {apiBaseUrl} from '../configs/apiConfig'
 export const BASE_API = apiBaseUrl
 
 // Merchant API's 
-export const MARCHANT_ADD = '/api/user/marchant/'
-export const MARCHANT_EDIT = '/api/user/marchant/'
-export const MARCHANT_LIST = '/api/user/marchant/'
-export const MARCHANT_DELETE = '/api/user/marchant/'
-export const MARCHANT_DETAILS = '/api/user/marchant/'
+// export const MARCHANT_ADD = '/api/user/marchant/'
+// export const MARCHANT_EDIT = '/api/user/marchant/'
+// export const MARCHANT_LIST = '/api/user/marchant/'
+// export const MARCHANT_DELETE = '/api/user/marchant/'
+// export const MARCHANT_DETAILS = '/api/user/marchant/'
+// export const MARCHANT_SEARCH = '/search-marchant/'
+// export const MARCHANT_UPDATE_STATUS = '/api/user/marchant/'
+
+
+// Manage Merchant API's 
+export const MARCHANT_ADD = '/manage-user/merchant'
+export const MARCHANT_EDIT = '/manage-user/merchant'
+export const MARCHANT_LIST = '/manage-user/merchant'
+export const MARCHANT_DELETE = '/manage-user/merchant'
+export const MARCHANT_DETAILS = '/manage-user/merchant'
 export const MARCHANT_SEARCH = '/search-marchant/'
-export const MARCHANT_UPDATE_STATUS = '/api/user/marchant/'
+export const MARCHANT_UPDATE_STATUS = '/manage-user/merchant'
 
 
 
@@ -95,11 +105,11 @@ export const VOLUMETRIC_POLICY_BY_PRODUCT = '/create_order/get-price-policy/'
 
 //Payment Method API's 
 
-export const PAYMENT_METHOD_ADD = '/payment_method/payment_method/'
-export const PAYMENT_METHOD_EDIT = '/payment_method/payment_method/'
-export const PAYMENT_METHOD_LIST = '/payment_method/payment_method/'
-export const PAYMENT_METHOD_DELETE = '/payment_method/payment_method/'
-export const PAYMENT_METHOD_DETAILS = '/payment_method/payment_method/'
+export const PAYMENT_METHOD_ADD = '/payment_method/'
+export const PAYMENT_METHOD_EDIT = '/payment_method/'
+export const PAYMENT_METHOD_LIST = '/payment_method/'
+export const PAYMENT_METHOD_DELETE = '/payment_method/'
+export const PAYMENT_METHOD_DETAILS = '/payment_method/'
 export const SEARCH_PAYMENT_METHOD = '/search_payment_method/'
 
 //Create Organization

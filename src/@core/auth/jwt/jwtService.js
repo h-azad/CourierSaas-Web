@@ -116,7 +116,7 @@ export default class JwtService {
     return axios.get(url, ...args)
   }
   axiosPost(url, ...args){
-    console.log('API args', args)
+    // console.log('API args', args)
     return axios.post(url, ...args)
   }
   axiosPut(url, ...args){

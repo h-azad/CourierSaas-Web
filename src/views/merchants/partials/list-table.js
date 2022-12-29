@@ -94,7 +94,7 @@ const ListTable = () => {
       .axiosGet(getApi(MARCHANT_LIST))
       .then((res) => {
         console.log(res.data)
-        setMerchants(res.data)
+        setMerchants(res.data.data)
         return res.data
       })
       .catch((err) => console.log(err))
@@ -180,8 +180,8 @@ const ListTable = () => {
             <th>Full Name</th>
             <th>Contact Number 1*</th>
             <th>Email</th>
-            <th>City Name</th>
-            <th>Area Name</th>
+            {/* <th>City Name</th>
+            <th>Area Name</th> */}
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -195,8 +195,8 @@ const ListTable = () => {
                 </td>
                 <td>{info.contact_no}</td>
                 <td>{info.email}</td>
-                <td>{info.city?.cities_name}</td>
-                <td>{info.area?.areas_name}</td>
+                {/* <td>{info.city?.cities_name}</td>
+                <td>{info.area?.areas_name}</td> */}
                 <td>
                   <Badge pill color="light-primary" className="me-1">
                     {info.status}

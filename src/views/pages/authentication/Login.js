@@ -1,10 +1,16 @@
 // ** React Imports
-import { useContext } from 'react'
+//n
+import { useContext, useEffect } from 'react'
+
+// import { useContext } from 'react'
+
 import { Link, useNavigate } from 'react-router-dom'
 
 // ** Custom Hooks
 import { useSkin } from '@hooks/useSkin'
 import useJwt from '@src/auth/jwt/useJwt'
+//n
+import { isUserLoggedIn } from '@utils/'
 
 // ** Third Party Components
 import toast from 'react-hot-toast'
@@ -50,7 +56,7 @@ const ToastContent = ({ t, name, role }) => {
 
 const defaultValues = {
   password: '123456',
-  loginEmail: 'org333@gmail.com'
+  loginEmail: 'org66@gmail.com'
 }
 
 const Login = () => {
@@ -79,8 +85,24 @@ const Login = () => {
   ]
   const onSubmit = data => {
     if (Object.values(data).every(field => field.length > 0)) {
+     //n 
+      // const formData = { email: data.loginEmail, password: data.password }
+      // const headers = {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data'
+      //   }
+      // }
+      const formData = { email: data.loginEmail, password: data.password }
+      const headers = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+
       useJwt
-        .login({ email: data.loginEmail, password: data.password })
+        // .login({ email: data.loginEmail, password: data.password })
+        //n
+        .login(formData, headers)
         .then((res) => {
           // console.log("res", res.data)
           const data = { ...res.data.info, accessToken: res.data.token.access, refreshToken: res.data.token.refresh }
@@ -105,6 +127,12 @@ const Login = () => {
       }
     }
   }
+//n
+  useEffect(() => {
+    if (isUserLoggedIn()){
+      navigate('/home')
+    }
+  }, [])
 
   return (
     <div className='auth-wrapper auth-cover'>

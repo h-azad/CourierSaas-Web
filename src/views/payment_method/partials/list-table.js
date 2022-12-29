@@ -181,7 +181,7 @@ const ListTable = () => {
             payment.map((info) => (
               <tr key={info.id}>
                 <td>
-                  <span className="align-middle fw-bold">{info.method_name}</span>
+                  <span className="align-middle fw-bold">{info.payment_method_name}</span>
                 </td>
                 <td>
                   <Badge pill color="light-primary" className="me-1">

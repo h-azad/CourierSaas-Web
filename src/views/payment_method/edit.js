@@ -29,7 +29,7 @@ const EditPaymentMethod = () => {
       .then((res) => {
         console.log("res", res.data)
         setPaymentInfo({
-          method_name: res.data.method_name
+          payment_method_name: res.data.payment_method_name
         })
         return res.data
       })
@@ -50,8 +50,8 @@ const EditPaymentMethod = () => {
   const onSubmit = data => {
     let isFormValid = true
 
-    if(!( data.method_name)) {
-      setError('method_name', { type: 'required', message: 'Payment method is required' })
+    if (!(data.payment_method_name)) {
+      setError('payment_method_name', { type: 'required', message: 'Payment method is required' })
       isFormValid = false
     }
     if(!isFormValid) {
@@ -59,10 +59,10 @@ const EditPaymentMethod = () => {
     }
 
     setData(data)
-    if ( data.method_name !== null) {
+    if (data.payment_method_name !== null) {
       
       let formData = {
-        method_name: data.method_name,
+        payment_method_name: data.payment_method_name,
         status: 'active'
       }
               
@@ -94,13 +94,13 @@ const EditPaymentMethod = () => {
                 Payment Method Name
               </Label>
               <Controller
-                defaultValue={paymentInfo.method_name}
+                  defaultValue={paymentInfo.payment_method_name}
                 control={control}
-                id='method_name'
-                name='method_name'
-                render={({ field }) => <Input placeholder='' invalid={errors.method_name && true} {...field} />}
+                  id='payment_method_name'
+                  name='payment_method_name'
+                  render={({ field }) => <Input placeholder='' invalid={errors.payment_method_name && true} {...field} />}
               />
-            {errors && errors.method_name && <span>{errors.method_name.message}</span>}
+                {errors && errors.payment_method_name && <span>{errors.payment_method_name.message}</span>}
             </div>
             
             <div className='d-flex'>
