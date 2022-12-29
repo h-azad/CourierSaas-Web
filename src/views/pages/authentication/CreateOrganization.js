@@ -22,7 +22,7 @@ import { AbilityContext } from '@src/utility/context/Can'
 import Avatar from '@components/avatar'
 
 // ** Utils
-import { getHomeRouteForLoggedInUser } from '@utils'
+import { getUserData, getHomeRouteForLoggedInUser } from "@utils"
 import axios from "axios"
 
 // ** Reactstrap Imports
@@ -30,8 +30,10 @@ import { Row, Col, Form, Input, Label, Alert, Button, CardText, CardTitle, Uncon
 
 // ** Styles
 import '@styles/react/pages/page-authentication.scss'
-import { getApi,CREATE_ORGANIZATION } from "../../../constants/apiUrls"
+import { getApi, CREATE_ORGANIZATION } from "../../../constants/apiUrls"
 import jwtDefaultConfig from '../../../@core/auth/jwt/jwtDefaultConfig'
+import { useEffect } from 'react'
+import SwalAlert from '../../../components/SwalAlert'
 
 const ToastContent = ({ t, name, role }) => {
   return (
@@ -80,37 +82,45 @@ const CreateOrganization = () => {
     }
   ]
 
+  useEffect(() => {
+    const user = getUserData()
+    if (user && user.org_created) {
+      navigate('/home')
+    }
+  }, [])
+
   const jwtConfig = { ...jwtDefaultConfig }
 
-    const onSubmit = data => {
+  const onSubmit = data => {
     let formData = {
       organization_name: data.organization_name,
       schema_name: data.schema_name,
-        }
+    }
 
-      console.log(
-        "formData",
-        formData
-      )
+    console.log(
+      "formData",
+      formData
+    )
 
-      const token = jwtConfig.tokenType +  localStorage.getItem(jwtConfig.storageTokenKeyName)
-      axios({
-        method: "post",
-        url: "http://localhost:8000/api/user/create-tanent",
-        data: formData,
+    const token = jwtConfig.tokenType + localStorage.getItem(jwtConfig.storageTokenKeyName)
+    
+      const headers = {
         headers: {
-          // "Content-Type": "application/json",
-          "Content-Type": "multipart/form-data",
-          Authorization: token,
-        },
-      })
-        .then((response) => {
-          // console.log("cartDelete",response);
-        })
-        .catch((error) => {})
-
+          'Content-Type': 'multipart/form-data'
+        }
       }
-  
+
+    useJwt
+      .axiosPost(getApi(CREATE_ORGANIZATION), formData, headers)
+      .then((res) => {
+        console.log("res", res.data)
+        SwalAlert("Organization Created Successfully")
+        navigate("/home")
+      })
+      .catch(err => console.log(err))
+
+  }
+
 
 
 
