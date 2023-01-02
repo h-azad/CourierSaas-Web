@@ -23,20 +23,21 @@ import React, { useRef } from "react"
 
 const EditMerchants = () => {
   const [selectboxPaymentMethod, setSelectboxPaymentMethod] = useState([])
-  const [selectboxCity, setSelectboxCity] = useState([])
-  const [selectboxArea, setSelectboxArea] = useState([])
+  // const [selectboxCity, setSelectboxCity] = useState([])
+  // const [selectboxArea, setSelectboxArea] = useState([])
   const [data, setData] = useState(null)
   const [marchantInfo, setMarchantInfo] = useState(null)
+
 
   let { id } = useParams()
 
   useEffect(() => {
-    console.log(id)
+    // console.log(id)
     useJwt
-      .axiosGet(getApi(MARCHANT_DETAILS) + id + "/")
+    .axiosGet(getApi(MARCHANT_DETAILS)  +"/"+id + "/")
       .then((res) => {
-        console.log("res", res.data)
-        setMarchantInfo(res.data)
+        // console.log("res", res.data)
+        setMarchantInfo(res.data.data)
         console.log(identity.find(id => id.value == marchantInfo.identity))
         return res.data
       })
@@ -59,21 +60,21 @@ const EditMerchants = () => {
     mode: 'onChange',
   })
 
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) => { 
-      console.log(value, name, type)
-      if(name == 'city' && type=='change'){
-        resetField('area')
-        fetchAreaData(value.city.value)
-      }
-    })
+  // useEffect(() => {
+  //   const subscription = watch((value, { name, type }) => { 
+  //     console.log(value, name, type)
+  //     if(name == 'city' && type=='change'){
+  //       resetField('area')
+  //       fetchAreaData(value.city.value)
+  //     }
+  //   })
     
-    return () => subscription.unsubscribe()
-  }, [watch])
+  //   return () => subscription.unsubscribe()
+  // }, [watch])
 
   useEffect(() => {
     fetchPaymentmethodData()
-    fetchCityData()
+    // fetchCityData()
   },[])
 
   const fetchPaymentmethodData = () => {
@@ -83,7 +84,7 @@ const EditMerchants = () => {
         let paymentmethodData = []
 
         res.data.map(data => {
-          paymentmethodData.push({value: data.id, label: data.method_name})
+          paymentmethodData.push({value: data.id, label: data.payment_method_name})
         })
 
         setSelectboxPaymentMethod(paymentmethodData)
@@ -92,41 +93,41 @@ const EditMerchants = () => {
       .catch(err => console.log(err))
   }
 
-  const fetchCityData = () => {
-    return useJwt
-      .axiosGet(getApi(CITIES_LIST))
-      .then((res) => {
-        let cityData = []
+  // const fetchCityData = () => {
+  //   return useJwt
+  //     .axiosGet(getApi(CITIES_LIST))
+  //     .then((res) => {
+  //       let cityData = []
 
-        res.data.map(data => {
-          cityData.push({value: data.id, label: data.cities_name})
-        })
+  //       res.data.map(data => {
+  //         cityData.push({value: data.id, label: data.cities_name})
+  //       })
 
-        setSelectboxCity(cityData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
+  //       setSelectboxCity(cityData)
+  //       return res.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
-  const fetchAreaData = (cityId) => {
+  // const fetchAreaData = (cityId) => {
 
-    return useJwt
-      .axiosGet(getApi(AREAS_BY_CITY) + cityId + '/')
-      .then((res) => {
-        let areaData = []
+  //   return useJwt
+  //     .axiosGet(getApi(AREAS_BY_CITY) + cityId + '/')
+  //     .then((res) => {
+  //       let areaData = []
 
-        res.data.map(data => {
-          areaData.push({value: data.id, label: data.areas_name})
-        })
+  //       res.data.map(data => {
+  //         areaData.push({value: data.id, label: data.areas_name})
+  //       })
 
-        setSelectboxArea(areaData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
+  //       setSelectboxArea(areaData)
+  //       return res.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
   const onSubmit = data => {
-    console.log("data", data)
+    console.log(" data", data)
 
     let isFormValid = true
 
@@ -170,14 +171,14 @@ const EditMerchants = () => {
       setError('bank_account_num', { type: 'required', message: 'Bank account number is required' })
       isFormValid = false
     }
-    if(!data.city && data.city.value) {
-      setError('city', { type: 'required', message: 'City is required' })
-      isFormValid = false
-    }
-    if(!data.area && data.area.value) {
-      setError('area', { type: 'required', message: ' Area is required' })
-      isFormValid = false
-    }
+    // if(!data.city && data.city.value) {
+    //   setError('city', { type: 'required', message: 'City is required' })
+    //   isFormValid = false
+    // }
+    // if(!data.area && data.area.value) {
+    //   setError('area', { type: 'required', message: ' Area is required' })
+    //   isFormValid = false
+    // }
     if(!data.business_name) {
       setError('business_name', { type: 'required', message: ' Business name is required' })
       isFormValid = false
@@ -196,15 +197,16 @@ const EditMerchants = () => {
 
 
     setData(data)
-    if ( data.full_name !== null &&  data.contact_no !== null &&  data.contact_no_two !== null 
+    if (data.full_name !== null &&  data.contact_no !== null &&  data.contact_no_two !== null 
       && data.identity !== null &&  data.identity_no !== null &&  data.email !== null
       && data.payment_method.value !== null &&  data.bank_name !== null &&  data.bank_account_name !== null 
-      && data.bank_account_num !== null &&  data.city.value !== null &&  data.area.value!== null
+      && data.bank_account_num !== null 
+      // &&  data.city.value !== null &&  data.area.value!== null
       && data.business_name !== null &&  data.address !== null &&  data.pickup_address !== null  ) {
 
 
       let formData = {
-        full_name: data.full_name,
+        name: data.full_name,
         contact_no: data.contact_no,
         contact_no_two: data.contact_no_two,
         identity: data.identity?.value,
@@ -214,8 +216,8 @@ const EditMerchants = () => {
         bank_name: data.bank_name,
         bank_account_name: data.bank_account_name,
         bank_account_num: data.bank_account_num,
-        city: data.city.value,
-        area: data.area.value,
+        // city: data.city.value,
+        // area: data.area.value,
         business_name: data.business_name,
         address: data.address,
         pickup_address: data.pickup_address,
@@ -223,9 +225,14 @@ const EditMerchants = () => {
         status: 'approved'
       }
       console.log("formData", formData)
+      const headers = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
     
       useJwt
-        .axiosPut(getApi(MARCHANT_EDIT) + id + "/", formData)
+        .axiosPut(getApi(MARCHANT_EDIT) + id + "/", formData, headers)
         .then((res) => {
           console.log("res", res.data)
           SwalAlert("Marchant Edited Successfully")
@@ -246,17 +253,17 @@ const EditMerchants = () => {
       {marchantInfo &&
       <Form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-1'>
-            <Label className='form-label' for='full_name'>
+              <Label className='form-label' for='name'>
               Full Name
             </Label>
             <Controller
               defaultValue={marchantInfo.full_name}
               control={control}
-              id='full_name'
-              name='full_name'
-              render={({ field }) => <Input  invalid={errors.full_name && true} {...field} />}
+                id='full_name'
+                name='full_name'
+                render={({ field }) => <Input invalid={errors.full_name && true} {...field} />}
             />
-            {errors && errors.full_name && <span className="invalid-feedback">{errors.full_name.message}</span>}
+              {errors && errors.full_name && <span className="invalid-feedback">{errors.full_name.message}</span>}
           </div>
           <div class="row">
             <div class="col-lg-6">
@@ -265,7 +272,7 @@ const EditMerchants = () => {
             Contact Number 1*
             </Label>
             <Controller
-              defaultValue={marchantInfo.contact_no}
+             defaultValue={marchantInfo && marchantInfo.contact_no}
               control={control}
               id='contact_no'
               name='contact_no'
@@ -359,7 +366,6 @@ const EditMerchants = () => {
               render={({ field }) => (
                 <Input
                   type='email'
-                  placeholder='bruce.wayne@email.com'
                   invalid={errors.email && true}
                   {...field}
                 />
@@ -375,7 +381,7 @@ const EditMerchants = () => {
                 Preferred Payment Method*
                 </Label>
                 <Controller
-                  defaultValue={{value: marchantInfo.payment_method.id, label: marchantInfo.payment_method.method_name}}
+                  defaultValue={{ value: marchantInfo.payment_method.id, label: marchantInfo.payment_method.payment_method_name }}
                   id="payment_method"
                   name="payment_method"
                   control={control}
@@ -441,7 +447,7 @@ const EditMerchants = () => {
               </div>
             </div>
           </div>
-          <div class="row">
+          {/* <div class="row">
             <div class="col-lg-6">
             <div className='mb-1'>
             <Label className='form-label' for='city'>
@@ -487,7 +493,7 @@ const EditMerchants = () => {
               </div>
             </div>
             
-          </div>        
+          </div>         */}
           <div className='mb-1'>
             <Label className='form-label' for='business_name'>
               Business Name

@@ -13,10 +13,10 @@ export const BASE_API = apiBaseUrl
 
 
 // Manage Merchant API's 
-export const MARCHANT_ADD = '/manage-user/merchant'
-export const MARCHANT_EDIT = '/manage-user/merchant'
+export const MARCHANT_ADD = '/manage-user/create-merchant'
+export const MARCHANT_EDIT = '/manage-user/merchant/'
 export const MARCHANT_LIST = '/manage-user/merchant'
-export const MARCHANT_DELETE = '/manage-user/merchant'
+export const MARCHANT_DELETE = '/manage-user/merchant/'
 export const MARCHANT_DETAILS = '/manage-user/merchant'
 export const MARCHANT_SEARCH = '/search-marchant/'
 export const MARCHANT_UPDATE_STATUS = '/manage-user/merchant'

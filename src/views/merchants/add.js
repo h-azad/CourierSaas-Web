@@ -59,10 +59,10 @@ const AddMerchants = () => {
   //   return () => subscription.unsubscribe()
   // }, [watch])
 
-  // useEffect(() => {
-  //   fetchPaymentmethodData()
-  //   fetchCityData()
-  // },[])
+  useEffect(() => {
+    fetchPaymentmethodData()
+    // fetchCityData()
+  },[])
 
   const fetchPaymentmethodData = () => {
     return useJwt
@@ -192,7 +192,7 @@ const AddMerchants = () => {
 
 
     setData(data)
-    if (data.full_name !== null &&  data.contact_no !== null &&  data.contact_no_two !== null 
+    if (data.name !== null &&  data.contact_no !== null &&  data.contact_no_two !== null 
       && data.identity !== null &&  data.identity_no !== null &&  data.email !== null
       && data.payment_method.value !== null &&  data.bank_name !== null &&  data.bank_account_name !== null 
       && data.bank_account_num !== null
@@ -202,7 +202,7 @@ const AddMerchants = () => {
 
     // if (Object.values(data).every(field => field.length > 0)) {
       let formData = {
-        full_name: data.full_name,
+        name: data.name,
         contact_no: data.contact_no,
         contact_no_two: data.contact_no_two,
         identity: data.identity?.value,
@@ -223,8 +223,13 @@ const AddMerchants = () => {
       }
       console.log("formData", formData)
       // return false
+      const headers = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
       useJwt
-        .axiosPost(getApi(MARCHANT_ADD), formData)
+        .axiosPost(getApi(MARCHANT_ADD), formData, headers)
         .then((res) => {
           console.log("res", res.data)
           SwalAlert("Marchant Added Successfully")
@@ -245,7 +250,7 @@ const AddMerchants = () => {
     // }
   }
 
-  console.log("errors", errors)
+  // console.log("errors", errors)
 
   return (
     <Card>
@@ -256,17 +261,17 @@ const AddMerchants = () => {
       <CardBody>
       <Form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-1'>
-            <Label className='form-label' for='full_name'>
+            <Label className='form-label' for='name'>
               Name
             </Label>
             <Controller
               defaultValue=''
               control={control}
-              id='full_name'
-              name='full_name'
-              render={({ field }) => <Input placeholder='Bruce Wayne' invalid={errors.full_name && true} {...field} />}
+              id='name'
+              name='name'
+              render={({ field }) => <Input placeholder='Bruce Wayne' invalid={errors.name && true} {...field} />}
             />
-            {errors && errors.full_name && <span className="invalid-feedback">{errors.full_name.message}</span>}
+            {errors && errors.name && <span className="invalid-feedback">{errors.name.message}</span>}
           </div>
           <div class="row">
             <div class="col-lg-6">
@@ -423,7 +428,7 @@ const AddMerchants = () => {
                 Bank Account Name
                 </Label>
                 <Controller
-                  defaultValue=''
+                  defaultValue='Savings'
                   control={control}
                   id='bank_account_name'
                   name='bank_account_name'
