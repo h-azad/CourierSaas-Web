@@ -23,8 +23,8 @@ import React, { useRef } from "react"
 
 const EditRider = () => {
   const [selectboxPaymentMethod, setSelectboxPaymentMethod] = useState([])
-  const [selectboxCity, setSelectboxCity] = useState([])
-  const [selectboxArea, setSelectboxArea] = useState([])
+  // const [selectboxCity, setSelectboxCity] = useState([])
+  // const [selectboxArea, setSelectboxArea] = useState([])
   const [data, setData] = useState(null)
   const [riderInfo, setRiderInfo] = useState(null)
 
@@ -35,8 +35,8 @@ const EditRider = () => {
     useJwt
       .axiosGet(getApi(RIDER_DETAILS) + id + "/")
       .then((res) => {
-        console.log("res", res.data)
-        setRiderInfo(res.data)
+        // console.log("res", res.data)
+        setRiderInfo(res.data.data)
         console.log(identity.find(id => id.value == riderInfo.identity))
         return res.data
       })
@@ -59,21 +59,21 @@ const EditRider = () => {
     mode: 'onChange',
   })
 
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) => { 
-      console.log(value, name, type)
-      if(name == 'city' && type=='change'){
-        resetField('area')
-        fetchAreaData(value.city.value)
-      }
-    })
+  // useEffect(() => {
+  //   const subscription = watch((value, { name, type }) => { 
+  //     console.log(value, name, type)
+  //     if(name == 'city' && type=='change'){
+  //       resetField('area')
+  //       fetchAreaData(value.city.value)
+  //     }
+  //   })
     
-    return () => subscription.unsubscribe()
-  }, [watch])
+  //   return () => subscription.unsubscribe()
+  // }, [watch])
 
   useEffect(() => {
     fetchPaymentmethodData()
-    fetchCityData()
+    // fetchCityData()
   },[])
 
   const fetchPaymentmethodData = () => {
@@ -83,7 +83,7 @@ const EditRider = () => {
         let paymentmethodData = []
 
         res.data.map(data => {
-          paymentmethodData.push({value: data.id, label: data.method_name})
+          paymentmethodData.push({value: data.id, label: data.payment_method_name})
         })
 
         setSelectboxPaymentMethod(paymentmethodData)
@@ -92,45 +92,45 @@ const EditRider = () => {
       .catch(err => console.log(err))
   }
 
-  const fetchCityData = () => {
-    return useJwt
-      .axiosGet(getApi(CITIES_LIST))
-      .then((res) => {
-        let cityData = []
+  // const fetchCityData = () => {
+  //   return useJwt
+  //     .axiosGet(getApi(CITIES_LIST))
+  //     .then((res) => {
+  //       let cityData = []
 
-        res.data.map(data => {
-          cityData.push({value: data.id, label: data.cities_name})
-        })
+  //       res.data.map(data => {
+  //         cityData.push({value: data.id, label: data.cities_name})
+  //       })
 
-        setSelectboxCity(cityData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
+  //       setSelectboxCity(cityData)
+  //       return res.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
-  const fetchAreaData = (cityId) => {
+  // const fetchAreaData = (cityId) => {
 
-    return useJwt
-      .axiosGet(getApi(AREAS_BY_CITY) + cityId + '/')
-      .then((res) => {
-        let areaData = []
+  //   return useJwt
+  //     .axiosGet(getApi(AREAS_BY_CITY) + cityId + '/')
+  //     .then((res) => {
+  //       let areaData = []
 
-        res.data.map(data => {
-          areaData.push({value: data.id, label: data.areas_name})
-        })
+  //       res.data.map(data => {
+  //         areaData.push({value: data.id, label: data.areas_name})
+  //       })
 
-        setSelectboxArea(areaData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
+  //       setSelectboxArea(areaData)
+  //       return res.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
   const onSubmit = data => {
     console.log("data", data)
 
     let isFormValid = true
 
-    if(!data.full_name) {
+    if (!data.full_name) {
       setError('full_name', { type: 'required', message: 'Full Name is required' })
       isFormValid = false
     }
@@ -170,14 +170,14 @@ const EditRider = () => {
       setError('bank_account_num', { type: 'required', message: 'Bank account number is required' })
       isFormValid = false
     }
-    if(!data.city && data.city.value) {
-      setError('city', { type: 'required', message: 'City is required' })
-      isFormValid = false
-    }
-    if(!data.area && data.area.value) {
-      setError('area', { type: 'required', message: ' Area is required' })
-      isFormValid = false
-    }
+    // if(!data.city && data.city.value) {
+    //   setError('city', { type: 'required', message: 'City is required' })
+    //   isFormValid = false
+    // }
+    // if(!data.area && data.area.value) {
+    //   setError('area', { type: 'required', message: ' Area is required' })
+    //   isFormValid = false
+    // }
   
     if(!data.address) {
       setError('address', { type: 'required', message: ' Address is required' })
@@ -193,12 +193,13 @@ const EditRider = () => {
     if ( data.full_name !== null &&  data.contact_no !== null &&  data.contact_no_two !== null 
       && data.identity !== null &&  data.identity_no !== null &&  data.email !== null
       && data.payment_method.value !== null &&  data.bank_name !== null &&  data.bank_account_name !== null 
-      && data.bank_account_num !== null &&  data.city.value !== null &&  data.area.value!== null
+      && data.bank_account_num !== null 
+      // &&  data.city.value !== null &&  data.area.value!== null
       &&  data.address !== null   ) {
 
 
       let formData = {
-        full_name: data.full_name,
+        name: data.full_name,
         contact_no: data.contact_no,
         contact_optional: data.contact_optional,
         identity: data.identity?.value,
@@ -208,16 +209,21 @@ const EditRider = () => {
         bank_name: data.bank_name,
         bank_account_name: data.bank_account_name,
         bank_account_num: data.bank_account_num,
-        city: data.city.value,
-        area: data.area.value,
+        // city: data.city.value,
+        // area: data.area.value,
         address: data.address,
  
         status: 'active'
       }
       console.log("formData", formData)
+      const headers = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
     
       useJwt
-        .axiosPut(getApi(RIDER_EDIT)+ id + "/", formData)
+        .axiosPut(getApi(RIDER_EDIT)  + id + "/", formData, headers)
         .then((res) => {
           console.log("res", res.data)
           SwalAlert("Rider Edited Successfully")
@@ -238,17 +244,17 @@ const EditRider = () => {
       {riderInfo &&
       <Form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-1'>
-            <Label className='form-label' for='full_name'>
+              <Label className='form-label' for='full_name'>
               Full Name
             </Label>
             <Controller
-              defaultValue={riderInfo.full_name}
+                defaultValue={riderInfo.full_name}
               control={control}
-              id='full_name'
-              name='full_name'
-              render={({ field }) => <Input  invalid={errors.full_name && true} {...field} />}
+                id='full_name'
+                name='full_name'
+                render={({ field }) => <Input invalid={errors.full_name && true} {...field} />}
             />
-            {errors && errors.full_name && <span className="invalid-feedback">{errors.full_name.message}</span>}
+              {errors && errors.full_name && <span className="invalid-feedback">{errors.full_name.message}</span>}
           </div>
           <div class="row">
             <div class="col-lg-6">
@@ -351,7 +357,6 @@ const EditRider = () => {
               render={({ field }) => (
                 <Input
                   type='email'
-                  placeholder='bruce.wayne@email.com'
                   invalid={errors.email && true}
                   {...field}
                 />
@@ -361,29 +366,29 @@ const EditRider = () => {
 
           </div>
             </div>
-            <div class="col-lg-6">
-              <div className='mb-1'>
-                <Label className='form-label' for='payment_method'>
-                Preferred Payment Method*
-                </Label>
-                <Controller
-                  defaultValue={{value: riderInfo.payment_method.id, label: riderInfo.payment_method.method_name}}
-                  id="payment_method"
-                  name="payment_method"
-                  control={control}
-                  render={({ field }) => <Select 
-                    isClearable
-                    className={classnames('react-select', { 'is-invalid': errors.payment_method && true })} 
-                    classNamePrefix='select'
-                    options={selectboxPaymentMethod} 
-                    {...field} 
-                  />}
-                />
-              
-            {errors && errors.payment_method && <span className="invalid-feedback">{errors.payment_method.message}</span>}
+              <div class="col-lg-6">
+                <div className='mb-1'>
+                  <Label className='form-label' for='payment_method'>
+                    Preferred Payment Method*
+                  </Label>
+                  <Controller
+                    defaultValue={{ value: riderInfo.payment_method.id, label: riderInfo.payment_method.payment_method_name }}
+                    id="payment_method"
+                    name="payment_method"
+                    control={control}
+                    render={({ field }) => <Select
+                      isClearable
+                      className={classnames('react-select', { 'is-invalid': errors.payment_method && true })}
+                      classNamePrefix='select'
+                      options={selectboxPaymentMethod}
+                      {...field}
+                    />}
+                  />
 
+                  {errors && errors.payment_method && <span className="invalid-feedback">{errors.payment_method.message}</span>}
+
+                </div>
               </div>
-            </div>
             
           </div>
           <div class="row">
@@ -433,7 +438,7 @@ const EditRider = () => {
               </div>
             </div>
           </div>
-          <div class="row">
+          {/* <div class="row">
             <div class="col-lg-6">
             <div className='mb-1'>
             <Label className='form-label' for='city'>
@@ -479,7 +484,7 @@ const EditRider = () => {
               </div>
             </div>
             
-          </div>        
+          </div>         */}
           <div className='mb-1'>
             <Label className='form-label' for='address'>
               Address

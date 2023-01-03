@@ -17,14 +17,14 @@ import { getApi, RIDER_ADD,PAYMENT_METHOD_LIST,CITIES_LIST,AREAS_LIST } from '@s
 import SwalAlert from "../../components/SwalAlert"
 import { useEffect, useState } from "react"
 import {identity } from "../../constants/data/identity"
-import { AREAS_BY_CITY } from "../../constants/apiUrls"
+// import { AREAS_BY_CITY } from "../../constants/apiUrls"
 import React, { useRef } from "react"
 
 
 const AddRiders = () => {
   const [selectboxPaymentMethod, setSelectboxPaymentMethod] = useState([])
-  const [selectboxCity, setSelectboxCity] = useState([])
-  const [selectboxArea, setSelectboxArea] = useState([])
+  // const [selectboxCity, setSelectboxCity] = useState([])
+  // const [selectboxArea, setSelectboxArea] = useState([])
   const [data, setData] = useState(null)
 
 
@@ -42,26 +42,26 @@ const AddRiders = () => {
     mode: 'onChange',
     defaultValues: {
       payment_method: {},
-      city: {}, 
-      area: {},
+      // city: {}, 
+      // area: {},
     }
   })
 
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) => { 
-      console.log(value, name, type)
-      if(name == 'city' && type=='change'){
-        resetField('area')
-        fetchAreaData(value.city.value)
-      }
-    })
+  // useEffect(() => {
+  //   const subscription = watch((value, { name, type }) => { 
+  //     console.log(value, name, type)
+  //     if(name == 'city' && type=='change'){
+  //       resetField('area')
+  //       fetchAreaData(value.city.value)
+  //     }
+  //   })
     
-    return () => subscription.unsubscribe()
-  }, [watch])
+  //   return () => subscription.unsubscribe()
+  // }, [watch])
 
   useEffect(() => {
     fetchPaymentmethodData()
-    fetchCityData()
+    // fetchCityData()
   },[])
 
   const fetchPaymentmethodData = () => {
@@ -71,7 +71,7 @@ const AddRiders = () => {
         let paymentmethodData = []
 
         res.data.map(data => {
-          paymentmethodData.push({value: data.id, label: data.method_name})
+          paymentmethodData.push({value: data.id, label: data.payment_method_name})
         })
 
         setSelectboxPaymentMethod(paymentmethodData)
@@ -80,46 +80,46 @@ const AddRiders = () => {
       .catch(err => console.log(err))
   }
 
-  const fetchCityData = () => {
-    return useJwt
-      .axiosGet(getApi(CITIES_LIST))
-      .then((res) => {
-        let cityData = []
+  // const fetchCityData = () => {
+  //   return useJwt
+  //     .axiosGet(getApi(CITIES_LIST))
+  //     .then((res) => {
+  //       let cityData = []
 
-        res.data.map(data => {
-          cityData.push({value: data.id, label: data.cities_name})
-        })
+  //       res.data.map(data => {
+  //         cityData.push({value: data.id, label: data.cities_name})
+  //       })
 
-        setSelectboxCity(cityData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
+  //       setSelectboxCity(cityData)
+  //       return res.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
-  const fetchAreaData = (cityId) => {
+  // const fetchAreaData = (cityId) => {
 
-    return useJwt
-      .axiosGet(getApi(AREAS_BY_CITY) + cityId + '/')
-      .then((res) => {
-        let areaData = []
+  //   return useJwt
+  //     .axiosGet(getApi(AREAS_BY_CITY) + cityId + '/')
+  //     .then((res) => {
+  //       let areaData = []
 
-        res.data.map(data => {
-          areaData.push({value: data.id, label: data.areas_name})
-        })
+  //       res.data.map(data => {
+  //         areaData.push({value: data.id, label: data.areas_name})
+  //       })
 
-        setSelectboxArea(areaData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
+  //       setSelectboxArea(areaData)
+  //       return res.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
   const onSubmit = data => {
     console.log("data", data)
 
     let isFormValid = true
 
-    if(!data.full_name) {
-      setError('full_name', { type: 'required', message: 'Full Name is required' })
+    if (!data.name) {
+      setError('name', { type: 'required', message: 'Full Name is required' })
       isFormValid = false
     }
     if(!data.contact_no) {
@@ -158,26 +158,20 @@ const AddRiders = () => {
       setError('bank_account_num', { type: 'required', message: 'Bank account number is required' })
       isFormValid = false
     }
-    if(!data.city && data.city.value) {
-      setError('city', { type: 'required', message: 'City is required' })
-      isFormValid = false
-    }
-    if(!data.area && data.area.value) {
-      setError('area', { type: 'required', message: ' Area is required' })
-      isFormValid = false
-    }
-    // if(!data.business_name) {
-    //   setError('business_name', { type: 'required', message: ' Business name is required' })
+    // if(!data.city && data.city.value) {
+    //   setError('city', { type: 'required', message: 'City is required' })
     //   isFormValid = false
     // }
+    // if(!data.area && data.area.value) {
+    //   setError('area', { type: 'required', message: ' Area is required' })
+    //   isFormValid = false
+    // }
+   
     if(!data.address) {
       setError('address', { type: 'required', message: ' Address is required' })
       isFormValid = false
     }
-    // if(!data.pickup_address) {
-    //   setError('pickup_address', { type: 'required', message: 'Pickup address is required' })
-    //   isFormValid = false
-    // }
+ 
     if(!data.password) {
       setError('password', { type: 'required', message: 'Password is required' })
       isFormValid = false
@@ -192,16 +186,17 @@ const AddRiders = () => {
 
 
     setData(data)
-    if ( data.full_name !== null &&  data.contact_no !== null &&  data.contact_no_two !== null 
+    if (data.name !== null &&  data.contact_no !== null &&  data.contact_no_two !== null 
       && data.identity !== null &&  data.identity_no !== null &&  data.email !== null
       && data.payment_method.value !== null &&  data.bank_name !== null &&  data.bank_account_name !== null 
-      && data.bank_account_num !== null &&  data.city.value !== null &&  data.area.value!== null
+      && data.bank_account_num !== null 
+      // &&  data.city.value !== null &&  data.area.value!== null
       && data.address !== null && data.password !== null &&  data.confirm_password !== null  ) {
 
 
     // if (Object.values(data).every(field => field.length > 0)) {
       let formData = {
-        full_name: data.full_name,
+        name: data.name,
         contact_no: data.contact_no,
         contact_optional: data.contact_optional,
         identity: data.identity?.value,
@@ -211,18 +206,22 @@ const AddRiders = () => {
         bank_name: data.bank_name,
         bank_account_name: data.bank_account_name,
         bank_account_num: data.bank_account_num,
-        city: data.city.value,
-        area: data.area.value,
+        // city: data.city.value,
+        // area: data.area.value,
         address: data.address,
-        // pickup_address: data.pickup_address,
         password: data.password,
         confirm_password: data.confirm_password,
         status: 'active'
       }
       console.log("formData", formData)
       // return false
+      const headers = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
       useJwt
-        .axiosPost(getApi(RIDER_ADD), formData)
+        .axiosPost(getApi(RIDER_ADD), formData, headers)
         .then((res) => {
           console.log("res", res.data)
           SwalAlert("Rider Added Successfully")
@@ -254,17 +253,17 @@ const AddRiders = () => {
       <CardBody>
       <Form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-1'>
-            <Label className='form-label' for='full_name'>
+            <Label className='form-label' for='name'>
               Full Name
             </Label>
             <Controller
               defaultValue=''
               control={control}
-              id='full_name'
-              name='full_name'
-              render={({ field }) => <Input placeholder='Bruce Wayne' invalid={errors.full_name && true} {...field} />}
+              id='name'
+              name='name'
+              render={({ field }) => <Input placeholder='Bruce Wayne' invalid={errors.name && true} {...field} />}
             />
-            {errors && errors.full_name && <span className="invalid-feedback">{errors.full_name.message}</span>}
+            {errors && errors.name && <span className="invalid-feedback">{errors.name.message}</span>}
           </div>
           <div class="row">
             <div class="col-lg-6">
@@ -376,7 +375,7 @@ const AddRiders = () => {
 
           </div>
             </div>
-            <div class="col-lg-6">
+            {/* <div class="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='payment_method'>
                 Preferred Payment Method*
@@ -387,21 +386,35 @@ const AddRiders = () => {
                   control={control}
                   render={({ field }) => <Select 
                     isClearable
-                    className={classnames('react-select', { 'is-invalid': errors.payment_method && true })} 
+                    className={classnames('react-select', { 'is-invalid': errors.payment_method && errors.payment_method.value && true })} 
                     classNamePrefix='select'
                     options={selectboxPaymentMethod} 
                     {...field} 
                   />}
                 />
-                {/* <Controller
-                  defaultValue=''
-                  control={control}
-                  id='payment_method'
-                  name='payment_method'
-                  render={({ field }) => <Input placeholder='Bank/bKash/Nogod' invalid={errors.payment_method && true} {...field} />}
-                /> */}
-                {/* {errors && errors.payment_method && <span>{errors.payment_method.message}</span>} */}
+              
             {errors && errors.payment_method && <span className="invalid-feedback">{errors.payment_method.message}</span>}
+
+              </div>
+            </div> */}
+            <div class="col-lg-6">
+              <div className='mb-1'>
+                <Label className='form-label' for='payment_method'>
+                  Preferred Payment Method*
+                </Label>
+                <Controller
+                  id="payment_method"
+                  name="payment_method"
+                  control={control}
+                  render={({ field }) => <Select
+                    isClearable
+                    className={classnames('react-select', { 'is-invalid': errors.payment_method && errors.payment_method.value && true })}
+                    classNamePrefix='select'
+                    options={selectboxPaymentMethod}
+                    {...field}
+                  />}
+                />
+                {errors && errors.payment_method && <span className="invalid-feedback">{errors.payment_method.message}</span>}
 
               </div>
             </div>
@@ -429,7 +442,7 @@ const AddRiders = () => {
                 Bank Account Name
                 </Label>
                 <Controller
-                  defaultValue=''
+                  defaultValue='Savings'
                   control={control}
                   id='bank_account_name'
                   name='bank_account_name'
@@ -454,7 +467,7 @@ const AddRiders = () => {
               </div>
             </div>
           </div>
-          <div class="row">
+          {/* <div class="row">
             <div class="col-lg-6">
             <div className='mb-1'>
             <Label className='form-label' for='city'>
@@ -498,7 +511,7 @@ const AddRiders = () => {
               </div>
             </div>
             
-          </div>        
+          </div>         */}
           {/* <div className='mb-1'>
             <Label className='form-label' for='business_name'>
               Business Name
@@ -527,21 +540,7 @@ const AddRiders = () => {
             {errors && errors.address && <span className="invalid-feedback">{errors.address.message}</span>}
 
           </div>
-          {/* <div className='mb-1'>
-            <Label className='form-label' for='pickup_address'>
-              Pickup Address
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='pickup_address'
-              name='pickup_address'
-              render={({ field }) => <Input placeholder='Dhaka , Bangladesh' invalid={errors.pickup_address && true} {...field} />}
-            />
-            {errors && errors.pickup_address && <span className="invalid-feedback">{errors.pickup_address.message}</span>}
-
-          </div> */}
-
+          
           <div class="row">
             <div class="col-lg-6">
             <div className='mb-1'>

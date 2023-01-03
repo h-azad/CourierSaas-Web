@@ -118,8 +118,8 @@ const AddMerchants = () => {
 
     let isFormValid = true
 
-    if(!data.full_name) {
-      setError('full_name', { type: 'required', message: 'Full Name is required' })
+    if(!data.name) {
+      setError('name', { type: 'required', message: 'Full Name is required' })
       isFormValid = false
     }
     if(!data.contact_no) {
@@ -352,7 +352,7 @@ const AddMerchants = () => {
                   control={control}
                   id='identity_no'
                   name='identity_no'
-                  render={({ field }) => <Input placeholder='' invalid={errors.identity_no && true} {...field} />}
+                  render={({ field }) => <Input placeholder='1542****' invalid={errors.identity_no && true} {...field} />}
                 />
                 {errors && errors.identity_no && <span className="invalid-feedback">{errors.identity_no.message}</span>}
               </div>

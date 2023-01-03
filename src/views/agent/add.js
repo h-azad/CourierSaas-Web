@@ -17,14 +17,14 @@ import { getApi, AGENT_ADD,PAYMENT_METHOD_LIST,CITIES_LIST,AREAS_LIST } from '@s
 import SwalAlert from "../../components/SwalAlert"
 import { useEffect, useState } from "react"
 import {identity } from "../../constants/data/identity"
-import { AREAS_BY_CITY } from "../../constants/apiUrls"
+// import { AREAS_BY_CITY } from "../../constants/apiUrls"
 import React, { useRef } from "react"
 
 
 const AddAgent = () => {
   const [selectboxPaymentMethod, setSelectboxPaymentMethod] = useState([])
-  const [selectboxCity, setSelectboxCity] = useState([])
-  const [selectboxArea, setSelectboxArea] = useState([])
+  // const [selectboxCity, setSelectboxCity] = useState([])
+  // const [selectboxArea, setSelectboxArea] = useState([])
   const [data, setData] = useState(null)
 
 
@@ -47,21 +47,21 @@ const AddAgent = () => {
     }
   })
 
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) => { 
-      console.log(value, name, type)
-      if(name == 'city' && type=='change'){
-        resetField('area')
-        fetchAreaData(value.city.value)
-      }
-    })
+  // useEffect(() => {
+  //   const subscription = watch((value, { name, type }) => { 
+  //     console.log(value, name, type)
+  //     if(name == 'city' && type=='change'){
+  //       resetField('area')
+  //       fetchAreaData(value.city.value)
+  //     }
+  //   })
     
-    return () => subscription.unsubscribe()
-  }, [watch])
+  //   return () => subscription.unsubscribe()
+  // }, [watch])
 
   useEffect(() => {
     fetchPaymentmethodData()
-    fetchCityData()
+    // fetchCityData()
   },[])
 
   const fetchPaymentmethodData = () => {
@@ -71,7 +71,7 @@ const AddAgent = () => {
         let paymentmethodData = []
 
         res.data.map(data => {
-          paymentmethodData.push({value: data.id, label: data.method_name})
+          paymentmethodData.push({value: data.id, label: data.payment_method_name})
         })
 
         setSelectboxPaymentMethod(paymentmethodData)
@@ -80,46 +80,46 @@ const AddAgent = () => {
       .catch(err => console.log(err))
   }
 
-  const fetchCityData = () => {
-    return useJwt
-      .axiosGet(getApi(CITIES_LIST))
-      .then((res) => {
-        let cityData = []
+  // const fetchCityData = () => {
+  //   return useJwt
+  //     .axiosGet(getApi(CITIES_LIST))
+  //     .then((res) => {
+  //       let cityData = []
 
-        res.data.map(data => {
-          cityData.push({value: data.id, label: data.cities_name})
-        })
+  //       res.data.map(data => {
+  //         cityData.push({value: data.id, label: data.cities_name})
+  //       })
 
-        setSelectboxCity(cityData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
+  //       setSelectboxCity(cityData)
+  //       return res.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
-  const fetchAreaData = (cityId) => {
+  // const fetchAreaData = (cityId) => {
 
-    return useJwt
-      .axiosGet(getApi(AREAS_BY_CITY) + cityId + '/')
-      .then((res) => {
-        let areaData = []
+  //   return useJwt
+  //     .axiosGet(getApi(AREAS_BY_CITY) + cityId + '/')
+  //     .then((res) => {
+  //       let areaData = []
 
-        res.data.map(data => {
-          areaData.push({value: data.id, label: data.areas_name})
-        })
+  //       res.data.map(data => {
+  //         areaData.push({value: data.id, label: data.areas_name})
+  //       })
 
-        setSelectboxArea(areaData)
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
+  //       setSelectboxArea(areaData)
+  //       return res.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
   const onSubmit = data => {
     console.log("data", data)
 
     let isFormValid = true
 
-    if(!data.full_name) {
-      setError('full_name', { type: 'required', message: 'Full Name is required' })
+    if(!data.name) {
+      setError('name', { type: 'required', message: 'Full Name is required' })
       isFormValid = false
     }
     if(!data.contact_no) {
@@ -158,26 +158,20 @@ const AddAgent = () => {
       setError('bank_account_num', { type: 'required', message: 'Bank account number is required' })
       isFormValid = false
     }
-    if(!data.city && data.city.value) {
-      setError('city', { type: 'required', message: 'City is required' })
-      isFormValid = false
-    }
-    if(!data.area && data.area.value) {
-      setError('area', { type: 'required', message: ' Area is required' })
-      isFormValid = false
-    }
-    // if(!data.business_name) {
-    //   setError('business_name', { type: 'required', message: ' Business name is required' })
+    // if(!data.city && data.city.value) {
+    //   setError('city', { type: 'required', message: 'City is required' })
     //   isFormValid = false
     // }
+    // if(!data.area && data.area.value) {
+    //   setError('area', { type: 'required', message: ' Area is required' })
+    //   isFormValid = false
+    // }
+  
     if(!data.address) {
       setError('address', { type: 'required', message: ' Address is required' })
       isFormValid = false
     }
-    // if(!data.pickup_address) {
-    //   setError('pickup_address', { type: 'required', message: 'Pickup address is required' })
-    //   isFormValid = false
-    // }
+   
     if(!data.password) {
       setError('password', { type: 'required', message: 'Password is required' })
       isFormValid = false
@@ -192,16 +186,17 @@ const AddAgent = () => {
 
 
     setData(data)
-    if ( data.full_name !== null &&  data.contact_no !== null &&  data.contact_no_two !== null 
+    if (data.name !== null &&  data.contact_no !== null &&  data.contact_no_two !== null 
       && data.identity !== null &&  data.identity_no !== null &&  data.email !== null
       && data.payment_method.value !== null &&  data.bank_name !== null &&  data.bank_account_name !== null 
-      && data.bank_account_num !== null &&  data.city.value !== null &&  data.area.value!== null
+      && data.bank_account_num !== null
+      //  &&  data.city.value !== null &&  data.area.value!== null
       && data.address !== null && data.password !== null &&  data.confirm_password !== null  ) {
 
 
     // if (Object.values(data).every(field => field.length > 0)) {
       let formData = {
-        full_name: data.full_name,
+        name: data.name,
         contact_no: data.contact_no,
         contact_optional: data.contact_optional,
         identity: data.identity?.value,
@@ -211,8 +206,8 @@ const AddAgent = () => {
         bank_name: data.bank_name,
         bank_account_name: data.bank_account_name,
         bank_account_num: data.bank_account_num,
-        city: data.city.value,
-        area: data.area.value,
+        // city: data.city.value,
+        // area: data.area.value,
         address: data.address,
         password: data.password,
         confirm_password: data.confirm_password,
@@ -220,8 +215,13 @@ const AddAgent = () => {
       }
       console.log("formData", formData)
       // return false
+      const headers = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
       useJwt
-        .axiosPost(getApi(AGENT_ADD), formData)
+        .axiosPost(getApi(AGENT_ADD), formData, headers)
         .then((res) => {
           console.log("res", res.data)
           SwalAlert("Agent Added Successfully")
@@ -243,17 +243,17 @@ const AddAgent = () => {
       <CardBody>
       <Form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-1'>
-            <Label className='form-label' for='full_name'>
+            <Label className='form-label' for='name'>
               Full Name
             </Label>
             <Controller
               defaultValue=''
               control={control}
-              id='full_name'
-              name='full_name'
-              render={({ field }) => <Input placeholder='Bruce Wayne' invalid={errors.full_name && true} {...field} />}
+              id='name'
+              name='name'
+              render={({ field }) => <Input placeholder='Bruce Wayne' invalid={errors.name && true} {...field} />}
             />
-            {errors && errors.full_name && <span className="invalid-feedback">{errors.full_name.message}</span>}
+            {errors && errors.name && <span className="invalid-feedback">{errors.name.message}</span>}
           </div>
           <div class="row">
             <div class="col-lg-6">
@@ -409,7 +409,7 @@ const AddAgent = () => {
                 Bank Account Name
                 </Label>
                 <Controller
-                  defaultValue=''
+                  defaultValue='Savings'
                   control={control}
                   id='bank_account_name'
                   name='bank_account_name'
@@ -434,7 +434,7 @@ const AddAgent = () => {
               </div>
             </div>
           </div>
-          <div class="row">
+          {/* <div class="row">
             <div class="col-lg-6">
             <div className='mb-1'>
             <Label className='form-label' for='city'>
@@ -478,7 +478,7 @@ const AddAgent = () => {
               </div>
             </div>
             
-          </div>        
+          </div>         */}
           <div className='mb-1'>
             <Label className='form-label' for='address'>
               Address

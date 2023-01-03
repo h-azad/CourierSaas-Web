@@ -17,27 +17,41 @@ export const MARCHANT_ADD = '/manage-user/create-merchant'
 export const MARCHANT_EDIT = '/manage-user/merchant/'
 export const MARCHANT_LIST = '/manage-user/merchant'
 export const MARCHANT_DELETE = '/manage-user/merchant/'
-export const MARCHANT_DETAILS = '/manage-user/merchant'
+export const MARCHANT_DETAILS = '/manage-user/merchant/'
 export const MARCHANT_SEARCH = '/search-marchant/'
 export const MARCHANT_UPDATE_STATUS = '/manage-user/merchant'
 
 
 
 // Riders API's 
-export const RIDER_ADD = '/api/user/rider/'
-export const RIDER_EDIT = '/api/user/rider/'
-export const RIDER_LIST = '/api/user/rider/'
-export const RIDER_DELETE = '/api/user/rider/'
-export const RIDER_DETAILS = '/api/user/rider/'
+// export const RIDER_ADD = '/api/user/rider/'
+// export const RIDER_EDIT = '/api/user/rider/'
+// export const RIDER_LIST = '/api/user/rider/'
+// export const RIDER_DELETE = '/api/user/rider/'
+// export const RIDER_DETAILS = '/api/user/rider/'
+// export const RIDER_SEARCH = '/search-rider/'
+
+
+export const RIDER_ADD = '/manage-user/create-rider'
+export const RIDER_EDIT = '/manage-user/rider/'
+export const RIDER_LIST = '/manage-user/rider'
+export const RIDER_DELETE = '/manage-user/rider/'
+export const RIDER_DETAILS = '/manage-user/rider/'
 export const RIDER_SEARCH = '/search-rider/'
 
-
 // Agents API's 
-export const AGENT_ADD = '/api/user/agent/'
-export const AGENT_EDIT = '/api/user/agent/'
-export const AGENT_LIST = '/api/user/agent/'
-export const AGENT_DELETE = '/api/user/agent/'
-export const AGENT_DETAILS = '/api/user/agent/'
+// export const AGENT_ADD = '/api/user/agent/'
+// export const AGENT_EDIT = '/api/user/agent/'
+// export const AGENT_LIST = '/api/user/agent/'
+// export const AGENT_DELETE = '/api/user/agent/'
+// export const AGENT_DETAILS = '/api/user/agent/'
+// export const AGENT_SEARCH = '/search-agent/'
+
+export const AGENT_ADD = '/manage-user/create-agent'
+export const AGENT_EDIT = '/manage-user/agent/'
+export const AGENT_LIST = '/manage-user/agent '
+export const AGENT_DELETE = '/manage-user/agent/'
+export const AGENT_DETAILS = '/manage-user/agent/'
 export const AGENT_SEARCH = '/search-agent/'
 
 
