@@ -36,8 +36,8 @@ const EditAreas = () => {
       .then((res) => {
         console.log("res", res.data)
         setAreasInfo({
-          cities_name: res.data.cities_name,
-          areas_name: res.data.areas_name
+          city: res.data.city,
+          area_name: res.data.area_name
         })
         return res.data
       })
@@ -53,7 +53,7 @@ const EditAreas = () => {
         let cityData = []
 
         res.data.map(data => {
-          cityData.push({value: data.id, label: data.cities_name})
+          cityData.push({value: data.id, label: data.city_name})
         })
 
         setSelectboxOptions(cityData)
@@ -75,11 +75,11 @@ const EditAreas = () => {
   
   const onSubmit = data => {
     setData(data)
-    if (data.cities_name !== null && data.areas_name !== null) {
+    if (data.city_name !== null && data.city_name.value !== null && data.area_name !== null) {
       
       let formData = {
-        areas_name: data.areas_name,
-        cities_name: data.cities_name.value,
+        area_name: data.area_name,
+        city: data.city_name.value,
         status: 'active'
       }
               
@@ -106,18 +106,18 @@ const EditAreas = () => {
           {areasInfo &&
         <Form onSubmit={handleSubmit(onSubmit)}>
             <div className='mb-1'>
-              <Label className='form-label' for='cities_name'>
+              <Label className='form-label' for='city_name'>
                 City Name
               </Label>
               <Controller
-                  id="cities_name"
-                  defaultValue={{label: areasInfo.cities_name.cities_name, value: areasInfo.cities_name.id}}
-                  name="cities_name"
+                  id="city_name"
+                  defaultValue={{ label: areasInfo.city.city_name, value: areasInfo.city.id}}
+                  name="city_name"
                   control={control}
                   render={({ field }) => <Select 
                     isClearable
-                    defaultValue={areasInfo.cities_name}
-                    className={classnames('react-select', { 'is-invalid': data !== null && data.cities_name === null })} 
+                    defaultValue={areasInfo.city_name}
+                    className={classnames('react-select', { 'is-invalid': data !== null && data.city_name === null })} 
                     classNamePrefix='select'
                     options={selectboxOptions} 
                     {...field} 
@@ -129,11 +129,11 @@ const EditAreas = () => {
                 Areas Name
               </Label>
               <Controller
-                defaultValue={areasInfo.areas_name}
+                defaultValue={areasInfo.area_name}
                 control={control}
-                id='areas_name'
-                name='areas_name'
-                render={({ field }) => <Input placeholder='Mirpur' invalid={errors.areas_name && true} {...field} />}
+                id='area_name'
+                name='area_name'
+                render={({ field }) => <Input placeholder='Mirpur' invalid={errors.area_name && true} {...field} />}
               />
             </div>
             

@@ -209,7 +209,7 @@ const changeStatusAction = (e, info) => {
                     <span className="align-middle fw-bold">{info.dimention}</span>
                   </td> */}
                   <td>
-                    <span className="align-middle fw-bold">{info.delivary_area.areas_name}</span>
+                    <span className="align-middle fw-bold">{info.delivary_area.area_name}</span>
                   </td>
                   {/* <td>
                     <span className="align-middle fw-bold">{info.delivary_charge}</span>

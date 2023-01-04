@@ -36,8 +36,8 @@ const AddAreas = () => {
     formState: { errors }
   } = useForm({
     defaultValues: {
-      areas_name: '',
-      cities_name: {}
+      area_name: '',
+      city: {}
     }
   })
 
@@ -53,7 +53,7 @@ const AddAreas = () => {
         let cityData = []
 
         res.data.map(data => {
-          cityData.push({value: data.id, label: data.cities_name})
+          cityData.push({value: data.id, label: data.city_name})
         })
 
         setSelectboxOptions(cityData)
@@ -63,19 +63,19 @@ const AddAreas = () => {
   }
 
   const handleCityChange = (city) => {
-    setValue('cities_name', city)
+    setValue('city_name', city)
   }
 
   
   const onSubmit = data => {
     // console.log("data", data)
     setData(data)
-    if (data.cities_name !== null && data.areas_name !== null) {
+    if (data.city_name !== null && data.area_name !== null) {
       // console.log("data", data)
 
       let formData = {
-        areas_name: data.areas_name,
-        cities_name: data.cities_name.value,
+        area_name: data.area_name,
+        city: data.city_name.value,
         status: 'active'
       }
 
@@ -107,16 +107,16 @@ const AddAreas = () => {
       <CardBody>
       <Form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-1'>
-              <Label className='form-label' for='cities_name'>
+              <Label className='form-label' for='city_name'>
                 City Name
               </Label>
               <Controller
-                  id="cities_name"
-                  name="cities_name"
+              id="city_name"
+              name="city_name"
                   control={control}
                   render={({ field }) => <Select 
                     isClearable
-                    className={classnames('react-select', { 'is-invalid': data !== null && data.cities_name === null })} 
+                    className={classnames('react-select', { 'is-invalid': data !== null && data.city_name === null })} 
                     classNamePrefix='select'
                     options={selectboxOptions} 
                     {...field} 
@@ -124,15 +124,15 @@ const AddAreas = () => {
                 />
           </div>
           <div className='mb-1'>
-            <Label className='form-label' for='areas_name'>
+            <Label className='form-label' for='area_name'>
               Area Name
             </Label>
             <Controller
               defaultValue=''
               control={control}
-              id='areas_name'
-              name='areas_name'
-              render={({ field }) => <Input placeholder='Mirpur' invalid={errors.areas_name && true} {...field} />}
+              id='area_name'
+              name='area_name'
+              render={({ field }) => <Input placeholder='Mirpur' invalid={errors.area_name && true} {...field} />}
             />
           </div>
           <div className='d-flex'>

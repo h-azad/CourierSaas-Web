@@ -34,7 +34,7 @@ const EditMerchants = () => {
   useEffect(() => {
     // console.log(id)
     useJwt
-    .axiosGet(getApi(MARCHANT_DETAILS)  +"/"+id + "/")
+    .axiosGet(getApi(MARCHANT_DETAILS) +id + "/")
       .then((res) => {
         // console.log("res", res.data)
         setMarchantInfo(res.data.data)

@@ -12,24 +12,24 @@ import UserInfoCard from './UserInfoCard'
 
 // ** Styles
 import '@styles/react/apps/app-users.scss'
-import { getApi, VOLUMETRIC_POLICY_DETAILS } from '../../../constants/apiUrls'
+import { getApi, PRICING_POLICY_DETAILS } from '../../../constants/apiUrls'
 
-const VolumetricPolicyView = () => {
+const PricingPolicyView = () => {
 
   // ** Hooks
   const { id } = useParams()
 
-  const [volumetricPolicyInfo, setvolumetricPolicyInfo] = useState(null)
+  const [pricingPolicyInfo, setpricingPolicyInfo] = useState(null)
   
   const [active, setActive] = useState('1')
 
   useEffect(() => {
     console.log(id)
     useJwt
-      .axiosGet(getApi(VOLUMETRIC_POLICY_DETAILS) + id + "/")
+      .axiosGet(getApi(PRICING_POLICY_DETAILS) + id + "/")
       .then((res) => {
         console.log("res", res.data)
-        setvolumetricPolicyInfo(res.data)
+        setpricingPolicyInfo(res.data)
         return res.data
       })
       .catch(err => console.log(err))
@@ -43,18 +43,18 @@ const VolumetricPolicyView = () => {
 
   return  (
     <div className='app-user-view'>
-      {volumetricPolicyInfo &&
+      {pricingPolicyInfo &&
       <Row>
         <Col xl='4' lg='5' xs={{ order: 1 }} md={{ order: 0, size: 5 }}>
-          <UserInfoCard selectedUser={volumetricPolicyInfo} />
+            <UserInfoCard selectedUser={pricingPolicyInfo} />
           {/* <PlanCard /> */}
         </Col>
         <Col xl='8' lg='7' xs={{ order: 0 }} md={{ order: 1, size: 7 }}>
-          <UserTabs active={active} toggleTab={toggleTab} userInfo={volumetricPolicyInfo} />
+            <UserTabs active={active} toggleTab={toggleTab} userInfo={pricingPolicyInfo} />
         </Col>
       </Row>
       }
     </div>
   )
 }
-export default VolumetricPolicyView
+export default PricingPolicyView

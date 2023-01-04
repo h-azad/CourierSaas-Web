@@ -56,61 +56,68 @@ export const AGENT_SEARCH = '/search-agent/'
 
 
 // Cities API's 
-export const CITIES_ADD = '/cities/cities/'
-export const CITIES_EDIT = '/cities/cities/'
-export const CITIES_LIST = '/cities/cities/'
-export const CITIES_DELETE = '/cities/cities/'
-export const CITIES_DETAILS = '/cities/cities/'
+export const CITIES_ADD = '/city/'
+export const CITIES_EDIT = '/city/'
+export const CITIES_LIST = '/city/'
+export const CITIES_DELETE = '/city/'
+export const CITIES_DETAILS = '/city/'
 export const CITIES_SEARCH = '/search-city/'
 
 
 // Areas API's 
-export const AREAS_ADD = '/cities/areas/'
-export const AREAS_EDIT = '/cities/areas/'
-export const AREAS_LIST = '/cities/areas/'
-export const AREAS_DELETE = '/cities/areas/'
-export const AREAS_DETAILS = '/cities/areas/'
+export const AREAS_ADD = '/area/'
+export const AREAS_EDIT = '/area/'
+export const AREAS_LIST = '/area/'
+export const AREAS_DELETE = '/area/'
+export const AREAS_DETAILS = '/area/'
 export const AREAS_SEARCH = '/search-area/'
 export const AREAS_BY_CITY = '/cities/get-area/'
 
 // Shipment Type API's 
-export const SHIPMENT_TYPE_ADD = '/shipment_type/shipment_type/'
-export const SHIPMENT_TYPE_EDIT = '/shipment_type/shipment_type/'
-export const SHIPMENT_TYPE_LIST = '/shipment_type/shipment_type/'
-export const SHIPMENT_TYPE_DELETE = '/shipment_type/shipment_type/'
-export const SHIPMENT_TYPE_DETAILS = '/shipment_type/shipment_type/'
-export const SHIPMENT_UPDATE_STATUS= '/shipment_type/shipment_type/'
+export const SHIPMENT_TYPE_ADD = '/shipment_type/'
+export const SHIPMENT_TYPE_EDIT = '/shipment_type/'
+export const SHIPMENT_TYPE_LIST = '/shipment_type/'
+export const SHIPMENT_TYPE_DELETE = '/shipment_type/'
+export const SHIPMENT_TYPE_DETAILS = '/shipment_type/'
+export const SHIPMENT_UPDATE_STATUS= '/shipment_type/'
 export const SEARCH_SHIPMENT = '/search_shipment/'
 
 
 // Product Type API's 
 
-export const PRODUCT_TYPE_ADD = '/product_type/product_type/'
-export const PRODUCT_TYPE_EDIT = '/product_type/product_type/'
-export const PRODUCT_TYPE_LIST = '/product_type/product_type/'
-export const PRODUCT_TYPE_DELETE = '/product_type/product_type/'
-export const PRODUCT_TYPE_DETAILS = '/product_type/product_type/'
+export const PRODUCT_TYPE_ADD = '/product_type/'
+export const PRODUCT_TYPE_EDIT = '/product_type/'
+export const PRODUCT_TYPE_LIST = '/product_type/'
+export const PRODUCT_TYPE_DELETE = '/product_type/'
+export const PRODUCT_TYPE_DETAILS = '/product_type/'
 export const SEARCH_PRODUCT = '/search_product/'
 
 
 
-//Volumetric Policy API's 
+//Pricing Policy API's 
 
-export const VOLUMETRIC_POLICY_ADD = '/volumetric_policy/volumetric_policy/'
-export const VOLUMETRIC_POLICY_EDIT = '/volumetric_policy/volumetric_policy/'
-export const VOLUMETRIC_POLICY_LIST = '/volumetric_policy/volumetric_policy/'
-export const VOLUMETRIC_POLICY_DELETE = '/volumetric_policy/volumetric_policy/'
-export const VOLUMETRIC_POLICY_DETAILS = '/volumetric_policy/volumetric_policy/'
-export const SEARCH_VOLUMETRIC_POLICY = '/search_volumetric_policy/'
+// export const VOLUMETRIC_POLICY_ADD = '/pricing_policy/'
+// export const VOLUMETRIC_POLICY_EDIT = '/pricing_policy/'
+// export const VOLUMETRIC_POLICY_LIST = '/pricing_policy/'
+// export const VOLUMETRIC_POLICY_DELETE = '/pricing_policy/'
+// export const VOLUMETRIC_POLICY_DETAILS = '/pricing_policy/'
+// export const SEARCH_VOLUMETRIC_POLICY = '/search_volumetric_policy/'
+
+export const PRICING_POLICY_ADD = '/pricing_policy/'
+export const PRICING_POLICY_EDIT = '/pricing_policy/'
+export const PRICING_POLICY_LIST = '/pricing_policy/'
+export const PRICING_POLICY_DELETE = '/pricing_policy/'
+export const PRICING_POLICY_DETAILS = '/pricing_policy/'
+export const SEARCH_PRICING_POLICY = '/search_pricing_policy/'
 
 
 //Create Order API's 
 
-export const CREATE_ORDER_ADD = '/create_order/create_order/'
-export const CREATE_ORDER_EDIT = '/create_order/create_order/'
-export const CREATE_ORDER_LIST = '/create_order/create_order/'
-export const CREATE_ORDER_DELETE = '/create_order/create_order/'
-export const CREATE_ORDER_DETAILS = '/create_order/create_order/'
+export const CREATE_ORDER_ADD = '/create_order/'
+export const CREATE_ORDER_EDIT = '/create_order/'
+export const CREATE_ORDER_LIST = '/create_order/'
+export const CREATE_ORDER_DELETE = '/create_order/'
+export const CREATE_ORDER_DETAILS = '/create_order/'
 export const SEARCH_CREATE_ORDER = '/search_create_order/'
 export const DIMENTION_BY_PRODUCT = '/create_order/get-dimention/'
 export const VOLUMETRIC_POLICY_BY_PRODUCT = '/create_order/get-price-policy/'

@@ -7,7 +7,7 @@ import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
 import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
 import useJwt from '@src/auth/jwt/useJwt'
 import ListTable from "./partials/list-table"
-import { getApi, VOLUMETRIC_POLICY_LIST } from "../../constants/apiUrls"
+import { getApi, PRICING_POLICY_LIST } from "../../constants/apiUrls"
 
 function VolumetricPolicyList() {
 

@@ -13,11 +13,11 @@ import Select from "react-select"
 import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, VOLUMETRIC_POLICY_ADD, PRODUCT_TYPE_LIST } from '@src/constants/apiUrls'
+import { getApi, PRICING_POLICY_ADD, PRODUCT_TYPE_LIST } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
 
-const AddVolumetricPolicy = () => {
+const AddPricingPolicy = () => {
   const [selectboxProduct, setSelectboxProduct] = useState([])
   const [data, setData] = useState(null)
   const navigate = useNavigate()
@@ -122,7 +122,7 @@ const AddVolumetricPolicy = () => {
       console.log("formData", formData)
 
       useJwt
-        .axiosPost(getApi(VOLUMETRIC_POLICY_ADD), formData)
+        .axiosPost(getApi(PRICING_POLICY_ADD), formData)
         .then((res) => {
           console.log("res", res.data)
           SwalAlert("Pricing Policy Added Successfully")
@@ -285,4 +285,4 @@ const AddVolumetricPolicy = () => {
     </Card>
   )
 }
-export default AddVolumetricPolicy
+export default AddPricingPolicy

@@ -13,7 +13,7 @@ import Select from "react-select"
 import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, CREATE_ORDER_ADD,MARCHANT_LIST, PRODUCT_TYPE_LIST ,AREAS_LIST} from '@src/constants/apiUrls'
+import { getApi, CREATE_ORDER_ADD, MARCHANT_LIST, PRODUCT_TYPE_LIST ,AREAS_LIST} from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
 import { DIMENTION_BY_PRODUCT, VOLUMETRIC_POLICY_BY_PRODUCT } from "../../constants/apiUrls"
 import SwalAlert from "../../components/SwalAlert"
@@ -145,7 +145,7 @@ const AddCreateOrder = () => {
       .then((res) => {
         let areaData = []
         res.data.map(data => {
-          areaData.push({value: data.id, label: data.areas_name})
+          areaData.push({value: data.id, label: data.area_name})
         })
         setSelectboxArea(areaData)
         return res.data
@@ -158,7 +158,7 @@ const AddCreateOrder = () => {
 
     let isFormValid = true
 
-    if(!data.marchant && data.marchant.value) {
+    if (!data.marchant && data.marchant.value) {
       setError('marchant', { type: 'required', message: 'Marchant is required' })
       isFormValid = false
     }
@@ -212,7 +212,7 @@ const AddCreateOrder = () => {
     {
 
       let formData = {
-        marchant : data.marchant.value,
+        marchant: data.marchant.value,
         recipient_name: data.recipient_name,
         phone_number: data.phone_number,
         delivary_address: data.delivary_address,
@@ -259,7 +259,7 @@ const AddCreateOrder = () => {
 
               render={({ field }) => <Select 
               isClearable
-              className={classnames('react-select', { 'is-invalid': errors.marchant && true })} 
+              className={classnames('react-select', { 'is-invalid': errors.marchant && errors.full_name.value && true })} 
               classNamePrefix='select'
               options={selectboxMarchant} 
               {...field} 

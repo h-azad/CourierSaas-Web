@@ -31,8 +31,8 @@ const AddCities = () => {
   const onSubmit = data => {
     let isFormValid = true
 
-    if(!( data.cities_name)) {
-      setError('cities_name', { type: 'required', message: 'City name must be added' })
+    if (!(data.city_name)) {
+      setError('city_name', { type: 'required', message: 'City name must be added' })
       isFormValid = false
     }
     if(!isFormValid) {
@@ -40,10 +40,10 @@ const AddCities = () => {
     }
 
     setData(data)
-    if ( data.cities_name !== null) {
+    if (data.city_name !== null) {
 
       let formData = {
-        cities_name: data.cities_name,
+        city_name: data.city_name,
         status: 'active'
       }
 
@@ -60,25 +60,6 @@ const AddCities = () => {
 
     }
   }
-  //   if (data.cities_name !== null) {
-
-  //     let formData = {
-  //       cities_name: data.cities_name,
-  //       status: 'active'
-  //     }
-
-  //     console.log("formData", formData)
-  //     useJwt
-  //       .axiosPost(getApi(CITIES_ADD), formData)
-  //       .then((res) => {
-  //         console.log("res", res.data)
-  //         SwalAlert("City Added Successfully")
-  //         navigate("/cities")
-  //       })
-  //       .catch(err => console.log(err))
-  //   }
-  // }
-
   return (
     <Card>
       <CardHeader>
@@ -94,11 +75,11 @@ const AddCities = () => {
             <Controller
               defaultValue=''
               control={control}
-              id='cities_name'
-              name='cities_name'
-              render={({ field }) => <Input placeholder='Dhaka' invalid={errors.cities_name && true} {...field} />}
+              id='city_name'
+              name='city_name'
+              render={({ field }) => <Input placeholder='Dhaka' invalid={errors.city_name && true} {...field} />}
             />
-            {errors && errors.cities_name && <span>{errors.cities_name.message}</span>}
+            {errors && errors.city_name && <span>{errors.city_name.message}</span>}
           </div>
           <div className='d-flex'>
             <Button className='me-1' color='primary' type='submit'>

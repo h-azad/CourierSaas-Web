@@ -170,8 +170,8 @@ const ListTable = () => {
       <Table bordered>
         <thead>
           <tr>
-            <th>Areas Name</th>
-            <th>Cities Name</th>
+            <th>Area Name</th>
+            <th>City Name</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -181,10 +181,10 @@ const ListTable = () => {
             areas.map((info) => (
               <tr key={info.id}>
                 <td>
-                  <span className="align-middle fw-bold">{info.areas_name}</span>
+                  <span className="align-middle fw-bold">{info.area_name}</span>
                 </td>
                 <td>
-                  <span className="align-middle fw-bold">{info.cities_name.cities_name}</span>
+                  <span className="align-middle fw-bold">{info.city.city_name}</span>
                 </td>
                 <td>
                   <Badge pill color="light-primary" className="me-1">

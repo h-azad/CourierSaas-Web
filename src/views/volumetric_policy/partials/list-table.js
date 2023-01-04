@@ -16,13 +16,13 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, VOLUMETRIC_POLICY_LIST, VOLUMETRIC_POLICY_DELETE ,SEARCH_VOLUMETRIC_POLICY } from "../../../constants/apiUrls"
+import { getApi, PRICING_POLICY_LIST, PRICING_POLICY_DELETE,SEARCH_PRICING_POLICY } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
 
 const ListTable = () => {
-  const [volumetricpolicy, setVolumetricPolicy] = useState([])
+  const [pricingpolicy, setPricingPolicy] = useState([])
   const MySwal = withReactContent(Swal)
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
@@ -34,11 +34,11 @@ const ListTable = () => {
       if (result.value) {
 
       useJwt
-        .axiosDelete(getApi(VOLUMETRIC_POLICY_DELETE+id+'/'))
+        .axiosDelete(getApi(PRICING_POLICY_DELETE+id+'/'))
         .then((res) => {
           SwalAlert("Deleted Successfully")
         })
-        .finally(() => fetchVolumetricPolicyData())
+        .finally(() => fetchPricingPolicyData())
         
       }
     })
@@ -71,15 +71,15 @@ const changeStatusAction = (e, info) => {
 }
 
   useEffect(() => {
-    fetchVolumetricPolicyData()
+    fetchPricingPolicyData()
   }, [])
 
-  const fetchVolumetricPolicyData = () => {
+  const fetchPricingPolicyData = () => {
     return useJwt
-      .axiosGet(getApi(VOLUMETRIC_POLICY_LIST))
+      .axiosGet(getApi(PRICING_POLICY_LIST))
       .then((res) => {
         console.log("res", res.data)
-        setVolumetricPolicy(res.data)
+        setPricingPolicy(res.data)
         return res.data
       })
       .catch(err => console.log(err))
@@ -88,12 +88,12 @@ const changeStatusAction = (e, info) => {
     if(!statusModalState) {
       clearData()
     }
-    fetchVolumetricPolicyData()
+    fetchPricingPolicyData()
   }, [statusModalState])
 
-  const fetchSearchVolumetricPolicyData = searchTerm => {
+  const fetchSearchPricingPolicyData = searchTerm => {
     return useJwt
-      .axiosGet(getApi(SEARCH_VOLUMETRIC_POLICY)+'?search='+ searchTerm)
+      .axiosGet(getApi(SEARCH_PRICING_POLICY)+'?search='+ searchTerm)
       .then((res) => {
         return res.data
       })
@@ -104,11 +104,11 @@ const changeStatusAction = (e, info) => {
     console.log(e.target.value)
     const searchTerm = e.target.value
     if (searchTerm.length > 0) {
-      fetchSearchVolumetricPolicyData(searchTerm)
+      fetchSearchPricingPolicyData(searchTerm)
         .then(data => {
           if (data.length > 0) {
             console.log('res', data)
-            setVolumetricPolicy(data)
+            setPricingPolicy(data)
           }else{
             console.log("No data")
           }
@@ -181,8 +181,8 @@ const changeStatusAction = (e, info) => {
             </tr>
           </thead>
           <tbody>
-            {volumetricpolicy &&
-              volumetricpolicy.map((info) => (
+            {pricingpolicy &&
+              pricingpolicy.map((info) => (
                 <tr key={info.id}>
                   <td>
                     <span className="align-middle fw-bold">{info.policy_title}</span>

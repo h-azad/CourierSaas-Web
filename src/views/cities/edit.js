@@ -53,7 +53,7 @@ const EditCities = () => {
   const onSubmit = data => {
     if (Object.values(data).every(field => field.length > 0)) {
       let formData = {
-        cities_name: data.cities_name,
+        city_name: data.city_name,
         status: 'active'
       }
       
@@ -96,11 +96,11 @@ const EditCities = () => {
                 Cities Name
               </Label>
               <Controller
-                defaultValue={citiesInfo.cities_name}
+                  defaultValue={citiesInfo.city_name}
                 control={control}
-                id='cities_name'
-                name='cities_name'
-                render={({ field }) => <Input placeholder='Dhaka' invalid={errors.cities_name && true} {...field} />}
+                  id='city_name'
+                  name='city_name'
+                  render={({ field }) => <Input placeholder='Dhaka' invalid={errors.city_name && true} {...field} />}
               />
             </div>
             
