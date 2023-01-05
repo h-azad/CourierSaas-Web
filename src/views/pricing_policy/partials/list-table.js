@@ -142,7 +142,7 @@ const changeStatusAction = (e, info) => {
         <div className="row justify-content-between">
           <div className="col-lg-5">
             <div className="d-flex align-items-center">
-              <Link to={'/volumetric_policy/add'}>
+              <Link to={'/pricing_policy/add'}>
                 <Button.Ripple color="primary">Add Pricing Policy</Button.Ripple>
               </Link>
             </div>
@@ -227,11 +227,11 @@ const changeStatusAction = (e, info) => {
                         <MoreVertical size={15} />
                       </DropdownToggle>
                       <DropdownMenu>
-                      <DropdownItem href={"/volumetric_policy/view/" + info.id} >
+                        <DropdownItem href={"/pricing_policy/view/" + info.id} >
                         <Eye className="me-50" size={15} />{" "}
                         <span className="align-middle">View</span>
                       </DropdownItem>
-                        <DropdownItem href={"/volumetric_policy/edit/" + info.id}>
+                        <DropdownItem href={"/pricing_policy/edit/" + info.id}>
                           <Edit className="me-50" size={15} />{" "}
                           <span className="align-middle">Edit</span>
                         </DropdownItem>

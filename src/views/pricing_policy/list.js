@@ -9,7 +9,7 @@ import useJwt from '@src/auth/jwt/useJwt'
 import ListTable from "./partials/list-table"
 import { getApi, PRICING_POLICY_LIST } from "../../constants/apiUrls"
 
-function VolumetricPolicyList() {
+function PricingPolicyList() {
 
   return (
     <Fragment>
@@ -61,4 +61,4 @@ function VolumetricPolicyList() {
   )
 }
 
-export default VolumetricPolicyList
+export default PricingPolicyList

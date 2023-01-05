@@ -8,18 +8,20 @@ import {
   Button,
   Label,
 } from "reactstrap"
-import { useNavigate } from "react-router-dom"
+import { useNavigate , useParams} from "react-router-dom"
 import Select from "react-select"
 import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, PRICING_POLICY_ADD, PRODUCT_TYPE_LIST } from '@src/constants/apiUrls'
+import { getApi, PRICING_POLICY_EDIT,PRICING_POLICY_DETAILS, PRODUCT_TYPE_LIST } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
 
-const AddPricingPolicy = () => {
+const EditPricingPolicy = () => {
   const [selectboxProduct, setSelectboxProduct] = useState([])
   const [data, setData] = useState(null)
+  const [pricingInfo, setPricingInfo] = useState(null)
+
   const navigate = useNavigate()
   const {
     reset,
@@ -30,11 +32,28 @@ const AddPricingPolicy = () => {
     formState: { errors }
   } = useForm({
     defaultValues: {
-      volumetric_policy: '',
+      pricing_policy: '',
       product_type: {},   
 
     }
   })
+  
+  let { id } = useParams()
+
+  useEffect(() => {
+    console.log(id)
+    useJwt
+      .axiosGet(getApi(PRICING_POLICY_DETAILS) + id + "/")
+      .then((res) => {
+        console.log("res", res.data)
+        setPricingInfo(res.data)
+        console.log(identity.find(id => id.value == pricingInfo.identity))
+        return res.data
+      })
+      .catch(err => console.log(err))
+      
+  }, [])
+  
 
   useEffect(() => {
     fetchProductData()
@@ -61,15 +80,16 @@ const AddPricingPolicy = () => {
 
     let isFormValid = true
 
+    if(!(data.product && data.product.value)) {
+      setError('product', { type: 'required', message: 'Product Type is required' })
+      isFormValid = false
+    }
+
     if(!data.policy_title) {
       setError('policy_title', { type: 'required', message: 'Policy Title is required' })
       isFormValid = false
     }
-
-    if(!(data.product_type && data.product_type.value)) {
-      setError('product_type', { type: 'required', message: 'Product Type is required' })
-      isFormValid = false
-    }
+    
     if(!data.delivary_charge) {
       setError('delivary_charge', { type: 'required', message: 'Delivary Charge is required' })
       isFormValid = false
@@ -108,7 +128,7 @@ const AddPricingPolicy = () => {
 
       let formData = {
         policy_title: data.policy_title,
-        product: data.product_type.value,
+        product: data.product.value,
         delivary_charge: data.delivary_charge,
         min_dimention: data.min_dimention,
         max_dimention: data.max_dimention,
@@ -120,51 +140,54 @@ const AddPricingPolicy = () => {
       }
 
       console.log("formData", formData)
-
+//asiosGet method change korte hbe 
       useJwt
-        .axiosPost(getApi(PRICING_POLICY_ADD), formData)
+        .axiosGet(getApi(PRICING_POLICY_EDIT), formData)
         .then((res) => {
           console.log("res", res.data)
-          SwalAlert("Pricing Policy Added Successfully")
-          navigate("/volumetric_policy")
+          SwalAlert("Pricing Policy Edited Successfully")
+          navigate("/pricing_policy")
         })
         .catch(err => console.log(err))
 
     }
   }
+  
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle tag="h4">Add Pricing Policy</CardTitle>
+        <CardTitle tag="h4">Edit Pricing Policy</CardTitle>
       </CardHeader>
 
       <CardBody>
+      {pricingInfo &&
       <Form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-1'>
               <Label className='form-label' for='product_type'>
                  Product Type
               </Label>
               <Controller
-                  id="product_type"
-                  name="product_type"
+                defaultValue={{ value: pricingInfo.product.id, label: pricingInfo.product.product_type}}
+                  id="product"
+                  name="product"
                   control={control}
                   render={({ field }) => <Select 
                     isClearable
-                    className={classnames('react-select', { 'is-invalid': errors.product_type && true })} 
+                    className={classnames('react-select', { 'is-invalid': errors.product && true })} 
                     classNamePrefix='select'
                     options={selectboxProduct} 
                     {...field} 
                   />}
                 />
-              {errors && errors.product_type && <span>{errors.product_type.message}</span>}
+              {errors && errors.product && <span>{errors.product.message}</span>}
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='policy_title'>
               Policy Title
             </Label>
             <Controller
-              defaultValue=''
+                defaultValue={pricingInfo.policy_title}
               control={control}
               id='policy_title'
               name='policy_title'
@@ -178,7 +201,7 @@ const AddPricingPolicy = () => {
               Delivary Charge
             </Label>
             <Controller
-              defaultValue=''
+                defaultValue={pricingInfo.delivary_charge}
               control={control}
               id='delivary_charge'
               name='delivary_charge'
@@ -194,7 +217,7 @@ const AddPricingPolicy = () => {
                 Min Dimension
                 </Label>
                 <Controller
-                  defaultValue=''
+                    defaultValue={pricingInfo.min_dimention}
                   control={control}
                   id='min_dimention'
                   name='min_dimention'
@@ -209,7 +232,7 @@ const AddPricingPolicy = () => {
                 Max Dimension
                 </Label>
                 <Controller
-                  defaultValue=''
+                    defaultValue={pricingInfo.max_dimention}
                   control={control}
                   id='max_dimention'
                   name='max_dimention'
@@ -224,7 +247,7 @@ const AddPricingPolicy = () => {
                 Max Weight / KG
                 </Label>
                 <Controller
-                  defaultValue=''
+                    defaultValue={pricingInfo.max_weight}
                   control={control}
                   id='max_weight'
                   name='max_weight'
@@ -239,7 +262,7 @@ const AddPricingPolicy = () => {
             Addition Charge
             </Label>
             <Controller
-              defaultValue=''
+                defaultValue={pricingInfo.additional_charge}
               control={control}
               id='additional_charge'
               name='additional_charge'
@@ -252,7 +275,7 @@ const AddPricingPolicy = () => {
             Per Dimension
             </Label>
             <Controller
-              defaultValue=''
+                defaultValue={pricingInfo.per_dimention}
               control={control}
               id='per_dimention'
               name='per_dimention'
@@ -266,7 +289,7 @@ const AddPricingPolicy = () => {
             COD Charge
             </Label>
             <Controller
-              defaultValue=''
+                defaultValue={pricingInfo.cod_charge}
               control={control}
               id='cod_charge'
               name='cod_charge'
@@ -281,8 +304,9 @@ const AddPricingPolicy = () => {
             </Button>
           </div>
         </Form>
+         }
       </CardBody>
     </Card>
   )
 }
-export default AddPricingPolicy
+export default EditPricingPolicy

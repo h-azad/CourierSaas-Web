@@ -32,10 +32,10 @@ import ProductTypeList from "../../views/product_type/list"
 import AddProductType from "../../views/product_type/add"
 import EditProductType from "../../views/product_type/edit"
 
-import VolumetricPolicyList from "../../views/volumetric_policy/list"
-import AddVolumetricPolicy from "../../views/volumetric_policy/add"
-import EditVolumetricPolicy from "../../views/volumetric_policy/edit"
-import VolumetricPolicyView from "../../views/volumetric_policy/view"
+import PricingPolicyList from "../../views/pricing_policy/list"
+import AddPricingPolicy from "../../views/pricing_policy/add"
+import EditPricingPolicy from "../../views/pricing_policy/edit"
+import PricingPolicyView from "../../views/pricing_policy/view"
 
 
 import CreateOrderList from "../../views/create_order/list"
@@ -168,20 +168,20 @@ const DashboardRoutes = [
   },
 
   {
-    path: "/volumetric_policy",
-    element: <VolumetricPolicyList />
+    path: "/pricing_policy",
+    element: <PricingPolicyList />
   },
   {
-    path: "/volumetric_policy/add",
-    element: <AddVolumetricPolicy />
+    path: "/pricing_policy/add",
+    element: <AddPricingPolicy/>
   },
   {
-    path: "/volumetric_policy/edit/:id",
-    element: <EditVolumetricPolicy/>
+    path: "/pricing_policy/edit/:id",
+    element: <EditPricingPolicy />
   },
   {
-    path: "/volumetric_policy/view/:id",
-    element: <VolumetricPolicyView />
+    path: "/pricing_policy/view/:id",
+    element: <PricingPolicyView />
   },
 
   {

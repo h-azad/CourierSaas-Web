@@ -13,7 +13,7 @@ import useJwt from '@src/auth/jwt/useJwt'
 import '@styles/react/libs/tables/react-dataTable-component.scss'
 import { useEffect } from 'react'
 
-const VolumetricInfoList = ({userInfo}) => {
+const PricingInfoList = ({userInfo}) => {
   // useEffect(() => {
   //   console.log(userInfo)
   // }, [userInfo])
@@ -59,4 +59,4 @@ const VolumetricInfoList = ({userInfo}) => {
   )
 }
 
-export default VolumetricInfoList
+export default PricingInfoList

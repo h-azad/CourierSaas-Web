@@ -98,10 +98,10 @@ export default [
     navLink: "/product_type"
   },
   {
-    id: "volumetric_policy",
+    id: "pricing_policy",
     title: "Pricing Policy",
     icon:  <Filter size={20} />,
-    navLink: "/volumetric_policy"
+    navLink: "/pricing_policy"
   },
   {
     id: "payment_method",

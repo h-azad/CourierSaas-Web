@@ -15,7 +15,7 @@ import { useEffect } from 'react'
 
 const MarchantInfoList = ({userInfo}) => {
   // useEffect(() => {
-  //   console.log(userInfo)
+    console.log(userInfo)
   // }, [userInfo])
 
   return (
@@ -59,15 +59,15 @@ const MarchantInfoList = ({userInfo}) => {
             </tr>
             <tr>
               <th>Payment Method:</th>
-              <th>{userInfo.payment_method?.method_name}</th>
+              <th>{userInfo.payment_method?.payment_method_name}</th>
             </tr>
-            <tr>
+            {/* <tr>
               <th>City:</th>
-              <th>{userInfo.city?.cities_name}</th>
+              <th>{userInfo.city?.city_name}</th>
             </tr><tr>
               <th>Area:</th>
-              <th>{userInfo.area?.areas_name}</th>
-            </tr>
+              <th>{userInfo.area?.area_name}</th>
+            </tr> */}
             <tr>
               <th>Contact(Optional):</th>
               <th>{userInfo.contact_no_two}</th>

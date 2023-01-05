@@ -177,7 +177,7 @@ const UserInfoCard = ({ selectedUser }) => {
             ) : null}
           </div>
           <div className='d-flex justify-content-center pt-2'>
-            <Button color='primary' onClick={() => { navigate("/volumetric_policy/edit/" + selectedUser.id) }}>
+            <Button color='primary' onClick={() => { navigate("/pricing_policy/edit/" + selectedUser.id) }}>
               Edit
             </Button>
             <Button className='ms-1' color='danger' outline onClick={e=>changeStatusAction(e, selectedUser)}>

@@ -76,7 +76,7 @@ export default [
   navLink: "/second-page"
 },
 {
-  id: "volumetric_policy",
+  id: "pricing_policy",
   title: "Pricing Policy",
   icon: <Filter size={20} />,
   navLink: "/second-page"
