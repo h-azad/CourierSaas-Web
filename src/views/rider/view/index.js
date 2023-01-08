@@ -29,7 +29,7 @@ const RiderView = () => {
       .axiosGet(getApi(RIDER_DETAILS) + id + "/")
       .then((res) => {
         console.log("res", res.data)
-        setRiderInfo(res.data)
+        setRiderInfo(res.data.data)
         return res.data
       })
       .catch(err => console.log(err))

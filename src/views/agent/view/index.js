@@ -29,7 +29,7 @@ const AgentView = () => {
       .axiosGet(getApi(AGENT_DETAILS) + id + "/")
       .then((res) => {
         console.log("res", res.data)
-        setAgentInfo(res.data)
+        setAgentInfo(res.data.data)
         return res.data
       })
       .catch(err => console.log(err))

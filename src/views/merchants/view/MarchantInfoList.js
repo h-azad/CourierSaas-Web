@@ -17,6 +17,7 @@ const MarchantInfoList = ({userInfo}) => {
   // useEffect(() => {
     console.log(userInfo)
   // }, [userInfo])
+  
 
   return (
     <Card>

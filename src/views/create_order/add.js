@@ -40,7 +40,6 @@ const AddCreateOrder = () => {
     defaultValues: {
       product_type: {},
       marchant: {},
-      // dimention: {},   
 
 
     }
@@ -53,24 +52,24 @@ const AddCreateOrder = () => {
 
   },[])
 
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) => { 
-      // console.log(value, name, type)
-      if(name == 'product_type' && type=='change'){
-        resetField('parcel_type')
-        setSelectboxDimention([])
-        fetchPolicyData(value.product_type.value)
-      }
-      if(name == 'parcel_type' && type=='change'){
-        resetField('delivary_charge')
-        if(value.parcel_type.value){
-          setDeliveryCharge(value.parcel_type.value)
-        }
-      }
-    })
+  // useEffect(() => {
+  //   const subscription = watch((value, { name, type }) => { 
+  //     // console.log(value, name, type)
+  //     if(name == 'product_type' && type=='change'){
+  //       resetField('parcel_type')
+  //       setSelectboxDimention([])
+  //       fetchPolicyData(value.product_type.value)
+  //     }
+  //     if(name == 'parcel_type' && type=='change'){
+  //       resetField('delivary_charge')
+  //       if(value.parcel_type.value){
+  //         setDeliveryCharge(value.parcel_type.value)
+  //       }
+  //     }
+  //   })
     
-    return () => subscription.unsubscribe()
-  }, [watch])
+  //   return () => subscription.unsubscribe()
+  // }, [watch])
 
   const fetchMarchantData = () => {
     return useJwt
@@ -184,11 +183,6 @@ const AddCreateOrder = () => {
       isFormValid = false
     }
    
-    if(!data.dimention  && data.dimention.value) {
-      setError('dimention', { type: 'required', message: 'Dimention is required' })
-      isFormValid = false
-    } 
-    
     if(!(data.delivary_area && data.delivary_area.value)) {
       setError('delivary_area', { type: 'required', message: 'Delivary Area is required' })
       isFormValid = false
@@ -205,9 +199,8 @@ const AddCreateOrder = () => {
     setData(data)
     if ( data.marchant.value !== null &&  data.recipient_name !== null &&  data.phone_number !== null 
       && data.delivary_address !== null &&  data.amount_to_be_collected !== null 
-      &&  data.product_type.value !== null
-      && data.dimention.value !== null &&  data.delivary_area.value !== null && 
-       data.delivary_charge !== null
+      && data.product_type.value !== null && data.delivary_area.value !== null
+      && data.delivary_charge !== null
       ) 
     {
 
@@ -218,8 +211,9 @@ const AddCreateOrder = () => {
         delivary_address: data.delivary_address,
         amount_to_be_collected: data.amount_to_be_collected,
         product_type: data.product_type.value,
-        dimention: data.dimention.value,
         delivary_area: data.delivary_area.value,
+
+        // dimention: data.dimention.value,
         delivary_charge: data.delivary_charge,
         status: 'accepted'
       }
@@ -351,7 +345,7 @@ const AddCreateOrder = () => {
               <div class="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='area'>
-                  Percel Type
+                  Shipment Type
                 </Label>
                 <Controller
                   id="parcel_type"

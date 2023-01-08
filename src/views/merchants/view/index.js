@@ -18,9 +18,7 @@ const MarchantView = () => {
 
   // ** Hooks
   const { id } = useParams()
-
   const [merchantInfo, setMerchantInfo] = useState(null)
-  
   const [active, setActive] = useState('1')
 
   useEffect(() => {
@@ -29,7 +27,7 @@ const MarchantView = () => {
       .axiosGet(getApi(MARCHANT_DETAILS) + id + "/")
       .then((res) => {
         console.log("res", res.data)
-        setMerchantInfo(res.data)
+        setMerchantInfo(res.data.data)
         return res.data
       })
       .catch(err => console.log(err))
