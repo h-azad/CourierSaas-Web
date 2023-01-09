@@ -71,7 +71,7 @@ export const AREAS_LIST = '/area/'
 export const AREAS_DELETE = '/area/'
 export const AREAS_DETAILS = '/area/'
 export const AREAS_SEARCH = '/search-area/'
-export const AREAS_BY_CITY = '/cities/get-area/'
+export const AREAS_BY_CITY = '/get-area/'
 
 // Shipment Type API's 
 export const SHIPMENT_TYPE_ADD = '/shipment_type/'

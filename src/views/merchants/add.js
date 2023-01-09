@@ -13,7 +13,7 @@ import Select from "react-select"
 import { useForm, Controller } from 'react-hook-form'
 import classnames from 'classnames'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, MARCHANT_ADD,PAYMENT_METHOD_LIST,CITIES_LIST,AREAS_LIST } from '@src/constants/apiUrls'
+import { getApi, MARCHANT_ADD, PAYMENT_METHOD_LIST, CITIES_LIST,AREAS_LIST } from '@src/constants/apiUrls'
 import SwalAlert from "../../components/SwalAlert"
 import { useEffect, useState } from "react"
 import {identity } from "../../constants/data/identity"
@@ -23,8 +23,8 @@ import React, { useRef } from "react"
 
 const AddMerchants = () => {
   const [selectboxPaymentMethod, setSelectboxPaymentMethod] = useState([])
-  // const [selectboxCity, setSelectboxCity] = useState([])
-  // const [selectboxArea, setSelectboxArea] = useState([])
+  const [selectboxCity, setSelectboxCity] = useState([])
+  const [selectboxArea, setSelectboxArea] = useState([])
   const [data, setData] = useState(null)
 
 
@@ -42,26 +42,26 @@ const AddMerchants = () => {
     mode: 'onChange',
     defaultValues: {
       payment_method: {},
-      // city: {}, 
-      // area: {},
+      city: {}, 
+      area: {},
     }
   })
 
-  // useEffect(() => {
-  //   const subscription = watch((value, { name, type }) => { 
-  //     console.log(value, name, type)
-  //     if(name == 'city' && type=='change'){
-  //       resetField('area')
-  //       fetchAreaData(value.city.value)
-  //     }
-  //   })
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => { 
+      console.log(value, name, type)
+      if(name == 'city' && type=='change'){
+        resetField('area')
+        fetchAreaData(value.city.value)
+      }
+    })
     
-  //   return () => subscription.unsubscribe()
-  // }, [watch])
+    return () => subscription.unsubscribe()
+  }, [watch])
 
   useEffect(() => {
     fetchPaymentmethodData()
-    // fetchCityData()
+    fetchCityData()
   },[])
 
   const fetchPaymentmethodData = () => {
@@ -80,38 +80,38 @@ const AddMerchants = () => {
       .catch(err => console.log(err))
   }
 
-  // const fetchCityData = () => {
-  //   return useJwt
-  //     .axiosGet(getApi(CITIES_LIST))
-  //     .then((res) => {
-  //       let cityData = []
+  const fetchCityData = () => {
+    return useJwt
+      .axiosGet(getApi(CITIES_LIST))
+      .then((res) => {
+        let cityData = []
 
-  //       res.data.map(data => {
-  //         cityData.push({value: data.id, label: data.cities_name})
-  //       })
+        res.data.map(data => {
+          cityData.push({value: data.id, label: data.city_name})
+        })
 
-  //       setSelectboxCity(cityData)
-  //       return res.data
-  //     })
-  //     .catch(err => console.log(err))
-  // }
+        setSelectboxCity(cityData)
+        return res.data
+      })
+      .catch(err => console.log(err))
+  }
 
-  // const fetchAreaData = (cityId) => {
+  const fetchAreaData = (cityId) => {
 
-  //   return useJwt
-  //     .axiosGet(getApi(AREAS_BY_CITY) + cityId + '/')
-  //     .then((res) => {
-  //       let areaData = []
+    return useJwt
+      .axiosGet(getApi(AREAS_BY_CITY) + cityId + '/')
+      .then((res) => {
+        let areaData = []
 
-  //       res.data.map(data => {
-  //         areaData.push({value: data.id, label: data.areas_name})
-  //       })
+        res.data.map(data => {
+          areaData.push({value: data.id, label: data.area_name})
+        })
 
-  //       setSelectboxArea(areaData)
-  //       return res.data
-  //     })
-  //     .catch(err => console.log(err))
-  // }
+        setSelectboxArea(areaData)
+        return res.data
+      })
+      .catch(err => console.log(err))
+  }
 
   const onSubmit = data => {
     console.log("data", data)
@@ -158,14 +158,14 @@ const AddMerchants = () => {
       setError('bank_account_num', { type: 'required', message: 'Bank account number is required' })
       isFormValid = false
     }
-    // if(!data.city && data.city.value) {
-    //   setError('city', { type: 'required', message: 'City is required' })
-    //   isFormValid = false
-    // }
-    // if(!data.area && data.area.value) {
-    //   setError('area', { type: 'required', message: ' Area is required' })
-    //   isFormValid = false
-    // }
+    if(!data.city && data.city.value) {
+      setError('city', { type: 'required', message: 'City is required' })
+      isFormValid = false
+    }
+    if(!data.area && data.area.value) {
+      setError('area', { type: 'required', message: ' Area is required' })
+      isFormValid = false
+    }
     if(!data.business_name) {
       setError('business_name', { type: 'required', message: ' Business name is required' })
       isFormValid = false
@@ -195,7 +195,7 @@ const AddMerchants = () => {
     if (data.name !== null &&  data.contact_no !== null &&  data.contact_no_two !== null 
       && data.identity !== null &&  data.identity_no !== null &&  data.email !== null
       && data.payment_method.value !== null &&  data.bank_name !== null &&  data.bank_account_name !== null 
-      && data.bank_account_num !== null
+      && data.bank_account_num !== null && data.city.value !== null && data.area.value !== null
       && data.business_name !== null &&  data.address !== null &&  data.pickup_address !== null
       && data.password !== null && data.confirm_password !== null ) {
 
@@ -212,8 +212,8 @@ const AddMerchants = () => {
         bank_name: data.bank_name,
         bank_account_name: data.bank_account_name,
         bank_account_num: data.bank_account_num,
-        // city: data.city.value,
-        // area: data.area.value,
+        city: data.city.value,
+        area_id: data.area.value,
         business_name: data.business_name,
         address: data.address,
         pickup_address: data.pickup_address,
@@ -230,6 +230,7 @@ const AddMerchants = () => {
       }
       useJwt
         .axiosPost(getApi(MARCHANT_ADD), formData, headers)
+
         .then((res) => {
           console.log("res", res.data)
           SwalAlert("Marchant Added Successfully")
@@ -453,7 +454,7 @@ const AddMerchants = () => {
               </div>
             </div>
           </div>
-          {/* <div class="row">
+          <div class="row">
             <div class="col-lg-6">
             <div className='mb-1'>
             <Label className='form-label' for='city'>
@@ -497,7 +498,7 @@ const AddMerchants = () => {
               </div>
             </div>
             
-          </div>         */}
+          </div>        
           <div className='mb-1'>
             <Label className='form-label' for='business_name'>
               Business Name

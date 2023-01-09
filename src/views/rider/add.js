@@ -17,14 +17,14 @@ import { getApi, RIDER_ADD,PAYMENT_METHOD_LIST,CITIES_LIST,AREAS_LIST } from '@s
 import SwalAlert from "../../components/SwalAlert"
 import { useEffect, useState } from "react"
 import {identity } from "../../constants/data/identity"
-// import { AREAS_BY_CITY } from "../../constants/apiUrls"
+import { AREAS_BY_CITY } from "../../constants/apiUrls"
 import React, { useRef } from "react"
 
 
 const AddRiders = () => {
   const [selectboxPaymentMethod, setSelectboxPaymentMethod] = useState([])
-  // const [selectboxCity, setSelectboxCity] = useState([])
-  // const [selectboxArea, setSelectboxArea] = useState([])
+  const [selectboxCity, setSelectboxCity] = useState([])
+  const [selectboxArea, setSelectboxArea] = useState([])
   const [data, setData] = useState(null)
 
 
@@ -42,26 +42,26 @@ const AddRiders = () => {
     mode: 'onChange',
     defaultValues: {
       payment_method: {},
-      // city: {}, 
-      // area: {},
+      city: {}, 
+      area: {},
     }
   })
 
-  // useEffect(() => {
-  //   const subscription = watch((value, { name, type }) => { 
-  //     console.log(value, name, type)
-  //     if(name == 'city' && type=='change'){
-  //       resetField('area')
-  //       fetchAreaData(value.city.value)
-  //     }
-  //   })
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => { 
+      console.log(value, name, type)
+      if(name == 'city' && type=='change'){
+        resetField('area')
+        fetchAreaData(value.city.value)
+      }
+    })
     
-  //   return () => subscription.unsubscribe()
-  // }, [watch])
+    return () => subscription.unsubscribe()
+  }, [watch])
 
   useEffect(() => {
     fetchPaymentmethodData()
-    // fetchCityData()
+    fetchCityData()
   },[])
 
   const fetchPaymentmethodData = () => {
@@ -80,38 +80,38 @@ const AddRiders = () => {
       .catch(err => console.log(err))
   }
 
-  // const fetchCityData = () => {
-  //   return useJwt
-  //     .axiosGet(getApi(CITIES_LIST))
-  //     .then((res) => {
-  //       let cityData = []
+  const fetchCityData = () => {
+    return useJwt
+      .axiosGet(getApi(CITIES_LIST))
+      .then((res) => {
+        let cityData = []
 
-  //       res.data.map(data => {
-  //         cityData.push({value: data.id, label: data.cities_name})
-  //       })
+        res.data.map(data => {
+          cityData.push({value: data.id, label: data.city_name})
+        })
 
-  //       setSelectboxCity(cityData)
-  //       return res.data
-  //     })
-  //     .catch(err => console.log(err))
-  // }
+        setSelectboxCity(cityData)
+        return res.data
+      })
+      .catch(err => console.log(err))
+  }
 
-  // const fetchAreaData = (cityId) => {
+  const fetchAreaData = (cityId) => {
 
-  //   return useJwt
-  //     .axiosGet(getApi(AREAS_BY_CITY) + cityId + '/')
-  //     .then((res) => {
-  //       let areaData = []
+    return useJwt
+      .axiosGet(getApi(AREAS_BY_CITY) + cityId + '/')
+      .then((res) => {
+        let areaData = []
 
-  //       res.data.map(data => {
-  //         areaData.push({value: data.id, label: data.areas_name})
-  //       })
+        res.data.map(data => {
+          areaData.push({value: data.id, label: data.area_name})
+        })
 
-  //       setSelectboxArea(areaData)
-  //       return res.data
-  //     })
-  //     .catch(err => console.log(err))
-  // }
+        setSelectboxArea(areaData)
+        return res.data
+      })
+      .catch(err => console.log(err))
+  }
 
   const onSubmit = data => {
     console.log("data", data)
@@ -158,14 +158,14 @@ const AddRiders = () => {
       setError('bank_account_num', { type: 'required', message: 'Bank account number is required' })
       isFormValid = false
     }
-    // if(!data.city && data.city.value) {
-    //   setError('city', { type: 'required', message: 'City is required' })
-    //   isFormValid = false
-    // }
-    // if(!data.area && data.area.value) {
-    //   setError('area', { type: 'required', message: ' Area is required' })
-    //   isFormValid = false
-    // }
+    if(!data.city && data.city.value) {
+      setError('city', { type: 'required', message: 'City is required' })
+      isFormValid = false
+    }
+    if(!data.area && data.area.value) {
+      setError('area', { type: 'required', message: ' Area is required' })
+      isFormValid = false
+    }
    
     if(!data.address) {
       setError('address', { type: 'required', message: ' Address is required' })
@@ -189,8 +189,7 @@ const AddRiders = () => {
     if (data.name !== null &&  data.contact_no !== null &&  data.contact_no_two !== null 
       && data.identity !== null &&  data.identity_no !== null &&  data.email !== null
       && data.payment_method.value !== null &&  data.bank_name !== null &&  data.bank_account_name !== null 
-      && data.bank_account_num !== null 
-      // &&  data.city.value !== null &&  data.area.value!== null
+      && data.bank_account_num !== null &&  data.city.value !== null &&  data.area.value!== null
       && data.address !== null && data.password !== null &&  data.confirm_password !== null  ) {
 
 
@@ -206,8 +205,8 @@ const AddRiders = () => {
         bank_name: data.bank_name,
         bank_account_name: data.bank_account_name,
         bank_account_num: data.bank_account_num,
-        // city: data.city.value,
-        // area: data.area.value,
+        city: data.city.value,
+        area_id: data.area.value,
         address: data.address,
         password: data.password,
         confirm_password: data.confirm_password,
@@ -375,28 +374,6 @@ const AddRiders = () => {
 
           </div>
             </div>
-            {/* <div class="col-lg-6">
-              <div className='mb-1'>
-                <Label className='form-label' for='payment_method'>
-                Preferred Payment Method*
-                </Label>
-                <Controller
-                  id="payment_method"
-                  name="payment_method"
-                  control={control}
-                  render={({ field }) => <Select 
-                    isClearable
-                    className={classnames('react-select', { 'is-invalid': errors.payment_method && errors.payment_method.value && true })} 
-                    classNamePrefix='select'
-                    options={selectboxPaymentMethod} 
-                    {...field} 
-                  />}
-                />
-              
-            {errors && errors.payment_method && <span className="invalid-feedback">{errors.payment_method.message}</span>}
-
-              </div>
-            </div> */}
             <div class="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='payment_method'>
@@ -467,7 +444,7 @@ const AddRiders = () => {
               </div>
             </div>
           </div>
-          {/* <div class="row">
+          <div class="row">
             <div class="col-lg-6">
             <div className='mb-1'>
             <Label className='form-label' for='city'>
@@ -511,21 +488,7 @@ const AddRiders = () => {
               </div>
             </div>
             
-          </div>         */}
-          {/* <div className='mb-1'>
-            <Label className='form-label' for='business_name'>
-              Business Name
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='business_name'
-              name='business_name'
-              render={({ field }) => <Input placeholder='Test Shop' invalid={errors.business_name && true} {...field} />}
-            />
-            {errors && errors.business_name && <span className="invalid-feedback">{errors.business_name.message}</span>}
-
-          </div> */}
+          </div> 
           <div className='mb-1'>
             <Label className='form-label' for='address'>
               Address
@@ -595,144 +558,3 @@ const AddRiders = () => {
   )
 }
 export default AddRiders
-
-
-// // ** Reactstrap Imports
-// import {
-//   Card,
-//   CardHeader,
-//   CardTitle,
-//   CardBody,
-//   Input,
-//   Form,
-//   Button,
-//   Label,
-// } from "reactstrap"
-// import { useNavigate } from "react-router-dom"
-// import { useForm, Controller } from 'react-hook-form'
-// import useJwt from '@src/auth/jwt/useJwt'
-// import { getApi, RIDER_ADD } from '@src/constants/apiUrls'
-// import SwalAlert from "../../components/SwalAlert"
-
-
-// const AddRiders = () => {
-//   const navigate = useNavigate()
-//   const {
-//     control,
-//     setError,
-//     handleSubmit,
-//     formState: { errors }
-//   } = useForm()
-  
-//   const onSubmit = data => {
-//     if (Object.values(data).every(field => field.length > 0)) {
-//       let formData = {
-//         user_name: data.user_name,
-//         email: data.email,
-//         phone_number: data.phone_number,
-//         address: data.address,
-
-//         status: 'active'
-//       }
-
-//       useJwt
-//         .axiosPost(getApi(RIDER_ADD), formData)
-//         .then((res) => {
-//           console.log("res", res.data)
-//           SwalAlert("Rider Added Successfully")
-//           navigate("/rider")
-//         })
-//         .catch(err => console.log(err))
-
-//     } else {
-//       for (const key in data) {
-//         if (data[key].length === 0) {
-//           setError(key, {
-//             type: 'manual'
-//           })
-//         }
-//       }
-//     }
-//   }
-
-//   return (
-//     <Card>
-//       <CardHeader>
-//         <CardTitle tag="h4">Add Rider</CardTitle>
-//       </CardHeader>
-
-//       <CardBody>
-//       <Form onSubmit={handleSubmit(onSubmit)}>
-//           <div className='mb-1'>
-//             <Label className='form-label' for='firstNameBasic'>
-//               Full Name
-//             </Label>
-//             <Controller
-//               defaultValue=''
-//               control={control}
-//               id='user_name'
-//               name='user_name'
-//               render={({ field }) => <Input placeholder='Bruce Wayne' invalid={errors.user_name && true} {...field} />}
-//             />
-//           </div>
-//           <div className='mb-1'>
-//             <Label className='form-label' for='emailBasic'>
-//               Email
-//             </Label>
-//             <Controller
-//               defaultValue=''
-//               control={control}
-//               id='email'
-//               name='email'
-//               render={({ field }) => (
-//                 <Input
-//                   type='email'
-//                   placeholder='bruce.wayne@email.com'
-//                   invalid={errors.email && true}
-//                   {...field}
-//                 />
-//               )}
-//             />
-//           </div>
-//           <div className='mb-1'>
-//             <Label className='form-label' for='emailBasic'>
-//               Mobile
-//             </Label>
-//             <Controller
-//               defaultValue=''
-//               control={control}
-//               id='phone_number'
-//               name='phone_number'
-//               render={({ field }) => (
-//                 <Input
-//                   type='text'
-//                   placeholder='017XXXXXXXXX'
-//                   invalid={errors.phone_number && true}
-//                   {...field}
-//                 />
-//               )}
-//             />
-//           </div>
-//           <div className='mb-1'>
-//             <Label className='form-label' for='firstNameBasic'>
-//               Address
-//             </Label>
-//             <Controller
-//               defaultValue=''
-//               control={control}
-//               id='address'
-//               name='address'
-//               render={({ field }) => <Input placeholder='Dhaka, Bangladesh' invalid={errors.address && true} {...field} />}
-//             />
-//           </div>
-//           <div className='d-flex'>
-//             <Button className='me-1' color='primary' type='submit'>
-//               Submit
-//             </Button>
-//           </div>
-//         </Form>
-//       </CardBody>
-//     </Card>
-//   )
-// }
-// export default AddRiders
