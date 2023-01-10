@@ -62,13 +62,13 @@ const MarchantInfoList = ({userInfo}) => {
               <th>Payment Method:</th>
               <th>{userInfo.payment_method?.payment_method_name}</th>
             </tr>
-            {/* <tr>
+            <tr>
               <th>City:</th>
               <th>{userInfo.city?.city_name}</th>
             </tr><tr>
               <th>Area:</th>
               <th>{userInfo.area?.area_name}</th>
-            </tr> */}
+            </tr>
             <tr>
               <th>Contact(Optional):</th>
               <th>{userInfo.contact_no_two}</th>

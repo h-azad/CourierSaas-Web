@@ -23,8 +23,8 @@ import React, { useRef } from "react"
 
 const EditMerchants = () => {
   const [selectboxPaymentMethod, setSelectboxPaymentMethod] = useState([])
-  // const [selectboxCity, setSelectboxCity] = useState([])
-  // const [selectboxArea, setSelectboxArea] = useState([])
+  const [selectboxCity, setSelectboxCity] = useState([])
+  const [selectboxArea, setSelectboxArea] = useState([])
   const [data, setData] = useState(null)
   const [marchantInfo, setMarchantInfo] = useState(null)
 
@@ -60,21 +60,21 @@ const EditMerchants = () => {
     mode: 'onChange',
   })
 
-  // useEffect(() => {
-  //   const subscription = watch((value, { name, type }) => { 
-  //     console.log(value, name, type)
-  //     if(name == 'city' && type=='change'){
-  //       resetField('area')
-  //       fetchAreaData(value.city.value)
-  //     }
-  //   })
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => { 
+      console.log(value, name, type)
+      if(name == 'city' && type=='change'){
+        resetField('area')
+        fetchAreaData(value.city.value)
+      }
+    })
     
-  //   return () => subscription.unsubscribe()
-  // }, [watch])
+    return () => subscription.unsubscribe()
+  }, [watch])
 
   useEffect(() => {
     fetchPaymentmethodData()
-    // fetchCityData()
+    fetchCityData()
   },[])
 
   const fetchPaymentmethodData = () => {
@@ -93,38 +93,38 @@ const EditMerchants = () => {
       .catch(err => console.log(err))
   }
 
-  // const fetchCityData = () => {
-  //   return useJwt
-  //     .axiosGet(getApi(CITIES_LIST))
-  //     .then((res) => {
-  //       let cityData = []
+  const fetchCityData = () => {
+    return useJwt
+      .axiosGet(getApi(CITIES_LIST))
+      .then((res) => {
+        let cityData = []
 
-  //       res.data.map(data => {
-  //         cityData.push({value: data.id, label: data.cities_name})
-  //       })
+        res.data.map(data => {
+          cityData.push({value: data.id, label: data.city_name})
+        })
 
-  //       setSelectboxCity(cityData)
-  //       return res.data
-  //     })
-  //     .catch(err => console.log(err))
-  // }
+        setSelectboxCity(cityData)
+        return res.data
+      })
+      .catch(err => console.log(err))
+  }
 
-  // const fetchAreaData = (cityId) => {
+  const fetchAreaData = (cityId) => {
 
-  //   return useJwt
-  //     .axiosGet(getApi(AREAS_BY_CITY) + cityId + '/')
-  //     .then((res) => {
-  //       let areaData = []
+    return useJwt
+      .axiosGet(getApi(AREAS_BY_CITY) + cityId + '/')
+      .then((res) => {
+        let areaData = []
 
-  //       res.data.map(data => {
-  //         areaData.push({value: data.id, label: data.areas_name})
-  //       })
+        res.data.map(data => {
+          areaData.push({value: data.id, label: data.area_name})
+        })
 
-  //       setSelectboxArea(areaData)
-  //       return res.data
-  //     })
-  //     .catch(err => console.log(err))
-  // }
+        setSelectboxArea(areaData)
+        return res.data
+      })
+      .catch(err => console.log(err))
+  }
 
   const onSubmit = data => {
     console.log(" data", data)
@@ -171,14 +171,14 @@ const EditMerchants = () => {
       setError('bank_account_num', { type: 'required', message: 'Bank account number is required' })
       isFormValid = false
     }
-    // if(!data.city && data.city.value) {
-    //   setError('city', { type: 'required', message: 'City is required' })
-    //   isFormValid = false
-    // }
-    // if(!data.area && data.area.value) {
-    //   setError('area', { type: 'required', message: ' Area is required' })
-    //   isFormValid = false
-    // }
+    if(!data.city && data.city.value) {
+      setError('city', { type: 'required', message: 'City is required' })
+      isFormValid = false
+    }
+    if(!data.area && data.area.value) {
+      setError('area', { type: 'required', message: ' Area is required' })
+      isFormValid = false
+    }
     if(!data.business_name) {
       setError('business_name', { type: 'required', message: ' Business name is required' })
       isFormValid = false
@@ -200,8 +200,7 @@ const EditMerchants = () => {
     if (data.full_name !== null &&  data.contact_no !== null &&  data.contact_no_two !== null 
       && data.identity !== null &&  data.identity_no !== null &&  data.email !== null
       && data.payment_method.value !== null &&  data.bank_name !== null &&  data.bank_account_name !== null 
-      && data.bank_account_num !== null 
-      // &&  data.city.value !== null &&  data.area.value!== null
+      && data.bank_account_num !== null &&  data.city.value !== null &&  data.area.value!== null
       && data.business_name !== null &&  data.address !== null &&  data.pickup_address !== null  ) {
 
 
@@ -216,8 +215,8 @@ const EditMerchants = () => {
         bank_name: data.bank_name,
         bank_account_name: data.bank_account_name,
         bank_account_num: data.bank_account_num,
-        // city: data.city.value,
-        // area: data.area.value,
+        city: data.city.value,
+        area_id: data.area.value,
         business_name: data.business_name,
         address: data.address,
         pickup_address: data.pickup_address,
@@ -447,14 +446,14 @@ const EditMerchants = () => {
               </div>
             </div>
           </div>
-          {/* <div class="row">
+          <div class="row">
             <div class="col-lg-6">
             <div className='mb-1'>
             <Label className='form-label' for='city'>
               City Name
             </Label>
             <Controller
-                  defaultValue={{value: marchantInfo.city.id, label: marchantInfo.city.cities_name}}
+                  defaultValue={{value: marchantInfo.city.id, label: marchantInfo.city.city_name}}
                   id="city"
                   name="city"
                   control={control}
@@ -476,7 +475,7 @@ const EditMerchants = () => {
                 Area Name
                 </Label>
                 <Controller
-                  defaultValue={{value: marchantInfo.area.id, label: marchantInfo.area.areas_name}}
+                  defaultValue={{value: marchantInfo.area.id, label: marchantInfo.area.area_name}}
                   id="area"
                   name="area"
                   control={control}
@@ -493,7 +492,7 @@ const EditMerchants = () => {
               </div>
             </div>
             
-          </div>         */}
+          </div>        
           <div className='mb-1'>
             <Label className='form-label' for='business_name'>
               Business Name
