@@ -47,14 +47,14 @@ const AgentInfoList = ({userInfo}) => {
             </tr>
             <tr>
               <th>Payment Method:</th>
-              <th>{userInfo.payment_method?.method_name}</th>
+                <th>{userInfo?.payment_info?.payment_method_name}</th>
             </tr>
             <tr>
               <th>City:</th>
-              <th>{userInfo.city?.cities_name}</th>
+                <th>{userInfo?.city_info?.city_name}</th>
             </tr><tr>
               <th>Area:</th>
-              <th>{userInfo.area?.areas_name}</th>
+                <th>{userInfo?.area_info?.area_name}</th>
             </tr>
             <tr>
               <th>Contact(Optional):</th>

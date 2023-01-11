@@ -23,10 +23,6 @@ const RiderInfoList = ({userInfo}) => {
               <th>Address</th>
               <th>{userInfo.address}</th>
             </tr>
-            {/* <tr>
-              <th>Pickup</th>
-              <th>{userInfo.pickup_address}</th>
-            </tr> */}
             <tr>
               <th>Identity</th>
               <th>{userInfo.identity}</th>
@@ -49,14 +45,14 @@ const RiderInfoList = ({userInfo}) => {
             </tr>
             <tr>
               <th>Payment Method:</th>
-              <th>{userInfo.payment_method?.method_name}</th>
+                <th>{userInfo?.payment_info?.payment_method_name}</th>
             </tr>
             <tr>
               <th>City:</th>
-              <th>{userInfo.city?.cities_name}</th>
+                <th>{userInfo?.city_info?.city_name}</th>
             </tr><tr>
               <th>Area:</th>
-              <th>{userInfo.area?.areas_name}</th>
+                <th>{userInfo?.area_info?.area_name}</th>
             </tr>
             <tr>
               <th>Contact(Optional):</th>

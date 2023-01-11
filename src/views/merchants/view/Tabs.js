@@ -13,7 +13,7 @@ import BillingPlanTab from './BillingTab'
 import Notifications from './Notifications'
 import MarchantInfoList from './MarchantInfoList'
 
-const UserTabs = ({ active, toggleTab, userInfo }) => {
+const UserTabs = ({ active, toggleTab, userInfo, cityInfo }) => {
   return (
     <Fragment>
       <Nav pills className='mb-2'>
@@ -44,7 +44,7 @@ const UserTabs = ({ active, toggleTab, userInfo }) => {
       </Nav>
       <TabContent activeTab={active}>
         <TabPane tabId='1'>
-          <MarchantInfoList userInfo={userInfo} />
+          <MarchantInfoList userInfo={userInfo} cityInfo={cityInfo}/>
         </TabPane>
         <TabPane tabId='2'>
           <SecurityTab />

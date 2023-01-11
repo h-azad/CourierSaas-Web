@@ -19,7 +19,9 @@ const MarchantView = () => {
   // ** Hooks
   const { id } = useParams()
   const [merchantInfo, setMerchantInfo] = useState(null)
+  // const [cityInfo, setCityInfo] = useState(null)
   const [active, setActive] = useState('1')
+  // console.log("cityInfo", cityInfo)
 
   useEffect(() => {
     console.log(id)
@@ -28,6 +30,7 @@ const MarchantView = () => {
       .then((res) => {
         console.log("res", res.data)
         setMerchantInfo(res.data.data)
+        // setCityInfo(res.data.cityData)
         return res.data
       })
       .catch(err => console.log(err))
@@ -48,7 +51,7 @@ const MarchantView = () => {
           {/* <PlanCard /> */}
         </Col>
         <Col xl='8' lg='7' xs={{ order: 0 }} md={{ order: 1, size: 7 }}>
-          <UserTabs active={active} toggleTab={toggleTab} userInfo={merchantInfo} />
+            <UserTabs active={active} toggleTab={toggleTab} userInfo={merchantInfo} />
         </Col>
       </Row>
       }

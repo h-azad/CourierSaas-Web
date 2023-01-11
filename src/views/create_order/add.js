@@ -75,14 +75,15 @@ const AddCreateOrder = () => {
     return useJwt
       .axiosGet(getApi(MARCHANT_LIST))
       .then((res) => {
+        console.log(res)
         let marchantData = []
 
-        res.data.map(data => {
+        res.data.data.map(data => {
           marchantData.push({value: data.id, label: data.full_name})
         })
 
         setSelectboxMarchant(marchantData)
-        return res.data
+        return res.data.data
       })
       .catch(err => console.log(err))
   }
