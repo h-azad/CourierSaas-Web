@@ -4,6 +4,8 @@ import MerchantList from "../../views/merchants/list"
 import AddMerchants from "../../views/merchants/add"
 import EditMerchants from "../../views/merchants/edit"
 import MarchantView from "../../views/merchants/view"
+import MarchantLogin from '../../views/merchants/marchantlogin/marchantLogin'
+
 
 import RiderList from "../../views/rider/list"
 import AddRider from "../../views/rider/add"
@@ -48,6 +50,7 @@ import PaymentMethodList from "../../views/payment_method/list"
 import AddPaymentMethod from "../../views/payment_method/add"
 import EditPaymentMethod from "../../views/payment_method/edit"
 
+
 const Home = lazy(() => import("../../views/Home"))
 const SecondPage = lazy(() => import("../../views/SecondPage"))
 const Error = lazy(() => import("../../views/Error"))
@@ -61,6 +64,10 @@ const DashboardRoutes = [
   {
     path: "/second-page",
     element: <SecondPage />
+  },
+  {
+    path: "/marchantlogin",
+    element: <MarchantLogin />
   },
  
   {

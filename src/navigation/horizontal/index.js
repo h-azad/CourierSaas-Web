@@ -15,6 +15,15 @@ export default [
     navLink: "/second-page"
   },
   {
+    header: 'Login'
+  },
+  {
+    id: "MarchantLogin",
+    title: "MarchantLogin",
+    icon: <CreditCard size={20} />,
+    navLink: "/marchantlogin"
+  },
+  {
     header: 'Orders'
   },
   {

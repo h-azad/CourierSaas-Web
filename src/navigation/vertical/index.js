@@ -33,6 +33,15 @@ export default [
     icon: <Sidebar size={20} />,
     navLink: "/second-page"
   },
+  {
+    header: 'Login'
+  },
+  {
+    id: "MarchantLogin",
+    title: "MarchantLogin",
+    icon: <CreditCard size={20} />,
+    navLink: "/marchantlogin"
+  },
 
   {
     header: 'Orders'
