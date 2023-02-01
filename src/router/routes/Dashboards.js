@@ -11,12 +11,15 @@ import RiderList from "../../views/rider/list"
 import AddRider from "../../views/rider/add"
 import EditRider from "../../views/rider/edit"
 import RiderView from "../../views/rider/view"
+import RiderLogin from '../../views/rider/riderlogin/riderLogin'
 
 
 import AgentList from "../../views/agent/list"
 import AddAgent from "../../views/agent/add"
 import EditAgent from "../../views/agent/edit"
 import AgentView from "../../views/agent/view"
+import AgentLogin from '../../views/agent/agentlogin/agentLogin'
+
 
 import CitiesList from "../../views/cities/list"
 import AddCities from "../../views/cities/add"
@@ -86,7 +89,10 @@ const DashboardRoutes = [
     path: "/merchants/view/:id",
     element: <MarchantView />
   },
-  
+  {
+    path: "/riderlogin",
+    element: <RiderLogin />
+  },
 
   {
     path: "/rider",
@@ -103,6 +109,10 @@ const DashboardRoutes = [
   {
     path: "/rider/view/:id",
     element: <RiderView />
+  },
+  {
+    path: "/agentlogin",
+    element: <AgentLogin/>
   },
 
   {

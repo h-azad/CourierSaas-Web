@@ -14,7 +14,7 @@ import {
 } from "reactstrap"
 import "@styles/react/pages/page-authentication.scss"
 
-const MarchantLogin = () => {
+const RiderLogin = () => {
 
   const { skin } = useSkin()
 
@@ -105,7 +105,7 @@ const MarchantLogin = () => {
         >
           <Col className="px-xl-2 mx-auto" sm="8" md="12" lg="12">
             <CardTitle tag="h2" className="fw-bold mb-1">
-           Marchant Login! 👋
+            Rider Login! 👋
             </CardTitle>
             {/* <CardText className="mb-2">
               Please sign-in to your account and start the adventure
@@ -178,4 +178,4 @@ const MarchantLogin = () => {
     </div>
   )
 }
-export default MarchantLogin
+export default RiderLogin

@@ -38,9 +38,21 @@ export default [
   },
   {
     id: "MarchantLogin",
-    title: "MarchantLogin",
+    title: "Marchant Login",
     icon: <CreditCard size={20} />,
     navLink: "/marchantlogin"
+  },
+  {
+    id: "RiderLogin",
+    title: "Rider Login",
+    icon: <CreditCard size={20} />,
+    navLink: "/riderlogin"
+  },
+  {
+    id: "AgentLogin",
+    title: "Agent Login",
+    icon: <CreditCard size={20} />,
+    navLink: "/agentlogin"
   },
 
   {
