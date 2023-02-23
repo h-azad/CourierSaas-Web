@@ -247,6 +247,23 @@ const MarchantRoutes = [
     path: "/marchant-dashboard",
     element: <AnalyticsDashboard />
   },
+ 
+  {
+    path: "/create_order",
+    element: <CreateOrderList />
+  },
+  {
+    path: "/create_order/add",
+    element: <AddCreateOrder />
+  },
+  {
+    path: "/create_order/edit/:id",
+    element: <EditCreateOrder />
+  },
+  {
+    path: "/create_order/view/:id",
+    element: <CreateOrderView />
+  },
 ]
 
 export default [...DashboardRoutes, ...MarchantRoutes]

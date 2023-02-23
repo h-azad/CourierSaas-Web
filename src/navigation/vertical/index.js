@@ -162,6 +162,20 @@ const marchantMenu = [
     resource: 'MARCHANT',
     navLink: "/marchant-dashboard"
   },
+  {
+    header: 'Orders',
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+  },
+  {
+    id: "create_order",
+    title: "Create Order",
+    icon: <CreditCard size={20} />,
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+    navLink: "/create_order"
+  },
+ 
 ]
 
 

@@ -5,6 +5,7 @@ const MarchantRoutes = [
         path: "/marchant-dashboard",
         element: <MarchantDashboard />
     },
+  
 ]
 
 export default [...MarchantRoutes]
