@@ -265,5 +265,18 @@ const MarchantRoutes = [
     element: <CreateOrderView />
   },
 ]
+const RiderRoutes = [
+  {
+    path: "/rider-dashboard",
+    element: <AnalyticsDashboard />
+  },
 
-export default [...DashboardRoutes, ...MarchantRoutes]
+]
+const AgentRoutes = [
+  {
+    path: "/agent-dashboard",
+    element: <AnalyticsDashboard />
+  },
+
+]
+export default [...DashboardRoutes, ...MarchantRoutes, ...RiderRoutes, ...AgentRoutes]

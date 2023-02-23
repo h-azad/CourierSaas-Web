@@ -35,7 +35,7 @@ import ceo from '@src/assets/images/portrait/small/avatar-s-9.jpg'
 // ** Styles
 import '@styles/react/libs/charts/apex-charts.scss'
 
-const AnalyticsDashboard = () => {
+const RiderDashboard = () => {
   // ** Context
   const { colors } = useContext(ThemeColors)
 
@@ -174,4 +174,4 @@ const AnalyticsDashboard = () => {
   )
 }
 
-export default AnalyticsDashboard
+export default RiderDashboard

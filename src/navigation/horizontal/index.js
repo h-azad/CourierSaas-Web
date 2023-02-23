@@ -135,3 +135,26 @@ const marchantMenu = [
     navLink: "/create_order"
   },
 ]
+
+const riderMenu = [
+  {
+    id: "rider-dashboard",
+    title: "Dashboard",
+    icon: <Home size={20} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/rider-dashboard"
+  },
+  
+]
+const agentMenu = [
+  {
+    id: "agent-dashboard",
+    title: "Dashboard",
+    icon: <Home size={20} />,
+    action: 'agent-pages',
+    resource: 'AGENT',
+    navLink: "/agent-dashboard"
+  },
+
+]

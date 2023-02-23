@@ -143,15 +143,6 @@ const adminMenu = [
   },
 ]
 
-const agentMenu = [
-  {
-    id: "home",
-    title: "Home",
-    icon: <Home size={20} />,
-    navLink: "/home"
-  },
-  
-]
 
 const marchantMenu = [
   {
@@ -177,7 +168,30 @@ const marchantMenu = [
   },
  
 ]
+const riderMenu = [
+  {
+    id: "rider-dashboard",
+    title: "Dashboard",
+    icon: <Home size={20} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/rider-dashboard"
+  },
+
+]
+
+const agentMenu = [
+  {
+    id: "agent-dashboard",
+    title: "Dashboard",
+    icon: <Home size={20} />,
+    action: 'agent-pages',
+    resource: 'AGENT',
+    navLink: "/agent-dashboard"
+  },
+
+]
 
 
 
-export default [...adminMenu, ...marchantMenu]
+export default [...adminMenu, ...marchantMenu, ...riderMenu, ...agentMenu]
