@@ -106,11 +106,12 @@ const Login = () => {
         .then((res) => {
           // console.log("res", res.data)
           const data = { ...res.data.info, accessToken: res.data.token.access, refreshToken: res.data.token.refresh }
-          console.log(data)
+          console.log('data',data)
           dispatch(handleLogin(data))
-          // abilityCtx.update(res.data.userInfo.ability)
-          abilityCtx.update(dummyAbility)
-          // console.log(getHomeRouteForLoggedInUser(data.role))
+          console.log(res.data.info.ability)
+          abilityCtx.update(res.data.info.ability)
+          // abilityCtx.update(dummyAbility)
+          console.log(getHomeRouteForLoggedInUser(data.role))
           navigate(getHomeRouteForLoggedInUser(data.role))
           toast(t => (
             <ToastContent t={t} role={data.role || 'admin'} name={data.name || 'John Doe'} />

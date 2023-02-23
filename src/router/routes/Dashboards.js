@@ -52,6 +52,7 @@ import CreateOrderView from "../../views/create_order/view"
 import PaymentMethodList from "../../views/payment_method/list"
 import AddPaymentMethod from "../../views/payment_method/add"
 import EditPaymentMethod from "../../views/payment_method/edit"
+import AnalyticsDashboard from '../../views/dashboard/analytics'
 
 
 const Home = lazy(() => import("../../views/Home"))
@@ -241,4 +242,11 @@ const DashboardRoutes = [
   }
 ]
 
-export default DashboardRoutes
+const MarchantRoutes = [
+  {
+    path: "/marchant-dashboard",
+    element: <AnalyticsDashboard />
+  },
+]
+
+export default [...DashboardRoutes, ...MarchantRoutes]

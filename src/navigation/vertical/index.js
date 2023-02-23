@@ -1,37 +1,20 @@
-import { Mail, Home, User, Truck, ShoppingBag,Filter, Gift, Map, MapPin, Users, Sidebar, ShoppingCart, Shield, Circle, CreditCard, Send } from "react-feather"
+import { Mail, Home, User, Truck, ShoppingBag, Filter, Gift, Map, MapPin, Users, Sidebar, ShoppingCart, Shield, Circle, CreditCard, Send } from "react-feather"
 
-export default [
 
-  // {
-  //   id: 'roles-permissions',
-  //   title: 'Roles & Permissions',
-  //   icon: <Shield size={20} />,
-  //   children: [
-  //     {
-  //       id: 'roles',
-  //       title: 'Roles',
-  //       icon: <Circle size={12} />,
-  //       navLink: '/apps/roles'
-  //     },
-  //     {
-  //       id: 'permissions',
-  //       title: 'Permissions',
-  //       icon: <Circle size={12} />,
-  //       navLink: '/apps/permissions'
-  //     }
-  //   ]
-  // },
+const adminMenu = [
   {
     id: "home",
-    title: "Home",
+    title: "Dashboard",
     icon: <Home size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN', 
     navLink: "/home"
   },
   {
     id: "secondPage",
-    title: "Second Page",
+    title: "M Dash",
     icon: <Sidebar size={20} />,
-    navLink: "/second-page"
+    navLink: "/second-page",
   },
   {
     header: 'Login'
@@ -56,79 +39,131 @@ export default [
   },
 
   {
-    header: 'Orders'
-  },
+    header: 'Orders',
+    action: 'admin-pages',
+    resource: 'ADMIN',
+},
   {
     id: "create_order",
     title: "Create Order",
-    icon:  <CreditCard size={20} />,
+    icon: <CreditCard size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN',
     navLink: "/create_order"
   },
 
 
   {
-    header: 'Accounts'
+    header: 'Accounts',
+    action: 'admin-pages',
+    resource: 'ADMIN', 
   },
   {
     id: "merchants",
     title: "Merchants",
     icon: <Users size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN', 
     navLink: "/merchants"
   },
   {
     id: "rider",
     title: "Rider",
     icon: <User size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN', 
     navLink: "/rider"
   },
   {
     id: "agent",
     title: "Agent",
     icon: <User size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN', 
     navLink: "/agent"
   },
   {
-    header: 'Locations'
-  },
+    header: 'Locations',
+    action: 'admin-pages',
+    resource: 'ADMIN', 
+    },
   {
     id: "cities",
     title: "Cities",
     icon: <Map size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN', 
     navLink: "/cities"
   },
   {
     id: "areas",
     title: "Areas",
     icon: <MapPin size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN',
     navLink: "/areas"
   },
   {
-    header: 'Settings'
+    header: 'Settings',
+    action: 'admin-pages',
+    resource: 'ADMIN',
   },
 
   {
     id: "shipment_type",
     title: "Shipment Type",
     icon: <Truck size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN',
     navLink: "/shipment_type"
   },
   {
     id: "product_type",
     title: "Product Type",
     icon: <ShoppingCart size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN',
     navLink: "/product_type"
   },
   {
     id: "pricing_policy",
     title: "Pricing Policy",
-    icon:  <Filter size={20} />,
+    icon: <Filter size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN',
     navLink: "/pricing_policy"
   },
   {
     id: "payment_method",
     title: "Payment Method",
-    icon:  <Send size={20} />,
+    icon: <Send size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN',
     navLink: "/payment_method"
   },
- 
 ]
+
+const agentMenu = [
+  {
+    id: "home",
+    title: "Home",
+    icon: <Home size={20} />,
+    navLink: "/home"
+  },
+  
+]
+
+const marchantMenu = [
+  {
+    id: "marchant-dashboard",
+    title: "Dashboard",
+    icon: <Home size={20} />,
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+    navLink: "/marchant-dashboard"
+  },
+]
+
+
+
+export default [...adminMenu, ...marchantMenu]

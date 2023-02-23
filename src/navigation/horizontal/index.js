@@ -12,6 +12,8 @@ export default [
     id: "secondPage",
     title: "Second Page",
     icon: <Sidebar size={20} />,
+    action: 'agent-pages',
+    subject: 'AGENT',
     navLink: "/second-page"
   },
   {
