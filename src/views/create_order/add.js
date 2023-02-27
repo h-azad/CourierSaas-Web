@@ -13,17 +13,18 @@ import Select from "react-select"
 import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, CREATE_ORDER_ADD, MARCHANT_LIST, PRODUCT_TYPE_LIST ,AREAS_LIST} from '@src/constants/apiUrls'
+import { getApi, CREATE_ORDER_ADD, MARCHANT_LIST, PRODUCT_TYPE_LIST, AREAS_LIST, PRICING_POLICY_LIST, SHIPMENT_TYPE_LIST, PRICING_POLICY_BY_PRODUCT } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
-import { DIMENTION_BY_PRODUCT, VOLUMETRIC_POLICY_BY_PRODUCT } from "../../constants/apiUrls"
+// import { DIMENTION_BY_PRODUCT } from "../../constants/apiUrls"
 import SwalAlert from "../../components/SwalAlert"
 
 const AddCreateOrder = () => {
   const [selectboxMarchant, setSelectboxMarchant] = useState([])
   const [selectboxProduct, setSelectboxProduct] = useState([])
+  const [selectPricingPolicybyProduct, setPricingPolicybyProduct] = useState([])
+  const [selectboxPricingPolicy, setSelectboxPricingPolicy] = useState([])
   const [selectboxArea, setSelectboxArea] = useState([])
-  const [selectboxDimention, setSelectboxDimention] = useState([])
-  const [policiesData, setPoliciesData] = useState(null)
+  const [selectboxShipmentType, setSelectboxShipmentType] = useState([])
 
   const [data, setData] = useState(null)
   const navigate = useNavigate()
@@ -49,6 +50,8 @@ const AddCreateOrder = () => {
     fetchMarchantData()
     fetchProductData()
     fetchAreaData()
+    fetchPricingPolicyData()
+    fetchShipmentTypeData()
 
   },[])
 
@@ -88,7 +91,22 @@ const AddCreateOrder = () => {
       .catch(err => console.log(err))
   }
 
-  
+  const fetchShipmentTypeData = () => {
+    return useJwt
+      .axiosGet(getApi(SHIPMENT_TYPE_LIST))
+      .then((res) => {
+        let shipmenttypeData = []
+
+        res.data.map(data => {
+          shipmenttypeData.push({ value: data.id, label: data.shipment_type })
+        })
+
+        setSelectboxShipmentType(shipmenttypeData)
+        return res.data
+      })
+      .catch(err => console.log(err))
+  }
+
   const fetchProductData = () => {
     return useJwt
       .axiosGet(getApi(PRODUCT_TYPE_LIST))
@@ -105,27 +123,56 @@ const AddCreateOrder = () => {
       .catch(err => console.log(err))
   }
 
-  const fetchPolicyData = (productTypeId) => {
+  const fetchPricingPolicyData = (productTypeId) => {
 
     return useJwt
-      .axiosGet(getApi(VOLUMETRIC_POLICY_BY_PRODUCT) + productTypeId + '/')
+      .axiosGet(getApi(PRICING_POLICY_BY_PRODUCT) + productTypeId + '/')
       .then((res) => {
-        let dimentionData = []
+        let pricingData = []
 
         res.data.map(data => {
-          dimentionData.push({value: data.id, label: data.policy_title})
+          pricingData.push({value: data.id, label: data.policy_title})
         })
 
-        setSelectboxDimention(dimentionData)
-        setPoliciesData(res.data)
+        setSelectboxPricingPolicy(pricingData)
+        setPricingPolicybyProduct(res.data)
         return res.data
       })
       .catch(err => console.log(err))
   }
 
   useEffect(() => {
-    console.log(policiesData)
-  }, [policiesData])
+    const subscription = watch((value, { name, type }) => {
+      console.log(value, name, type)
+      if (name == 'product_type' && type == 'change') {
+        fetchPricingPolicyData(value.product_type.value)
+      }
+    })
+
+    return () => subscription.unsubscribe()
+  }, [watch])
+
+  // const fetchPolicyData = (productTypeId) => {
+
+  //   return useJwt
+  //     .axiosGet(getApi(VOLUMETRIC_POLICY_BY_PRODUCT) + productTypeId + '/')
+  //     .then((res) => {
+  //       let dimentionData = []
+
+  //       res.data.map(data => {
+  //         dimentionData.push({value: data.id, label: data.policy_title})
+  //       })
+
+  //       setSelectboxDimention(dimentionData)
+  //       setPoliciesData(res.data)
+  //       return res.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
+
+  // useEffect(() => {
+  //   console.log(policiesData)
+  // }, [policiesData])
 
   function setDeliveryCharge(policyID){
     console.log(policyID)
@@ -183,6 +230,14 @@ const AddCreateOrder = () => {
       setError('product_type', { type: 'required', message: 'Product Type is required' })
       isFormValid = false
     }
+    if (!(data.pricing_policy && data.pricing_policy.value)) {
+      setError('pricing_policy', { type: 'required', message: 'Percel Type is required' })
+      isFormValid = false
+    }
+    if (!(data.shipment_type && data.shipment_type.value)) {
+      setError('shipment_type', { type: 'required', message: 'Shipment Type is required' })
+      isFormValid = false
+    }
    
     if(!(data.delivary_area && data.delivary_area.value)) {
       setError('delivary_area', { type: 'required', message: 'Delivary Area is required' })
@@ -201,7 +256,8 @@ const AddCreateOrder = () => {
     if ( data.marchant.value !== null &&  data.recipient_name !== null &&  data.phone_number !== null 
       && data.delivary_address !== null &&  data.amount_to_be_collected !== null 
       && data.product_type.value !== null && data.delivary_area.value !== null
-      && data.delivary_charge !== null
+      && data.delivary_charge !== null && data.pricing_policy.value !== null
+      && data.shipment_type.value !== null
       ) 
     {
 
@@ -213,6 +269,8 @@ const AddCreateOrder = () => {
         amount_to_be_collected: data.amount_to_be_collected,
         product_type: data.product_type.value,
         delivary_area: data.delivary_area.value,
+        pricing_policy: data.pricing_policy.value,
+        shipment_type: data.shipment_type.value,
 
         // dimention: data.dimention.value,
         delivary_charge: data.delivary_charge,
@@ -346,21 +404,21 @@ const AddCreateOrder = () => {
               <div class="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='area'>
-                  Shipment Type
+                  Percel Type(Pricing Policy)
                 </Label>
                 <Controller
-                  id="parcel_type"
-                  name="parcel_type"
+                  id="pricing_policy"
+                  name="pricing_policy"
                   control={control}
                   render={({ field }) => <Select 
                     // isClearable
-                    className={classnames('react-select', { 'is-invalid': errors.parcel_type && true })} 
+                    className={classnames('react-select', { 'is-invalid': errors.pricing_policy && true })} 
                     classNamePrefix='select'
-                    options={selectboxDimention} 
+                    options={selectboxPricingPolicy} 
                     {...field} 
                   />}
                 />
-                {errors && errors.parcel_type && <span className="invalid-feedback">{errors.parcel_type.message}</span>}
+                {errors && errors.pricing_policy && <span className="invalid-feedback">{errors.pricing_policy.message}</span>}
 
               </div>
                 {/* <div className='mb-1'>
@@ -379,6 +437,40 @@ const AddCreateOrder = () => {
                 </div> */}
             </div>
           </div>
+          <div className='mb-1'>
+            <Label className='form-label' for='area'>
+              Shipment Type
+            </Label>
+            <Controller
+              id="shipment_type"
+              name="shipment_type"
+              control={control}
+              render={({ field }) => <Select
+                // isClearable
+                className={classnames('react-select', { 'is-invalid': errors.shipment_type && true })}
+                classNamePrefix='select'
+                options={selectboxShipmentType}
+                {...field}
+              />}
+            />
+            {errors && errors.shipment_type && <span className="invalid-feedback">{errors.shipment_type.message}</span>}
+
+          </div>
+          {/* <div className='mb-1'>
+                  <Label className='form-label' for='dimention'>
+                  Dimention
+                  </Label>
+                  <Controller
+                    id='dimention'
+                    name='dimention'
+                    control={control}
+                    render={({ field }) => 
+                    <Input 
+                    placeholder='' invalid={errors.dimention && true} {...field} />}
+                  />
+                  {errors && errors.dimention && <span>{errors.dimention.message}</span>}
+                </div> */}
+        
           <div class="row">
             <div class="col-lg-6">
               <div className='mb-1'>
