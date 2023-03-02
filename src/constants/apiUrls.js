@@ -121,6 +121,8 @@ export const CREATE_ORDER_DETAILS = '/create_order/'
 export const SEARCH_CREATE_ORDER = '/search_create_order/'
 export const DIMENTION_BY_PRODUCT = '/create_order/get-dimention/'
 export const PRICING_POLICY_BY_PRODUCT = '/get-price-policy/'
+export const ORDER_LIST_BY_MARCHANT = '/get-marchant-orders/'
+
 
 
 

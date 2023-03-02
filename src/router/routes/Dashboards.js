@@ -242,29 +242,6 @@ const DashboardRoutes = [
   }
 ]
 
-const MarchantRoutes = [
-  {
-    path: "/marchant-dashboard",
-    element: <AnalyticsDashboard />
-  },
- 
-  {
-    path: "/create_order",
-    element: <CreateOrderList />
-  },
-  {
-    path: "/create_order/add",
-    element: <AddCreateOrder />
-  },
-  {
-    path: "/create_order/edit/:id",
-    element: <EditCreateOrder />
-  },
-  {
-    path: "/create_order/view/:id",
-    element: <CreateOrderView />
-  },
-]
 const RiderRoutes = [
   {
     path: "/rider-dashboard",
@@ -280,4 +257,4 @@ const AgentRoutes = [
 
 ]
 
-export default [...DashboardRoutes, ...MarchantRoutes, ...RiderRoutes, ...AgentRoutes]
+export default [...DashboardRoutes, ...RiderRoutes, ...AgentRoutes]

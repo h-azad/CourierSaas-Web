@@ -16,7 +16,7 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, CREATE_ORDER_LIST, CREATE_ORDER_DELETE, SEARCH_CREATE_ORDER } from "../../../../constants/apiUrls"
+import { getApi, ORDER_LIST_BY_MARCHANT, CREATE_ORDER_DELETE, SEARCH_CREATE_ORDER } from "../../../../constants/apiUrls"
 import SwalAlert from "../../../../components/SwalAlert"
 import SwalConfirm from "../../../../components/SwalConfirm"
 import StatusModal from "../../../../components/StatusModal"
@@ -50,15 +50,6 @@ const ListTable = () => {
     console.log("selectedInfo", selectedInfo)
     console.log("selectedStatus", selectedStatus)
   return false
-  // useJwt
-  // .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
-  // .then((res) => {
-  //   console.log("res", res.data)
-  //   setStatusModalState(false)
-  //   // SwalAlert("Deleted Successfully")
-  
-  // })
-  // .finally(() => fetchShipmentData())
   
 }
 
@@ -76,7 +67,7 @@ const changeStatusAction = (e, info) => {
 
   const fetchCreateOrderData = () => {
     return useJwt
-      .axiosGet(getApi(CREATE_ORDER_LIST))
+      .axiosGet(getApi(ORDER_LIST_BY_MARCHANT ))
       .then((res) => {
         console.log("res", res.data)
         setCreateOrder(res.data)
@@ -142,8 +133,8 @@ const changeStatusAction = (e, info) => {
         <div className="row justify-content-between">
           <div className="col-lg-5">
             <div className="d-flex align-items-center">
-              <Link to={'/create_order/add'}>
-                <Button.Ripple color="primary">Add Order</Button.Ripple>
+              <Link to={'/marchant-orders/create'}>
+                <Button.Ripple color="primary">Create Order</Button.Ripple>
               </Link>
             </div>
           </div>
@@ -167,9 +158,8 @@ const changeStatusAction = (e, info) => {
         <Table bordered>
           <thead>
             <tr>
-              <th>Marchant </th>
+              <th>Phone Number</th>
               <th>Recipient Name</th>
-              {/* <th>Phone Number</th> */}
               {/* <th>Delivary Address</th> */}
               {/* <th>Amounr to be Collected</th> */}
               {/* <th>Product type</th> */}
@@ -184,8 +174,11 @@ const changeStatusAction = (e, info) => {
             {createOrder &&
               createOrder.map((info) => (
                 <tr key={info.id}>
-                  <td>
+                  {/* <td>
                     <span className="align-middle fw-bold">{info.marchant.full_name}</span>
+                  </td> */}
+                  <td>
+                    <span className="align-middle fw-bold">{info.phone_number}</span>
                   </td>
                   {/* <td>
                     <span className="align-middle fw-bold">{info.product.product_type}</span>
@@ -196,9 +189,7 @@ const changeStatusAction = (e, info) => {
                   <td>
                     <span className="align-middle fw-bold">{info.recipient_name}</span>
                   </td>
-                  {/* <td>
-                    <span className="align-middle fw-bold">{info.phone_number}</span>
-                  </td>
+                  {/* 
                   <td>
                     <span className="align-middle fw-bold">{info.delivary_address}</span>
                   </td>
@@ -208,9 +199,9 @@ const changeStatusAction = (e, info) => {
                   <td>
                     <span className="align-middle fw-bold">{info.dimention}</span>
                   </td> */}
-                  <td>
+                  {/* <td>
                     <span className="align-middle fw-bold">{info.delivary_area.area_name}</span>
-                  </td>
+                  </td> */}
                   {/* <td>
                     <span className="align-middle fw-bold">{info.delivary_charge}</span>
                   </td> */}
