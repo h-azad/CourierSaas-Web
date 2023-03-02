@@ -279,4 +279,5 @@ const AgentRoutes = [
   },
 
 ]
+
 export default [...DashboardRoutes, ...MarchantRoutes, ...RiderRoutes, ...AgentRoutes]

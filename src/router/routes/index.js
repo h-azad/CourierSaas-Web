@@ -15,6 +15,7 @@ import PublicRoute from "@components/routes/PublicRoute"
 import { isObjEmpty } from "@utils"
 import AuthRoutes from "./AuthRoutes"
 import DashboardRoutes from "./Dashboards"
+import MarchantRoutes from "./MarchantRoutes"
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -32,7 +33,8 @@ const DefaultRoute = "/home"
 // ** Merge Routes
 const Routes = [
   ...AuthRoutes,
-  ...DashboardRoutes
+  ...DashboardRoutes,
+  ...MarchantRoutes
 ]
 
 const getRouteMeta = (route) => {
