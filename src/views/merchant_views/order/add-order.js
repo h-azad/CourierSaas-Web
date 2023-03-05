@@ -13,13 +13,13 @@ import Select from "react-select"
 import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, CREATE_ORDER_ADD, MARCHANT_LIST, PRODUCT_TYPE_LIST, AREAS_LIST, PRICING_POLICY_LIST, SHIPMENT_TYPE_LIST, PRICING_POLICY_BY_PRODUCT } from '@src/constants/apiUrls'
+import { getApi, MARCHANT_CREATE_ORDER,  PRODUCT_TYPE_LIST, AREAS_LIST, PRICING_POLICY_LIST, SHIPMENT_TYPE_LIST, PRICING_POLICY_BY_PRODUCT } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
-// import { DIMENTION_BY_PRODUCT } from "../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
+import { getUserData } from "../../../auth/utils"
 
 const MerchantAddOrder = () => {
-  const [selectboxMarchant, setSelectboxMarchant] = useState([])
+  // const [selectboxMarchant, setSelectboxMarchant] = useState([])
   const [selectboxProduct, setSelectboxProduct] = useState([])
   const [selectPricingPolicybyProduct, setPricingPolicybyProduct] = useState([])
   const [selectboxPricingPolicy, setSelectboxPricingPolicy] = useState([])
@@ -40,56 +40,35 @@ const MerchantAddOrder = () => {
   } = useForm({
     defaultValues: {
       product_type: {},
-      marchant: {},
-
 
     }
   })
 
   useEffect(() => {
-    fetchMarchantData()
+   
     fetchProductData()
     fetchAreaData()
-    fetchPricingPolicyData()
+    // fetchPricingPolicyData()
     fetchShipmentTypeData()
 
   },[])
 
-  // useEffect(() => {
-  //   const subscription = watch((value, { name, type }) => { 
-  //     // console.log(value, name, type)
-  //     if(name == 'product_type' && type=='change'){
-  //       resetField('parcel_type')
-  //       setSelectboxDimention([])
-  //       fetchPolicyData(value.product_type.value)
-  //     }
-  //     if(name == 'parcel_type' && type=='change'){
-  //       resetField('delivary_charge')
-  //       if(value.parcel_type.value){
-  //         setDeliveryCharge(value.parcel_type.value)
-  //       }
-  //     }
-  //   })
-    
-  //   return () => subscription.unsubscribe()
-  // }, [watch])
+  // const fetchMarchantData = () => {
+  //   return useJwt
+  //     .axiosGet(getApi(MARCHANT_LIST))
+  //     .then((res) => {
+  //       console.log(res)
+  //       let marchantData = []
 
-  const fetchMarchantData = () => {
-    return useJwt
-      .axiosGet(getApi(MARCHANT_LIST))
-      .then((res) => {
-        console.log(res)
-        let marchantData = []
+  //       res.data.data.map(data => {
+  //         marchantData.push({value: data.id, label: data.full_name})
+  //       })
 
-        res.data.data.map(data => {
-          marchantData.push({value: data.id, label: data.full_name})
-        })
-
-        setSelectboxMarchant(marchantData)
-        return res.data.data
-      })
-      .catch(err => console.log(err))
-  }
+  //       setSelectboxMarchant(marchantData)
+  //       return res.data.data
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
   const fetchShipmentTypeData = () => {
     return useJwt
@@ -152,28 +131,6 @@ const MerchantAddOrder = () => {
     return () => subscription.unsubscribe()
   }, [watch])
 
-  // const fetchPolicyData = (productTypeId) => {
-
-  //   return useJwt
-  //     .axiosGet(getApi(VOLUMETRIC_POLICY_BY_PRODUCT) + productTypeId + '/')
-  //     .then((res) => {
-  //       let dimentionData = []
-
-  //       res.data.map(data => {
-  //         dimentionData.push({value: data.id, label: data.policy_title})
-  //       })
-
-  //       setSelectboxDimention(dimentionData)
-  //       setPoliciesData(res.data)
-  //       return res.data
-  //     })
-  //     .catch(err => console.log(err))
-  // }
-
-  // useEffect(() => {
-  //   console.log(policiesData)
-  // }, [policiesData])
-
   function setDeliveryCharge(policyID){
     console.log(policyID)
     if (policiesData && policyID) {
@@ -184,7 +141,6 @@ const MerchantAddOrder = () => {
     }
 
   }
-
 
   const fetchAreaData = () => {
     return useJwt
@@ -205,10 +161,10 @@ const MerchantAddOrder = () => {
 
     let isFormValid = true
 
-    if (!data.marchant && data.marchant.value) {
-      setError('marchant', { type: 'required', message: 'Marchant is required' })
-      isFormValid = false
-    }
+    // if (!data.marchant && data.marchant.value) {
+    //   setError('marchant', { type: 'required', message: 'Marchant is required' })
+    //   isFormValid = false
+    // }
     if(!data.recipient_name) {
       setError('recipient_name', { type: 'required', message: 'Recipient Name is required' })
       isFormValid = false
@@ -253,16 +209,17 @@ const MerchantAddOrder = () => {
     }
 
     setData(data)
-    if ( data.marchant.value !== null &&  data.recipient_name !== null &&  data.phone_number !== null 
+    if ( data.recipient_name !== null &&  data.phone_number !== null 
       && data.delivary_address !== null &&  data.amount_to_be_collected !== null 
       && data.product_type.value !== null && data.delivary_area.value !== null
       && data.delivary_charge !== null && data.pricing_policy.value !== null
-      && data.shipment_type.value !== null
+      && data.shipment_type.value !== null && getUserData()
       ) 
     {
-
+      console.log(getUserData())
+      const userInfo = getUserData()
       let formData = {
-        marchant: data.marchant.value,
+        marchant: userInfo.id,
         recipient_name: data.recipient_name,
         phone_number: data.phone_number,
         delivary_address: data.delivary_address,
@@ -271,19 +228,22 @@ const MerchantAddOrder = () => {
         delivary_area: data.delivary_area.value,
         pricing_policy: data.pricing_policy.value,
         shipment_type: data.shipment_type.value,
-
-        // dimention: data.dimention.value,
         delivary_charge: data.delivary_charge,
         status: 'accepted'
       }
 
       console.log("formData", formData)
+      const headers = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
 
       useJwt
-        .axiosPost(getApi(CREATE_ORDER_ADD), formData)
+        .axiosPost(getApi(MARCHANT_CREATE_ORDER), formData, headers )
         .then((res) => {
           console.log("res", res.data)
-          SwalAlert("Pricing Policy Added Successfully")
+          SwalAlert("Parcel Added Successfully")
           navigate("/create_order")
         })
         .catch(err => console.log(err))
@@ -399,20 +359,6 @@ const MerchantAddOrder = () => {
                 {errors && errors.pricing_policy && <span className="invalid-feedback">{errors.pricing_policy.message}</span>}
 
               </div>
-                {/* <div className='mb-1'>
-                  <Label className='form-label' for='dimention'>
-                  Dimention
-                  </Label>
-                  <Controller
-                    id='dimention'
-                    name='dimention'
-                    control={control}
-                    render={({ field }) => 
-                    <Input 
-                    placeholder='' invalid={errors.dimention && true} {...field} />}
-                  />
-                  {errors && errors.dimention && <span>{errors.dimention.message}</span>}
-                </div> */}
             </div>
           </div>
           <div className='mb-1'>
@@ -433,22 +379,7 @@ const MerchantAddOrder = () => {
             />
             {errors && errors.shipment_type && <span className="invalid-feedback">{errors.shipment_type.message}</span>}
 
-          </div>
-          {/* <div className='mb-1'>
-                  <Label className='form-label' for='dimention'>
-                  Dimention
-                  </Label>
-                  <Controller
-                    id='dimention'
-                    name='dimention'
-                    control={control}
-                    render={({ field }) => 
-                    <Input 
-                    placeholder='' invalid={errors.dimention && true} {...field} />}
-                  />
-                  {errors && errors.dimention && <span>{errors.dimention.message}</span>}
-                </div> */}
-        
+          </div>       
           <div class="row">
             <div class="col-lg-6">
               <div className='mb-1'>

@@ -9,7 +9,6 @@ import useJwt from '@src/auth/jwt/useJwt'
 import ListTable from "./partials/list-table"
 
 function MerchantOrdersList() {
-
   return (
     <Fragment>
       <Row>

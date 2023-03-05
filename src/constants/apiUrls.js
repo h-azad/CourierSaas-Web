@@ -20,6 +20,9 @@ export const MARCHANT_DELETE = '/manage-user/merchant/'
 export const MARCHANT_DETAILS = '/manage-user/merchant/'
 export const MARCHANT_SEARCH = '/search-marchant/'
 export const MARCHANT_UPDATE_STATUS = '/manage-user/merchant'
+export const MARCHANT_CREATE_ORDER = '/marchant_app/create-percel/'
+export const MARCHANT_ORDERS_INFO = '/marchant_app/orders/'
+export const MARCHANT_ORDER_LIST = '/marchant_app/orders/'
 
 
 
@@ -92,16 +95,7 @@ export const PRODUCT_TYPE_DELETE = '/product_type/'
 export const PRODUCT_TYPE_DETAILS = '/product_type/'
 export const SEARCH_PRODUCT = '/search_product/'
 
-
-
-//Pricing Policy API's 
-
-// export const VOLUMETRIC_POLICY_ADD = '/pricing_policy/'
-// export const VOLUMETRIC_POLICY_EDIT = '/pricing_policy/'
-// export const VOLUMETRIC_POLICY_LIST = '/pricing_policy/'
-// export const VOLUMETRIC_POLICY_DELETE = '/pricing_policy/'
-// export const VOLUMETRIC_POLICY_DETAILS = '/pricing_policy/'
-// export const SEARCH_VOLUMETRIC_POLICY = '/search_volumetric_policy/'
+// Pricing Policy API's
 
 export const PRICING_POLICY_ADD = '/pricing_policy/'
 export const PRICING_POLICY_EDIT = '/pricing_policy/'
@@ -121,10 +115,7 @@ export const CREATE_ORDER_DETAILS = '/create_order/'
 export const SEARCH_CREATE_ORDER = '/search_create_order/'
 export const DIMENTION_BY_PRODUCT = '/create_order/get-dimention/'
 export const PRICING_POLICY_BY_PRODUCT = '/get-price-policy/'
-export const ORDER_LIST_BY_MARCHANT = '/get-marchant-orders/'
-
-
-
+// export const ORDER_LIST_BY_MARCHANT = '/get-marchant-orders/'
 
 //Payment Method API's 
 

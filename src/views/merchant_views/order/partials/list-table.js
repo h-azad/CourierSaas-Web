@@ -16,13 +16,14 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, ORDER_LIST_BY_MARCHANT, CREATE_ORDER_DELETE, SEARCH_CREATE_ORDER } from "../../../../constants/apiUrls"
+import { getApi, MARCHANT_ORDER_LIST, CREATE_ORDER_DELETE, SEARCH_CREATE_ORDER } from "../../../../constants/apiUrls"
 import SwalAlert from "../../../../components/SwalAlert"
 import SwalConfirm from "../../../../components/SwalConfirm"
 import StatusModal from "../../../../components/StatusModal"
 
 const ListTable = () => {
   const [createOrder, setCreateOrder] = useState([])
+  console.log("createOrder", createOrder)
   const MySwal = withReactContent(Swal)
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
@@ -67,10 +68,10 @@ const changeStatusAction = (e, info) => {
 
   const fetchCreateOrderData = () => {
     return useJwt
-      .axiosGet(getApi(ORDER_LIST_BY_MARCHANT ))
+      .axiosGet(getApi(MARCHANT_ORDER_LIST ))
       .then((res) => {
         console.log("res", res.data)
-        setCreateOrder(res.data)
+        setCreateOrder(res.data.data)
         return res.data
       })
       .catch(err => console.log(err))
@@ -160,12 +161,8 @@ const changeStatusAction = (e, info) => {
             <tr>
               <th>Phone Number</th>
               <th>Recipient Name</th>
-              {/* <th>Delivary Address</th> */}
-              {/* <th>Amounr to be Collected</th> */}
-              {/* <th>Product type</th> */}
-              {/* <th>Dimention</th> */}
               <th>Delivary Area</th>
-              {/* <th>Delivary Charge</th> */}
+
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -174,37 +171,16 @@ const changeStatusAction = (e, info) => {
             {createOrder &&
               createOrder.map((info) => (
                 <tr key={info.id}>
-                  {/* <td>
-                    <span className="align-middle fw-bold">{info.marchant.full_name}</span>
-                  </td> */}
                   <td>
                     <span className="align-middle fw-bold">{info.phone_number}</span>
                   </td>
-                  {/* <td>
-                    <span className="align-middle fw-bold">{info.product.product_type}</span>
-                  </td> */}
-                  {/* <td>
-                    <span className="align-middle fw-bold">{info.product_type}</span>
-                  </td> */}
                   <td>
                     <span className="align-middle fw-bold">{info.recipient_name}</span>
                   </td>
-                  {/* 
+                  
                   <td>
                     <span className="align-middle fw-bold">{info.delivary_address}</span>
                   </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.amount_to_be_collected}</span>
-                  </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.dimention}</span>
-                  </td> */}
-                  {/* <td>
-                    <span className="align-middle fw-bold">{info.delivary_area.area_name}</span>
-                  </td> */}
-                  {/* <td>
-                    <span className="align-middle fw-bold">{info.delivary_charge}</span>
-                  </td> */}
                   <td>
                     <Badge pill color="light-primary" className="me-1">
                       {info.status}
@@ -221,7 +197,7 @@ const changeStatusAction = (e, info) => {
                         <MoreVertical size={15} />
                       </DropdownToggle>
                       <DropdownMenu>
-                        <DropdownItem href={"/create_order/view/" + info.id} >
+                        <DropdownItem href={"/marchant-orders/view/" + info.id} >
                           <Eye className="me-50" size={15} />{" "}
                           <span className="align-middle">View</span>
                         </DropdownItem>
