@@ -13,11 +13,11 @@ import Select from "react-select"
 import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, CREATE_ORDER_EDIT, MARCHANT_LIST, PRODUCT_TYPE_LIST, AREAS_LIST, CREATE_ORDER_DETAILS, PRICING_POLICY_LIST, SHIPMENT_TYPE_LIST, PRICING_POLICY_BY_PRODUCT } from '@src/constants/apiUrls'
+import { getApi, MARCHANT_EDIT_ORDER, CREATE_ORDER_EDIT, MARCHANT_LIST, PRODUCT_TYPE_LIST, AREAS_LIST, MARCHANT_ORDERS_INFO, CREATE_ORDER_DETAILS, PRICING_POLICY_LIST, SHIPMENT_TYPE_LIST, PRICING_POLICY_BY_PRODUCT } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
-import SwalAlert from "../../components/SwalAlert"
+import SwalAlert from "../../../components/SwalAlert"
 
-const EditCreateOrder = () => {
+const EditMarchantOrder = () => {
   const [selectboxMarchant, setSelectboxMarchant] = useState([])
   const [selectboxProduct, setSelectboxProduct] = useState([])
   const [selectPricingPolicybyProduct, setPricingPolicybyProduct] = useState([])
@@ -26,16 +26,16 @@ const EditCreateOrder = () => {
   const [selectboxShipmentType, setSelectboxShipmentType] = useState([])
   const [createOrderInfo, setCreateOrderInfo] = useState(null)
   const [data, setData] = useState(null)
-  // console.log("createOrderInfo ======",createOrderInfo)
+  console.log("createOrderInfo ======",createOrderInfo)
   let { id } = useParams()
 
     useEffect(() => {
     console.log(id)
     useJwt
-      .axiosGet(getApi(CREATE_ORDER_DETAILS) + id + "/")
+      .axiosGet(getApi(MARCHANT_ORDERS_INFO) + id + "/")
       .then((res) => {
         console.log("res", res.data)
-        setCreateOrderInfo(res.data)
+        setCreateOrderInfo(res.data.data)
         console.log(identity.find(id => id.value == createOrderInfo.identity))
         return res.data
        
@@ -64,7 +64,6 @@ const EditCreateOrder = () => {
   })
 
   useEffect(() => {
-    fetchMarchantData()
     fetchProductData()
     fetchAreaData()
     fetchPricingPolicyData()
@@ -72,22 +71,6 @@ const EditCreateOrder = () => {
 
   }, [])
 
-  const fetchMarchantData = () => {
-    return useJwt
-      .axiosGet(getApi(MARCHANT_LIST))
-      .then((res) => {
-        console.log(res)
-        let marchantData = []
-
-        res.data.data.map(data => {
-          marchantData.push({ value: data.id, label: data.full_name })
-        })
-
-        setSelectboxMarchant(marchantData)
-        return res.data.full_name
-      })
-      .catch(err => console.log(err))
-  }
 
   const fetchShipmentTypeData = () => {
     return useJwt
@@ -180,10 +163,10 @@ const EditCreateOrder = () => {
 
     let isFormValid = true
 
-    if (!data.marchant && data.marchant.value) {
-      setError('marchant', { type: 'required', message: 'Marchant is required' })
-      isFormValid = false
-    }
+    // if (!data.marchant && data.marchant.value) {
+    //   setError('marchant', { type: 'required', message: 'Marchant is required' })
+    //   isFormValid = false
+    // }
     if (!data.recipient_name) {
       setError('recipient_name', { type: 'required', message: 'Recipient Name is required' })
       isFormValid = false
@@ -228,7 +211,7 @@ const EditCreateOrder = () => {
     }
 
     setData(data)
-    if (data.marchant.value !== null && data.recipient_name !== null && data.phone_number !== null
+    if (data.recipient_name !== null && data.phone_number !== null
       && data.delivary_address !== null && data.amount_to_be_collected !== null
       && data.product_type.value !== null && data.delivary_area.value !== null
       && data.delivary_charge !== null && data.pricing_policy.value !== null
@@ -236,7 +219,7 @@ const EditCreateOrder = () => {
     ) {
 
       let formData = {
-        marchant: data.marchant.value,
+        // marchant: data.marchant.value,
         recipient_name: data.recipient_name,
         phone_number: data.phone_number,
         delivary_address: data.delivary_address,
@@ -258,11 +241,11 @@ const EditCreateOrder = () => {
 
       useJwt
         // .axiosPost(getApi(CREATE_ORDER_EDIT), formData)
-        .axiosPut(getApi(CREATE_ORDER_EDIT) + id + "/", formData, headers)
+        .axiosPut(getApi(MARCHANT_EDIT_ORDER) + id + "/", formData, headers)
         .then((res) => {
           console.log("res", res.data)
           SwalAlert("Order Edited Successfully")
-          navigate("/create_order")
+          navigate("/marchant-orders")
         })
         .catch(err => console.log(err))
 
@@ -278,28 +261,6 @@ const EditCreateOrder = () => {
       <CardBody>
         {createOrderInfo &&
         <Form onSubmit={handleSubmit(onSubmit)}>
-
-          <div className='mb-1'>
-            <Label className='form-label' for='marchant'>
-              Marchant
-            </Label>
-            <Controller
-                defaultValue={{ value:createOrderInfo.marchant.id, label: createOrderInfo.marchant.full_name }}
-              id='marchant'
-              name='marchant'
-              control={control}
-
-              render={({ field }) => <Select
-                isClearable
-                className={classnames('react-select', { 'is-invalid': errors.marchant && errors.marchant.full_name && true })}
-                classNamePrefix='select'
-                options={selectboxMarchant}
-                {...field}
-              />}
-         
-            />
-            {errors && errors.marchant && <span className="invalid-feedback">{errors.marchant.message}</span>}
-          </div>
             
 
           <div class="row">
@@ -473,4 +434,4 @@ const EditCreateOrder = () => {
     </Card>
   )
 }
-export default EditCreateOrder
+export default EditMarchantOrder

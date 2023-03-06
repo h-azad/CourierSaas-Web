@@ -37,7 +37,6 @@ const statusColors = {
 const statusOptions = [
   { value: 'active', label: 'Active' },
   { value: 'inactive', label: 'Inactive' },
-  // { value: 'suspended', label: 'Suspended' }
 ]
 
 
@@ -101,15 +100,6 @@ const UserInfoCard = ({ selectedUser }) => {
     console.log("selectedInfo", selectedInfo)
     console.log("selectedStatus", selectedStatus)
     return false
-    // useJwt
-    // .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
-    // .then((res) => {
-    //   console.log("res", res.data)
-    //   setStatusModalState(false)
-    //   // SwalAlert("Deleted Successfully")
-    
-    // })
-    // .finally(() => fetchShipmentData())
     
   }
 
@@ -177,7 +167,7 @@ const UserInfoCard = ({ selectedUser }) => {
             ) : null}
           </div>
           <div className='d-flex justify-content-center pt-2'>
-            <Button color='primary' onClick={() => { navigate("/create_order/edit/" + selectedUser.id) }}>
+            <Button color='primary' onClick={() => { navigate("/marchant_order/edit/" + selectedUser.id) }}>
               Edit
             </Button>
             <Button className='ms-1' color='danger' outline onClick={e=>changeStatusAction(e, selectedUser)}>

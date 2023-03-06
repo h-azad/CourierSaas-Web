@@ -23,6 +23,7 @@ export const MARCHANT_UPDATE_STATUS = '/manage-user/merchant'
 export const MARCHANT_CREATE_ORDER = '/marchant_app/create-percel/'
 export const MARCHANT_ORDERS_INFO = '/marchant_app/orders/'
 export const MARCHANT_ORDER_LIST = '/marchant_app/orders/'
+export const MARCHANT_EDIT_ORDER = '/marchant_app/orders/'
 
 
 
@@ -115,7 +116,6 @@ export const CREATE_ORDER_DETAILS = '/create_order/'
 export const SEARCH_CREATE_ORDER = '/search_create_order/'
 export const DIMENTION_BY_PRODUCT = '/create_order/get-dimention/'
 export const PRICING_POLICY_BY_PRODUCT = '/get-price-policy/'
-// export const ORDER_LIST_BY_MARCHANT = '/get-marchant-orders/'
 
 //Payment Method API's 
 

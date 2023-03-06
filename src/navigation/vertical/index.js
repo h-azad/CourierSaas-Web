@@ -166,14 +166,6 @@ const marchantMenu = [
     resource: 'MARCHANT',
     navLink: "/marchant-orders"
   },
-  {
-    id: "my_order",
-    title: "My Orders",
-    icon: <CreditCard size={20} />,
-    action: 'marchant-pages',
-    resource: 'MARCHANT',
-    navLink: "/marchant-orders/view"
-  },
   
  
 ]

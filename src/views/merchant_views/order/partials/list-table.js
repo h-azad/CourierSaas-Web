@@ -20,6 +20,9 @@ import { getApi, MARCHANT_ORDER_LIST, CREATE_ORDER_DELETE, SEARCH_CREATE_ORDER }
 import SwalAlert from "../../../../components/SwalAlert"
 import SwalConfirm from "../../../../components/SwalConfirm"
 import StatusModal from "../../../../components/StatusModal"
+import classnames from 'classnames'
+import { useForm, Controller } from 'react-hook-form'
+import Select from "react-select"
 
 const ListTable = () => {
   const [createOrder, setCreateOrder] = useState([])
@@ -45,6 +48,22 @@ const ListTable = () => {
     })
    
   }
+  const {
+    reset,
+    control,
+    watch,
+    resetField,
+    setError,
+    setValue,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    defaultValues: {
+     
+
+
+    }
+  })
 
   const updateStatusAction = (e) => {
     e.preventDefault()
@@ -126,7 +145,27 @@ const changeStatusAction = (e, info) => {
         fn(...args)
       }, time)
     }
+  } 
+
+
+  const changeOrderStatusAction = (selected) => {
+    console.log("slelected", selected)
+
+
   }
+
+
+  let statusOptions = [
+    { value: "0", label: "Pending" },
+    { value: "1", label: "Accepted" },
+    { value: "2", label: "Picked Up" },
+    { value: "3", label: "Shipped" },
+    { value: "4", label: "Delivered" },
+    { value: "5", label: "Hold" },
+    { value: "6", label: "Returned" },
+    { value: "7", label: "Cancelled" },
+    { value: "8", label: "Comlpeted" },
+  ]
 
   return (
     <>
@@ -162,7 +201,7 @@ const changeStatusAction = (e, info) => {
               <th>Phone Number</th>
               <th>Recipient Name</th>
               <th>Delivary Area</th>
-
+              <th>Pickup Status</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -176,16 +215,18 @@ const changeStatusAction = (e, info) => {
                   </td>
                   <td>
                     <span className="align-middle fw-bold">{info.recipient_name}</span>
-                  </td>
-                  
+                  </td>                
                   <td>
                     <span className="align-middle fw-bold">{info.delivary_address}</span>
+                  </td>
+                  <td>
+                    <span className="align-middle fw-bold">{info.pickup_status==true?'Picked':'Not Picked'}</span>
                   </td>
                   <td>
                     <Badge pill color="light-primary" className="me-1">
                       {info.status}
                     </Badge>
-                  </td>
+                  </td>   
                   <td>
                     <UncontrolledDropdown>
                       <DropdownToggle
@@ -201,7 +242,7 @@ const changeStatusAction = (e, info) => {
                           <Eye className="me-50" size={15} />{" "}
                           <span className="align-middle">View</span>
                         </DropdownItem>
-                        <DropdownItem href={"/create_order/edit/" + info.id}>
+                        <DropdownItem href={"/marchant_order/edit/" + info.id}>
                           <Edit className="me-50" size={15} />{" "}
                           <span className="align-middle">Edit</span>
                         </DropdownItem>
@@ -224,28 +265,30 @@ const changeStatusAction = (e, info) => {
         statusModalState={statusModalState}
         setStatusModalState={setStatusModalState}
         updateStatusAction={updateStatusAction}
-        title={"Change Pricing Policy Status"}
-      >
-        <div className='demo-inline-spacing'>
-          <div className='form-check'>
-            <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "accepted" ? true : false} onChange={() => setSelectedStatus("accepted")} />
-            <Label className='form-check-label' for='ex1-active'>
-            Accepted
-            </Label>
-          </div>
+        title={"Change Order Status"} >
+        <div className='mb-1'>
+          <Label className='form-label' for='Status'>
+            Change order status 
+          </Label>
+            <Select
+              name="status"
+              onChange={changeOrderStatusAction} 
+              className={classnames('react-select')}
+              classNamePrefix='select'
+              options={statusOptions}
+            />
+          {errors && errors.status && <span className="invalid-feedback">{errors.status.message}</span>}
+        </div>
+         
+        {/* <div className='demo-inline-spacing'>
+         
           <div className='form-check'>
             <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "pending" ? true : false} onChange={() => setSelectedStatus("pending")} />
             <Label className='form-check-label' for='ex1-inactive'>
             Pending
             </Label>
           </div>
-          <div className='form-check'>
-            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "delivered" ? true : false} onChange={() => setSelectedStatus("delivered")} />
-            <Label className='form-check-label' for='ex1-inactive'>
-            Delivered
-            </Label>
-          </div>
-        </div>
+        </div> */}
       </StatusModal>
       </div>
       
