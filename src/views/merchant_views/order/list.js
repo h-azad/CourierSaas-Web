@@ -7,6 +7,8 @@ import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
 import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
 import useJwt from '@src/auth/jwt/useJwt'
 import ListTable from "./partials/list-table"
+import OrdersList from "../../../components/merchant_views/order/OrdersList"
+import OrderView from "../../../components/merchant_views/order/OrderView"
 
 function MerchantOrdersList() {
   return (
@@ -47,10 +49,19 @@ function MerchantOrdersList() {
       </Row>
 
       <Row>
-        <Col sm="12">
+        <Col sm="4">
+          <Card title="Bordered">
+            <CardBody>
+              <OrdersList />                          
+              {/* <ListTable /> */}
+            </CardBody>
+          </Card>
+        </Col>
+        <Col sm="8">
           <Card title="Bordered">
             <CardBody>                          
-              <ListTable />
+              {/* <ListTable /> */}
+              <OrderView />
             </CardBody>
           </Card>
         </Col>
