@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash,Search, Edit3, Eye } from "react-feather"
+import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
 import {
   Table,
   Badge,
@@ -16,13 +16,14 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, MARCHANT_ORDER_LIST, CREATE_ORDER_DELETE, SEARCH_CREATE_ORDER } from "../../../../constants/apiUrls"
+import { getApi, MARCHANT_ORDER_LIST, MARCHANT_ORDER_STATUS_UPDATE, CREATE_ORDER_DELETE, SEARCH_CREATE_ORDER } from "../../../../constants/apiUrls"
 import SwalAlert from "../../../../components/SwalAlert"
 import SwalConfirm from "../../../../components/SwalConfirm"
 import StatusModal from "../../../../components/StatusModal"
 import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import Select from "react-select"
+import ChangeStatusModal from "../../../../components/merchant_views/order/ChangeStatusModal"
 
 const ListTable = () => {
   const [createOrder, setCreateOrder] = useState([])
@@ -37,16 +38,16 @@ const ListTable = () => {
     return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
       if (result.value) {
 
-      useJwt
-        .axiosDelete(getApi(CREATE_ORDER_DELETE+id+'/'))
-        .then((res) => {
-          SwalAlert("Deleted Successfully")
-        })
-        .finally(() => fetchCreateOrderData())
-        
+        useJwt
+          .axiosDelete(getApi(CREATE_ORDER_DELETE + id + '/'))
+          .then((res) => {
+            SwalAlert("Deleted Successfully")
+          })
+          .finally(() => fetchCreateOrderData())
+
       }
     })
-   
+
   }
   const {
     reset,
@@ -59,27 +60,16 @@ const ListTable = () => {
     formState: { errors }
   } = useForm({
     defaultValues: {
-     
-
 
     }
   })
 
-  const updateStatusAction = (e) => {
+  const changeStatusAction = (e, info) => {
     e.preventDefault()
-    console.log("selectedInfo", selectedInfo)
-    console.log("selectedStatus", selectedStatus)
-  return false
-  
-}
-
-
-const changeStatusAction = (e, info) => {
-  e.preventDefault()
-  setStatusModalState(true)
-  setSelectedStatus(info.status)
-  setSelectedInfo(info)
-}
+    setStatusModalState(true)
+    setSelectedStatus(info.status)
+    setSelectedInfo(info)
+  }
 
   useEffect(() => {
     fetchCreateOrderData()
@@ -87,7 +77,7 @@ const changeStatusAction = (e, info) => {
 
   const fetchCreateOrderData = () => {
     return useJwt
-      .axiosGet(getApi(MARCHANT_ORDER_LIST ))
+      .axiosGet(getApi(MARCHANT_ORDER_LIST))
       .then((res) => {
         console.log("res", res.data)
         setCreateOrder(res.data.data)
@@ -96,7 +86,7 @@ const changeStatusAction = (e, info) => {
       .catch(err => console.log(err))
   }
   useEffect(() => {
-    if(!statusModalState) {
+    if (!statusModalState) {
       clearData()
     }
     fetchCreateOrderData()
@@ -104,7 +94,7 @@ const changeStatusAction = (e, info) => {
 
   const fetchSearchCreateOrderData = searchTerm => {
     return useJwt
-      .axiosGet(getApi(SEARCH_CREATE_ORDER)+'?search='+ searchTerm)
+      .axiosGet(getApi(SEARCH_CREATE_ORDER) + '?search=' + searchTerm)
       .then((res) => {
         return res.data
       })
@@ -120,12 +110,12 @@ const changeStatusAction = (e, info) => {
           if (data.length > 0) {
             console.log('res', data)
             setCreateOrder(data)
-          }else{
+          } else {
             console.log("No data")
           }
         })
     }
-    
+
   }, 300)
 
   const clearData = () => {
@@ -133,10 +123,10 @@ const changeStatusAction = (e, info) => {
     setSelectedStatus(null)
   }
 
-  function debounce (fn, time) {
+  function debounce(fn, time) {
     let timeoutId
     return wrapper
-    function wrapper (...args) {
+    function wrapper(...args) {
       if (timeoutId) {
         clearTimeout(timeoutId)
       }
@@ -145,27 +135,8 @@ const changeStatusAction = (e, info) => {
         fn(...args)
       }, time)
     }
-  } 
-
-
-  const changeOrderStatusAction = (selected) => {
-    console.log("slelected", selected)
-
-
   }
 
-
-  let statusOptions = [
-    { value: "0", label: "Pending" },
-    { value: "1", label: "Accepted" },
-    { value: "2", label: "Picked Up" },
-    { value: "3", label: "Shipped" },
-    { value: "4", label: "Delivered" },
-    { value: "5", label: "Hold" },
-    { value: "6", label: "Returned" },
-    { value: "7", label: "Cancelled" },
-    { value: "8", label: "Comlpeted" },
-  ]
 
   return (
     <>
@@ -215,18 +186,18 @@ const changeStatusAction = (e, info) => {
                   </td>
                   <td>
                     <span className="align-middle fw-bold">{info.recipient_name}</span>
-                  </td>                
+                  </td>
                   <td>
                     <span className="align-middle fw-bold">{info.delivary_address}</span>
                   </td>
                   <td>
-                    <span className="align-middle fw-bold">{info.pickup_status==true?'Picked':'Not Picked'}</span>
+                    <span className="align-middle fw-bold">{info.pickup_status == true ? 'Picked' : 'Not Picked'}</span>
                   </td>
                   <td>
                     <Badge pill color="light-primary" className="me-1">
                       {info.status}
                     </Badge>
-                  </td>   
+                  </td>
                   <td>
                     <UncontrolledDropdown>
                       <DropdownToggle
@@ -246,14 +217,14 @@ const changeStatusAction = (e, info) => {
                           <Edit className="me-50" size={15} />{" "}
                           <span className="align-middle">Edit</span>
                         </DropdownItem>
-                        <DropdownItem href="/" onClick={e=>deleteAction(e, info.id)}>
+                        <DropdownItem href="/" onClick={e => deleteAction(e, info.id)}>
                           <Trash className="me-50" size={15} />{" "}
                           <span className="align-middle">Delete</span>
                         </DropdownItem>
-                        <DropdownItem href="/" onClick={e=>changeStatusAction(e, info)}>
-                        <Edit3 className="me-50" size={15} />{" "}
-                        <span className="align-middle">Change Status</span>
-                      </DropdownItem>
+                        <DropdownItem href="/" onClick={e => changeStatusAction(e, info)}>
+                          <Edit3 className="me-50" size={15} />{" "}
+                          <span className="align-middle">Change Status</span>
+                        </DropdownItem>
                       </DropdownMenu>
                     </UncontrolledDropdown>
                   </td>
@@ -261,37 +232,16 @@ const changeStatusAction = (e, info) => {
               ))}
           </tbody>
         </Table>
-        <StatusModal
-        statusModalState={statusModalState}
-        setStatusModalState={setStatusModalState}
-        updateStatusAction={updateStatusAction}
-        title={"Change Order Status"} >
-        <div className='mb-1'>
-          <Label className='form-label' for='Status'>
-            Change order status 
-          </Label>
-            <Select
-              name="status"
-              onChange={changeOrderStatusAction} 
-              className={classnames('react-select')}
-              classNamePrefix='select'
-              options={statusOptions}
-            />
-          {errors && errors.status && <span className="invalid-feedback">{errors.status.message}</span>}
-        </div>
-         
-        {/* <div className='demo-inline-spacing'>
-         
-          <div className='form-check'>
-            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "pending" ? true : false} onChange={() => setSelectedStatus("pending")} />
-            <Label className='form-check-label' for='ex1-inactive'>
-            Pending
-            </Label>
-          </div>
-        </div> */}
-      </StatusModal>
+
+        <ChangeStatusModal
+          statusModalState={statusModalState}
+          setStatusModalState={setStatusModalState}
+          orderInfo={selectedInfo}
+          fetchCreateOrderData={fetchCreateOrderData}
+        />
+
       </div>
-      
+
     </>
   )
 }

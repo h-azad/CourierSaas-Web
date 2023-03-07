@@ -24,6 +24,7 @@ export const MARCHANT_CREATE_ORDER = '/marchant_app/create-percel/'
 export const MARCHANT_ORDERS_INFO = '/marchant_app/orders/'
 export const MARCHANT_ORDER_LIST = '/marchant_app/orders/'
 export const MARCHANT_EDIT_ORDER = '/marchant_app/orders/'
+export const MARCHANT_ORDER_STATUS_UPDATE = '/marchant_app/orders/'
 
 
 
