@@ -20,22 +20,23 @@ import {
 } from "reactstrap"
 
 
-const OrdersList = ({ orders, activeOrder ,setActiveOrder}) => {
-   
+const OrdersList = ({ orders, activeOrder, setActiveOrder }) => {
+
 
     return (
-        
+
         <div>
             <div>
-                <p > 
-                <Link to={'/marchant-orders/create'}>
-                    <Button.Ripple color="primary">Create Order</Button.Ripple>
-                </Link>
+                <p >
+                    <Link to={'/marchant-orders/create'}>
+                        <Button.Ripple color="primary">Create Order</Button.Ripple>
+                    </Link>
+                    <input color="primary" placeholder="Search Order " name="user_name" type="text"
+                        class="form-control">
+                    </input>
                 </p>
-              
-              
             </div>
-         
+
             <ListGroup>
                 {orders &&
                     orders.map((info, idx) => (
