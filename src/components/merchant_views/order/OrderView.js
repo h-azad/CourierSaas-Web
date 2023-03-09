@@ -5,39 +5,62 @@ import { useEffect, useState } from 'react'
 import { formatDate } from '@utils'
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, MARCHANT_ORDER_LIST } from "@src/constants/apiUrls"
+import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
+import {
+    Badge,
+    UncontrolledDropdown,
+    DropdownMenu,
+    DropdownItem,
+    DropdownToggle,
+    Button,
 
-const OrderView = () => {
-    const [activeOrder, setActiveOrder] = useState()
-    const [orderView, setOrderView] = useState([])
-    console.log("orderView", orderView)
+    Label,
+    Input,
+} from "reactstrap"
 
-    const fetchOrderViewData = () => {
-        return useJwt
-            .axiosGet(getApi(MARCHANT_ORDER_LIST))
-            .then((res) => {
-                console.log("res", res.data)
-                setOrderView(res.data.data)
-                return res.data
-            })
-            .catch(err => console.log(err))
-    }
-    useEffect(() => {
-        fetchOrderViewData()
-    }, [])
+const OrderView = ({ activeOrderData  }) => {
 
-    useEffect(() => {
-        console.log(activeOrder)
-        if (orderView && !activeOrder) {
-            console.log(orderView[0])
-            orderView[0] ? setActiveOrder(orderView[0]?.id) : null
-        }
-    }, [orderView])
-
+    console.log("activeOrderData", activeOrderData)
     return (
-        
+
         <Card className='invoice-preview-card'>
+            <div className='d-flex align-item-center justify-content-end'>
+                <UncontrolledDropdown>
+                    <Button.Ripple color="primary">Actions
+                    </Button.Ripple>
+                    <DropdownToggle
+                        className="icon-btn hide-arrow"
+                        color="transparent"
+                        size="sm"
+                        caret
+                    >
+                    <MoreVertical size={15} />
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <DropdownItem href={"/marchant-orders/view/" + activeOrderData?.id} >
+                            <Eye className="me-50" size={15} />{" "}
+                            <span className="align-middle">View</span>
+                        </DropdownItem>
+                        <DropdownItem href={"/marchant_order/edit/" + activeOrderData?.id}>
+                            <Edit className="me-50" size={15} />{" "}
+                            <span className="align-middle">Edit</span>
+                        </DropdownItem>
+                        <DropdownItem href="/" onClick={e => deleteAction(e, activeOrderData?.id)}>
+                            <Trash className="me-50" size={15} />{" "}
+                            <span className="align-middle">Delete</span>
+                        </DropdownItem>
+                        <DropdownItem href="/" onClick={e => changeStatusAction(e, activeOrderData?.id)}>
+                            <Edit3 className="me-50" size={15} />{" "}
+                            <span className="align-middle">Change Status</span>
+                        </DropdownItem>
+                    </DropdownMenu>
+                </UncontrolledDropdown>
+            </div>
             <CardBody className='invoice-padding pb-0'>
-                {/* Header */}
+                {/* {orderView &&
+                    orderView.map((activeOrderData, idx) => ( */}
+
+            
                 <div className='d-flex justify-content-between flex-md-row flex-column invoice-spacing mt-0'>
                     <div>
                         <div className='logo-wrapper'>
@@ -92,65 +115,78 @@ const OrderView = () => {
                             </svg>
                             <h3 className='text-primary invoice-logo'>Update Tech Ltd.</h3>
                         </div>
-                        <CardText className='mb-25'>Office 149, 450 South Brand Brooklyn</CardText>
-                        <CardText className='mb-25'>San Diego County, CA 91905, USA</CardText>
-                        <CardText className='mb-0'>+1 (123) 456 7891, +44 (876) 543 2198</CardText>
+                        <CardText className='mb-25'>House: 1240, Road: 9, Avenue: 2, Floor: 3rd </CardText>
+                        <CardText className='mb-25'> Mirpur DOHS, Dhaka-1216, Bangladesh</CardText>
+                        <CardText className='mb-25'>contact@updatetechltd.com</CardText>
+                        <CardText className='mb-0'>+8809678800583</CardText>
                     </div>
                     <div className='mt-md-0 mt-2'>
                         <h4 className='invoice-title'>
-                            Invoice <span className='invoice-number'>#4324242</span>
+                            Invoice <span className='invoice-number'> #{activeOrderData?.parcel_id}</span>
                         </h4>
                         <div className='invoice-date-wrapper'>
                             <p className='invoice-date-title'>Date Issued:</p>
-                            <p className='invoice-date'>25/3/2023</p>
+                            <p className='invoice-date'> {formatDate(activeOrderData?.created_at)}</p>
                         </div>
                         <div className='invoice-date-wrapper'>
-                            <p className='invoice-date-title'>Due Date:</p>
-                            <p className='invoice-date'>27/3/23</p>
+                            <p className='invoice-date-title'>Updated Date:</p>
+                            <p className='invoice-date'>{formatDate(activeOrderData?.updated_at)}</p>
                         </div>
                     </div>
                 </div>
-                {/* /Header */}
+               
             </CardBody>
 
             <hr className='invoice-spacing' />
 
             {/* Address and Contact */}
             <CardBody className='invoice-padding pt-0'>
-                <Row className='invoice-spacing'>
-                    <Col className='p-0' xl='8'>
-                        <h6 className='mb-2'>Invoice To:</h6>
-                        <h6 className='mb-25'>Test</h6>
-                        <CardText className='mb-25'>adas</CardText>
-                        <CardText className='mb-25'>AAAA</CardText>
-                    </Col>
-                    <Col className='p-0 mt-xl-0 mt-2' xl='4'>
-                        <h6 className='mb-2'>Payment Details:</h6>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td className='pe-1'>Total Due:</td>
-                                    <td>
-                                        <span className='fw-bold'>10</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='pe-1'>Bank name:</td>
-                                    <td>Test Bank</td>
-                                </tr>
-                                <tr>
-                                    <td className='pe-1'>Country:</td>
-                                    <td>Country</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </Col>
-                </Row>
+            
+                        <Row className='invoice-spacing'>
+                            <Col className='p-0' xl='8'>
+                                <h6 className='mb-2'>Invoice To:</h6>
+                                <h6 className='mb-25'>Recipient Name : {activeOrderData?.recipient_name}</h6>
+                                <h6 className='mb-25'>Phone Number : {activeOrderData?.phone_number}</h6>
+                                <h6 className='mb-25'>Delivary Address : {activeOrderData?.delivary_address}</h6>
+                                <h6 className='mb-25'>Delivary Area : {activeOrderData?.delivary_area_id}</h6>
+                                {/* <CardText className='mb-25'>Phone Number : {activeOrderData.phone_number}</CardText> */}
+                                {/* <CardText className='mb-25'>AAAA</CardText> */}
+                            </Col>
+                            <Col className='p-0 mt-xl-0 mt-2' xl='4'>
+                                <h6 className='mb-2'>Payment Details:</h6>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td className='pe-1'>Product type:</td>
+                                            <td>{activeOrderData?.product_type_id}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='pe-1'>Shipment type:</td>
+                                            <td>{activeOrderData?.shipment_type_id}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='pe-1'>Delivary Charge:</td>
+                                            <td>{activeOrderData?.delivary_charge}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='pe-1'>Total Amount :</td>
+                                            <td>
+                                                <span className='fw-bold'> {activeOrderData?.amount_to_be_collected}</span>
+                                            </td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </Col>
+                        </Row>
+                 
             </CardBody>
+
             {/* /Address and Contact */}
 
             {/* Invoice Description */}
-            <Table responsive>
+            {/* <Table responsive>
                 <thead>
                     <tr>
                         <th className='py-1'>Task description</th>
@@ -177,7 +213,7 @@ const OrderView = () => {
                             <span className='fw-bold'>$1,800.00</span>
                         </td>
                     </tr>
-                    {/* <tr className='border-bottom'>
+                    <tr className='border-bottom'>
                         <td className='py-1'>
                             <p className='card-text fw-bold mb-25'>Ui Kit Design</p>
                             <p className='card-text text-nowrap'>Designed a UI kit for native app using Sketch, Figma & Adobe XD</p>
@@ -191,9 +227,9 @@ const OrderView = () => {
                         <td className='py-1'>
                             <span className='fw-bold'>$1200.00</span>
                         </td>
-                    </tr> */}
+                    </tr>
                 </tbody>
-            </Table>
+            </Table> */}
             {/* /Invoice Description */}
 
             {/* Total & Sales Person */}
@@ -244,9 +280,9 @@ const OrderView = () => {
                 </Row>
             </CardBody>
             {/* /Invoice Note */}
-        </Card>
-  )
-        
+        </Card >
+    )
+
 }
 
 

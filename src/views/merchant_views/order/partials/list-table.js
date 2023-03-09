@@ -27,7 +27,7 @@ import ChangeStatusModal from "../../../../components/merchant_views/order/Chang
 
 const ListTable = () => {
   const [createOrder, setCreateOrder] = useState([])
-  console.log("createOrder", createOrder)
+  // console.log("createOrder", createOrder)
   const MySwal = withReactContent(Swal)
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)

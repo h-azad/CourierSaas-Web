@@ -9,8 +9,51 @@ import useJwt from '@src/auth/jwt/useJwt'
 import ListTable from "./partials/list-table"
 import OrdersList from "../../../components/merchant_views/order/OrdersList"
 import OrderView from "../../../components/merchant_views/order/OrderView"
+import { getApi, MARCHANT_ORDER_LIST } from "../../../constants/apiUrls"
 
 function MerchantOrdersList() {
+
+  const [activeOrder, setActiveOrder] = useState()
+
+  console.log("activeOrder", activeOrder)
+  const [activeParcel, setactiveParcel] = useState()
+
+  const [orders, setOrders] = useState([])
+  const [activeOrderData, setActiveOrderData] = useState(null)
+
+  const fetchCreateOrderData = () => {
+    return useJwt
+      .axiosGet(getApi(MARCHANT_ORDER_LIST))
+      .then((res) => {
+        console.log("res", res.data)
+        setOrders(res.data.data)
+        setActiveOrderData(res.data.data[0])
+        return res.data
+      })
+      .catch(err => console.log(err))
+  }
+
+  useEffect(() => {
+    fetchCreateOrderData()
+  }, [])
+
+  useEffect(() => {
+    console.log(activeOrder)
+    if (orders && !activeOrder) {
+      console.log(orders[0])
+      orders[0] ? setActiveOrder(orders[0]?.id) : null
+      
+    }
+  }, [orders])
+
+  useEffect(() => {
+    
+    const activeOrderFilter = orders.find((item) => item.id === activeOrder)
+    setActiveOrderData(activeOrderFilter)
+  }, [activeOrder])
+
+ 
+
   return (
     <Fragment>
       <Row>
@@ -52,7 +95,7 @@ function MerchantOrdersList() {
         <Col sm="4">
           <Card title="Bordered">
             <CardBody>
-              <OrdersList />                          
+              <OrdersList orders={orders } activeOrder={activeOrder}  setActiveOrder={setActiveOrder} />                          
               {/* <ListTable /> */}
             </CardBody>
           </Card>
@@ -61,7 +104,7 @@ function MerchantOrdersList() {
           <Card title="Bordered">
             <CardBody>                          
               {/* <ListTable /> */}
-              <OrderView />
+              <OrderView activeOrderData={activeOrderData} />
             </CardBody>
           </Card>
         </Col>

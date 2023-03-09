@@ -4,45 +4,50 @@ import { useEffect, useState } from 'react'
 import { formatDate } from '@utils'
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, MARCHANT_ORDER_LIST } from "@src/constants/apiUrls"
+import { Link } from "react-router-dom"
+import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
+import {
+    Table,
+    Badge,
+    UncontrolledDropdown,
+    DropdownMenu,
+    DropdownItem,
+    DropdownToggle,
+    Button,
+    CardText,
+    Label,
+    Input,
+} from "reactstrap"
 
 
-const OrdersList = () => {
-    const [activeOrder, setActiveOrder] = useState()
-
-    const [orders, setOrders] = useState([])
-
-    const fetchCreateOrderData = () => {
-        return useJwt
-            .axiosGet(getApi(MARCHANT_ORDER_LIST))
-            .then((res) => {
-                console.log("res", res.data)
-                setOrders(res.data.data)
-                return res.data
-            })
-            .catch(err => console.log(err))
-    }
-
-    useEffect(() => {
-        fetchCreateOrderData()
-    }, [])
-    
-    useEffect(() => {
-        console.log(activeOrder)
-        if (orders && !activeOrder){
-            console.log(orders[0])
-            orders[0] ? setActiveOrder(orders[0]?.id) : null
-        }
-    }, [orders])
+const OrdersList = ({ orders, activeOrder ,setActiveOrder}) => {
+   
 
     return (
+        
         <div>
+            <div>
+                <p > 
+                <Link to={'/marchant-orders/create'}>
+                    <Button.Ripple color="primary">Create Order</Button.Ripple>
+                </Link>
+                </p>
+              
+              
+            </div>
+         
             <ListGroup>
                 {orders &&
                     orders.map((info, idx) => (
-                        <ListGroupItem active={activeOrder== info.id}>
-                            <div className='d-flex justify-content-between w-100'>
-                                <h5 className={`mb-1`}>#{info.parcel_id}</h5>
-                                <small>Active</small>
+                        <ListGroupItem active={info.id == activeOrder}>
+                            <div className='d-flex justify-content-between w-100' onClick={() =>
+                                setActiveOrder(info.id)
+                            }>
+                                <h5 className={`mb-1`}
+
+
+                                >#{info.parcel_id}</h5>
+                                <small>{info.id == activeOrder ? 'Active' : ''}</small>
                             </div>
                             <p className='mb-1'>
                                 <span>{formatDate(info.created_at)}</span>
