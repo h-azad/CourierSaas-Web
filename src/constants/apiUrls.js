@@ -18,13 +18,13 @@ export const MARCHANT_EDIT = '/manage-user/merchant/'
 export const MARCHANT_LIST = '/manage-user/merchant'
 export const MARCHANT_DELETE = '/manage-user/merchant/'
 export const MARCHANT_DETAILS = '/manage-user/merchant/'
-export const MARCHANT_SEARCH = '/search-marchant/'
 export const MARCHANT_UPDATE_STATUS = '/manage-user/merchant'
 export const MARCHANT_CREATE_ORDER = '/marchant_app/create-percel/'
 export const MARCHANT_ORDERS_INFO = '/marchant_app/orders/'
 export const MARCHANT_ORDER_LIST = '/marchant_app/orders/'
 export const MARCHANT_EDIT_ORDER = '/marchant_app/orders/'
 export const MARCHANT_ORDER_STATUS_UPDATE = '/marchant_app/orders/'
+export const SEARCH_MARCHANT_PARCEL = '/marchant_app/search-marchant-percel/'
 
 
 

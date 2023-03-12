@@ -100,31 +100,31 @@ const ListTable = () => {
       .catch((err) => console.log(err))
   }
 
-  const fetchSearchMerchantsData = searchTerm => {
-    return useJwt
-      .axiosGet(getApi(MARCHANT_SEARCH)+'?search='+ searchTerm)
-      .then((res) => {
-        return res.data
-      })
-      .catch((err) => console.log(err))
-  }
+  // const fetchSearchMerchantsData = searchTerm => {
+  //   return useJwt
+  //     .axiosGet(getApi(MARCHANT_SEARCH)+'?search='+ searchTerm)
+  //     .then((res) => {
+  //       return res.data
+  //     })
+  //     .catch((err) => console.log(err))
+  // }
 
-  const handleSearch = debounce(e => {
-    console.log(e.target.value)
-    const searchTerm = e.target.value
-    if (searchTerm.length > 2) {
-      fetchSearchMerchantsData(searchTerm)
-        .then(data => {
-          if (data.length > 0) {
-            console.log('res', data)
-            setMerchants(data)
-          }else{
-            console.log("No data")
-          }
-        })
-    }
+  // const handleSearch = debounce(e => {
+  //   console.log(e.target.value)
+  //   const searchTerm = e.target.value
+  //   if (searchTerm.length > 2) {
+  //     fetchSearchMerchantsData(searchTerm)
+  //       .then(data => {
+  //         if (data.length > 0) {
+  //           console.log('res', data)
+  //           setMerchants(data)
+  //         }else{
+  //           console.log("No data")
+  //         }
+  //       })
+  //   }
     
-  }, 300)
+  // }, 300)
 
   const clearData = () => {
     setSelectedInfo(null)

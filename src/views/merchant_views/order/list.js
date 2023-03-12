@@ -9,17 +9,14 @@ import useJwt from '@src/auth/jwt/useJwt'
 import ListTable from "./partials/list-table"
 import OrdersList from "../../../components/merchant_views/order/OrdersList"
 import OrderView from "../../../components/merchant_views/order/OrderView"
-import { getApi, MARCHANT_ORDER_LIST } from "../../../constants/apiUrls"
+import { getApi, MARCHANT_ORDER_LIST, SEARCH_MARCHANT_PARCEL } from "../../../constants/apiUrls"
 
 function MerchantOrdersList() {
 
   const [activeOrder, setActiveOrder] = useState()
-
-  console.log("activeOrder", activeOrder)
-  const [activeParcel, setactiveParcel] = useState()
-
   const [orders, setOrders] = useState([])
   const [activeOrderData, setActiveOrderData] = useState(null)
+
 
   const fetchCreateOrderData = () => {
     return useJwt
@@ -52,7 +49,6 @@ function MerchantOrdersList() {
     setActiveOrderData(activeOrderFilter)
   }, [activeOrder])
 
- 
 
   return (
     <Fragment>
