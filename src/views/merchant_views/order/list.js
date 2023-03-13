@@ -37,7 +37,7 @@ function MerchantOrdersList() {
   useEffect(() => {
     console.log(activeOrder)
     if (orders && !activeOrder) {
-      console.log(orders[0])
+      // console.log(orders[0])
       orders[0] ? setActiveOrder(orders[0]?.id) : null
       
     }
@@ -91,7 +91,7 @@ function MerchantOrdersList() {
         <Col sm="4">
           <Card title="Bordered">
             <CardBody>
-              <OrdersList orders={orders } activeOrder={activeOrder}  setActiveOrder={setActiveOrder} />                          
+              <OrdersList setActiveOrderData={setActiveOrderData} orders={orders} setOrders={setOrders} activeOrder={activeOrder}  setActiveOrder={setActiveOrder} />                          
               {/* <ListTable /> */}
             </CardBody>
           </Card>

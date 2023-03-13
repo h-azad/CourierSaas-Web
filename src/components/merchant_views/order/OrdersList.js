@@ -21,11 +21,11 @@ import {
 } from "reactstrap"
 
 
-const OrdersList = ({ orders, activeOrder, setActiveOrder }) => {
+const OrdersList = ({ setActiveOrderData ,orders, setOrders, activeOrder, setActiveOrder }) => {
 
     const [searchOrders, setSearchOrders] = useState([])
     const [activeSearchItem, setActiveSearchItem] = useState(null)
-    console.log("searchOrders", searchOrders)
+    // console.log("searchOrders", searchOrders)
 
     const fetchSearchMerchantParcel = searchTerm => {
         return useJwt
@@ -43,9 +43,10 @@ const OrdersList = ({ orders, activeOrder, setActiveOrder }) => {
             fetchSearchMerchantParcel(searchTerm)
                 .then(data => {
                     if (data.length > 0) {
-                        console.log('res', data)
-                        setSearchOrders(data)
-                        setActiveSearchItem(data[0])
+                        // console.log('ffdddydres', data)
+                        setOrders(data)
+                        setActiveOrder(data[0].id)
+                        // setActiveOrderData(data)
                     } else {
                         console.log("No data")
                     }
