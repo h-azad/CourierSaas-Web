@@ -20,6 +20,8 @@ import { getApi, CREATE_ORDER_LIST, CREATE_ORDER_DELETE ,SEARCH_CREATE_ORDER } f
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
+import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
+
 
 const ListTable = () => {
   const [createOrder, setCreateOrder] = useState([])
@@ -169,7 +171,7 @@ const changeStatusAction = (e, info) => {
             <tr>
               <th>Marchant </th>
               <th>Recipient Name</th>
-              {/* <th>Phone Number</th> */}
+              <th>Parcel Id</th>
               {/* <th>Delivary Address</th> */}
               {/* <th>Amounr to be Collected</th> */}
               {/* <th>Product type</th> */}
@@ -196,12 +198,13 @@ const changeStatusAction = (e, info) => {
                   <td>
                     <span className="align-middle fw-bold">{info.recipient_name}</span>
                   </td>
+                  <td>
+                    <span className="align-middle fw-bold">{info.parcel_id}</span>
+                  </td>
                   {/* <td>
                     <span className="align-middle fw-bold">{info.phone_number}</span>
                   </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.delivary_address}</span>
-                  </td>
+                 
                   <td>
                     <span className="align-middle fw-bold">{info.amount_to_be_collected}</span>
                   </td>
@@ -253,7 +256,15 @@ const changeStatusAction = (e, info) => {
               ))}
           </tbody>
         </Table>
-        <StatusModal
+        
+        <ChangeStatusModal
+          statusModalState={statusModalState}
+          setStatusModalState={setStatusModalState}
+          orderInfo={selectedInfo}
+          fetchCreateOrderData={fetchCreateOrderData}
+        />
+
+        {/* <StatusModal
         statusModalState={statusModalState}
         setStatusModalState={setStatusModalState}
         updateStatusAction={updateStatusAction}
@@ -279,7 +290,7 @@ const changeStatusAction = (e, info) => {
             </Label>
           </div>
         </div>
-      </StatusModal>
+      </StatusModal> */}
       </div>
       
     </>

@@ -164,7 +164,7 @@ const ListTable = () => {
                 type="text"
                 class="form-control"
                 // value=""
-                onChange={handleSearch}
+                // onChange={handleSearch}
               />
               <Button.Ripple className="btn-icon ms-1" outline color="primary">
                 <Search size={16} />

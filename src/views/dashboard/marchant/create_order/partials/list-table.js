@@ -154,7 +154,7 @@ const changeStatusAction = (e, info) => {
                 name="user_name"
                 type="text"
                 class="form-control"
-                onChange={handleSearch}
+                // onChange={handleSearch}
               />
               <Button.Ripple className="btn-icon ms-1" outline color="primary">
                 <Search size={16} />
