@@ -3,9 +3,14 @@ import { Facebook, Instagram, Twitter } from 'react-feather'
 import { useEffect, useState } from 'react'
 import { formatDate } from '@utils'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, MARCHANT_ORDER_LIST, SEARCH_MARCHANT_PARCEL,} from "@src/constants/apiUrls"
+import { getApi, MARCHANT_ORDER_LIST, SEARCH_MARCHANT_PARCEL, } from "@src/constants/apiUrls"
 import { Link } from "react-router-dom"
 import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
+import { AudioOutlined } from '@ant-design/icons'
+import { Input, Space } from 'antd'
+import { Select } from 'antd'
+import { DatePicker } from 'antd'
+
 
 import {
     Table,
@@ -17,14 +22,17 @@ import {
     Button,
     CardText,
     Label,
-    Input,
+
 } from "reactstrap"
 
 
-const OrdersList = ({ setActiveOrderData ,orders, setOrders, activeOrder, setActiveOrder }) => {
-
+const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setActiveOrder }) => {
+    const { Search } = Input
     const [searchOrders, setSearchOrders] = useState([])
     const [activeSearchItem, setActiveSearchItem] = useState(null)
+    const { RangePicker } = DatePicker
+
+
     // console.log("searchOrders", searchOrders)
 
     const fetchSearchMerchantParcel = searchTerm => {
@@ -68,29 +76,119 @@ const OrdersList = ({ setActiveOrderData ,orders, setOrders, activeOrder, setAct
             }, time)
         }
     }
+    const onChange = (value) => {
+        console.log(`selected ${value}`)
+    }
+    const onSearch = (value) => console.log(value)
 
+    const changeDate = (value, dateString) => {
+        console.log('Selected Time: ', value)
+        console.log('Formatted Selected Time: ', dateString)
+    }
+    const onOk = (value) => {
+        console.log('onOk: ', value)
+    }
 
     return (
 
         <div>
             <div>
                 <p >
-                    <Link to={'/marchant-orders/create'}>
-                        <Button.Ripple color="primary">Create Order</Button.Ripple>
-                    </Link>
-                    <div className="d-flex align-items-center mt-2">
-                        
+                    <b><h4>Filter for search :</h4></b>
+                    <div className='d-flex align-item-center justify-content-end'>
+                        <Button.Ripple color="primary" >Apply</Button.Ripple>
+
+                    </div>
+
+
+                    <div className=" mt-2">
+                        <h6>Search Parcel </h6>
+                        <Search
+                            placeholder="input parcel id"
+                            onSearch={onSearch}
+                            style={{
+                                width: 280,
+                            }}
+                        />
+                    </div>
+                    <div className=" mt-2">
+                        <h6>Search Receipient </h6>
+                        <Select
+                            showSearch
+                            placeholder="Select a person"
+                            optionFilterProp="children"
+                            onChange={onChange}
+                            onSearch={onSearch}
+                            filterOption={(input, option) =>
+                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                            }
+                            style={{
+                                width: 280,
+                            }}
+                            options={[
+                                {
+                                    value: 'jack',
+                                    label: 'Jack',
+                                },
+                                {
+                                    value: 'lucy',
+                                    label: 'Lucy',
+                                },
+                                {
+                                    value: 'tom',
+                                    label: 'Tom',
+                                },
+                            ]}
+                        />
+
+                    </div>
+                    <div className=" mt-2">
+                        <h6>Phone Number </h6>
+                        <Search
+                            placeholder="input Phone Number"
+                            onSearch={onSearch}
+                            style={{
+                                width: 280,
+                            }}
+                        />
+                    </div>
+                    <div className=" mt-2">
+                        <h6>Created at</h6>
+
+                        <DatePicker showTime onChange={changeDate} onOk={onOk}
+                            style={{
+                                width: 280,
+                            }} />
+
+
+                    </div>
+                    <div className=" mt-2">
+                        <h6>Search Date </h6>
+                        <RangePicker
+                            showTime={{
+                                format: 'HH:mm',
+                            }}
+                            format="YYYY-MM-DD HH:mm"
+                            onChange={changeDate}
+                            onOk={onOk}
+                        />
+
+                    </div>
+                    {/* <div className="d-flex align-items-center mt-2">
+                        <p><b><h6>Created at </h6></b></p>
                         <input
-                            placeholder="Search Parcel "
+                            placeholder="Created at "
                             name="user_name"
                             type="text"
                             class="form-control "
                             onChange={handleSearch}
+                            
                         />
                         <Button.Ripple className="btn-icon ms-1" outline color="primary">
                             <Search size={16} />
                         </Button.Ripple>
-                    </div>
+                       
+                    </div> */}
                 </p>
             </div>
 

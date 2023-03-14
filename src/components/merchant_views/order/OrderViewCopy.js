@@ -4,12 +4,8 @@ import { Facebook, Instagram, Twitter } from 'react-feather'
 import { useEffect, useState } from 'react'
 import { formatDate } from '@utils'
 import useJwt from '@src/auth/jwt/useJwt'
-import { Link } from "react-router-dom"
 import { getApi, MARCHANT_ORDER_LIST } from "@src/constants/apiUrls"
 import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
-import { DownOutlined } from '@ant-design/icons'
-import { Dropdown, Select, Space, Typography } from 'antd'
-
 import {
     Badge,
     UncontrolledDropdown,
@@ -18,30 +14,11 @@ import {
     DropdownToggle,
     Button,
 
-
     Label,
     Input,
 } from "reactstrap"
 
-// const items = [
-//     {
-//         key: '1',
-//         label: 'Pending',
-//     },
-//     {
-//         key: '2',
-//         label: 'Accepted',
-//     },
-//     {
-//         key: '3',
-//         label: 'Delivered',
-//     },
-// ]
-const handleStatus = (value) => {
-    console.log(`selected ${value}`)
-}
-
-const OrderView = ({ activeOrderData }) => {
+const OrderView = ({ activeOrderData  }) => {
 
     console.log("activeOrderData", activeOrderData)
     return (
@@ -49,10 +26,7 @@ const OrderView = ({ activeOrderData }) => {
         <Card className='invoice-preview-card'>
             <div className='d-flex align-item-center justify-content-end'>
                 <UncontrolledDropdown>
-                    <Link to={'/marchant-orders/create'}>
-                        <Button.Ripple color="primary">Create Order</Button.Ripple>
-                    </Link>
-                    {/* <Button.Ripple color="primary">Actions
+                    <Button.Ripple color="primary">Actions
                     </Button.Ripple>
                     <DropdownToggle
                         className="icon-btn hide-arrow"
@@ -79,16 +53,16 @@ const OrderView = ({ activeOrderData }) => {
                             <Edit3 className="me-50" size={15} />{" "}
                             <span className="align-middle">Change Status</span>
                         </DropdownItem>
-                    </DropdownMenu> */}
+                    </DropdownMenu>
                 </UncontrolledDropdown>
             </div>
             <CardBody className='invoice-padding pb-0'>
                 {/* {orderView &&
                     orderView.map((activeOrderData, idx) => ( */}
 
-
+            
                 <div className='d-flex justify-content-between flex-md-row flex-column invoice-spacing mt-0'>
-                    {/* <div>
+                    <div>
                         <div className='logo-wrapper'>
                             <svg viewBox='0 0 139 95' version='1.1' height='24'>
                                 <defs>
@@ -145,8 +119,8 @@ const OrderView = ({ activeOrderData }) => {
                         <CardText className='mb-25'> Mirpur DOHS, Dhaka-1216, Bangladesh</CardText>
                         <CardText className='mb-25'>contact@updatetechltd.com</CardText>
                         <CardText className='mb-0'>+8809678800583</CardText>
-                    </div> */}
-                    {/* <div className='mt-md-0 mt-2'>
+                    </div>
+                    <div className='mt-md-0 mt-2'>
                         <h4 className='invoice-title'>
                             Invoice <span className='invoice-number'> #{activeOrderData?.parcel_id}</span>
                         </h4>
@@ -158,99 +132,55 @@ const OrderView = ({ activeOrderData }) => {
                             <p className='invoice-date-title'>Updated Date:</p>
                             <p className='invoice-date'>{formatDate(activeOrderData?.updated_at)}</p>
                         </div>
-                    </div> */}
+                    </div>
                 </div>
-
+               
             </CardBody>
 
             <hr className='invoice-spacing' />
 
             {/* Address and Contact */}
             <CardBody className='invoice-padding pt-0'>
+            
+                        <Row className='invoice-spacing'>
+                            <Col className='p-0' xl='8'>
+                                <h6 className='mb-2'>Invoice To:</h6>
+                                <h6 className='mb-25'>Recipient Name : {activeOrderData?.recipient_name}</h6>
+                                <h6 className='mb-25'>Phone Number : {activeOrderData?.phone_number}</h6>
+                                <h6 className='mb-25'>Delivary Address : {activeOrderData?.delivary_address}</h6>
+                                <h6 className='mb-25'>Delivary Area : {activeOrderData?.delivary_area_id}</h6>
+                                {/* <CardText className='mb-25'>Phone Number : {activeOrderData.phone_number}</CardText> */}
+                                {/* <CardText className='mb-25'>AAAA</CardText> */}
+                            </Col>
+                            <Col className='p-0 mt-xl-0 mt-2' xl='4'>
+                                <h6 className='mb-2'>Payment Details:</h6>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td className='pe-1'>Product type:</td>
+                                            <td>{activeOrderData?.product_type_id}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='pe-1'>Shipment type:</td>
+                                            <td>{activeOrderData?.shipment_type_id}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='pe-1'>Delivary Charge:</td>
+                                            <td>{activeOrderData?.delivary_charge}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='pe-1'>Total Amount :</td>
+                                            <td>
+                                                <span className='fw-bold'> {activeOrderData?.amount_to_be_collected}</span>
+                                            </td>
+                                        </tr>
 
-                <Row className='invoice-spacing'>
-                    <Col className='p-0' xl='8'>
-                        {/* <h6 className='mb-2'>Invoice To:</h6> */}
-                        <h6 className='mb-25'>Recipient Name : {activeOrderData?.recipient_name}</h6>
-                        <h6 className='mb-25'>Phone Number : {activeOrderData?.phone_number}</h6>
-                        <h6 className='mb-25'>Delivary Address : {activeOrderData?.delivary_address}</h6>
-                        {/* <h6 className='mb-25'>Product type: {activeOrderData?.delivary_area_id}</h6>
-                        <h6 className='mb-25'>Delivary Area : {activeOrderData?.product_type_id}</h6>
-                        <h6 className='mb-25'>Shipment type:{activeOrderData?.shipment_type_id}</h6> */}
-                        <h6 className='mb-25'>Delivary Charge: {activeOrderData?.delivary_charge}</h6>
-                        <h6 className='mb-25'>Total Amount : {activeOrderData?.amount_to_be_collected}</h6>
-                        {/* <CardText className='mb-25'>Phone Number : {activeOrderData.phone_number}</CardText> */}
-                        {/* <CardText className='mb-25'>AAAA</CardText> */}
-                    </Col>
-                    <Col xl='4' className='d-flex align-item-center justify-content-end'>
-                        <h6 className='mb-2'>
-                            <Select
-                                defaultValue="Pending"
-                                style={{
-                                    width: 120,
-                                }}
-                                onChange={handleStatus}
-                                options={[
-                                    {
-                                        value: 'pending',
-                                        label: 'pending',
-                                    },
-                                    {
-                                        value: 'accepted',
-                                        label: 'accepted',
-                                    },
-                                    {
-                                        value: 'pickedup',
-                                        label: 'pickedup',
-                                    },
-                                    {
-                                        value: 'shipped',
-                                        label: 'shipped',
-                                    },
-                                    {
-                                        value: 'delivered',
-                                        label: 'delivered',
-                                    },
-                                    {
-                                        value: 'hold',
-                                        label: 'hold',
-                                    },
-                                    {
-                                        value: 'returned',
-                                        label: 'returned',
-                                    },
-                                    {
-                                        value: 'cancelled',
-                                        label: 'cancelled',
-                                    },
-                                    {
-                                        value: 'completed',
-                                        label: 'completed',
-                                    },
 
-                                ]}
-                            />
-                            {/* <Dropdown
-                            menu={{
-                                items,
-                                selectable: true,
-                                defaultSelectedKeys: ['3'],
-                            }}
-                        >
-                                
-                            <Typography.Link>
-                                <Space>
-                                    Pending
-                                    <DownOutlined />
-                                </Space>
-                            </Typography.Link>
-                        </Dropdown>
-                         */}
-                        </h6>
-
-                    </Col>
-                </Row>
-
+                                    </tbody>
+                                </table>
+                            </Col>
+                        </Row>
+                 
             </CardBody>
 
             {/* /Address and Contact */}
@@ -335,10 +265,10 @@ const OrderView = ({ activeOrderData }) => {
             </CardBody> */}
             {/* /Total & Sales Person */}
 
-            {/* <hr className='invoice-spacing' /> */}
+            <hr className='invoice-spacing' />
 
             {/* Invoice Note */}
-            {/* <CardBody className='invoice-padding pt-0'>
+            <CardBody className='invoice-padding pt-0'>
                 <Row>
                     <Col sm='12'>
                         <span className='fw-bold'>Note: </span>
@@ -348,12 +278,9 @@ const OrderView = ({ activeOrderData }) => {
                         </span>
                     </Col>
                 </Row>
-            </CardBody> */}
+            </CardBody>
             {/* /Invoice Note */}
-
-
         </Card >
-
     )
 
 }
