@@ -174,6 +174,37 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
                         />
 
                     </div>
+                    {/* <div className=" mt-2">
+                        <h6>Select Rider </h6>
+                        <Select
+                            showSearch
+                            placeholder="Select Rider"
+                            optionFilterProp="children"
+                            onChange={onChange}
+                            onSearch={onSearch}
+                            filterOption={(input, option) =>
+                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                            }
+                            style={{
+                                width: 280,
+                            }}
+                            options={[
+                                {
+                                    value: 'jack',
+                                    label: 'Jack',
+                                },
+                                {
+                                    value: 'lucy',
+                                    label: 'Lucy',
+                                },
+                                {
+                                    value: 'tom',
+                                    label: 'Tom',
+                                },
+                            ]}
+                        />
+
+                    </div> */}
                     {/* <div className="d-flex align-items-center mt-2">
                         <p><b><h6>Created at </h6></b></p>
                         <input

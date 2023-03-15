@@ -9,7 +9,6 @@ import { getApi, MARCHANT_ORDER_LIST } from "@src/constants/apiUrls"
 import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
 import { DownOutlined } from '@ant-design/icons'
 import { Dropdown, Select, Space, Typography } from 'antd'
-
 import {
     Badge,
     UncontrolledDropdown,
@@ -17,74 +16,26 @@ import {
     DropdownItem,
     DropdownToggle,
     Button,
-
-
     Label,
     Input,
 } from "reactstrap"
 
-// const items = [
-//     {
-//         key: '1',
-//         label: 'Pending',
-//     },
-//     {
-//         key: '2',
-//         label: 'Accepted',
-//     },
-//     {
-//         key: '3',
-//         label: 'Delivered',
-//     },
-// ]
 const handleStatus = (value) => {
     console.log(`selected ${value}`)
 }
 
 const OrderView = ({ activeOrderData }) => {
-
     console.log("activeOrderData", activeOrderData)
     return (
 
+        
         <Card className='invoice-preview-card'>
             <div className='d-flex align-item-center justify-content-end'>
-                <UncontrolledDropdown>
-                    <Link to={'/marchant-orders/create'}>
-                        <Button.Ripple color="primary">Create Order</Button.Ripple>
-                    </Link>
-                    {/* <Button.Ripple color="primary">Actions
-                    </Button.Ripple>
-                    <DropdownToggle
-                        className="icon-btn hide-arrow"
-                        color="transparent"
-                        size="sm"
-                        caret
-                    >
-                    <MoreVertical size={15} />
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <DropdownItem href={"/marchant-orders/view/" + activeOrderData?.id} >
-                            <Eye className="me-50" size={15} />{" "}
-                            <span className="align-middle">View</span>
-                        </DropdownItem>
-                        <DropdownItem href={"/marchant_order/edit/" + activeOrderData?.id}>
-                            <Edit className="me-50" size={15} />{" "}
-                            <span className="align-middle">Edit</span>
-                        </DropdownItem>
-                        <DropdownItem href="/" onClick={e => deleteAction(e, activeOrderData?.id)}>
-                            <Trash className="me-50" size={15} />{" "}
-                            <span className="align-middle">Delete</span>
-                        </DropdownItem>
-                        <DropdownItem href="/" onClick={e => changeStatusAction(e, activeOrderData?.id)}>
-                            <Edit3 className="me-50" size={15} />{" "}
-                            <span className="align-middle">Change Status</span>
-                        </DropdownItem>
-                    </DropdownMenu> */}
-                </UncontrolledDropdown>
+                <Link to={'/marchant-orders/create'}>
+                    <Button.Ripple color="primary">Create Order</Button.Ripple>
+                </Link>
             </div>
             <CardBody className='invoice-padding pb-0'>
-                {/* {orderView &&
-                    orderView.map((activeOrderData, idx) => ( */}
 
 
                 <div className='d-flex justify-content-between flex-md-row flex-column invoice-spacing mt-0'>
@@ -162,10 +113,7 @@ const OrderView = ({ activeOrderData }) => {
                 </div>
 
             </CardBody>
-
             <hr className='invoice-spacing' />
-
-            {/* Address and Contact */}
             <CardBody className='invoice-padding pt-0'>
 
                 <Row className='invoice-spacing'>
@@ -174,15 +122,12 @@ const OrderView = ({ activeOrderData }) => {
                         <h6 className='mb-25'>Recipient Name : {activeOrderData?.recipient_name}</h6>
                         <h6 className='mb-25'>Phone Number : {activeOrderData?.phone_number}</h6>
                         <h6 className='mb-25'>Delivary Address : {activeOrderData?.delivary_address}</h6>
-                        {/* <h6 className='mb-25'>Product type: {activeOrderData?.delivary_area_id}</h6>
-                        <h6 className='mb-25'>Delivary Area : {activeOrderData?.product_type_id}</h6>
-                        <h6 className='mb-25'>Shipment type:{activeOrderData?.shipment_type_id}</h6> */}
                         <h6 className='mb-25'>Delivary Charge: {activeOrderData?.delivary_charge}</h6>
                         <h6 className='mb-25'>Total Amount : {activeOrderData?.amount_to_be_collected}</h6>
-                        {/* <CardText className='mb-25'>Phone Number : {activeOrderData.phone_number}</CardText> */}
+                        {/* <h6 className='mb-25'>Status : {activeOrderData.status}</h6> */}
                         {/* <CardText className='mb-25'>AAAA</CardText> */}
                     </Col>
-                    <Col xl='4' className='d-flex align-item-center justify-content-end'>
+                    <Col className='p-0' xl='2'>
                         <h6 className='mb-2'>
                             <Select
                                 defaultValue="Pending"
@@ -230,78 +175,44 @@ const OrderView = ({ activeOrderData }) => {
 
                                 ]}
                             />
-                            {/* <Dropdown
-                            menu={{
-                                items,
-                                selectable: true,
-                                defaultSelectedKeys: ['3'],
-                            }}
-                        >
-                                
-                            <Typography.Link>
-                                <Space>
-                                    Pending
-                                    <DownOutlined />
-                                </Space>
-                            </Typography.Link>
-                        </Dropdown>
-                         */}
                         </h6>
-
+                       
                     </Col>
+                    <Col xl='2' className='d-flex align-item-center justify-content-end'>
+                        <h6 className='mb-25'> 
+                        <UncontrolledDropdown>
+                            {/* <Button.Ripple color="primary">Actions
+                            </Button.Ripple> */}
+                            <DropdownToggle
+                                className="icon-btn hide-arrow"
+                                color="transparent"
+                                size="sm"
+                                caret
+                            >
+                                <MoreVertical size={15} />
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem href={"/marchant-orders/view/" + activeOrderData?.id} >
+                                    <Eye className="me-50" size={15} />{" "}
+                                    <span className="align-middle">View</span>
+                                </DropdownItem>
+                                <DropdownItem href={"/marchant_order/edit/" + activeOrderData?.id}>
+                                    <Edit className="me-50" size={15} />{" "}
+                                    <span className="align-middle">Edit</span>
+                                </DropdownItem>
+                                <DropdownItem href="/" onClick={e => deleteAction(e, activeOrderData?.id)}>
+                                    <Trash className="me-50" size={15} />{" "}
+                                    <span className="align-middle">Delete</span>
+                                </DropdownItem>
+                                <DropdownItem href="/" onClick={e => changeStatusAction(e, activeOrderData?.id)}>
+                                    <Edit3 className="me-50" size={15} />{" "}
+                                    <span className="align-middle">Change Status</span>
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </UncontrolledDropdown></h6>
+                    </Col>                  
                 </Row>
-
-            </CardBody>
-
-            {/* /Address and Contact */}
-
-            {/* Invoice Description */}
-            {/* <Table responsive>
-                <thead>
-                    <tr>
-                        <th className='py-1'>Task description</th>
-                        <th className='py-1'>Rate</th>
-                        <th className='py-1'>Hours</th>
-                        <th className='py-1'>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td className='py-1'>
-                            <p className='card-text fw-bold mb-25'>Native App Development</p>
-                            <p className='card-text text-nowrap'>
-                                Developed a full stack native app using React Native, Bootstrap & Python
-                            </p>
-                        </td>
-                        <td className='py-1'>
-                            <span className='fw-bold'>$60.00</span>
-                        </td>
-                        <td className='py-1'>
-                            <span className='fw-bold'>30</span>
-                        </td>
-                        <td className='py-1'>
-                            <span className='fw-bold'>$1,800.00</span>
-                        </td>
-                    </tr>
-                    <tr className='border-bottom'>
-                        <td className='py-1'>
-                            <p className='card-text fw-bold mb-25'>Ui Kit Design</p>
-                            <p className='card-text text-nowrap'>Designed a UI kit for native app using Sketch, Figma & Adobe XD</p>
-                        </td>
-                        <td className='py-1'>
-                            <span className='fw-bold'>$60.00</span>
-                        </td>
-                        <td className='py-1'>
-                            <span className='fw-bold'>20</span>
-                        </td>
-                        <td className='py-1'>
-                            <span className='fw-bold'>$1200.00</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </Table> */}
-            {/* /Invoice Description */}
-
+            </CardBody>       
             {/* Total & Sales Person */}
             {/* <CardBody className='invoice-padding pb-0'>
                 <Row className='invoice-sales-total-wrapper'>
@@ -333,10 +244,7 @@ const OrderView = ({ activeOrderData }) => {
                     </Col>
                 </Row>
             </CardBody> */}
-            {/* /Total & Sales Person */}
-
             {/* <hr className='invoice-spacing' /> */}
-
             {/* Invoice Note */}
             {/* <CardBody className='invoice-padding pt-0'>
                 <Row>
@@ -349,9 +257,6 @@ const OrderView = ({ activeOrderData }) => {
                     </Col>
                 </Row>
             </CardBody> */}
-            {/* /Invoice Note */}
-
-
         </Card >
 
     )
