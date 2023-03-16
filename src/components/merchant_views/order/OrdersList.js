@@ -9,7 +9,7 @@ import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
 import { AudioOutlined } from '@ant-design/icons'
 import { Input, Space } from 'antd'
 import { Select } from 'antd'
-import { DatePicker } from 'antd'
+import { DatePicker, Button } from 'antd'
 
 
 import {
@@ -19,7 +19,7 @@ import {
     DropdownMenu,
     DropdownItem,
     DropdownToggle,
-    Button,
+
     CardText,
     Label,
 
@@ -96,7 +96,7 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
                 <p >
                     <b><h4>Filter for search :</h4></b>
                     <div className='d-flex align-item-center justify-content-end'>
-                        <Button.Ripple color="primary" >Apply</Button.Ripple>
+                        <Button type="primary"  color="primary" >Apply</Button>
 
                     </div>
 
