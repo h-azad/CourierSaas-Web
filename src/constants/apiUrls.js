@@ -24,7 +24,7 @@ export const MARCHANT_ORDERS_INFO = '/marchant_app/orders/'
 export const MARCHANT_ORDER_LIST = '/marchant_app/orders/'
 export const MARCHANT_EDIT_ORDER = '/marchant_app/orders/'
 export const MARCHANT_ORDER_STATUS_UPDATE = '/marchant_app/orders/'
-export const SEARCH_MARCHANT_PARCEL = '/marchant_app/search-marchant-percel/'
+export const MARCHANT_SEARCH_FILTER = '/marchant_app/search-filter/'
 
 
 
