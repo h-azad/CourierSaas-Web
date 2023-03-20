@@ -53,22 +53,6 @@ const MerchantAddOrder = () => {
 
   },[])
 
-  // const fetchMarchantData = () => {
-  //   return useJwt
-  //     .axiosGet(getApi(MARCHANT_LIST))
-  //     .then((res) => {
-  //       console.log(res)
-  //       let marchantData = []
-
-  //       res.data.data.map(data => {
-  //         marchantData.push({value: data.id, label: data.full_name})
-  //       })
-
-  //       setSelectboxMarchant(marchantData)
-  //       return res.data.data
-  //     })
-  //     .catch(err => console.log(err))
-  // }
 
   const fetchShipmentTypeData = () => {
     return useJwt
@@ -161,10 +145,6 @@ const MerchantAddOrder = () => {
 
     let isFormValid = true
 
-    // if (!data.marchant && data.marchant.value) {
-    //   setError('marchant', { type: 'required', message: 'Marchant is required' })
-    //   isFormValid = false
-    // }
     if(!data.recipient_name) {
       setError('recipient_name', { type: 'required', message: 'Recipient Name is required' })
       isFormValid = false
@@ -244,7 +224,7 @@ const MerchantAddOrder = () => {
         .then((res) => {
           console.log("res", res.data)
           SwalAlert("Parcel Added Successfully")
-          navigate("/create_order")
+          navigate("/marchant-orders")
         })
         .catch(err => console.log(err))
 

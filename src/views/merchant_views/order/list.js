@@ -100,7 +100,7 @@ function MerchantOrdersList() {
           <Card title="Bordered">
             <CardBody>                          
               {/* <ListTable /> */}
-              <OrderView activeOrderData={activeOrderData} />
+              <OrderView activeOrderData={activeOrderData} orders={orders}  />
             </CardBody>
           </Card>
         </Col>

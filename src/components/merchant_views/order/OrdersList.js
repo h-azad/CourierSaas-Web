@@ -93,29 +93,14 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
             <div>
                 <div className='invoice-title-card'>
                     <h3>Filter : </h3>
-                    <Link to={''}>
+                    {/* <Link to={''}>
                         <Button type="primary" color="primary"> Apply </Button>
-                    </Link>
+                    </Link> */}
                 </div>
-                {/* <div className="col-lg-5">
-                    <div className="d-flex align-items-center ">
-                        <input
-                            placeholder="Search Agent"
-                            name="user_name"
-                            type="text"
-                            class="form-control"
-                            // value=""
-                            onChange={handleSearch}
-                        />
-                        <Button.Ripple className="btn-icon ms-1" outline color="primary">
-                            <Search size={16} />
-                        </Button.Ripple>
-                    </div>
-                </div> */}
                 <div className=" mt-2">
                     <h6>Search Parcel </h6>
                     <Search
-                        placeholder="input parcel id"
+                        placeholder="ODR23031301d6"
                         onChange={handleSearch}
                         style={{
                             width: 280,
@@ -131,41 +116,21 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
                             width: 280,
                         }}
                     />
-                </div>
-                {/* <div className=" mt-2">
-                    <h6>Search Receipient </h6>
-                    <Select
-                        showSearch
-                        placeholder="Select a person"
-                        optionFilterProp="children"
-                        onChange={onChange}
-                        onSearch={onSearch}
-                        filterOption={(input, option) =>
-                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                        }
-                        style={{
-                            width: 280,
-                        }}
-                        options={[
-                            {
-                                value: 'jack',
-                                label: 'Jack',
-                            },
-                            {
-                                value: 'lucy',
-                                label: 'Lucy',
-                            },
-                            {
-                                value: 'tom',
-                                label: 'Tom',
-                            },
-                        ]}
-                    />
-                </div> */}
+                </div>     
                 <div className=" mt-2">
                     <h6>Phone Number </h6>
                     <Search
-                        placeholder="input Phone Number"
+                        placeholder="01793912259"
+                        onChange={handleSearch}
+                        style={{
+                            width: 280,
+                        }}
+                    />
+                </div>
+                <div className=" mt-2">
+                    <h6>Status Search </h6>
+                    <Search
+                        placeholder="pending"
                         onChange={handleSearch}
                         style={{
                             width: 280,
@@ -173,13 +138,20 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
                     />
                 </div>
 
-                {/* <div className=" mt-2">
-                    <h6>Created at</h6>
-                    <DatePicker showTime onChange={changeDate} onOk={onOk}
+                <div className=" mt-2">
+                    <h6>Search Order Date</h6>
+                    {/* <DatePicker showTime onChange={changeDate} onOk={onOk}
                         style={{
                             width: 280,
-                        }} />
-                </div> */}
+                        }} /> */}
+                    <Search
+                        placeholder="2023-03-13"
+                        onChange={handleSearch}
+                        style={{
+                            width: 280,
+                        }}
+                    />
+                </div>
 
                 {/* <div className=" mt-2">
                     <h6>Search Date </h6>
@@ -192,58 +164,9 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
                         onOk={onOk}
                     />
                 </div> */}
-                {/* <div className=" mt-2">
-                    <h6>Select Status </h6>
-                    <Select
-                        defaultValue="Pending"
-                        style={{
-                            width: 120,
-
-                        }}
-                        onChange={handleStatus}
-                        options={[
-                            {
-                                value: 'pending',
-                                label: 'Pending',
-                            },
-                            {
-                                value: 'accepted',
-                                label: 'Accepted',
-                            },
-                            {
-                                value: 'pickedup',
-                                label: 'Pickedup',
-                            },
-                            {
-                                value: 'shipped',
-                                label: 'Shipped',
-                            },
-                            {
-                                value: 'delivered',
-                                label: 'Delivered',
-                            },
-                            {
-                                value: 'hold',
-                                label: 'Hold',
-                            },
-                            {
-                                value: 'returned',
-                                label: 'Returned',
-                            },
-                            {
-                                value: 'cancelled',
-                                label: 'Cancelled',
-                            },
-                            {
-                                value: 'completed',
-                                label: 'Completed',
-                            },
-
-                        ]}
-                    />
-                </div> */}
+                
             </div>
-            <ListGroup>
+            {/* <ListGroup>
                 {orders &&
                     orders.map((info, idx) => (
                         <ListGroupItem active={info.id == activeOrder}>
@@ -261,7 +184,7 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
                         </ListGroupItem>
                     ))
                 }
-            </ListGroup>
+            </ListGroup> */}
         </div>
     )
 }

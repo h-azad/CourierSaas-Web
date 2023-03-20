@@ -85,6 +85,7 @@ const ListTable = () => {
       })
       .catch(err => console.log(err))
   }
+  
   useEffect(() => {
     if (!statusModalState) {
       clearData()
