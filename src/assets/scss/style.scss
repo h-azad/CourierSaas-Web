@@ -1,16 +1,6 @@
-/*================================================================================
-	Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-	Version: 2.0
-	Author: PIXINVENT
-	Author URL: http://www.themeforest.net/user/pixinvent
-================================================================================
 
-NOTE:
-------
-PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
-WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
 
-	.invoice-title-card{
+.invoice-title-card{
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -20,6 +10,10 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
 .invoice-preview-card{
 	border: 1px solid rgb(227, 222, 222);
 	margin-bottom: 1rem !important;
+}
+.highlight-status {
+  color: #FF5733; /* set the text color to orange */
+  font-weight: bold; /* make the text bold */
 }
 
 .button-wrapper{

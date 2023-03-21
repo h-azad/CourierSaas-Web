@@ -8,7 +8,7 @@ import { useState } from 'react'
 import ToastContent from '../../ToastContent'
 import toast from 'react-hot-toast'
 
-function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, fetchCreateOrderData }) {
+function ChangeStatusModalMarchant({ statusModalState, setStatusModalState, orderInfo, fetchCreateOrderData }) {
     const [selectedOption, setSelectedOption] = useState()
 
     let statusOptions = [
@@ -35,7 +35,7 @@ function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, f
             .then((res) => {
                 toast.success('Order Status Updated Successfully!')
                 setStatusModalState(false)
-
+                fetchCreateOrderData()
             })
             .catch(err => {
                 toast.success('Order Status Updated Failed!')
@@ -69,4 +69,4 @@ function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, f
     )
 }
 
-export default ChangeStatusModal
+export default ChangeStatusModalMarchant

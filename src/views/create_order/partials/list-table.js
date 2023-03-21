@@ -52,15 +52,6 @@ const ListTable = () => {
     console.log("selectedInfo", selectedInfo)
     console.log("selectedStatus", selectedStatus)
   return false
-  // useJwt
-  // .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
-  // .then((res) => {
-  //   console.log("res", res.data)
-  //   setStatusModalState(false)
-  //   // SwalAlert("Deleted Successfully")
-  
-  // })
-  // .finally(() => fetchShipmentData())
   
 }
 
@@ -86,6 +77,7 @@ const changeStatusAction = (e, info) => {
       })
       .catch(err => console.log(err))
   }
+  
   useEffect(() => {
     if(!statusModalState) {
       clearData()
@@ -172,12 +164,7 @@ const changeStatusAction = (e, info) => {
               <th>Marchant </th>
               <th>Recipient Name</th>
               <th>Parcel Id</th>
-              {/* <th>Delivary Address</th> */}
-              {/* <th>Amounr to be Collected</th> */}
-              {/* <th>Product type</th> */}
-              {/* <th>Dimention</th> */}
               <th>Delivary Area</th>
-              {/* <th>Delivary Charge</th> */}
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -189,34 +176,15 @@ const changeStatusAction = (e, info) => {
                   <td>
                     <span className="align-middle fw-bold">{info.marchant.full_name}</span>
                   </td>
-                  {/* <td>
-                    <span className="align-middle fw-bold">{info.product.product_type}</span>
-                  </td> */}
-                  {/* <td>
-                    <span className="align-middle fw-bold">{info.product_type}</span>
-                  </td> */}
                   <td>
                     <span className="align-middle fw-bold">{info.recipient_name}</span>
                   </td>
                   <td>
                     <span className="align-middle fw-bold">{info.parcel_id}</span>
                   </td>
-                  {/* <td>
-                    <span className="align-middle fw-bold">{info.phone_number}</span>
-                  </td>
-                 
-                  <td>
-                    <span className="align-middle fw-bold">{info.amount_to_be_collected}</span>
-                  </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.dimention}</span>
-                  </td> */}
                   <td>
                     <span className="align-middle fw-bold">{info.delivary_area.area_name}</span>
                   </td>
-                  {/* <td>
-                    <span className="align-middle fw-bold">{info.delivary_charge}</span>
-                  </td> */}
                   <td>
                     <Badge pill color="light-primary" className="me-1">
                       {info.status}
