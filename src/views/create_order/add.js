@@ -247,6 +247,14 @@ const AddCreateOrder = () => {
       setError('delivary_charge', { type: 'required', message: 'Delivary Charge is required' })
       isFormValid = false
     }
+    // if (!(data.pickup_rider && data.pickup_rider.value)) {
+    //   setError('pickup_rider', { type: 'required', message: 'Delivary Area is required' })
+    //   isFormValid = false
+    // }
+    if (!data.warehouse_status) {
+      setError('warehouse_status', { type: 'required', message: 'Warehouse Status is required' })
+      isFormValid = false
+    }
    
     if(!isFormValid) {
       return false
@@ -257,8 +265,8 @@ const AddCreateOrder = () => {
       && data.delivary_address !== null &&  data.amount_to_be_collected !== null 
       && data.product_type.value !== null && data.delivary_area.value !== null
       && data.delivary_charge !== null && data.pricing_policy.value !== null
-      && data.shipment_type.value !== null
-      ) 
+      && data.shipment_type.value !== null && data.warehouse_status.value !== null 
+      )  
     {
 
       let formData = {
@@ -274,6 +282,7 @@ const AddCreateOrder = () => {
 
         // dimention: data.dimention.value,
         delivary_charge: data.delivary_charge,
+        warehouse_status: data.warehouse_status,
         status: 'accepted'
       }
 
@@ -421,20 +430,6 @@ const AddCreateOrder = () => {
                 {errors && errors.pricing_policy && <span className="invalid-feedback">{errors.pricing_policy.message}</span>}
 
               </div>
-                {/* <div className='mb-1'>
-                  <Label className='form-label' for='dimention'>
-                  Dimention
-                  </Label>
-                  <Controller
-                    id='dimention'
-                    name='dimention'
-                    control={control}
-                    render={({ field }) => 
-                    <Input 
-                    placeholder='' invalid={errors.dimention && true} {...field} />}
-                  />
-                  {errors && errors.dimention && <span>{errors.dimention.message}</span>}
-                </div> */}
             </div>
           </div>
           <div className='mb-1'>
@@ -456,21 +451,6 @@ const AddCreateOrder = () => {
             {errors && errors.shipment_type && <span className="invalid-feedback">{errors.shipment_type.message}</span>}
 
           </div>
-          {/* <div className='mb-1'>
-                  <Label className='form-label' for='dimention'>
-                  Dimention
-                  </Label>
-                  <Controller
-                    id='dimention'
-                    name='dimention'
-                    control={control}
-                    render={({ field }) => 
-                    <Input 
-                    placeholder='' invalid={errors.dimention && true} {...field} />}
-                  />
-                  {errors && errors.dimention && <span>{errors.dimention.message}</span>}
-                </div> */}
-        
           <div class="row">
             <div class="col-lg-6">
               <div className='mb-1'>
@@ -505,6 +485,43 @@ const AddCreateOrder = () => {
                   render={({ field }) => <Input placeholder='' invalid={errors.delivary_charge && true} {...field} />}
                 />
                 {errors && errors.delivary_charge && <span>{errors.delivary_charge.message}</span>}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            {/* <div class="col-lg-6">
+              <div className='mb-1'>
+                <Label className='form-label' for='pickup_rider'>
+                 Pickup Rider
+                </Label>
+                <Controller
+                  id='pickup_rider'
+                  name='pickup_rider'
+                  control={control}
+                  render={({ field }) => <Select 
+                  isClearable
+                    className={classnames('react-select', { 'is-invalid': errors.pickup_rider && true })} 
+                  classNamePrefix='select'
+                  options={selectboxArea} 
+                  {...field} 
+                />}
+                />
+                {errors && errors.pickup_rider && <span className="invalid-feedback">{errors.pickup_rider.message}</span>}
+              </div>
+            </div> */}
+            <div class="col-lg-6">
+              <div className='mb-1'>
+                <Label className='form-label' for='delivary_charge'>
+                 Warehouse Status
+                </Label>
+                <Controller
+                  defaultValue='False'
+                  control={control}
+                  id='warehouse_status'
+                  name='warehouse_status'
+                  render={({ field }) => <Input placeholder='' invalid={errors.warehouse_status && true} {...field} />}
+                />
+                {errors && errors.warehouse_status && <span>{errors.warehouse_status.message}</span>}
               </div>
             </div>
           </div>

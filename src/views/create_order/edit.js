@@ -13,12 +13,13 @@ import Select from "react-select"
 import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, CREATE_ORDER_EDIT, MARCHANT_LIST, PRODUCT_TYPE_LIST, AREAS_LIST, CREATE_ORDER_DETAILS, PRICING_POLICY_LIST, SHIPMENT_TYPE_LIST, PRICING_POLICY_BY_PRODUCT } from '@src/constants/apiUrls'
+import { getApi, CREATE_ORDER_EDIT, MARCHANT_LIST, RIDER_LIST, PRODUCT_TYPE_LIST, AREAS_LIST, CREATE_ORDER_DETAILS, PRICING_POLICY_LIST, SHIPMENT_TYPE_LIST, PRICING_POLICY_BY_PRODUCT } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
 
 const EditCreateOrder = () => {
   const [selectboxMarchant, setSelectboxMarchant] = useState([])
+  const [selectboxRider, setSelectboxRider] = useState([])
   const [selectboxProduct, setSelectboxProduct] = useState([])
   const [selectPricingPolicybyProduct, setPricingPolicybyProduct] = useState([])
   const [selectboxPricingPolicy, setSelectboxPricingPolicy] = useState([])
@@ -65,6 +66,7 @@ const EditCreateOrder = () => {
 
   useEffect(() => {
     fetchMarchantData()
+    fetchRiderData()
     fetchProductData()
     fetchAreaData()
     fetchPricingPolicyData()
@@ -84,6 +86,22 @@ const EditCreateOrder = () => {
         })
 
         setSelectboxMarchant(marchantData)
+        return res.data.full_name
+      })
+      .catch(err => console.log(err))
+  }
+  const fetchRiderData = () => {
+    return useJwt
+      .axiosGet(getApi(RIDER_LIST))
+      .then((res) => {
+        console.log(res)
+        let riderData = []
+
+        res.data.data.map(data => {
+          riderData.push({ value: data.id, label: data.full_name })
+        })
+
+        setSelectboxRider(riderData)
         return res.data.full_name
       })
       .catch(err => console.log(err))
@@ -222,6 +240,14 @@ const EditCreateOrder = () => {
       setError('delivary_charge', { type: 'required', message: 'Delivary Charge is required' })
       isFormValid = false
     }
+    if (!data.pickup_rider && data.pickup_rider.value) {
+      setError('pickup_rider', { type: 'required', message: ' Pickup Rider is required' })
+      isFormValid = false
+    }
+    if (!data.warehouse_status) {
+      setError('warehouse_status', { type: 'required', message: 'Warehouse Status is required' })
+      isFormValid = false
+    }
 
     if (!isFormValid) {
       return false
@@ -232,7 +258,8 @@ const EditCreateOrder = () => {
       && data.delivary_address !== null && data.amount_to_be_collected !== null
       && data.product_type.value !== null && data.delivary_area.value !== null
       && data.delivary_charge !== null && data.pricing_policy.value !== null
-      && data.shipment_type.value !== null
+      && data.shipment_type.value !== null && data.pickup_rider.value !== null
+      && data.warehouse_status !== null
     ) {
 
       let formData = {
@@ -246,6 +273,8 @@ const EditCreateOrder = () => {
         pricing_policy: data.pricing_policy.value,
         shipment_type: data.shipment_type.value,
         delivary_charge: data.delivary_charge,
+        pickup_rider: data.pickup_rider.value,
+        warehouse_status: data.warehouse_status,
         status: 'accepted'
       }
 
@@ -458,6 +487,65 @@ const EditCreateOrder = () => {
                   render={({ field }) => <Input invalid={errors.delivary_charge && true} {...field} />}
                 />
                 {errors && errors.delivary_charge && <span>{errors.delivary_charge.message}</span>}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+                <div className='mb-1'>
+                  <Label className='form-label' for='pickup_rider'>
+                   Pickup Rider
+                  </Label>
+                  <Controller
+                    defaultValue={{ value: createOrderInfo.pickup_rider.id, label: createOrderInfo.pickup_rider.full_name }}
+                    id='pickup_rider'
+                    name='pickup_rider'
+                    control={control}
+
+                    render={({ field }) => <Select
+                      isClearable
+                      className={classnames('react-select', { 'is-invalid': errors.pickup_rider && errors.pickup_rider.full_name && true })}
+                      classNamePrefix='select'
+                      options={selectboxRider}
+                      {...field}
+                    />}
+
+                  />
+                  {errors && errors.rider && <span className="invalid-feedback">{errors.rider.message}</span>}
+                </div>
+              {/* <div className='mb-1'>
+                <Label className='form-label' for='delivary_area'>
+                 Pickup Riders
+                </Label>
+                <Controller
+                    // defaultValue={{ value: createOrderInfo.pickup_rider.id, label: createOrderInfo.pickup_rider.full_name }}
+                    id='pickup_rider'
+                    name='pickup_rider'
+                  control={control}
+                  render={({ field }) => <Select
+                    isClearable
+                    className={classnames('react-select', { 'is-invalid': errors.pickup_rider && true })}
+                    classNamePrefix='select'
+                    options={selectboxArea}
+                    {...field}
+                  />}
+                />
+                  {errors && errors.pickup_rider && <span className="invalid-feedback">{errors.pickup_rider.message}</span>}
+              </div> */}
+            </div>
+            <div class="col-lg-6">
+              <div className='mb-1'>
+                  <Label className='form-label' for='warehouse_status'>
+                    Warehouse Status
+                </Label>
+                <Controller
+                    defaultValue={createOrderInfo.warehouse_status}
+                  control={control}
+                    id='warehouse_status'
+                    name='warehouse_status'
+                    render={({ field }) => <Input invalid={errors.warehouse_status && true} {...field} />}
+                />
+                  {errors && errors.warehouse_status && <span>{errors.warehouse_status.message}</span>}
               </div>
             </div>
           </div>

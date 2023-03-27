@@ -162,9 +162,11 @@ const changeStatusAction = (e, info) => {
           <thead>
             <tr>
               <th>Marchant </th>
-              <th>Recipient Name</th>
+              {/* <th>Recipient Name</th> */}
               <th>Parcel Id</th>
               <th>Delivary Area</th>
+              <th>Pickup Rider</th>
+              <th>Warehouse Status</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -176,14 +178,20 @@ const changeStatusAction = (e, info) => {
                   <td>
                     <span className="align-middle fw-bold">{info.marchant.full_name}</span>
                   </td>
-                  <td>
+                  {/* <td>
                     <span className="align-middle fw-bold">{info.recipient_name}</span>
-                  </td>
+                  </td> */}
                   <td>
                     <span className="align-middle fw-bold">{info.parcel_id}</span>
                   </td>
                   <td>
                     <span className="align-middle fw-bold">{info.delivary_area.area_name}</span>
+                  </td>
+                  <td>
+                    <span className="align-middle fw-bold">{info.pickup_rider?.full_name}</span>
+                  </td>
+                  <td>
+                    <span className="align-middle fw-bold">{info.warehouse_status==true?'Yes':'No'}</span>
                   </td>
                   <td>
                     <Badge pill color="light-primary" className="me-1">
