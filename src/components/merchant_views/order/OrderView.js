@@ -124,13 +124,13 @@ const OrderView = ({ activeOrderData, orders, fetchCreateOrderData }) => {
                                 <h6 className='mb-25'>Phone Number : {info?.phone_number}</h6>
                                 <h6 className='mb-25'>Delivary Address : {info?.delivary_address}</h6>
                                 <h6 className='mb-25 '>Status : <span className='highlight-status'>{info.status}</span></h6>
-                                <h6 className='mb-25'>Pickup Status :{info.pickup_status}</h6>
+                                <h6 className='mb-25'>Pickup Status :{info.pickup_status0}</h6>
                                 {/* <h6 className='mb-25'>Pickup Status :<Typography.Text strong>{info.pickup_status}</Typography.Text></h6> */}
 
                             </Col>
                             <Col xl='5'>
-                                <h6 className='mb-25'>Product type Id: {info.product_type_id}</h6>
-                                <h6 className='mb-25'>Shipment type Id: {info.shipment_type_id}</h6>
+                                <h6 className='mb-25'>Product type : {info.product_type.product_type}</h6>
+                                <h6 className='mb-25'>Shipment type : {info.shipment_type.shipment_type}</h6>
                                 <h6 className='mb-25'>Delivary Charge: {info?.delivary_charge}</h6>
                                 <h6 className='mb-25'>Total Amount : {info?.amount_to_be_collected}</h6>
                             </Col>

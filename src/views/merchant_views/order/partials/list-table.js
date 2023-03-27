@@ -189,7 +189,7 @@ const ListTable = () => {
                     <span className="align-middle fw-bold">{info.recipient_name}</span>
                   </td>
                   <td>
-                    <span className="align-middle fw-bold">{info.delivary_address}</span>
+                    <span className="align-middle fw-bold">{info.delivary_address.area_name}</span>
                   </td>
                   <td>
                     <span className="align-middle fw-bold">{info.pickup_status == true ? 'Picked' : 'Not Picked'}</span>
