@@ -16,6 +16,7 @@ import { isObjEmpty } from "@utils"
 import AuthRoutes from "./AuthRoutes"
 import DashboardRoutes from "./Dashboards"
 import MarchantRoutes from "./MarchantRoutes"
+import RiderRoutes from "./RiderRoutes"
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -34,7 +35,8 @@ const DefaultRoute = "/home"
 const Routes = [
   ...AuthRoutes,
   ...DashboardRoutes,
-  ...MarchantRoutes
+  ...MarchantRoutes,
+  ...RiderRoutes
 ]
 
 const getRouteMeta = (route) => {

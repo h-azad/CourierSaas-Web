@@ -146,6 +146,32 @@ const riderMenu = [
     resource: 'RIDER',
     navLink: "/rider-dashboard"
   },
+  {
+    header: 'Assigned Pickup',
+    action: 'rider-pages',
+    resource: 'RIDER',
+  },
+  {
+    id: "pickup",
+    title: "Pickup",
+    icon: <CreditCard size={20} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/rider-orders"
+  },
+  {
+    header: 'Assigned Delivary',
+    action: 'rider-pages',
+    resource: 'RIDER',
+  },
+  {
+    id: "delivary",
+    title: "Delivary",
+    icon: <ShoppingBag size={20} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/rider-orders/delivary"
+  },
   
 ]
 const agentMenu = [

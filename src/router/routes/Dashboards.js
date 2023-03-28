@@ -12,6 +12,8 @@ import AddRider from "../../views/rider/add"
 import EditRider from "../../views/rider/edit"
 import RiderView from "../../views/rider/view"
 import RiderLogin from '../../views/rider/riderlogin/riderLogin'
+import PickupView from '../../components/rider_view/task/TaskVIew'
+import DelivaryView from '../../components/rider_view/task/DelivaryView'
 
 
 import AgentList from "../../views/agent/list"
@@ -246,6 +248,14 @@ const RiderRoutes = [
   {
     path: "/rider-dashboard",
     element: <AnalyticsDashboard />
+  },
+  {
+    path: "/rider-orders",
+    element: <PickupView />
+  },
+  {
+    path: "/rider-orders/delivary",
+    element: <DelivaryView />
   },
 
 ]

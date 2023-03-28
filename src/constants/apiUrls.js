@@ -2,15 +2,6 @@ import {apiBaseUrl} from '../configs/apiConfig'
 
 export const BASE_API = apiBaseUrl
 
-// Merchant API's 
-// export const MARCHANT_ADD = '/api/user/marchant/'
-// export const MARCHANT_EDIT = '/api/user/marchant/'
-// export const MARCHANT_LIST = '/api/user/marchant/'
-// export const MARCHANT_DELETE = '/api/user/marchant/'
-// export const MARCHANT_DETAILS = '/api/user/marchant/'
-// export const MARCHANT_SEARCH = '/search-marchant/'
-// export const MARCHANT_UPDATE_STATUS = '/api/user/marchant/'
-
 
 // Manage Merchant API's 
 export const MARCHANT_ADD = '/manage-user/create-merchant'
@@ -28,22 +19,14 @@ export const MARCHANT_ORDER_STATUS_UPDATE = '/marchant_app/orders/'
 export const MARCHANT_SEARCH_FILTER = '/marchant_app/search-filter/'
 
 
-
-// Riders API's 
-// export const RIDER_ADD = '/api/user/rider/'
-// export const RIDER_EDIT = '/api/user/rider/'
-// export const RIDER_LIST = '/api/user/rider/'
-// export const RIDER_DELETE = '/api/user/rider/'
-// export const RIDER_DETAILS = '/api/user/rider/'
-// export const RIDER_SEARCH = '/search-rider/'
-
-
+//Rider API's
 export const RIDER_ADD = '/manage-user/create-rider'
 export const RIDER_EDIT = '/manage-user/rider/'
 export const RIDER_LIST = '/manage-user/rider'
 export const RIDER_DELETE = '/manage-user/rider/'
 export const RIDER_DETAILS = '/manage-user/rider/'
 export const RIDER_SEARCH = '/search-rider/'
+// export const MARCHANT_ORDER_LIST = '/marchant_app/orders/'
 
 // Agents API's 
 // export const AGENT_ADD = '/api/user/agent/'
@@ -132,8 +115,6 @@ export const SEARCH_PAYMENT_METHOD = '/search_payment_method/'
 
 //Create Organization
 export const CREATE_ORGANIZATION = "/api/user/create-tanent"
-
-
 
 export const getApi = (api) => {
     return BASE_API + api

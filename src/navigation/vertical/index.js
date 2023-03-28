@@ -161,7 +161,7 @@ const marchantMenu = [
   {
     id: "my_order",
     title: "My Orders",
-    icon: <CreditCard size={20} />,
+    icon: <ShoppingCart size={20} />,
     action: 'marchant-pages',
     resource: 'MARCHANT',
     navLink: "/marchant-orders"
@@ -178,6 +178,33 @@ const riderMenu = [
     resource: 'RIDER',
     navLink: "/rider-dashboard"
   },
+  {
+    header: 'Assigned Pickup',
+    action: 'rider-pages',
+    resource: 'RIDER',
+  },
+  {
+    id: "pickup",
+    title: "Pickup",
+    icon: <CreditCard size={20} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/rider-orders"
+  },
+  {
+    header: 'Assigned Delivary',
+    action: 'rider-pages',
+    resource: 'RIDER',
+  },
+  {
+    id: "delivary",
+    title: "Delivary",
+    icon: <ShoppingBag size={20} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/rider-orders/delivary"
+  },
+
 
 ]
 
