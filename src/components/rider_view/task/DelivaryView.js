@@ -24,46 +24,46 @@ import {
 
 const DelivaryView = ({ }) => {
 
-    const [orders, setOrders] = useState([])
+    // const [orders, setOrders] = useState([])
 
-    console.log("orders", orders)
-    const [statusModalState, setStatusModalState] = useState(false)
-    const [selectedStatus, setSelectedStatus] = useState(null)
-    const [selectedInfo, setSelectedInfo] = useState(null)
+    // console.log("orders", orders)
+    // const [statusModalState, setStatusModalState] = useState(false)
+    // const [selectedStatus, setSelectedStatus] = useState(null)
+    // const [selectedInfo, setSelectedInfo] = useState(null)
 
-    const fetchCreateOrderData = () => {
-        return useJwt
-            .axiosGet(getApi(CREATE_ORDER_LIST))
-            .then((res) => {
-                console.log("res", res.data)
-                setOrders(res.data.data)
+    // const fetchCreateOrderData = () => {
+    //     return useJwt
+    //         .axiosGet(getApi(CREATE_ORDER_LIST))
+    //         .then((res) => {
+    //             console.log("res", res.data)
+    //             setOrders(res.data.data)
                
-                return res.data
-            })
-            .catch(err => console.log(err))
-    }
-
-    useEffect(() => {
-        fetchCreateOrderData()
-    }, [])
+    //             return res.data
+    //         })
+    //         .catch(err => console.log(err))
+    // }
 
     // useEffect(() => {
-    //     if (!statusModalState) {
-    //         clearData()
-    //     }
     //     fetchCreateOrderData()
-    // }, [statusModalState])
+    // }, [])
 
-    const changeStatusAction = (e, info) => {
-        e.preventDefault()
-        setStatusModalState(true)
-        setSelectedStatus(info.status)
-        setSelectedInfo(info)
-    }
-    const clearData = () => {
-        setSelectedInfo(null)
-        setSelectedStatus(null)
-    }
+    // // useEffect(() => {
+    // //     if (!statusModalState) {
+    // //         clearData()
+    // //     }
+    // //     fetchCreateOrderData()
+    // // }, [statusModalState])
+
+    // const changeStatusAction = (e, info) => {
+    //     e.preventDefault()
+    //     setStatusModalState(true)
+    //     setSelectedStatus(info.status)
+    //     setSelectedInfo(info)
+    // }
+    // const clearData = () => {
+    //     setSelectedInfo(null)
+    //     setSelectedStatus(null)
+    // }
 
     return (<>
         <div className='invoice-title-card'>
@@ -71,20 +71,25 @@ const DelivaryView = ({ }) => {
            
         </div>
         <hr></hr>
-        {orders &&
-            orders.map((info) => (
+        {/* {orders &&
+            orders.map((info) => ( */}
                 <Card className='invoice-preview-card'>
                     <CardBody>
                         <Row >
                             <Col xl='9'>
+                                <h5 className='mb-25'><b>Parcel Id : </b> </h5>
+                                <h9 className='mb-25'>Created: </h9>
+                            </Col>
+                            {/* <Col xl='9'>
                                 <h5 className='mb-25'><b>Parcel Id :{info?.parcel_id} </b> </h5>
                                 <h9 className='mb-25'>Created: {info.created_at}</h9>
-                            </Col>
+                            </Col> */}
                             <Col xl='3'>
                                 <div className='button-wrapper'>
                                     <button className='action-view'>
                                         <EyeOutlined />
-                                        <a href={"/marchant-orders/view/" + info?.id}> View</a>
+                                        {/* <a href={"/marchant-orders/view/" + info?.id}> View</a> */}
+                                        {/* <a href={"/marchant-orders/view/" + info?.id}> View</a> */}
                                     </button>
                                     <UncontrolledDropdown>
                                         <DropdownToggle
@@ -96,15 +101,15 @@ const DelivaryView = ({ }) => {
                                             <MoreVertical size={15} />
                                         </DropdownToggle>
                                         <DropdownMenu>
-                                            <DropdownItem href={"/marchant_order/edit/" + info?.id}>
+                                            <DropdownItem >
                                                 <Edit className="me-50" size={15} />{" "}
                                                 <span className="align-middle">Edit</span>
                                             </DropdownItem>
-                                            <DropdownItem href="/" onClick={e => deleteOrderAction(e, info?.id)}>
+                                            <DropdownItem href="/" onClick={e => deleteOrderAction(e, )}>
                                                 <Trash className="me-50" size={15} />{" "}
                                                 <span className="align-middle">Delete</span>
                                             </DropdownItem>
-                                            <DropdownItem href="/" onClick={e => changeStatusAction(e, info)}>
+                                            <DropdownItem href="/" onClick={e => changeStatusAction(e,)}>
                                                 <Edit3 className="me-50" size={15} />{" "}
                                                 <span className="align-middle">Change Status</span>
                                             </DropdownItem>
@@ -114,33 +119,46 @@ const DelivaryView = ({ }) => {
                             </Col>
                         </Row>
                         <Row className='mt-2' >
-                            <Col xl='7'>
+                            {/* <Col xl='7'>
                                 <h6 className='mb-25'><b>Recipient Name :{info?.recipient_name}</b>  </h6>
                                 <h6 className='mb-25'>Phone Number : {info?.phone_number}</h6>
                                 <h6 className='mb-25'>Delivary Address : {info?.delivary_address}</h6>
                                 <h6 className='mb-25 '>Status : <span className='highlight-status'>{info.status}</span></h6>
                                 <h6 className='mb-25'>Pickup Status :{info.pickup_status0}</h6>
-                                {/* <h6 className='mb-25'>Pickup Status :<Typography.Text strong>{info.pickup_status}</Typography.Text></h6> */}
-
+                               
+                            </Col> */}
+                            <Col xl='7'>
+                                <h6 className='mb-25'><b>Recipient Name :</b>  </h6>
+                                <h6 className='mb-25'>Phone Number : </h6>
+                                <h6 className='mb-25'>Delivary Address :</h6>
+                                <h6 className='mb-25 '>Status : <span className='highlight-status'></span></h6>
+                                <h6 className='mb-25'>Pickup Status :</h6>
+                                
                             </Col>
                             <Col xl='5'>
+                                <h6 className='mb-25'>Product type : </h6>
+                                <h6 className='mb-25'>Shipment type :</h6>
+                                <h6 className='mb-25'>Delivary Charge: </h6>
+                                <h6 className='mb-25'>Total Amount : </h6>
+                            </Col>
+                            {/* <Col xl='5'>
                                 <h6 className='mb-25'>Product type : {info.product_type.product_type}</h6>
                                 <h6 className='mb-25'>Shipment type : {info.shipment_type.shipment_type}</h6>
                                 <h6 className='mb-25'>Delivary Charge: {info?.delivary_charge}</h6>
                                 <h6 className='mb-25'>Total Amount : {info?.amount_to_be_collected}</h6>
-                            </Col>
+                            </Col> */}
                         </Row>
 
                     </CardBody>
-                    <ChangeStatusModalMarchant
+                    {/* <ChangeStatusModalMarchant
                         statusModalState={statusModalState}
                         setStatusModalState={setStatusModalState}
                         orderInfo={selectedInfo}
                         fetchMarchantOrderData={fetchCreateOrderData}
-                    />
+                    /> */}
 
                 </Card >
-            ))}
+            {/* ))} */}
         </>
     )
 

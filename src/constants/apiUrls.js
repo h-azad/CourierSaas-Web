@@ -26,6 +26,9 @@ export const RIDER_LIST = '/manage-user/rider'
 export const RIDER_DELETE = '/manage-user/rider/'
 export const RIDER_DETAILS = '/manage-user/rider/'
 export const RIDER_SEARCH = '/search-rider/'
+export const RIDER_PICKUP = '/rider_app/pickup/'
+export const RIDER_PICKUP_STATUS_UPDATE = '/rider_app/pickup/'
+
 // export const MARCHANT_ORDER_LIST = '/marchant_app/orders/'
 
 // Agents API's 
