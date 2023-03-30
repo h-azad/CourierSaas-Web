@@ -4,24 +4,17 @@ import { useEffect, useState } from 'react'
 import { formatDate } from '@utils'
 import useJwt from '@src/auth/jwt/useJwt'
 import SwalConfirm from "../../SwalConfirm"
-import { getApi, CREATE_ORDER_LIST, RIDER_PICKUP } from "@src/constants/apiUrls"
+import { getApi, CREATE_ORDER_LIST, RIDER_PICKUP_STATUS_UPDATE,RIDER_PICKUP } from "@src/constants/apiUrls"
 import { Dropdown, Typography, Select, Button, Space, Menu } from 'antd'
-import ChangeStatusModalMarchant from '../../merchant_views/order/ChangeStatusModal'
-import {
-    Badge,
-    UncontrolledDropdown,
-    DropdownMenu,
-    DropdownItem,
-    DropdownToggle,
-    Label,
-    Input,
-} from "reactstrap"
+import PickupStatusModal from '../../rider_view/task/PickupStatusModal'
+import { string } from 'yup'
+import toast from 'react-hot-toast'
 
-const PickupView = ({ }) => {
+const PickupView = ({ orderInfo }) => {
+
 
     const [pickupData, setPickupData] = useState([])
 
-    console.log("pickupData", pickupData)
     const [statusModalState, setStatusModalState] = useState(false)
     const [selectedStatus, setSelectedStatus] = useState(null)
     const [selectedInfo, setSelectedInfo] = useState(null)
@@ -49,18 +42,51 @@ const PickupView = ({ }) => {
         fetchPickupData()
     }, [statusModalState])
 
-    const changeStatusAction = (e, info) => {
+    const updateStatusAction = (e) => {
         e.preventDefault()
-        setStatusModalState(true)
-        setSelectedStatus(info.status)
-        setSelectedInfo(info)
+        console.log("selectedInfo", selectedInfo)
+        console.log("selectedStatus", selectedStatus)
+        return false
+
     }
+
+
     const clearData = () => {
         setSelectedInfo(null)
         setSelectedStatus(null)
     }
-    const handleChange = (value) => {
-        console.log(`selected ${value}`)
+
+    const updateStatusActionx = (selectedValue,id) => {
+        const formData = {
+            'status': selectedValue
+        }
+        console.log("formData", formData)
+
+        useJwt
+            .axiosPatch(getApi(RIDER_PICKUP_STATUS_UPDATE) + `${id}/`, formData)
+            .then((res) => {
+                toast.success('Pickup Status Updated Successfully!')
+                setStatusModalState(false)
+                fetchPickupData()
+            })
+            .catch(err => {
+                toast.success('Pickup Status Updated Failed!')
+                setStatusModalState(false)
+            })
+
+    }
+    const handleChange = (id, selectedValue) => {
+        // console.log(`selected xxx ${value}`)
+        updateStatusActionx(selectedValue,id)
+    }
+
+    const changeStatusAction = (e, info) => {
+        e.preventDefault()
+        console.log(`selected xxx ${value}`)
+
+        setStatusModalState(true)
+        setSelectedStatus(info.status)
+        setSelectedInfo(info)
     }
 
     return (<>
@@ -91,7 +117,7 @@ const PickupView = ({ }) => {
                                     width: 120,
                                 }}
                                 bordered={false}
-                                onChange={handleChange}
+                                        onChange={(value) => handleChange(info.id, value)}
                                 options={[
                                     {
                                         value: 'No',
@@ -115,10 +141,10 @@ const PickupView = ({ }) => {
                 </Row>
 
             </CardBody>
-            <ChangeStatusModalMarchant
+                    <PickupStatusModal
                         statusModalState={statusModalState}
                         setStatusModalState={setStatusModalState}
-                        orderInfo={selectedInfo}
+                        Info={selectedInfo}
                         fetchPickupData={fetchPickupData}
                     />
 

@@ -244,6 +244,10 @@ const EditCreateOrder = () => {
       setError('pickup_rider', { type: 'required', message: ' Pickup Rider is required' })
       isFormValid = false
     }
+    if (!data.delivary_rider && data.delivary_rider.value) {
+      setError('delivary_rider', { type: 'required', message: ' Pickup Rider is required' })
+      isFormValid = false
+    }
     if (!data.warehouse_status) {
       setError('warehouse_status', { type: 'required', message: 'Warehouse Status is required' })
       isFormValid = false
@@ -259,7 +263,7 @@ const EditCreateOrder = () => {
       && data.product_type.value !== null && data.delivary_area.value !== null
       && data.delivary_charge !== null && data.pricing_policy.value !== null
       && data.shipment_type.value !== null && data.pickup_rider.value !== null
-      && data.warehouse_status !== null
+      && data.warehouse_status !== null && data.delivary_rider.value !== null
     ) {
 
       let formData = {
@@ -274,6 +278,7 @@ const EditCreateOrder = () => {
         shipment_type: data.shipment_type.value,
         delivary_charge: data.delivary_charge,
         pickup_rider: data.pickup_rider.value,
+        delivary_rider: data.delivary_rider.value,
         warehouse_status: data.warehouse_status,
         status: 'accepted'
       }
@@ -433,25 +438,51 @@ const EditCreateOrder = () => {
               </div>
             </div>
           </div>
-          <div className='mb-1'>
-            <Label className='form-label' for='area'>
-              Shipment Type
-            </Label>
-            <Controller
-              defaultValue={{ value: createOrderInfo.shipment_type.id, label: createOrderInfo.shipment_type.shipment_type }}
-              id="shipment_type"
-              name="shipment_type"
-              control={control}
-              render={({ field }) => <Select
-                className={classnames('react-select', { 'is-invalid': errors.shipment_type && true })}
-                classNamePrefix='select'
-                options={selectboxShipmentType}
-                {...field}
-              />}
-            />
-            {errors && errors.shipment_type && <span className="invalid-feedback">{errors.shipment_type.message}</span>}
+          <div class="row">
+              <div class="col-lg-6">
+              <div className='mb-1'>
+                <Label className='form-label' for='area'>
+                  Shipment Type
+                </Label>
+                <Controller
+                  defaultValue={{ value: createOrderInfo.shipment_type.id, label: createOrderInfo.shipment_type.shipment_type }}
+                  id="shipment_type"
+                  name="shipment_type"
+                  control={control}
+                  render={({ field }) => <Select
+                    className={classnames('react-select', { 'is-invalid': errors.shipment_type && true })}
+                    classNamePrefix='select'
+                    options={selectboxShipmentType}
+                    {...field}
+                  />}
+                />
+                {errors && errors.shipment_type && <span className="invalid-feedback">{errors.shipment_type.message}</span>}
 
+              </div>
+              </div>
+            <div class="col-lg-6">
+              <div className='mb-1'>
+                <Label className='form-label' for='area'>
+                 Delivary Rider
+                </Label>
+                <Controller
+                    id="delivary_rider"
+                    name="delivary_rider"
+                  control={control}
+                  render={({ field }) => <Select
+                    // isClearable
+                    className={classnames('react-select', { 'is-invalid': errors.delivary_rider && true })}
+                    classNamePrefix='select'
+                    options={selectboxRider}
+                    {...field}
+                  />}
+                />
+                  {errors && errors.delivary_rider && <span className="invalid-feedback">{errors.delivary_rider.message}</span>}
+
+              </div>
+            </div>
           </div>
+         
           <div class="row">
             <div class="col-lg-6">
               <div className='mb-1'>
