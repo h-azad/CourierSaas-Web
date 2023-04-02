@@ -30,16 +30,7 @@ export const RIDER_PICKUP = '/rider_app/pickup/'
 export const RIDER_PICKUP_STATUS_UPDATE = '/rider_app/pickup/'
 export const RIDER_DELIVARY = '/rider_app/delivary/'
 export const RIDER_DELIVARY_STATUS_UPDATE = '/rider_app/delivary/'
-
-// export const MARCHANT_ORDER_LIST = '/marchant_app/orders/'
-
-// Agents API's 
-// export const AGENT_ADD = '/api/user/agent/'
-// export const AGENT_EDIT = '/api/user/agent/'
-// export const AGENT_LIST = '/api/user/agent/'
-// export const AGENT_DELETE = '/api/user/agent/'
-// export const AGENT_DETAILS = '/api/user/agent/'
-// export const AGENT_SEARCH = '/search-agent/'
+export const RIDER_ORDER_STATUS = '/rider_app/status/'
 
 export const AGENT_ADD = '/manage-user/create-agent'
 export const AGENT_EDIT = '/manage-user/agent/'
@@ -76,7 +67,6 @@ export const SHIPMENT_TYPE_DETAILS = '/shipment_type/'
 export const SHIPMENT_UPDATE_STATUS= '/shipment_type/'
 export const SEARCH_SHIPMENT = '/search_shipment/'
 
-
 // Product Type API's 
 
 export const PRODUCT_TYPE_ADD = '/product_type/'
@@ -107,7 +97,6 @@ export const SEARCH_CREATE_ORDER = '/search_create_order/'
 export const DIMENTION_BY_PRODUCT = '/create_order/get-dimention/'
 export const PRICING_POLICY_BY_PRODUCT = '/get-price-policy/'
 export const ORDER_STATUS_UPDATE = '/create_order/'
-
 
 //Payment Method API's 
 

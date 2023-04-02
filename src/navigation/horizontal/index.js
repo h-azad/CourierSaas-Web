@@ -147,6 +147,19 @@ const riderMenu = [
     navLink: "/rider-dashboard"
   },
   {
+    header: 'Order Status',
+    action: 'rider-pages',
+    resource: 'RIDER',
+  },
+  {
+    id: "order-status",
+    title: "Order Status",
+    icon: <CreditCard size={20} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/rider-orders"
+  },
+  {
     header: 'Assigned Pickup',
     action: 'rider-pages',
     resource: 'RIDER',
