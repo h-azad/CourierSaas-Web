@@ -1,21 +1,9 @@
-// ** Reactstrap Imports
 import { Card, CardHeader, Progress, Table } from 'reactstrap'
-
-// ** Third Party Components
-import { ChevronDown } from 'react-feather'
-import DataTable from 'react-data-table-component'
-import useJwt from '@src/auth/jwt/useJwt'
-
-
-// ** Styles
 import '@styles/react/libs/tables/react-dataTable-component.scss'
-import { useEffect } from 'react'
 
 const CreateOrderInfoList = ({userInfo}) => {
-  // useEffect(() => {
-    console.log(userInfo)
-  // }, [userInfo])
-
+ 
+  // console.log(userInfo)
   return (
     <Card>
       <CardHeader tag='h4'>Order Info</CardHeader>
@@ -25,9 +13,23 @@ const CreateOrderInfoList = ({userInfo}) => {
           <tbody>
             
             <tr>
-              <th>Marchant</th>
-              <th>{userInfo.marchant?.full_name}</th>
-            </tr> 
+              <th>Receipient Name</th>
+              <th>
+                  {userInfo.recipient_name}
+              </th>
+            </tr>
+            <tr>
+              <th>Phone Number</th>
+              <th>
+                  {userInfo.phone_number}
+              </th>
+            </tr>
+            <tr>
+              <th>Delivary Address</th>
+              <th>
+                  {userInfo.delivary_address}
+              </th>
+            </tr>
             <tr>
               <th>Product Type</th>
               <th>
