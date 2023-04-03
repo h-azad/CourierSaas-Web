@@ -1,27 +1,8 @@
-import { ListGroup, ListGroupItem } from 'reactstrap'
-import { Facebook, Instagram, Twitter } from 'react-feather'
 import { useEffect, useState } from 'react'
-import { formatDate } from '@utils'
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, MARCHANT_ORDER_LIST, MARCHANT_SEARCH_FILTER, } from "@src/constants/apiUrls"
-import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
-import { AudioOutlined } from '@ant-design/icons'
 import { Input, Space } from 'antd'
-import { Select } from 'antd'
 import { DatePicker, Button } from 'antd'
-import {
-    Table,
-    Badge,
-    UncontrolledDropdown,
-    DropdownMenu,
-    DropdownItem,
-    DropdownToggle,
-    CardText,
-    Label,
-
-} from "reactstrap"
-
 const handleStatus = (value) => {
     console.log(`selected ${value}`)
 }
@@ -42,13 +23,13 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
     }
 
     const handleSearch = debounce(e => {
-        // console.log(e.target.value)
+        
         const searchTerm = e.target.value
-        if (searchTerm.length > 5) {
+        if (searchTerm.length > 2) {
             fetchSearchFilterMerchant(searchTerm)
                 .then(data => {
                     if (data.length > 0) {
-                        // console.log('ffdddydres', data)
+                        
                         setOrders(data)
                         // setActiveOrder(data[0].id)
                         // setActiveOrderData(data)
@@ -128,9 +109,19 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
                     />
                 </div>
                 <div className=" mt-2">
-                    <h6>Status Search </h6>
+                    <h6>Search by Status  </h6>
                     <Search
                         placeholder="pending"
+                        onChange={handleSearch}
+                        style={{
+                            width: 280,
+                        }}
+                    />
+                </div>
+                <div className=" mt-2">
+                    <h6>Search by Pickup Status  </h6>
+                    <Search
+                        placeholder="true"
                         onChange={handleSearch}
                         style={{
                             width: 280,
