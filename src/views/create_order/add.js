@@ -27,7 +27,11 @@ const AddCreateOrder = () => {
   const [selectboxArea, setSelectboxArea] = useState([])
   const [selectboxShipmentType, setSelectboxShipmentType] = useState([])
   const [data, setData] = useState(null)
+  const [charge, setCharge] = useState(null)
+  const [amount, setAmount] = useState(null)
   const navigate = useNavigate()
+  const [inputValue, setInputValue] = useState('')
+  console.log("chargxxxe", charge)
   const {
     reset,
     control,
@@ -41,8 +45,6 @@ const AddCreateOrder = () => {
     defaultValues: {
       product_type: {},
       marchant: {},
-
-
     }
   })
 
@@ -54,7 +56,7 @@ const AddCreateOrder = () => {
     fetchPricingPolicyData()
     fetchShipmentTypeData()
 
-  },[])
+  }, [])
 
   // useEffect(() => {
   //   const subscription = watch((value, { name, type }) => { 
@@ -71,7 +73,7 @@ const AddCreateOrder = () => {
   //       }
   //     }
   //   })
-    
+
   //   return () => subscription.unsubscribe()
   // }, [watch])
 
@@ -83,7 +85,7 @@ const AddCreateOrder = () => {
         let marchantData = []
 
         res.data.data.map(data => {
-          marchantData.push({value: data.id, label: data.full_name})
+          marchantData.push({ value: data.id, label: data.full_name })
         })
 
         setSelectboxMarchant(marchantData)
@@ -132,7 +134,7 @@ const AddCreateOrder = () => {
         let productData = []
 
         res.data.map(data => {
-          productData.push({value: data.id, label: data.product_type})
+          productData.push({ value: data.id, label: data.product_type })
         })
 
         setSelectboxProduct(productData)
@@ -149,7 +151,7 @@ const AddCreateOrder = () => {
         let pricingData = []
 
         res.data.map(data => {
-          pricingData.push({value: data.id, label: data.policy_title})
+          pricingData.push({ value: data.id, label: data.policy_title })
         })
 
         setSelectboxPricingPolicy(pricingData)
@@ -170,29 +172,7 @@ const AddCreateOrder = () => {
     return () => subscription.unsubscribe()
   }, [watch])
 
-  // const fetchPolicyData = (productTypeId) => {
-
-  //   return useJwt
-  //     .axiosGet(getApi(VOLUMETRIC_POLICY_BY_PRODUCT) + productTypeId + '/')
-  //     .then((res) => {
-  //       let dimentionData = []
-
-  //       res.data.map(data => {
-  //         dimentionData.push({value: data.id, label: data.policy_title})
-  //       })
-
-  //       setSelectboxDimention(dimentionData)
-  //       setPoliciesData(res.data)
-  //       return res.data
-  //     })
-  //     .catch(err => console.log(err))
-  // }
-
-  // useEffect(() => {
-  //   console.log(policiesData)
-  // }, [policiesData])
-
-  function setDeliveryCharge(policyID){
+  function setDeliveryCharge(policyID) {
     console.log(policyID)
     if (policiesData && policyID) {
       const parcelInfo = policiesData.find(x => x.id == policyID)
@@ -210,7 +190,7 @@ const AddCreateOrder = () => {
       .then((res) => {
         let areaData = []
         res.data.map(data => {
-          areaData.push({value: data.id, label: data.area_name})
+          areaData.push({ value: data.id, label: data.area_name })
         })
         setSelectboxArea(areaData)
         return res.data
@@ -227,24 +207,24 @@ const AddCreateOrder = () => {
       setError('marchant', { type: 'required', message: 'Marchant is required' })
       isFormValid = false
     }
-    if(!data.recipient_name) {
+    if (!data.recipient_name) {
       setError('recipient_name', { type: 'required', message: 'Recipient Name is required' })
       isFormValid = false
     }
-    if(!data.phone_number) {
+    if (!data.phone_number) {
       setError('phone_number', { type: 'required', message: 'Phone Number is required' })
       isFormValid = false
     }
-    if(!data.delivary_address) {
+    if (!data.delivary_address) {
       setError('delivary_address', { type: 'required', message: 'Delivary Address is required' })
       isFormValid = false
     }
-    if(!data.amount_to_be_collected) {
+    if (!data.amount_to_be_collected) {
       setError('amount_to_be_collected', { type: 'required', message: 'Amount is required' })
       isFormValid = false
-    } 
+    }
 
-    if(!(data.product_type && data.product_type.value)) {
+    if (!(data.product_type && data.product_type.value)) {
       setError('product_type', { type: 'required', message: 'Product Type is required' })
       isFormValid = false
     }
@@ -256,12 +236,16 @@ const AddCreateOrder = () => {
       setError('shipment_type', { type: 'required', message: 'Shipment Type is required' })
       isFormValid = false
     }
-   
-    if(!(data.delivary_area && data.delivary_area.value)) {
+
+    if (!(data.delivary_area && data.delivary_area.value)) {
       setError('delivary_area', { type: 'required', message: 'Delivary Area is required' })
       isFormValid = false
     }
-    if(!data.delivary_charge) {
+    if (!data.order_type) {
+      setError('order_type', { type: 'required', message: 'Order Type is required' })
+      isFormValid = false
+    }
+    if (!data.delivary_charge) {
       setError('delivary_charge', { type: 'required', message: 'Delivary Charge is required' })
       isFormValid = false
     }
@@ -273,20 +257,19 @@ const AddCreateOrder = () => {
       setError('warehouse_status', { type: 'required', message: 'Warehouse Status is required' })
       isFormValid = false
     }
-   
-    if(!isFormValid) {
+
+    if (!isFormValid) {
       return false
     }
 
     setData(data)
-    if ( data.marchant.value !== null &&  data.recipient_name !== null &&  data.phone_number !== null 
-      && data.delivary_address !== null &&  data.amount_to_be_collected !== null 
+    if (data.marchant.value !== null && data.recipient_name !== null && data.phone_number !== null
+      && data.delivary_address !== null && data.amount_to_be_collected !== null
       && data.product_type.value !== null && data.delivary_area.value !== null
       && data.delivary_charge !== null && data.pricing_policy.value !== null
       && data.shipment_type.value !== null && data.pickup_rider.value !== null
-      && data.warehouse_status.value !== null 
-      )  
-    {
+      && data.warehouse_status.value !== null && data.order_type !== null
+    ) {
 
       let formData = {
         marchant: data.marchant.value,
@@ -299,6 +282,7 @@ const AddCreateOrder = () => {
         pricing_policy: data.pricing_policy.value,
         shipment_type: data.shipment_type.value,
         delivary_charge: data.delivary_charge,
+        order_type: data.order_type,
         pickup_rider: data.pickup_rider.value,
         warehouse_status: data.warehouse_status,
         status: 'accepted'
@@ -317,6 +301,10 @@ const AddCreateOrder = () => {
 
     }
   }
+  const handleInputChange = (event) => {
+    console.log("eventxxxs",event)
+    setCharge(event.target.value)
+  }
 
   return (
     <Card>
@@ -325,27 +313,27 @@ const AddCreateOrder = () => {
       </CardHeader>
 
       <CardBody>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-          
+        <Form onSubmit={handleSubmit(onSubmit)}>
+
           <div className='mb-1'>
             <Label className='form-label' for='marchant'>
               Marchant
             </Label>
             <Controller
-             
+
               id='marchant'
               name='marchant'
               control={control}
 
-              render={({ field }) => <Select 
-              isClearable
-              className={classnames('react-select', { 'is-invalid': errors.marchant && errors.full_name.value && true })} 
-              classNamePrefix='select'
-              options={selectboxMarchant} 
-              {...field} 
-            />}
+              render={({ field }) => <Select
+                isClearable
+                className={classnames('react-select', { 'is-invalid': errors.marchant && errors.full_name.value && true })}
+                classNamePrefix='select'
+                options={selectboxMarchant}
+                {...field}
+              />}
             />
-           
+
             {errors && errors.marchant && <span className="invalid-feedback">{errors.marchant.message}</span>}
           </div>
 
@@ -368,7 +356,7 @@ const AddCreateOrder = () => {
             <div class="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='phone_number'>
-                Phone Number
+                  Phone Number
                 </Label>
                 <Controller
                   defaultValue=''
@@ -381,54 +369,74 @@ const AddCreateOrder = () => {
               </div>
             </div>
           </div>
-            <div className='mb-1'>
-              <Label className='form-label' for='delivary_address'>
-              Delivary Address
-              </Label>
-              <Controller
-                defaultValue=''
-                control={control}
-                id='delivary_address'
-                name='delivary_address'
-                render={({ field }) => <Input placeholder='' invalid={errors.delivary_address && true} {...field} />}
-              />
-              {errors && errors.delivary_address && <span>{errors.delivary_address.message}</span>}
-            </div>
           <div className='mb-1'>
-            <Label className='form-label' for='amount_to_be_collected'>
-            Amount to be Collected
+            <Label className='form-label' for='delivary_address'>
+              Delivary Address
             </Label>
             <Controller
               defaultValue=''
               control={control}
-              id='amount_to_be_collected'
-              name='amount_to_be_collected'
-              render={({ field }) => <Input placeholder='' invalid={errors.amount_to_be_collected && true} {...field} />}
+              id='delivary_address'
+              name='delivary_address'
+              render={({ field }) => <Input placeholder='' invalid={errors.delivary_address && true} {...field} />}
             />
-            {errors && errors.amount_to_be_collected && <span>{errors.amount_to_be_collected.message}</span>}
+            {errors && errors.delivary_address && <span>{errors.delivary_address.message}</span>}
+          </div>
+
+          <div class="row">
+            <div class="col-lg-6">
+              <div className='mb-1'>
+                <Label className='form-label' for='order_type'>
+                  Order Type
+                </Label>
+                <Controller
+                  defaultValue='COD'
+                  control={control}
+                  id='order_type'
+                  name='order_type'
+                  render={({ field }) => <Input placeholder='COD' invalid={errors.order_type && true} {...field} />}
+                />
+                {errors && errors.order_type && <span>{errors.order_type.message}</span>}
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div className='mb-1'>
+                <Label className='form-label' for='amount_to_be_collected'>
+                  Amount to be Collected
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='amount_to_be_collected'
+                  name='amount_to_be_collected'
+                  render={({ field }) => <Input placeholder='' invalid={errors.amount_to_be_collected && true} {...field} />}
+                />
+                {errors && errors.amount_to_be_collected && <span>{errors.amount_to_be_collected.message}</span>}
+              </div>
+            </div>
           </div>
           <div class="row">
             <div class="col-lg-6">
               <div className='mb-1'>
-                  <Label className='form-label' for='product_type'>
-                    Product Type
-                  </Label>
-                  <Controller
-                      id="product_type"
-                      name="product_type"
-                      control={control}
-                      render={({ field }) => <Select 
-                        isClearable
-                        className={classnames('react-select', { 'is-invalid': errors.product_type && true })} 
-                        classNamePrefix='select'
-                        options={selectboxProduct} 
-                        {...field} 
-                      />}
-                    />
-                  {errors && errors.product_type && <span  className="invalid-feedback">{errors.product_type.message}</span>}
+                <Label className='form-label' for='product_type'>
+                  Product Type
+                </Label>
+                <Controller
+                  id="product_type"
+                  name="product_type"
+                  control={control}
+                  render={({ field }) => <Select
+                    isClearable
+                    className={classnames('react-select', { 'is-invalid': errors.product_type && true })}
+                    classNamePrefix='select'
+                    options={selectboxProduct}
+                    {...field}
+                  />}
+                />
+                {errors && errors.product_type && <span className="invalid-feedback">{errors.product_type.message}</span>}
               </div>
             </div>
-              <div class="col-lg-6">
+            <div class="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='area'>
                   Percel Type(Pricing Policy)
@@ -437,12 +445,12 @@ const AddCreateOrder = () => {
                   id="pricing_policy"
                   name="pricing_policy"
                   control={control}
-                  render={({ field }) => <Select 
+                  render={({ field }) => <Select
                     // isClearable
-                    className={classnames('react-select', { 'is-invalid': errors.pricing_policy && true })} 
+                    className={classnames('react-select', { 'is-invalid': errors.pricing_policy && true })}
                     classNamePrefix='select'
-                    options={selectboxPricingPolicy} 
-                    {...field} 
+                    options={selectboxPricingPolicy}
+                    {...field}
                   />}
                 />
                 {errors && errors.pricing_policy && <span className="invalid-feedback">{errors.pricing_policy.message}</span>}
@@ -479,13 +487,13 @@ const AddCreateOrder = () => {
                   id='delivary_area'
                   name='delivary_area'
                   control={control}
-                  render={({ field }) => <Select 
-                  isClearable
-                  className={classnames('react-select', { 'is-invalid': errors.delivary_area && true })} 
-                  classNamePrefix='select'
-                  options={selectboxArea} 
-                  {...field} 
-                />}
+                  render={({ field }) => <Select
+                    isClearable
+                    className={classnames('react-select', { 'is-invalid': errors.delivary_area && true })}
+                    classNamePrefix='select'
+                    options={selectboxArea}
+                    {...field}
+                  />}
                 />
                 {errors && errors.delivary_area && <span className="invalid-feedback">{errors.delivary_area.message}</span>}
               </div>
@@ -493,14 +501,15 @@ const AddCreateOrder = () => {
             <div class="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='delivary_charge'>
-                Delivary Charge
+                  Delivary Charge
                 </Label>
                 <Controller
                   defaultValue=''
                   control={control}
                   id='delivary_charge'
                   name='delivary_charge'
-                  render={({ field }) => <Input placeholder='' invalid={errors.delivary_charge && true} {...field} />}
+                  render={({ field }) => <Input placeholder='' onChange={handleInputChange} // add custom onChange handler
+                    value={inputValue} invalid={errors.delivary_charge && true} {...field} />}
                 />
                 {errors && errors.delivary_charge && <span>{errors.delivary_charge.message}</span>}
               </div>
@@ -510,19 +519,19 @@ const AddCreateOrder = () => {
             <div class="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='pickup_rider'>
-                 Pickup Rider
+                  Pickup Rider
                 </Label>
                 <Controller
                   id='pickup_rider'
                   name='pickup_rider'
                   control={control}
-                  render={({ field }) => <Select 
-                  isClearable
-                    className={classnames('react-select', { 'is-invalid': errors.pickup_rider && true })} 
-                  classNamePrefix='select'
-                    options={selectboxRider} 
-                  {...field} 
-                />}
+                  render={({ field }) => <Select
+                    isClearable
+                    className={classnames('react-select', { 'is-invalid': errors.pickup_rider && true })}
+                    classNamePrefix='select'
+                    options={selectboxRider}
+                    {...field}
+                  />}
                 />
                 {errors && errors.pickup_rider && <span className="invalid-feedback">{errors.pickup_rider.message}</span>}
               </div>
@@ -530,7 +539,7 @@ const AddCreateOrder = () => {
             <div class="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='delivary_charge'>
-                 Warehouse Status
+                  Warehouse Status
                 </Label>
                 <Controller
                   defaultValue='False'
@@ -540,6 +549,20 @@ const AddCreateOrder = () => {
                   render={({ field }) => <Input placeholder='' invalid={errors.warehouse_status && true} {...field} />}
                 />
                 {errors && errors.warehouse_status && <span>{errors.warehouse_status.message}</span>}
+              </div>
+            </div>
+          </div>
+          <hr></hr>
+          <div >
+            <div class="row">
+              <div class="col-lg-6">
+              </div>
+              <div class="col-lg-6">
+                <h5> Delivary charge = {charge} </h5>
+                <h5> Ammount to be collected =  </h5>
+                <hr></hr>
+                <h5> Subtotal =  </h5>
+                <hr></hr>
               </div>
             </div>
           </div>
