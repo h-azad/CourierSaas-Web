@@ -249,14 +249,6 @@ const RiderRoutes = [
     path: "/rider-dashboard",
     element: <AnalyticsDashboard />
   },
-  // {
-  //   path: "/rider-orders",
-  //   element: <PickupView />
-  // },
-  // {
-  //   path: "/rider-orders/delivary",
-  //   element: <DelivaryView />
-  // },
 
 ]
 const AgentRoutes = [

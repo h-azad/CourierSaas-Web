@@ -13,9 +13,8 @@ import Select from "react-select"
 import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, CREATE_ORDER_ADD, MARCHANT_LIST, RIDER_LIST, PRODUCT_TYPE_LIST, AREAS_LIST, PRICING_POLICY_LIST, SHIPMENT_TYPE_LIST, PRICING_POLICY_BY_PRODUCT } from '@src/constants/apiUrls'
+import { getApi, CREATE_ORDER_ADD, MARCHANT_LIST, DELIVARY_CHARGE_BY_PERCEL_TYPE, RIDER_LIST, PRODUCT_TYPE_LIST, AREAS_LIST, PRICING_POLICY_LIST, SHIPMENT_TYPE_LIST, PRICING_POLICY_BY_PRODUCT } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
-// import { DIMENTION_BY_PRODUCT } from "../../constants/apiUrls"
 import SwalAlert from "../../components/SwalAlert"
 
 const AddCreateOrder = () => {
@@ -23,7 +22,9 @@ const AddCreateOrder = () => {
   const [selectboxRider, setSelectboxRider] = useState([])
   const [selectboxProduct, setSelectboxProduct] = useState([])
   const [selectPricingPolicybyProduct, setPricingPolicybyProduct] = useState([])
+  const [selecDelivaryChargebyPercelType, setDelivaryChargebyPercelType] = useState([])
   const [selectboxPricingPolicy, setSelectboxPricingPolicy] = useState([])
+  const [selectboxDelivaryCharge, setSelectboxDelivaryCharge] = useState([])
   const [selectboxArea, setSelectboxArea] = useState([])
   const [selectboxShipmentType, setSelectboxShipmentType] = useState([])
   const [data, setData] = useState(null)
@@ -31,7 +32,6 @@ const AddCreateOrder = () => {
   const [amount, setAmount] = useState(null)
   const navigate = useNavigate()
   const [inputValue, setInputValue] = useState('')
-  console.log("chargxxxe", charge)
   const {
     reset,
     control,
@@ -47,35 +47,17 @@ const AddCreateOrder = () => {
       marchant: {},
     }
   })
-
+  console.log("selectboxDelivaryCharge", selectboxDelivaryCharge)
   useEffect(() => {
     fetchMarchantData()
     fetchRiderData()
     fetchProductData()
     fetchAreaData()
     fetchPricingPolicyData()
+    fetchDelivaryChargeData()
     fetchShipmentTypeData()
 
   }, [])
-
-  // useEffect(() => {
-  //   const subscription = watch((value, { name, type }) => { 
-  //     // console.log(value, name, type)
-  //     if(name == 'product_type' && type=='change'){
-  //       resetField('parcel_type')
-  //       setSelectboxDimention([])
-  //       fetchPolicyData(value.product_type.value)
-  //     }
-  //     if(name == 'parcel_type' && type=='change'){
-  //       resetField('delivary_charge')
-  //       if(value.parcel_type.value){
-  //         setDeliveryCharge(value.parcel_type.value)
-  //       }
-  //     }
-  //   })
-
-  //   return () => subscription.unsubscribe()
-  // }, [watch])
 
   const fetchMarchantData = () => {
     return useJwt
@@ -172,16 +154,48 @@ const AddCreateOrder = () => {
     return () => subscription.unsubscribe()
   }, [watch])
 
-  function setDeliveryCharge(policyID) {
-    console.log(policyID)
-    if (policiesData && policyID) {
-      const parcelInfo = policiesData.find(x => x.id == policyID)
-      console.log('policiesData', policiesData)
-      console.log('parcelInfo', policyID, parcelInfo)
-      parcelInfo ? setValue('delivary_charge', parcelInfo.delivary_charge) : null
-    }
 
+
+  const fetchDelivaryChargeData = (pricingPolicyId) => {
+
+    return useJwt
+      .axiosGet(getApi(DELIVARY_CHARGE_BY_PERCEL_TYPE) + pricingPolicyId + '/')
+      .then((res) => {
+        let delivaryChargeData = []
+
+        res.data.map(data => {
+          delivaryChargeData.push({ value: data.id, label: data.delivary_charge })
+        })
+
+        setSelectboxDelivaryCharge(delivaryChargeData)
+        setDelivaryChargebyPercelType(res.data)
+        return res.data
+      })
+      .catch(err => console.log(err))
   }
+
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => {
+      console.log(value, name, type)
+      if (name == 'policy_title' && type == 'change') {
+        fetchDelivaryChargeData(value.delivary_charge.value)
+      }
+    })
+
+    return () => subscription.unsubscribe()
+  }, [watch])
+
+
+  // function setDeliveryCharge(policyID) {
+  //   console.log(policyID)
+  //   if (policiesData && policyID) {
+  //     const parcelInfo = policiesData.find(x => x.id == policyID)
+  //     console.log('policiesData', policiesData)
+  //     console.log('parcelInfo', policyID, parcelInfo)
+  //     parcelInfo ? setValue('delivary_charge', parcelInfo.delivary_charge) : null
+  //   }
+
+  // }
 
 
   const fetchAreaData = () => {
@@ -504,6 +518,25 @@ const AddCreateOrder = () => {
                   Delivary Charge
                 </Label>
                 <Controller
+                  id="delivary_charge"
+                  name="delivary_charge"
+                  control={control}
+                  render={({ field }) => <Select
+                    // isClearable
+                    className={classnames('react-select', { 'is-invalid': errors.delivary_charge && true })}
+                    classNamePrefix='select'
+                    options={selectboxDelivaryCharge}
+                    {...field}
+                  />}
+                />
+                {errors && errors.delivary_charge && <span className="invalid-feedback">{errors.delivary_charge.message}</span>}
+
+              </div>
+              {/* <div className='mb-1'>
+                <Label className='form-label' for='delivary_charge'>
+                  Delivary Charge
+                </Label>
+                <Controller
                   defaultValue=''
                   control={control}
                   id='delivary_charge'
@@ -512,7 +545,7 @@ const AddCreateOrder = () => {
                     value={inputValue} invalid={errors.delivary_charge && true} {...field} />}
                 />
                 {errors && errors.delivary_charge && <span>{errors.delivary_charge.message}</span>}
-              </div>
+              </div> */}
             </div>
           </div>
           <div class="row">

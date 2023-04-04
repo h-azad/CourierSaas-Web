@@ -10,7 +10,11 @@ const RiderRoutes = [
         element: <RiderDashboard />
     },
     {
-        path: "/rider-orders",
+        path: "/rider-orders/current-task",
+        element: <DelivaryView />
+    },
+    {
+        path: "/rider-orders/pickup",
         element: <PickupView />
     },
    
@@ -22,6 +26,7 @@ const RiderRoutes = [
         path: "/rider-orders/status",
         element: <OrderStatusTable />
     },
+   
    
 
 ]

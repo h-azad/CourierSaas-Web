@@ -147,6 +147,19 @@ const riderMenu = [
     navLink: "/rider-dashboard"
   },
   {
+    header: 'Current Task List',
+    action: 'rider-pages',
+    resource: 'RIDER',
+  },
+  {
+    id: "current-task",
+    title: "Current Task",
+    icon: <CreditCard size={20} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/rider-orders/current-task"
+  },
+  {
     header: 'Order Status',
     action: 'rider-pages',
     resource: 'RIDER',
@@ -157,7 +170,7 @@ const riderMenu = [
     icon: <CreditCard size={20} />,
     action: 'rider-pages',
     resource: 'RIDER',
-    navLink: "/rider-orders"
+    navLink: "/rider-orders/status"
   },
   {
     header: 'Assigned Pickup',
@@ -170,7 +183,7 @@ const riderMenu = [
     icon: <CreditCard size={20} />,
     action: 'rider-pages',
     resource: 'RIDER',
-    navLink: "/rider-orders"
+    navLink: "/rider-orders/pickup"
   },
   {
     header: 'Assigned Delivary',
