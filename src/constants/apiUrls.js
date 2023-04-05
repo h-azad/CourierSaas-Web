@@ -31,7 +31,10 @@ export const RIDER_PICKUP_STATUS_UPDATE = '/rider_app/pickup/'
 export const RIDER_DELIVARY = '/rider_app/delivary/'
 export const RIDER_DELIVARY_STATUS_UPDATE = '/rider_app/delivary/'
 export const RIDER_ORDER_STATUS = '/rider_app/status/'
+export const RIDER_CURRENT_TASK_LIST = '/rider_app/current-task/'
 
+
+//AGENT API's
 export const AGENT_ADD = '/manage-user/create-agent'
 export const AGENT_EDIT = '/manage-user/agent/'
 export const AGENT_LIST = '/manage-user/agent '

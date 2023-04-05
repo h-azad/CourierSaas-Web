@@ -72,13 +72,13 @@ const TaskFilter = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
         <div>
             <div>
                 <div className='invoice-title-card'>
-                    <h3>Filter : </h3>
-            
+                    <h4>Filter Task Type : </h4>
                 </div>
+                <hr></hr>
                 <div className=" mt-2">
-                    <h6>Search Parcel </h6>
+                    <h6>Search by Pickup Task </h6>
                     <Search
-                        placeholder="ODR23031301d6"
+                        placeholder="true"
                         onChange={handleSearch}
                         style={{
                             width: 280,
@@ -86,7 +86,7 @@ const TaskFilter = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
                     />
                 </div>
                 <div className=" mt-2">
-                    <h6>Search Receipient </h6>
+                    <h6>Search by  delivary task </h6>
                     <Search
                         placeholder="input Receipient name"
                         onChange={handleSearch}
@@ -115,16 +115,7 @@ const TaskFilter = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
                         }}
                     />
                 </div>
-                <div className=" mt-2">
-                    <h6>Search by Pickup Status  </h6>
-                    <Search
-                        placeholder="true"
-                        onChange={handleSearch}
-                        style={{
-                            width: 280,
-                        }}
-                    />
-                </div>
+              
                 <div className=" mt-2">
                     <h6>Search Order Date</h6>
               
