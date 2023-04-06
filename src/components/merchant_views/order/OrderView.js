@@ -198,7 +198,6 @@ const OrderView = ({ activeOrderData, orders, fetchCreateOrderData }) => {
         e.preventDefault()
         return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
             if (result.value) {
-
                 useJwt
                     .axiosDelete(getApi(MARCHANT_DELETE_ORDER + id + '/'))
                     .then((res) => {

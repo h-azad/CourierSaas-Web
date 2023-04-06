@@ -2,7 +2,21 @@ import React from 'react'
 import { Card, CardBody,  Row, Col,} from 'reactstrap'
 import { useEffect, useState } from 'react'
 import useJwt from '@src/auth/jwt/useJwt'
+import { DownOutlined, EyeOutlined } from '@ant-design/icons'
+import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
 import { getApi, RIDER_CURRENT_TASK_LIST } from "@src/constants/apiUrls"
+import {
+    Badge,
+    UncontrolledDropdown,
+    DropdownMenu,
+    DropdownItem,
+    DropdownToggle,
+    Label,
+    Input,
+    Pagination,
+    PaginationItem,
+    PaginationLink
+} from "reactstrap"
 
 
 const CurrentTaskView = () => {
@@ -37,6 +51,35 @@ const CurrentTaskView = () => {
                                 <h9 className='mb-25'>Created: {info.created_at}</h9>
                             </Col>
                             <Col xl='3'>
+                                <div className='button-wrapper'>
+                                    <button className='action-view'>
+                                        <EyeOutlined /><a href={"/rider-orders/task-view/" + info?.id}> View</a>
+                                    </button>
+                                    <UncontrolledDropdown>
+                                        <DropdownToggle
+                                            className="icon-btn hide-arrow"
+                                            color="transparent"
+                                            size="sm"
+                                            caret
+                                        >
+                                            <MoreVertical size={15} />
+                                        </DropdownToggle>
+                                        <DropdownMenu>
+                                            <DropdownItem href={"/marchant_order/edit/" + info?.id}>
+                                                <Edit className="me-50" size={15} />{" "}
+                                                <span className="align-middle">Edit</span>
+                                            </DropdownItem>
+                                            <DropdownItem href="/" onClick={e => deleteOrderAction(e, info?.id)}>
+                                                <Trash className="me-50" size={15} />{" "}
+                                                <span className="align-middle">Delete</span>
+                                            </DropdownItem>
+                                            <DropdownItem href="/" onClick={e => changeStatusAction(e, info)}>
+                                                <Edit3 className="me-50" size={15} />{" "}
+                                                <span className="align-middle">Change Status</span>
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                </div>
                         </Col>
                     </Row>
                     <Row className='mt-2' >
@@ -45,8 +88,7 @@ const CurrentTaskView = () => {
                             <h6 className='mb-25'>Phone Number : {info?.phone_number}</h6>
                             <h6 className='mb-25'>Delivary Address : {info?.delivary_address}</h6>
                             <h6 className='mb-25 '>Delivary Status : <span className='highlight-status'>{info.status}</span></h6>
-                            <h6 className='mb-25'>Pickup Status :{info.pickup_status == true ? 'True' : 'False'}</h6>
-
+                            <h6 className='mb-25'>Pickup Status :<span className='highlight-pickup-status'>{info.pickup_status == true ? 'True' : 'False'}</span></h6>
                         </Col>
                         <Col xl='5'>
                             <h6 className='mb-25'>Product type : {info.product_type.product_type}</h6>
@@ -55,9 +97,7 @@ const CurrentTaskView = () => {
                             <h6 className='mb-25'>Total Amount : {info?.amount_to_be_collected}</h6>
                         </Col>
                     </Row>
-
                 </CardBody>
-
                 </Card >
             ))}
         </>

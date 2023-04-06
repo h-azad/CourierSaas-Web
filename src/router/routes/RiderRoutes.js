@@ -4,6 +4,7 @@ import PickupView from "../../components/rider_view/task/TaskVIew"
 import DelivaryView from "../../components/rider_view/task/DelivaryView"
 import OrderStatusTable from "../../components/rider_view/task/OrderStatus"
 import CurrentTaskList from "../../components/rider_view/task/listCurrentTask"
+import TaskView from "../../components/rider_view/taskView"
 
 
 const RiderRoutes = [
@@ -27,6 +28,10 @@ const RiderRoutes = [
     {
         path: "/rider-orders/status",
         element: <OrderStatusTable />
+    },
+    {
+        path: "/rider-orders/task-view/:id",
+        element: <TaskView />
     },
    
    
