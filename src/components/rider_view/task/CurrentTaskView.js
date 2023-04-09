@@ -11,11 +11,6 @@ import {
     DropdownMenu,
     DropdownItem,
     DropdownToggle,
-    Label,
-    Input,
-    Pagination,
-    PaginationItem,
-    PaginationLink
 } from "reactstrap"
 
 
@@ -65,17 +60,17 @@ const CurrentTaskView = () => {
                                             <MoreVertical size={15} />
                                         </DropdownToggle>
                                         <DropdownMenu>
-                                            <DropdownItem href={"/marchant_order/edit/" + info?.id}>
+                                            {/* <DropdownItem href={"/marchant_order/edit/" + info?.id}>
                                                 <Edit className="me-50" size={15} />{" "}
                                                 <span className="align-middle">Edit</span>
-                                            </DropdownItem>
-                                            <DropdownItem href="/" onClick={e => deleteOrderAction(e, info?.id)}>
+                                            </DropdownItem> */}
+                                            {/* <DropdownItem href="/" onClick={e => deleteOrderAction(e, info?.id)}>
                                                 <Trash className="me-50" size={15} />{" "}
                                                 <span className="align-middle">Delete</span>
-                                            </DropdownItem>
+                                            </DropdownItem> */}
                                             <DropdownItem href="/" onClick={e => changeStatusAction(e, info)}>
                                                 <Edit3 className="me-50" size={15} />{" "}
-                                                <span className="align-middle">Change Status</span>
+                                                <span className="align-middle">Change Delivary Status</span>
                                             </DropdownItem>
                                         </DropdownMenu>
                                     </UncontrolledDropdown>
