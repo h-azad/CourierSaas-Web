@@ -51,7 +51,7 @@ function ChangeStatusModalRider({ statusModalState, setStatusModalState, orderIn
 
     return (
         <Modal isOpen={statusModalState} toggle={() => setStatusModalState(!statusModalState)} className='modal-dialog-centered'>
-            <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Update Order Status</ModalHeader>
+            <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Update task Status</ModalHeader>
             <ModalBody>
                 <Select
                     id="status"
