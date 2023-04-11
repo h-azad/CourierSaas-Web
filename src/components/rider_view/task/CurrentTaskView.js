@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import useJwt from '@src/auth/jwt/useJwt'
 import { DownOutlined, EyeOutlined } from '@ant-design/icons'
 import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
+import ChangeStatusModalRider from '../../rider_view/task/DelivaryStatusModal'
 import { getApi, RIDER_CURRENT_TASK_LIST } from "@src/constants/apiUrls"
 import {
     Badge,
@@ -14,11 +15,22 @@ import {
 } from "reactstrap"
 
 
-const CurrentTaskView = () => {
+const CurrentTaskView = ({fetchCreateOrderData}) => {
+    const [statusModalState, setStatusModalState] = useState(false)
+    const [selectedStatus, setSelectedStatus] = useState(null)
+    const [selectedInfo, setSelectedInfo] = useState(null)
     const [currentTask, setCurrentTask] = useState([])
+   
     useEffect(() => {
         fetchCurrentTaskData()
     }, [])
+
+    useEffect(() => {
+        if (!statusModalState) {
+            clearData()
+        }
+        fetchCreateOrderData()
+    }, [statusModalState])
 
     const fetchCurrentTaskData = () => {
         return useJwt
@@ -29,6 +41,16 @@ const CurrentTaskView = () => {
                 return res.data
             })
             .catch((err) => console.log(err))
+    }
+    const changeStatusAction = (e, info) => {
+        e.preventDefault()
+        setStatusModalState(true)
+        setSelectedStatus(info.status)
+        setSelectedInfo(info)
+    }
+    const clearData = () => {
+        setSelectedInfo(null)
+        setSelectedStatus(null)
     }
 
     return (<>
@@ -93,6 +115,12 @@ const CurrentTaskView = () => {
                         </Col>
                     </Row>
                 </CardBody>
+                    <ChangeStatusModalRider
+                        statusModalState={statusModalState}
+                        setStatusModalState={setStatusModalState}
+                        orderInfo={selectedInfo}
+                        fetchCurrentTaskData={fetchCurrentTaskData}
+                    />
                 </Card >
             ))}
         </>
