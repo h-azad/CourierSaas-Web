@@ -8,7 +8,7 @@ import { useState } from 'react'
 import ToastContent from '../../ToastContent'
 import toast from 'react-hot-toast'
 
-function ChangeStatusModalRider({ statusModalState, setStatusModalState, orderInfo, fetchCreateOrderData }) {
+function ChangeStatusModalRider({ statusModalState, setStatusModalState, taskInfo, fetchRiderTaskData }) {
     const [selectedOption, setSelectedOption] = useState()
 
     let statusOptions = [
@@ -31,11 +31,11 @@ function ChangeStatusModalRider({ statusModalState, setStatusModalState, orderIn
         }
 
         useJwt
-            .axiosPatch(getApi(RIDER_DELIVARY_STATUS_UPDATE) + `${orderInfo.id}/`, formData)
+            .axiosPatch(getApi(RIDER_DELIVARY_STATUS_UPDATE) + `${id}/`, formData)
             .then((res) => {
                 toast.success('Delivary Status Updated Successfully!')
                 setStatusModalState(false)
-                fetchCreateOrderData()
+                fetchRiderTaskData()
             })
             .catch(err => {
                 toast.success('Delivary Status Updated Failed!')

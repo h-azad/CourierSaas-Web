@@ -15,7 +15,7 @@ import {
 } from "reactstrap"
 
 
-const CurrentTaskView = ({fetchCreateOrderData}) => {
+const CurrentTaskView = () => {
     const [statusModalState, setStatusModalState] = useState(false)
     const [selectedStatus, setSelectedStatus] = useState(null)
     const [selectedInfo, setSelectedInfo] = useState(null)
@@ -25,12 +25,12 @@ const CurrentTaskView = ({fetchCreateOrderData}) => {
         fetchCurrentTaskData()
     }, [])
 
-    useEffect(() => {
-        if (!statusModalState) {
-            clearData()
-        }
-        fetchCreateOrderData()
-    }, [statusModalState])
+    // useEffect(() => {
+    //     if (!statusModalState) {
+    //         clearData()
+    //     }
+    //     fetchCreateOrderData()
+    // }, [statusModalState])
 
     const fetchCurrentTaskData = () => {
         return useJwt
@@ -118,7 +118,8 @@ const CurrentTaskView = ({fetchCreateOrderData}) => {
                     <ChangeStatusModalRider
                         statusModalState={statusModalState}
                         setStatusModalState={setStatusModalState}
-                        orderInfo={selectedInfo}
+                        Info={selectedInfo}
+                        // orderInfo={selectedInfo}
                         fetchCurrentTaskData={fetchCurrentTaskData}
                     />
                 </Card >

@@ -4,44 +4,44 @@ import { Row, Col, Card, CardBody, CardText, Button } from "reactstrap"
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
 import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, MARCHANT_ORDER_LIST, SEARCH_MARCHANT_PARCEL } from "../../../constants/apiUrls"
+import { getApi, RIDER_CURRENT_TASK_LIST, MARCHANT_ORDER_LIST,  } from "../../../constants/apiUrls"
 import TaskFilter from "./TaskFilter"
 import CurrentTaskView from "./CurrentTaskView"
 
 function CurrentTaskList() {
-  const [activeOrder, setActiveOrder] = useState()
-  const [orders, setOrders] = useState([])
-  const [activeOrderData, setActiveOrderData] = useState(null)
+  const [activeTask, setActiveTask] = useState()
+  const [task, setTask] = useState([])
+  const [activeTaskData, setActiveTaskData] = useState(null)
 
-  const fetchCreateOrderData = () => {
+  const fetchRiderTaskData = () => {
     return useJwt
-      .axiosGet(getApi(MARCHANT_ORDER_LIST))
+      .axiosGet(getApi(RIDER_CURRENT_TASK_LIST))
       .then((res) => {
         console.log("res", res.data)
-        setOrders(res.data.data)
-        setActiveOrderData(res.data.data[0])
+        setTask(res.data.data)
+        setActiveTaskData(res.data.data[0])
         return res.data
       })
       .catch(err => console.log(err))
   }
 
   useEffect(() => {
-    fetchCreateOrderData()
+    fetchRiderTaskData()
   }, [])
 
   useEffect(() => {
-    console.log(activeOrder)
-    if (orders && !activeOrder) {
+    console.log(activeTask)
+    if (task && !activeTask) {
       // console.log(orders[0])
-      orders[0] ? setActiveOrder(orders[0]?.id) : null
+      task[0] ? setActiveTask(task[0]?.id) : null
     }
-  }, [orders])
+  }, [task])
 
   useEffect(() => {
 
-    const activeOrderFilter = orders.find((item) => item.id === activeOrder)
-    setActiveOrderData(activeOrderFilter)
-  }, [activeOrder])
+    const activeTaskFilter = task.find((item) => item.id === activeTask)
+    setActiveTaskData(activeTaskFilter)
+  }, [activeTask])
 
 
   return (
@@ -85,14 +85,14 @@ function CurrentTaskList() {
         <Col sm="4">
           <Card title="Bordered">
             <CardBody>
-              <TaskFilter setActiveOrderData={setActiveOrderData} orders={orders} setOrders={setOrders} activeOrder={activeOrder} setActiveOrder={setActiveOrder} /> 
+              <TaskFilter setActiveTaskData={setActiveTaskData} task={task} setTask={setTask} activeTask={activeTask} setActiveTask={setActiveTask} /> 
             </CardBody>
           </Card>
         </Col>
         <Col sm="8">
           <Card title="Bordered">
             <CardBody>
-              <CurrentTaskView activeOrderData={activeOrderData} orders={orders} fetchCreateOrderData={fetchCreateOrderData} />
+              <CurrentTaskView activeTaskData={activeTaskData} task={task} fetchRiderTaskData={fetchRiderTaskData} />
             </CardBody>
           </Card>
         </Col>
