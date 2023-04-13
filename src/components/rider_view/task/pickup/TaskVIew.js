@@ -3,18 +3,16 @@ import { Card, CardBody, CardText, Row, Col, Table, Tooltip } from 'reactstrap'
 import { useEffect, useState } from 'react'
 import { formatDate } from '@utils'
 import useJwt from '@src/auth/jwt/useJwt'
-import SwalConfirm from "../../SwalConfirm"
+import SwalConfirm from "../../../SwalConfirm"
 import { getApi, CREATE_ORDER_LIST, RIDER_PICKUP_STATUS_UPDATE,RIDER_PICKUP } from "@src/constants/apiUrls"
 import { Dropdown, Typography, Select, Button, Space, Menu } from 'antd'
-import PickupStatusModal from '../../rider_view/task/PickupStatusModal'
+import PickupStatusModal from '../../../rider_view/task/pickup/PickupStatusModal'
 import { string } from 'yup'
 import toast from 'react-hot-toast'
 
 const PickupView = ({ orderInfo }) => {
 
-
     const [pickupData, setPickupData] = useState([])
-
     const [statusModalState, setStatusModalState] = useState(false)
     const [selectedStatus, setSelectedStatus] = useState(null)
     const [selectedInfo, setSelectedInfo] = useState(null)

@@ -4,7 +4,7 @@ import { Row, Col, Card, CardBody, CardText, Button } from "reactstrap"
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
 import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, RIDER_CURRENT_TASK_LIST, MARCHANT_ORDER_LIST,  } from "../../../constants/apiUrls"
+import { getApi, RIDER_CURRENT_TASK_LIST,  } from "../../../constants/apiUrls"
 import TaskFilter from "./TaskFilter"
 import CurrentTaskView from "./CurrentTaskView"
 

@@ -3,23 +3,17 @@ import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
 import {
     Table,
     Badge,
-    UncontrolledDropdown,
-    DropdownMenu,
-    DropdownItem,
-    DropdownToggle,
     Button,
     CardText,
-    Label,
-    Input,
 } from "reactstrap"
 import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, CREATE_ORDER_LIST, CREATE_ORDER_DELETE, SEARCH_CREATE_ORDER } from "../../../constants/apiUrls"
-import SwalAlert from "../../../components/SwalAlert"
-import SwalConfirm from "../../../components/SwalConfirm"
-import StatusModal from "../../../components/StatusModal"
+import { getApi, CREATE_ORDER_LIST, CREATE_ORDER_DELETE, } from "../../../../constants/apiUrls"
+import SwalAlert from "../../../SwalAlert"
+import SwalConfirm from "../../../SwalConfirm"
+import StatusModal from "../../../StatusModal"
 // import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
 
 
@@ -94,41 +88,41 @@ const OrderStatusTable = () => {
     //         .catch((err) => console.log(err))
     // }
 
-    const handleSearch = debounce(e => {
-        console.log(e.target.value)
-        const searchTerm = e.target.value
-        if (searchTerm.length > 0) {
-            fetchSearchCreateOrderData(searchTerm)
-                .then(data => {
-                    if (data.length > 0) {
-                        console.log('res', data)
-                        setCreateOrder(data)
-                    } else {
-                        console.log("No data")
-                    }
-                })
-        }
+    // const handleSearch = debounce(e => {
+    //     console.log(e.target.value)
+    //     const searchTerm = e.target.value
+    //     if (searchTerm.length > 0) {
+    //         fetchSearchCreateOrderData(searchTerm)
+    //             .then(data => {
+    //                 if (data.length > 0) {
+    //                     console.log('res', data)
+    //                     setCreateOrder(data)
+    //                 } else {
+    //                     console.log("No data")
+    //                 }
+    //             })
+    //     }
 
-    }, 300)
+    // }, 300)
 
     const clearData = () => {
         setSelectedInfo(null)
         setSelectedStatus(null)
     }
 
-    function debounce(fn, time) {
-        let timeoutId
-        return wrapper
-        function wrapper(...args) {
-            if (timeoutId) {
-                clearTimeout(timeoutId)
-            }
-            timeoutId = setTimeout(() => {
-                timeoutId = null
-                fn(...args)
-            }, time)
-        }
-    }
+    // function debounce(fn, time) {
+    //     let timeoutId
+    //     return wrapper
+    //     function wrapper(...args) {
+    //         if (timeoutId) {
+    //             clearTimeout(timeoutId)
+    //         }
+    //         timeoutId = setTimeout(() => {
+    //             timeoutId = null
+    //             fn(...args)
+    //         }, time)
+    //     }
+    // }
 
     return (
         <>
@@ -139,7 +133,7 @@ const OrderStatusTable = () => {
                             <h3>Status Overview  </h3>                       
                         </div>
                     </div>
-                    <div className="col-lg-5">
+                    {/* <div className="col-lg-5">
                         <div className="d-flex align-items-center ">
                             <input
                                 placeholder="Search Area"
@@ -152,7 +146,7 @@ const OrderStatusTable = () => {
                                 <Search size={16} />
                             </Button.Ripple>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </CardText>
             {/* <div className='invoice-title-card'>

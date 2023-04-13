@@ -32,6 +32,8 @@ export const RIDER_DELIVARY = '/rider_app/delivary/'
 export const RIDER_DELIVARY_STATUS_UPDATE = '/rider_app/delivary/'
 export const RIDER_ORDER_STATUS = '/rider_app/status/'
 export const RIDER_CURRENT_TASK_LIST = '/rider_app/current-task/'
+export const RIDER_SEARCH_FILTER = '/rider_app/search-filter/'
+
 
 
 //AGENT API's

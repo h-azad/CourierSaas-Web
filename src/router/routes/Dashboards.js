@@ -12,8 +12,8 @@ import AddRider from "../../views/rider/add"
 import EditRider from "../../views/rider/edit"
 import RiderView from "../../views/rider/view"
 import RiderLogin from '../../views/rider/riderlogin/riderLogin'
-import PickupView from '../../components/rider_view/task/TaskVIew'
-import DelivaryView from '../../components/rider_view/task/DelivaryView'
+import PickupView from '../../components/rider_view/task/pickup/TaskVIew'
+import DelivaryView from '../../components/rider_view/task/delivary/DelivaryView'
 
 
 import AgentList from "../../views/agent/list"

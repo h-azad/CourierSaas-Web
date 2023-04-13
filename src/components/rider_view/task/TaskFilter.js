@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, MARCHANT_ORDER_LIST, MARCHANT_SEARCH_FILTER, } from "@src/constants/apiUrls"
+import { getApi, RIDER_SEARCH_FILTER, } from "@src/constants/apiUrls"
 import { Input, Space } from 'antd'
 import { DatePicker, Button } from 'antd'
 const handleStatus = (value) => {
     console.log(`selected ${value}`)
 }
 
-const TaskFilter = ({ setActiveOrderData, orders, setOrders, activeOrder, setActiveOrder }) => {
+const TaskFilter = () => {
     const { Search } = Input
-    const [searchOrders, setSearchOrders] = useState([])
+    const [searchTask, setCurrentTask] = useState([])
     const [activeSearchItem, setActiveSearchItem] = useState(null)
     const { RangePicker } = DatePicker
 
-    const fetchSearchFilterMerchant = searchTerm => {
+    const fetchSearchFilterRider = searchTerm => {
         return useJwt
-            .axiosGet(getApi(MARCHANT_SEARCH_FILTER) + '?search=' + searchTerm)
+            .axiosGet(getApi(RIDER_SEARCH_FILTER) + '?search=' + searchTerm)
             .then((res) => {
                 return res.data 
             })
@@ -26,12 +26,12 @@ const TaskFilter = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
         
         const searchTerm = e.target.value
         if (searchTerm.length > 2) {
-            fetchSearchFilterMerchant(searchTerm)
+            fetchSearchFilterRider(searchTerm)
                 .then(data => {
                     if (data.length > 0) {
                         
-                        setOrders(data)
-                        // setActiveOrder(data[0].id)
+                        // setSearchTask(data)
+                        setCurrentTask(data[0].id)
                         // setActiveOrderData(data)
                     } else {
                         console.log("No data")
@@ -88,7 +88,7 @@ const TaskFilter = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
                 <div className=" mt-2">
                     <h6>Search by  delivary task </h6>
                     <Search
-                        placeholder="input Receipient name"
+                        placeholder="pickedup"
                         onChange={handleSearch}
                         style={{
                             width: 280,

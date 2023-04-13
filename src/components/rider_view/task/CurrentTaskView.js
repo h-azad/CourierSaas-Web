@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import useJwt from '@src/auth/jwt/useJwt'
 import { DownOutlined, EyeOutlined } from '@ant-design/icons'
 import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
-import ChangeStatusModalRider from '../../rider_view/task/DelivaryStatusModal'
+import ChangeStatusModalRider from '../../rider_view/task/delivary/DelivaryStatusModal'
 import { getApi, RIDER_CURRENT_TASK_LIST } from "@src/constants/apiUrls"
 import {
     Badge,
@@ -21,16 +21,16 @@ const CurrentTaskView = () => {
     const [selectedInfo, setSelectedInfo] = useState(null)
     const [currentTask, setCurrentTask] = useState([])
    
-    useEffect(() => {
-        fetchCurrentTaskData()
-    }, [])
-
     // useEffect(() => {
-    //     if (!statusModalState) {
-    //         clearData()
-    //     }
-    //     fetchCreateOrderData()
-    // }, [statusModalState])
+    //     fetchCurrentTaskData()
+    // }, [])
+
+    useEffect(() => {
+        if (!statusModalState) {
+            clearData()
+        }
+        fetchCurrentTaskData()
+    }, [statusModalState])
 
     const fetchCurrentTaskData = () => {
         return useJwt

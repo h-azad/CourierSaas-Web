@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from "react"
-// ** Reactstrap Imports
 import { Row, Col, Card, CardBody, CardText, Button } from "reactstrap"
 import { Link } from 'react-router-dom'
 import Breadcrumbs from "@components/breadcrumbs"
