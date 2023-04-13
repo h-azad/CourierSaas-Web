@@ -8,8 +8,10 @@ import { useState } from 'react'
 import ToastContent from '../../ToastContent'
 import toast from 'react-hot-toast'
 
-function ChangeStatusModalRider({ statusModalState, setStatusModalState, taskInfo, fetchRiderTaskData }) {
+function ChangeStatusModalRider({ statusModalState, setStatusModalState, taskInfo, fetchCurrentTaskData, }) {
     const [selectedOption, setSelectedOption] = useState()
+
+    console.log("taskInfo", taskInfo)
 
     let statusOptions = [
         { value: "pending", label: "Pending" },
@@ -25,17 +27,17 @@ function ChangeStatusModalRider({ statusModalState, setStatusModalState, taskInf
 
     const updateStatusAction = (e) => {
         e.preventDefault()
-        // console.log("selectedInfo", selectedOption)
+        console.log("selectedInfo", selectedOption)
         const formData = {
             'status': selectedOption
         }
 
         useJwt
-            .axiosPatch(getApi(RIDER_DELIVARY_STATUS_UPDATE) + `${id}/`, formData)
+            .axiosPatch(getApi(RIDER_DELIVARY_STATUS_UPDATE) + `${taskInfo?.id}/`, formData)
             .then((res) => {
                 toast.success('Delivary Status Updated Successfully!')
                 setStatusModalState(false)
-                fetchRiderTaskData()
+                fetchCurrentTaskData()
             })
             .catch(err => {
                 toast.success('Delivary Status Updated Failed!')
@@ -45,7 +47,7 @@ function ChangeStatusModalRider({ statusModalState, setStatusModalState, taskInf
 
     }
 
-    const changeOrderStatusAction = (selected,) => {
+    const changeStatusAction = (selected,) => {
         setSelectedOption(selected.value)
     }
 
@@ -54,9 +56,8 @@ function ChangeStatusModalRider({ statusModalState, setStatusModalState, taskInf
             <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Update task Status</ModalHeader>
             <ModalBody>
                 <Select
-                    id="status"
                     name="status"
-                    onChange={changeOrderStatusAction}
+                    onChange={changeStatusAction}
                     className={classnames('react-select')}
                     classNamePrefix='select'
                     options={statusOptions}

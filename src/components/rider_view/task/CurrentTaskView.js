@@ -118,8 +118,7 @@ const CurrentTaskView = () => {
                     <ChangeStatusModalRider
                         statusModalState={statusModalState}
                         setStatusModalState={setStatusModalState}
-                        Info={selectedInfo}
-                        // orderInfo={selectedInfo}
+                        taskInfo={selectedInfo}
                         fetchCurrentTaskData={fetchCurrentTaskData}
                     />
                 </Card >
