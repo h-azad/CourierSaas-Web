@@ -14,8 +14,6 @@ import { getApi, CREATE_ORDER_LIST, CREATE_ORDER_DELETE, } from "../../../../con
 import SwalAlert from "../../../SwalAlert"
 import SwalConfirm from "../../../SwalConfirm"
 import StatusModal from "../../../StatusModal"
-// import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
-
 
 const OrderStatusTable = () => {
     const [createOrder, setCreateOrder] = useState([])

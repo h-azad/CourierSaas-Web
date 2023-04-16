@@ -5,7 +5,6 @@ import classnames from 'classnames'
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, RIDER_PICKUP_STATUS_UPDATE } from "@src/constants/apiUrls"
 import { useState } from 'react'
-import ToastContent from '../../../ToastContent'
 import toast from 'react-hot-toast'
 
 function PickupStatusModal({ statusModalState, setStatusModalState, orderInfo, fetchPickupData }) {
@@ -18,7 +17,6 @@ function PickupStatusModal({ statusModalState, setStatusModalState, orderInfo, f
 
     const updateStatusAction = (e) => {
         e.preventDefault()
-        // console.log("selectedInfo", selectedOption)
         const formData = {
             'status': selectedOption
         }

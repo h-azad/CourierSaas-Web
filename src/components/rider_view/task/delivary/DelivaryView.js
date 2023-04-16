@@ -10,9 +10,7 @@ import PickupStatusModal from '../../../rider_view/task/pickup/PickupStatusModal
 import { string } from 'yup'
 import toast from 'react-hot-toast'
 
-
 const DelivaryView = ({ }) => {
-
     const [delivaryData, setDelivaryData] = useState([])
     const [statusModalState, setStatusModalState] = useState(false)
     const [selectedStatus, setSelectedStatus] = useState(null)
@@ -48,7 +46,6 @@ const DelivaryView = ({ }) => {
         return false
 
     }
-
 
     const clearData = () => {
         setSelectedInfo(null)
@@ -109,7 +106,6 @@ const DelivaryView = ({ }) => {
                                 <h6 className='mb-25'><b>Recipient Name :{info?.recipient_name}</b>  </h6>
                                 <h6 className='mb-25'>Phone Number :  {info?.phone_number}</h6>
                                 <h6 className='mb-25'>Delivary Address : {info?.delivary_address}</h6>
-                                {/* <h6 className='mb-25 '> Pickup Status : <span className='highlight-status'> */}
                                 <h6 className='mb-25 '> Delivary Status : <span className='highlight-status'>
                                     <Select
                                         defaultValue="No"

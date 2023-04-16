@@ -5,14 +5,11 @@ import classnames from 'classnames'
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, RIDER_DELIVARY_STATUS_UPDATE } from "@src/constants/apiUrls"
 import { useState } from 'react'
-import ToastContent from '../../../ToastContent'
 import toast from 'react-hot-toast'
 
 function ChangeStatusModalRider({ statusModalState, setStatusModalState, taskInfo, fetchCurrentTaskData, }) {
     const [selectedOption, setSelectedOption] = useState()
-
-    console.log("taskInfo", taskInfo)
-
+    // console.log("taskInfo", taskInfo)
     let statusOptions = [
         { value: "pending", label: "Pending" },
         { value: "accepted", label: "Accepted" },

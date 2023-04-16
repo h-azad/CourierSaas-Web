@@ -20,10 +20,7 @@ const CurrentTaskView = () => {
     const [selectedStatus, setSelectedStatus] = useState(null)
     const [selectedInfo, setSelectedInfo] = useState(null)
     const [currentTask, setCurrentTask] = useState([])
-   
-    // useEffect(() => {
-    //     fetchCurrentTaskData()
-    // }, [])
+
 
     useEffect(() => {
         if (!statusModalState) {
@@ -82,14 +79,6 @@ const CurrentTaskView = () => {
                                             <MoreVertical size={15} />
                                         </DropdownToggle>
                                         <DropdownMenu>
-                                            {/* <DropdownItem href={"/marchant_order/edit/" + info?.id}>
-                                                <Edit className="me-50" size={15} />{" "}
-                                                <span className="align-middle">Edit</span>
-                                            </DropdownItem> */}
-                                            {/* <DropdownItem href="/" onClick={e => deleteOrderAction(e, info?.id)}>
-                                                <Trash className="me-50" size={15} />{" "}
-                                                <span className="align-middle">Delete</span>
-                                            </DropdownItem> */}
                                             <DropdownItem href="/" onClick={e => changeStatusAction(e, info)}>
                                                 <Edit3 className="me-50" size={15} />{" "}
                                                 <span className="align-middle">Change Delivary Status</span>
