@@ -7,9 +7,8 @@ const handleStatus = (value) => {
     console.log(`selected ${value}`)
 }
 
-const TaskFilter = () => {
+const TaskFilter = ({ setCurrentTask }) => {
     const { Search } = Input
-    const [searchTask, setCurrentTask] = useState([])
     const [activeSearchItem, setActiveSearchItem] = useState(null)
     const { RangePicker } = DatePicker
 
@@ -31,7 +30,7 @@ const TaskFilter = () => {
                     if (data.length > 0) {
                         
                         // setSearchTask(data)
-                        setCurrentTask(data[0].id)
+                        setCurrentTask(data)
                         // setActiveOrderData(data)
                     } else {
                         console.log("No data")

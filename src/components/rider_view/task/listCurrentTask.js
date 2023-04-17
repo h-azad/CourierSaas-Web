@@ -12,6 +12,7 @@ function CurrentTaskList() {
   const [activeTask, setActiveTask] = useState()
   const [task, setTask] = useState([])
   const [activeTaskData, setActiveTaskData] = useState(null)
+  const [currentTask, setCurrentTask] = useState([])
 
   const fetchRiderTaskData = () => {
     return useJwt
@@ -43,6 +44,21 @@ function CurrentTaskList() {
     setActiveTaskData(activeTaskFilter)
   }, [activeTask])
 
+  const fetchCurrentTaskData = () => {
+    return useJwt
+      .axiosGet(getApi(RIDER_CURRENT_TASK_LIST))
+      .then((res) => {
+        console.log(res.data)
+        setCurrentTask(res.data.data)
+        return res.data
+      })
+      .catch((err) => console.log(err))
+  }
+
+
+  useEffect(() => {
+    fetchCurrentTaskData()
+  }, [])
 
   return (
     <Fragment>
@@ -85,14 +101,14 @@ function CurrentTaskList() {
         <Col sm="4">
           <Card title="Bordered">
             <CardBody>
-              <TaskFilter setActiveTaskData={setActiveTaskData} task={task} setTask={setTask} activeTask={activeTask} setActiveTask={setActiveTask} /> 
+              <TaskFilter setCurrentTask={setCurrentTask} setActiveTaskData={setActiveTaskData}  task={task} setTask={setTask} activeTask={activeTask} setActiveTask={setActiveTask} /> 
             </CardBody>
           </Card>
         </Col>
         <Col sm="8">
           <Card title="Bordered">
             <CardBody>
-              <CurrentTaskView activeTaskData={activeTaskData} task={task} fetchRiderTaskData={fetchRiderTaskData} />
+              <CurrentTaskView currentTask={currentTask} activeTaskData={activeTaskData} task={task} fetchRiderTaskData={fetchRiderTaskData} />
             </CardBody>
           </Card>
         </Col>

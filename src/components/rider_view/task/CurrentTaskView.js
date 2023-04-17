@@ -15,11 +15,11 @@ import {
 } from "reactstrap"
 
 
-const CurrentTaskView = () => {
+const CurrentTaskView = ({ currentTask }) => {
     const [statusModalState, setStatusModalState] = useState(false)
     const [selectedStatus, setSelectedStatus] = useState(null)
     const [selectedInfo, setSelectedInfo] = useState(null)
-    const [currentTask, setCurrentTask] = useState([])
+    // const [currentTask, setCurrentTask] = useState([])
 
 
     useEffect(() => {
