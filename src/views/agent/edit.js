@@ -49,6 +49,7 @@ const EditAgent = () => {
   const {
     reset,
     resetField,
+    setValue,
     watch,
     control,
     setError,
@@ -63,7 +64,8 @@ const EditAgent = () => {
     const subscription = watch((value, { name, type }) => { 
       console.log(value, name, type)
       if(name == 'city' && type=='change'){
-        resetField('area')
+        // resetField('area')
+        setValue('area',null)
         fetchAreaData(value.city.value)
       }
     })
@@ -174,7 +176,8 @@ const EditAgent = () => {
       setError('city', { type: 'required', message: 'City is required' })
       isFormValid = false
     }
-    if(!data.area && data.area.value) {
+    console.log('data is ',data)
+    if(data.area === null) {
       setError('area', { type: 'required', message: ' Area is required' })
       isFormValid = false
     }
@@ -204,12 +207,12 @@ const EditAgent = () => {
         identity: data.identity?.value,
         identity_no: data.identity_no,
         email: data.email,
-        payment_method: data.payment_method.value,
+        payment_method: data.payment_method ? data.payment_method.value: marchantInfo.payment_method,
         bank_name: data.bank_name,
         bank_account_name: data.bank_account_name,
         bank_account_num: data.bank_account_num,
-        city: data.city.value,
-        area_id: data.area.value,
+        city: data.city? data.city.value : marchantInfo.city,
+        area_id: data.area? data.area.value : marchantInfo.area,
         address: data.address,
  
         status: 'active'
@@ -372,7 +375,7 @@ const EditAgent = () => {
                 Preferred Payment Method*
                 </Label>
                 <Controller
-                  defaultValue={{value: agentInfo.payment_method.id, label: agentInfo.payment_method.payment_method_name}}
+                  defaultValue={{value: agentInfo.payment_method, label: agentInfo.payment_info.payment_method_name}}
                   id="payment_method"
                   name="payment_method"
                   control={control}
@@ -445,7 +448,7 @@ const EditAgent = () => {
               City Name
             </Label>
             <Controller
-                  defaultValue={{value: agentInfo.city.id, label: agentInfo.city.city_name}}
+                  defaultValue={{value: agentInfo.city, label: agentInfo.city_info.city_name}}
                   id="city"
                   name="city"
                   control={control}
@@ -467,7 +470,7 @@ const EditAgent = () => {
                 Area Name
                 </Label>
                 <Controller
-                  defaultValue={{value: agentInfo.area.id, label: agentInfo.area.area_name}}
+                  defaultValue={{value: agentInfo.area, label: agentInfo.area_info.area_name}}
                   id="area"
                   name="area"
                   control={control}
