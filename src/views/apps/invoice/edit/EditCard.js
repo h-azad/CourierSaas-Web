@@ -4,14 +4,14 @@ import { useState } from 'react'
 // ** Third Party Components
 import Flatpickr from 'react-flatpickr'
 import Repeater from '@components/repeater'
-import { SlideDown } from 'react-slidedown'
+// import { SlideDown } from 'react-slidedown'
 import { X, Plus, Hash } from 'react-feather'
 
 // ** Reactstrap Imports
 import { Row, Col, Card, Input, Label, Button, CardBody, CardText, InputGroup, InputGroupText } from 'reactstrap'
 
 // ** Styles
-import 'react-slidedown/lib/slidedown.css'
+// import 'react-slidedown/lib/slidedown.css'
 import '@styles/react/libs/flatpickr/flatpickr.scss'
 import '@styles/base/pages/app-invoice.scss'
 
@@ -179,7 +179,7 @@ const InvoiceEditCard = ({ data }) => {
       <CardBody className='invoice-padding invoice-product-details'>
         <Repeater count={count}>
           {i => {
-            const Tag = i === 0 ? 'div' : SlideDown
+            const Tag = i === 0 ? 'div' : 'div'
             return (
               <Tag key={i} className='repeater-wrapper'>
                 <Row>

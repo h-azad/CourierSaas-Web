@@ -8,7 +8,7 @@ import Repeater from '@components/repeater'
 // ** Third Party Components
 import axios from 'axios'
 import Flatpickr from 'react-flatpickr'
-import { SlideDown } from 'react-slidedown'
+// import { SlideDown } from 'react-slidedown'
 import { X, Plus, Hash } from 'react-feather'
 import Select, { components } from 'react-select'
 
@@ -17,7 +17,7 @@ import { selectThemeColors } from '@utils'
 import { Row, Col, Card, Form, Input, Label, Button, CardBody, CardText, InputGroup, InputGroupText } from 'reactstrap'
 
 // ** Styles
-import 'react-slidedown/lib/slidedown.css'
+// import 'react-slidedown/lib/slidedown.css'
 import '@styles/react/libs/react-select/_react-select.scss'
 import '@styles/react/libs/flatpickr/flatpickr.scss'
 import '@styles/base/pages/app-invoice.scss'
@@ -288,7 +288,7 @@ const AddCard = () => {
         <CardBody className='invoice-padding invoice-product-details'>
           <Repeater count={count}>
             {i => {
-              const Tag = i === 0 ? 'div' : SlideDown
+              const Tag = i === 0 ? 'div' : 'div'
               return (
                 <Tag key={i} className='repeater-wrapper'>
                   <Row>
