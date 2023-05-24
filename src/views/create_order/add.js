@@ -30,6 +30,8 @@ const AddCreateOrder = () => {
   const [data, setData] = useState(null)
   const [charge, setCharge] = useState(null)
   const [amount, setAmount] = useState(null)
+  const [delivaryCharge, setDelivaryCharge] = useState()
+  const [amountCollected, SetAmountCollected] = useState()
   const navigate = useNavigate()
   const [inputValue, setInputValue] = useState('')
   const {
@@ -43,18 +45,18 @@ const AddCreateOrder = () => {
     formState: { errors }
   } = useForm({
     defaultValues: {
-      product_type: {},
-      marchant: {},
+      // product_type: {},
+      // marchant: {},
     }
   })
-  console.log("selectboxDelivaryCharge", selectboxDelivaryCharge)
+  // console.log("selectboxDelivaryCharge", selectboxDelivaryCharge)
   useEffect(() => {
     fetchMarchantData()
     fetchRiderData()
     fetchProductData()
     fetchAreaData()
     fetchPricingPolicyData()
-    fetchDelivaryChargeData()
+    // fetchDelivaryChargeData()
     fetchShipmentTypeData()
 
   }, [])
@@ -116,6 +118,7 @@ const AddCreateOrder = () => {
         let productData = []
 
         res.data.map(data => {
+          
           productData.push({ value: data.id, label: data.product_type })
         })
 
@@ -164,6 +167,8 @@ const AddCreateOrder = () => {
         let delivaryChargeData = []
 
         res.data.map(data => {
+          console.log('delivary charge', data)
+          setDelivaryCharge(data.delivary_charge)
           delivaryChargeData.push({ value: data.id, label: data.delivary_charge })
         })
 
@@ -177,8 +182,8 @@ const AddCreateOrder = () => {
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
       console.log(value, name, type)
-      if (name == 'policy_title' && type == 'change') {
-        fetchDelivaryChargeData(value.delivary_charge.value)
+      if (name == 'pricing_policy' && type == 'change') {
+        fetchDelivaryChargeData(value?.pricing_policy?.value)
       }
     })
 
@@ -213,11 +218,11 @@ const AddCreateOrder = () => {
   }
 
   const onSubmit = data => {
-    console.log("data", data)
+    console.log("from data", data)
 
     let isFormValid = true
 
-    if (!data.marchant && data.marchant.value) {
+    if (!data.marchant) {
       setError('marchant', { type: 'required', message: 'Marchant is required' })
       isFormValid = false
     }
@@ -263,7 +268,7 @@ const AddCreateOrder = () => {
       setError('delivary_charge', { type: 'required', message: 'Delivary Charge is required' })
       isFormValid = false
     }
-    if (!data.pickup_rider && data.pickup_rider.value) {
+    if (!data.pickup_rider) {
       setError('pickup_rider', { type: 'required', message: ' Pickup Rider is required' })
       isFormValid = false
     }
@@ -277,12 +282,12 @@ const AddCreateOrder = () => {
     }
 
     setData(data)
-    if (data.marchant.value !== null && data.recipient_name !== null && data.phone_number !== null
+    if (data.marchant !== null && data.recipient_name !== null && data.phone_number !== null
       && data.delivary_address !== null && data.amount_to_be_collected !== null
       && data.product_type.value !== null && data.delivary_area.value !== null
       && data.delivary_charge !== null && data.pricing_policy.value !== null
-      && data.shipment_type.value !== null && data.pickup_rider.value !== null
-      && data.warehouse_status.value !== null && data.order_type !== null
+      && data.shipment_type.value !== null && data.pickup_rider !== null
+      && data.warehouse_status !== null && data.order_type !== null
     ) {
 
       let formData = {
@@ -295,10 +300,10 @@ const AddCreateOrder = () => {
         delivary_area: data.delivary_area.value,
         pricing_policy: data.pricing_policy.value,
         shipment_type: data.shipment_type.value,
-        delivary_charge: data.delivary_charge,
+        delivary_charge: data.delivary_charge.label,
         order_type: data.order_type,
         pickup_rider: data.pickup_rider.value,
-        warehouse_status: data.warehouse_status,
+        warehouse_status: data.warehouse_status.value,
         status: 'accepted'
       }
 
@@ -337,11 +342,12 @@ const AddCreateOrder = () => {
 
               id='marchant'
               name='marchant'
+              defaultValue =""
               control={control}
 
               render={({ field }) => <Select
                 isClearable
-                className={classnames('react-select', { 'is-invalid': errors.marchant && errors.full_name.value && true })}
+                className={classnames('react-select', { 'is-invalid': errors.marchant && errors.marchant && true })}
                 classNamePrefix='select'
                 options={selectboxMarchant}
                 {...field}
@@ -419,11 +425,11 @@ const AddCreateOrder = () => {
                   Amount to be Collected
                 </Label>
                 <Controller
-                  defaultValue=''
+                  // defaultValue=''
                   control={control}
                   id='amount_to_be_collected'
                   name='amount_to_be_collected'
-                  render={({ field }) => <Input placeholder='' invalid={errors.amount_to_be_collected && true} {...field} />}
+                  render={({ field }) => <Input value={amountCollected} onChange={(e)=>SetAmountCollected(e.target.value)} placeholder='' invalid={errors.amount_to_be_collected && true} {...field} />}
                 />
                 {errors && errors.amount_to_be_collected && <span>{errors.amount_to_be_collected.message}</span>}
               </div>
@@ -557,6 +563,7 @@ const AddCreateOrder = () => {
                 <Controller
                   id='pickup_rider'
                   name='pickup_rider'
+                  defaultValue = ""
                   control={control}
                   render={({ field }) => <Select
                     isClearable
@@ -575,11 +582,18 @@ const AddCreateOrder = () => {
                   Warehouse Status
                 </Label>
                 <Controller
-                  defaultValue='False'
+                  defaultValue=''
                   control={control}
                   id='warehouse_status'
                   name='warehouse_status'
-                  render={({ field }) => <Input placeholder='' invalid={errors.warehouse_status && true} {...field} />}
+                  // render={({ field }) => <Input placeholder='' invalid={errors.warehouse_status && true} {...field} />}
+                  render={({ field }) => <Select
+                    isClearable
+                    className={classnames('react-select', { 'is-invalid': errors.warehouse_status && true })}
+                    classNamePrefix='select'
+                    options={[{value:'',label: 'Select'}, {value: true, label: "Yes"}, {value: false, label: "No"}]}
+                    {...field}
+                  />}
                 />
                 {errors && errors.warehouse_status && <span>{errors.warehouse_status.message}</span>}
               </div>
@@ -591,8 +605,9 @@ const AddCreateOrder = () => {
               <div class="col-lg-6">
               </div>
               <div class="col-lg-6">
-                <h5> Delivary charge = {charge} </h5>
-                <h5> Ammount to be collected =  </h5>
+                {/* <h5> Delivary charge = {charge} </h5> */}
+                <h5> Delivary charge = {delivaryCharge} </h5>
+                <h5> Ammount to be collected = {amountCollected} </h5>
                 <hr></hr>
                 <h5> Subtotal =  </h5>
                 <hr></hr>

@@ -27,7 +27,7 @@ const EditCreateOrder = () => {
   const [selectboxShipmentType, setSelectboxShipmentType] = useState([])
   const [createOrderInfo, setCreateOrderInfo] = useState(null)
   const [data, setData] = useState(null)
-  // console.log("createOrderInfo ======",createOrderInfo)
+  console.log("createOrderInfo ======",createOrderInfo)
   let { id } = useParams()
 
     useEffect(() => {
@@ -96,7 +96,7 @@ const EditCreateOrder = () => {
       .then((res) => {
         // console.log(res)
         let riderData = []
-
+        console.log('rider data res.data.data', res.data.data)
         res.data.data.map(data => {
           riderData.push({ value: data.id, label: data.full_name })
         })
@@ -466,7 +466,7 @@ const EditCreateOrder = () => {
                  Delivary Rider
                 </Label>
                 <Controller
-                defaultValue={{ value: createOrderInfo.delivary_rider.id, label: createOrderInfo.delivary_rider.full_name }}
+                // defaultValue={{ value: createOrderInfo.delivary_rider.id, label: createOrderInfo.delivary_rider.full_name }}
                     id="delivary_rider"
                     name="delivary_rider"
                   control={control}
@@ -575,7 +575,14 @@ const EditCreateOrder = () => {
                   control={control}
                     id='warehouse_status'
                     name='warehouse_status'
-                    render={({ field }) => <Input invalid={errors.warehouse_status && true} {...field} />}
+                    // render={({ field }) => <Input invalid={errors.warehouse_status && true} {...field} />}
+                    render={({ field }) => <Select
+                    isClearable
+                    className={classnames('react-select', { 'is-invalid': errors.warehouse_status && true })}
+                    classNamePrefix='select'
+                    options={[{value: true, label: "Yes"}, {value: false, label: "No"}]}
+                    {...field}
+                  />}
                 />
                   {errors && errors.warehouse_status && <span>{errors.warehouse_status.message}</span>}
               </div>

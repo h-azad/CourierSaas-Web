@@ -104,14 +104,14 @@ const Login = () => {
         //n
         .login(formData, headers)
         .then((res) => {
-          // console.log("res", res.data)
+           console.log("res", res.data)
           const data = { ...res.data.info, accessToken: res.data.token.access, refreshToken: res.data.token.refresh }
           console.log('data',data)
           dispatch(handleLogin(data))
           console.log(res.data.info.ability)
           abilityCtx.update(res.data.info.ability)
           // abilityCtx.update(dummyAbility)
-          console.log(getHomeRouteForLoggedInUser(data.role))
+          console.log("role" , getHomeRouteForLoggedInUser(data.role))
           navigate(getHomeRouteForLoggedInUser(data.role))
           toast(t => (
             <ToastContent t={t} role={data.role || 'admin'} name={data.name || 'John Doe'} />
