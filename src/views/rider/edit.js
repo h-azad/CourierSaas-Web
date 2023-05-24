@@ -27,7 +27,7 @@ const EditRider = () => {
   const [selectboxArea, setSelectboxArea] = useState([])
   const [data, setData] = useState(null)
   const [riderInfo, setRiderInfo] = useState(null)
-
+  console.log('rider info', riderInfo)
   let { id } = useParams()
 
   useEffect(() => {
@@ -48,6 +48,7 @@ const EditRider = () => {
   const navigate = useNavigate()
   const {
     reset,
+    setValue,
     resetField,
     watch,
     control,
@@ -63,7 +64,7 @@ const EditRider = () => {
     const subscription = watch((value, { name, type }) => { 
       console.log(value, name, type)
       if(name == 'city' && type=='change'){
-        resetField('area')
+        setValue('area',null)
         fetchAreaData(value.city.value)
       }
     })
@@ -174,7 +175,7 @@ const EditRider = () => {
       setError('city', { type: 'required', message: 'City is required' })
       isFormValid = false
     }
-    if(!data.area && data.area.value) {
+    if(data.area === null) {
       setError('area', { type: 'required', message: ' Area is required' })
       isFormValid = false
     }
@@ -204,12 +205,13 @@ const EditRider = () => {
         identity: data.identity?.value,
         identity_no: data.identity_no,
         email: data.email,
-        payment_method: data.payment_method.value,
+        // payment_method: data.payment_method.value,
+        payment_method: data.payment_method ? data.payment_method.value: marchantInfo.payment_method,
         bank_name: data.bank_name,
         bank_account_name: data.bank_account_name,
         bank_account_num: data.bank_account_num,
-        city: data.city.value,
-        area_id: data.area.value,
+        city: data.city? data.city.value : marchantInfo.city,
+        area_id: data.area? data.area.value : marchantInfo.area,
         address: data.address,
  
         status: 'active'
@@ -371,7 +373,7 @@ const EditRider = () => {
                     Preferred Payment Method*
                   </Label>
                   <Controller
-                    defaultValue={{ value: riderInfo.payment_method.id, label: riderInfo.payment_method.payment_method_name }}
+                    defaultValue={{ value: riderInfo.payment_method, label: riderInfo.payment_info.payment_method_name }}
                     id="payment_method"
                     name="payment_method"
                     control={control}
@@ -444,7 +446,7 @@ const EditRider = () => {
               City Name
             </Label>
             <Controller
-                  defaultValue={{value: riderInfo.city.id, label: riderInfo.city.city_name}}
+                  defaultValue={{value: riderInfo.city, label: riderInfo.city_info.city_name}}
                   id="city"
                   name="city"
                   control={control}
@@ -466,7 +468,7 @@ const EditRider = () => {
                 Area Name
                 </Label>
                 <Controller
-                  defaultValue={{value: riderInfo.area.id, label: riderInfo.area.area_name}}
+                  defaultValue={{value: riderInfo.area, label: riderInfo.area_info.area_name}}
                   id="area"
                   name="area"
                   control={control}

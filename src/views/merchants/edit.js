@@ -28,7 +28,6 @@ const EditMerchants = () => {
   const [data, setData] = useState(null)
   const [marchantInfo, setMarchantInfo] = useState(null)
 
-
   let { id } = useParams()
 
   useEffect(() => {
@@ -55,6 +54,7 @@ const EditMerchants = () => {
     setError,
     handleSubmit,
     register,
+    setValue,
     formState: { errors }
   } = useForm({
     mode: 'onChange',
@@ -64,7 +64,7 @@ const EditMerchants = () => {
     const subscription = watch((value, { name, type }) => { 
       console.log(value, name, type)
       if(name == 'city' && type=='change'){
-        resetField('area')
+        setValue('area',null)
         fetchAreaData(value.city.value)
       }
     })
@@ -175,7 +175,7 @@ const EditMerchants = () => {
       setError('city', { type: 'required', message: 'City is required' })
       isFormValid = false
     }
-    if(!data.area && data.area.value) {
+    if(data.area === null) {
       setError('area', { type: 'required', message: ' Area is required' })
       isFormValid = false
     }
@@ -202,7 +202,7 @@ const EditMerchants = () => {
       && data.payment_method.value !== null &&  data.bank_name !== null &&  data.bank_account_name !== null 
       && data.bank_account_num !== null &&  data.city.value !== null &&  data.area.value!== null
       && data.business_name !== null &&  data.address !== null &&  data.pickup_address !== null  ) {
-
+console.log('data.payment_method', data.payment_method)
 
       let formData = {
         name: data.full_name,
@@ -211,12 +211,14 @@ const EditMerchants = () => {
         identity: data.identity?.value,
         identity_no: data.identity_no,
         email: data.email,
-        payment_method: data.payment_method.value,
+        payment_method: data.payment_method ? data.payment_method.value: marchantInfo.payment_method,
         bank_name: data.bank_name,
         bank_account_name: data.bank_account_name,
         bank_account_num: data.bank_account_num,
-        city: data.city.value,
-        area_id: data.area.value,
+        city: data.city? data.city.value : marchantInfo.city,
+        // payment_method: data.payment_method ? data.payment_method.value: marchantInfo.payment_method,
+        // area_id: data.area.value,
+        area_id: data.area? data.area.value : marchantInfo.area,
         business_name: data.business_name,
         address: data.address,
         pickup_address: data.pickup_address,
@@ -380,7 +382,7 @@ const EditMerchants = () => {
                 Preferred Payment Method*
                 </Label>
                 <Controller
-                  defaultValue={{ value: marchantInfo.payment_method.id, label: marchantInfo.payment_method.payment_method_name }}
+                  defaultValue={{ value: marchantInfo.payment_method, label: marchantInfo.payment_info.payment_method_name }}
                   id="payment_method"
                   name="payment_method"
                   control={control}
@@ -453,7 +455,7 @@ const EditMerchants = () => {
               City Name
             </Label>
             <Controller
-                  defaultValue={{value: marchantInfo.city.id, label: marchantInfo.city.city_name}}
+                  defaultValue={{value: marchantInfo.city, label: marchantInfo.city_info.city_name}}
                   id="city"
                   name="city"
                   control={control}
@@ -475,7 +477,7 @@ const EditMerchants = () => {
                 Area Name
                 </Label>
                 <Controller
-                  defaultValue={{value: marchantInfo.area.id, label: marchantInfo.area.area_name}}
+                  defaultValue={{value: marchantInfo.area, label: marchantInfo.area_info.area_name}}
                   id="area"
                   name="area"
                   control={control}

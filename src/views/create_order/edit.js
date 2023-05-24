@@ -31,13 +31,13 @@ const EditCreateOrder = () => {
   let { id } = useParams()
 
     useEffect(() => {
-    console.log(id)
+    // console.log(id)
     useJwt
       .axiosGet(getApi(CREATE_ORDER_DETAILS) + id + "/")
       .then((res) => {
-        console.log("res", res.data)
+        // console.log("res", res.data)
         setCreateOrderInfo(res.data)
-        console.log(identity.find(id => id.value == createOrderInfo.identity))
+        // console.log(identity.find(id => id.value == createOrderInfo.identity))
         return res.data
        
       })
@@ -57,8 +57,8 @@ const EditCreateOrder = () => {
     formState: { errors }
   } = useForm({
     defaultValues: {
-      product_type: {},
-      marchant: {},
+      // product_type: {},
+      // marchant: {},
 
 
     }
@@ -78,7 +78,7 @@ const EditCreateOrder = () => {
     return useJwt
       .axiosGet(getApi(MARCHANT_LIST))
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         let marchantData = []
 
         res.data.data.map(data => {
@@ -94,7 +94,7 @@ const EditCreateOrder = () => {
     return useJwt
       .axiosGet(getApi(RIDER_LIST))
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         let riderData = []
 
         res.data.data.map(data => {
@@ -159,7 +159,7 @@ const EditCreateOrder = () => {
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
-      console.log(value, name, type)
+      // console.log(value, name, type)
       if (name == 'product_type' && type == 'change') {
         fetchPricingPolicyData(value.product_type.value)
       }
@@ -169,11 +169,11 @@ const EditCreateOrder = () => {
   }, [watch])
 
   function setDeliveryCharge(policyID) {
-    console.log(policyID)
+    // console.log(policyID)
     if (policiesData && policyID) {
       const parcelInfo = policiesData.find(x => x.id == policyID)
-      console.log('policiesData', policiesData)
-      console.log('parcelInfo', policyID, parcelInfo)
+      // console.log('policiesData', policiesData)
+      // console.log('parcelInfo', policyID, parcelInfo)
       parcelInfo ? setValue('delivary_charge', parcelInfo.delivary_charge) : null
     }
 
@@ -194,7 +194,7 @@ const EditCreateOrder = () => {
   }
 
   const onSubmit = data => {
-    console.log("data", data)
+    // console.log("data", data)
 
     let isFormValid = true
 
@@ -283,7 +283,7 @@ const EditCreateOrder = () => {
         status: 'accepted'
       }
 
-      console.log("formData", formData)
+      // console.log("formData", formData)
       const headers = {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -294,7 +294,7 @@ const EditCreateOrder = () => {
         // .axiosPost(getApi(CREATE_ORDER_EDIT), formData)
         .axiosPut(getApi(CREATE_ORDER_EDIT) + id + "/", formData, headers)
         .then((res) => {
-          console.log("res", res.data)
+          // console.log("res", res.data)
           SwalAlert("Order Edited Successfully")
           navigate("/create_order")
         })
@@ -336,8 +336,8 @@ const EditCreateOrder = () => {
           </div>
             
 
-          <div class="row">
-            <div class="col-lg-6">
+          <div className="row">
+            <div className="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='recipient_name'>
                   Recipient Name
@@ -352,7 +352,7 @@ const EditCreateOrder = () => {
                 {errors && errors.recipient_name && <span>{errors.recipient_name.message}</span>}
               </div>
             </div>
-            <div class="col-lg-6">
+            <div className="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='phone_number'>
                   Phone Number
@@ -394,8 +394,8 @@ const EditCreateOrder = () => {
             />
             {errors && errors.amount_to_be_collected && <span>{errors.amount_to_be_collected.message}</span>}
           </div>
-          <div class="row">
-            <div class="col-lg-6">
+          <div className="row">
+            <div className="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='product_type'>
                   Product Type
@@ -416,7 +416,7 @@ const EditCreateOrder = () => {
                 {errors && errors.product_type && <span className="invalid-feedback">{errors.product_type.message}</span>}
               </div>
             </div>
-            <div class="col-lg-6">
+            <div className="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='area'>
                   Percel Type(Pricing Policy)
@@ -438,8 +438,8 @@ const EditCreateOrder = () => {
               </div>
             </div>
           </div>
-          <div class="row">
-              <div class="col-lg-6">
+          <div className="row">
+              <div className="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='area'>
                   Shipment Type
@@ -460,12 +460,13 @@ const EditCreateOrder = () => {
 
               </div>
               </div>
-            <div class="col-lg-6">
+            <div className="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='area'>
                  Delivary Rider
                 </Label>
                 <Controller
+                defaultValue={{ value: createOrderInfo.delivary_rider.id, label: createOrderInfo.delivary_rider.full_name }}
                     id="delivary_rider"
                     name="delivary_rider"
                   control={control}
@@ -483,8 +484,8 @@ const EditCreateOrder = () => {
             </div>
           </div>
          
-          <div class="row">
-            <div class="col-lg-6">
+          <div className="row">
+            <div className="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='delivary_area'>
                   Delivary Area
@@ -505,7 +506,7 @@ const EditCreateOrder = () => {
                 {errors && errors.delivary_area && <span className="invalid-feedback">{errors.delivary_area.message}</span>}
               </div>
             </div>
-            <div class="col-lg-6">
+            <div className="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='delivary_charge'>
                   Delivary Charge
@@ -521,8 +522,8 @@ const EditCreateOrder = () => {
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-lg-6">
+          <div className="row">
+            <div className="col-lg-6">
                 <div className='mb-1'>
                   <Label className='form-label' for='pickup_rider'>
                    Pickup Rider
@@ -564,7 +565,7 @@ const EditCreateOrder = () => {
                   {errors && errors.pickup_rider && <span className="invalid-feedback">{errors.pickup_rider.message}</span>}
               </div> */}
             </div>
-            <div class="col-lg-6">
+            <div className="col-lg-6">
               <div className='mb-1'>
                   <Label className='form-label' for='warehouse_status'>
                     Warehouse Status
