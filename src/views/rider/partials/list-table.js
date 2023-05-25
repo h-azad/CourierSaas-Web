@@ -21,6 +21,7 @@ import {
   RIDER_LIST,
   RIDER_DELETE,
   RIDER_SEARCH,
+  RIDER_SEARCH_FILTER,
 } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
@@ -92,7 +93,8 @@ const ListTable = () => {
 
   const fetchSearchRidersData = searchTerm => {
     return useJwt
-      .axiosGet(getApi(RIDER_SEARCH)+'?search='+ searchTerm)
+      // .axiosGet(getApi(RIDER_SEARCH)+'?search='+ searchTerm) //after line
+      .axiosGet(getApi(RIDER_SEARCH_FILTER)+'?search='+ searchTerm)
       .then((res) => {
         return res.data
       })

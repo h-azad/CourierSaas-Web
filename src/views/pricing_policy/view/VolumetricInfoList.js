@@ -38,7 +38,7 @@ const PricingInfoList = ({userInfo}) => {
               <th>{userInfo.max_weight}</th>
             </tr>
             <tr>
-              <th>Per Dimention</th>
+              <th>Shipping Charge</th>
               <th>{userInfo.per_dimention}</th>
             </tr>
             <tr>

@@ -31,14 +31,14 @@ const AddPricingPolicy = () => {
   } = useForm({
     defaultValues: {
       pricing_policy: '',
-      product_type: {},   
+      product_type: {},
 
     }
   })
 
   useEffect(() => {
     fetchProductData()
-  },[])
+  }, [])
 
   const fetchProductData = () => {
     return useJwt
@@ -47,7 +47,7 @@ const AddPricingPolicy = () => {
         let productData = []
 
         res.data.map(data => {
-          productData.push({value: data.id, label: data.product_type})
+          productData.push({ value: data.id, label: data.product_type })
         })
 
         setSelectboxProduct(productData)
@@ -61,45 +61,45 @@ const AddPricingPolicy = () => {
 
     let isFormValid = true
 
-    if(!data.policy_title) {
+    if (!data.policy_title) {
       setError('policy_title', { type: 'required', message: 'Policy Title is required' })
       isFormValid = false
     }
 
-    if(!(data.product_type && data.product_type.value)) {
+    if (!(data.product_type && data.product_type.value)) {
       setError('product_type', { type: 'required', message: 'Product Type is required' })
       isFormValid = false
     }
-    if(!data.delivary_charge) {
+    if (!data.delivary_charge) {
       setError('delivary_charge', { type: 'required', message: 'Delivary Charge is required' })
       isFormValid = false
-    } 
-    if(!data.min_dimention) {
+    }
+    if (!data.min_dimention) {
       setError('min_dimention', { type: 'required', message: 'Min Dimention is required' })
       isFormValid = false
-    } 
-    if(!data.max_dimention) {
+    }
+    if (!data.max_dimention) {
       setError('max_dimention', { type: 'required', message: 'Max Dimention is required' })
       isFormValid = false
-    } 
-    if(!data.max_weight) {
+    }
+    if (!data.max_weight) {
       setError('max_weight', { type: 'required', message: 'Max Weight is required' })
       isFormValid = false
-    } 
-    if(!data.additional_charge) {
+    }
+    if (!data.additional_charge) {
       setError('additional_charge', { type: 'required', message: 'Additional Charge is required' })
       isFormValid = false
-    } 
-    if(!data.per_dimention) {
+    }
+    if (!data.per_dimention) {
       setError('per_dimention', { type: 'required', message: 'Per Dimention is required' })
       isFormValid = false
-    } 
-    if(!data.cod_charge) {
+    }
+    if (!data.cod_charge) {
       setError('cod_charge', { type: 'required', message: 'COD Charge is required' })
       isFormValid = false
     }
-   
-    if(!isFormValid) {
+
+    if (!isFormValid) {
       return false
     }
 
@@ -140,24 +140,24 @@ const AddPricingPolicy = () => {
       </CardHeader>
 
       <CardBody>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-1'>
-              <Label className='form-label' for='product_type'>
-                 Product Type
-              </Label>
-              <Controller
-                  id="product_type"
-                  name="product_type"
-                  control={control}
-                  render={({ field }) => <Select 
-                    isClearable
-                    className={classnames('react-select', { 'is-invalid': errors.product_type && true })} 
-                    classNamePrefix='select'
-                    options={selectboxProduct} 
-                    {...field} 
-                  />}
-                />
-              {errors && errors.product_type && <span>{errors.product_type.message}</span>}
+            <Label className='form-label' for='product_type'>
+              Product Type
+            </Label>
+            <Controller
+              id="product_type"
+              name="product_type"
+              control={control}
+              render={({ field }) => <Select
+                isClearable
+                className={classnames('react-select', { 'is-invalid': errors.product_type && true })}
+                classNamePrefix='select'
+                options={selectboxProduct}
+                {...field}
+              />}
+            />
+            {errors && errors.product_type && <span>{errors.product_type.message}</span>}
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='policy_title'>
@@ -182,7 +182,7 @@ const AddPricingPolicy = () => {
               control={control}
               id='delivary_charge'
               name='delivary_charge'
-              render={({ field }) => <Input placeholder='' invalid={errors.delivary_charge && true} {...field} />}
+              render={({ field }) => <Input type="number" placeholder='' invalid={errors.delivary_charge && true} {...field} />}
             />
             {errors && errors.delivary_charge && <span>{errors.delivary_charge.message}</span>}
           </div>
@@ -191,14 +191,14 @@ const AddPricingPolicy = () => {
             <div class="col-lg-4">
               <div className='mb-1'>
                 <Label className='form-label' for='min_dimention'>
-                Min Dimension
+                  Min Dimension
                 </Label>
                 <Controller
                   defaultValue=''
                   control={control}
                   id='min_dimention'
                   name='min_dimention'
-                  render={({ field }) => <Input placeholder='' invalid={errors.min_dimention && true} {...field} />}
+                  render={({ field }) => <Input type="number" placeholder='' invalid={errors.min_dimention && true} {...field} />}
                 />
                 {errors && errors.min_dimention && <span>{errors.min_dimention.message}</span>}
               </div>
@@ -206,14 +206,14 @@ const AddPricingPolicy = () => {
             <div class="col-lg-4">
               <div className='mb-1'>
                 <Label className='form-label' for='max_dimention'>
-                Max Dimension
+                  Max Dimension
                 </Label>
                 <Controller
                   defaultValue=''
                   control={control}
                   id='max_dimention'
                   name='max_dimention'
-                  render={({ field }) => <Input placeholder='' invalid={errors.max_dimention && true} {...field} />}
+                  render={({ field }) => <Input type="number" placeholder='' invalid={errors.max_dimention && true} {...field} />}
                 />
                 {errors && errors.max_dimention && <span>{errors.max_dimention.message}</span>}
               </div>
@@ -221,14 +221,14 @@ const AddPricingPolicy = () => {
             <div class="col-lg-4">
               <div className='mb-1'>
                 <Label className='form-label' for='max_weight'>
-                Max Weight / KG
+                  Max Weight / KG
                 </Label>
                 <Controller
                   defaultValue=''
                   control={control}
                   id='max_weight'
                   name='max_weight'
-                  render={({ field }) => <Input placeholder='' invalid={errors.max_weight && true} {...field} />}
+                  render={({ field }) => <Input type="number" placeholder='' invalid={errors.max_weight && true} {...field} />}
                 />
                 {errors && errors.max_weight && <span>{errors.max_weight.message}</span>}
               </div>
@@ -236,45 +236,47 @@ const AddPricingPolicy = () => {
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='additional_charge'>
-            Addition Charge
+              Addition Charge
             </Label>
             <Controller
               defaultValue=''
               control={control}
               id='additional_charge'
               name='additional_charge'
-              render={({ field }) => <Input placeholder='' invalid={errors.additional_charge && true} {...field} />}
+              render={({ field }) => <Input type="number" placeholder='' invalid={errors.additional_charge && true} {...field} />}
             />
             {errors && errors.additional_charge && <span>{errors.additional_charge.message}</span>}
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='per_dimention'>
-            Per Dimension
+              Shipping Charge
             </Label>
             <Controller
               defaultValue=''
               control={control}
               id='per_dimention'
               name='per_dimention'
-              render={({ field }) => <Input placeholder='' invalid={errors.per_dimention && true} {...field} />}
+              render={({ field }) => <Input type="number" placeholder='' invalid={errors.per_dimention && true} {...field} />}
             />
             {errors && errors.per_dimention && <span>{errors.per_dimention.message}</span>}
           </div>
-          
+
           <div className='mb-1'>
             <Label className='form-label' for='cod_charge'>
-            COD Charge
+              COD Charge (%)
             </Label>
             <Controller
-              defaultValue=''
+
+              // defaultValue=''
               control={control}
               id='cod_charge'
               name='cod_charge'
-              render={({ field }) => <Input placeholder='' invalid={errors.cod_charge && true} {...field} />}
+              render={({ field }) => <Input placeholder='' type="number"
+                invalid={errors.cod_charge && true} {...field} />}
             />
             {errors && errors.cod_charge && <span>{errors.cod_charge.message}</span>}
           </div>
-          
+
           <div className='d-flex'>
             <Button className='me-1' color='primary' type='submit'>
               Submit

@@ -100,13 +100,15 @@ const changeStatusAction = (e, info) => {
     if (searchTerm.length > 0) {
       fetchSearchCreateOrderData(searchTerm)
         .then(data => {
-          if (data.length > 0) {
+          if (data?.length > 0) {
             console.log('res', data)
             setCreateOrder(data)
           }else{
             console.log("No data")
           }
         })
+    }else{
+      fetchCreateOrderData()
     }
     
   }, 300)
