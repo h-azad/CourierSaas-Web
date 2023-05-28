@@ -111,16 +111,18 @@ const ListTable = () => {
   const handleSearch = debounce(e => {
     console.log(e.target.value)
     const searchTerm = e.target.value
-    if (searchTerm.length > 2) {
+    if (searchTerm.length > 0) {
       fetchSearchAgentData(searchTerm)
         .then(data => {
-          if (data.length > 0) {
+          if (data?.length > 0) {
             console.log('res', data)
             setAgent(data)
           }else{
             console.log("No data")
           }
         })
+    }else{
+      fetchAgentData()
     }
     
   }, 300)

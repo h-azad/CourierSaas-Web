@@ -21,6 +21,7 @@ import {
   MARCHANT_LIST,
   MARCHANT_DELETE,
   MARCHANT_SEARCH,
+  MARCHANT_SEARCH_FILTER,
   MARCHANT_UPDATE_STATUS
 } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
@@ -58,7 +59,7 @@ const ListTable = () => {
     console.log("selectedStatus", selectedStatus)
   // return false
   useJwt
-  .axiosPatch(getApi(MARCHANT_UPDATE_STATUS) + selectedInfo.id + "/")
+  .axiosPatch(getApi(MARCHANT_UPDATE_STATUS) + selectedInfo.id + "/", {status: selectedStatus})
   .then((res) => {
     console.log("res", res.data)
     setStatusModalState(false)
@@ -100,31 +101,33 @@ const ListTable = () => {
       .catch((err) => console.log(err))
   }
 
-  // const fetchSearchMerchantsData = searchTerm => {
-  //   return useJwt
-  //     .axiosGet(getApi(MARCHANT_SEARCH)+'?search='+ searchTerm)
-  //     .then((res) => {
-  //       return res.data
-  //     })
-  //     .catch((err) => console.log(err))
-  // }
+  const fetchSearchMerchantsData = searchTerm => {
+    return useJwt
+      .axiosGet(getApi(MARCHANT_SEARCH_FILTER)+'?search='+ searchTerm)
+      .then((res) => {
+        return res.data
+      })
+      .catch((err) => console.log(err))
+  }
 
-  // const handleSearch = debounce(e => {
-  //   console.log(e.target.value)
-  //   const searchTerm = e.target.value
-  //   if (searchTerm.length > 2) {
-  //     fetchSearchMerchantsData(searchTerm)
-  //       .then(data => {
-  //         if (data.length > 0) {
-  //           console.log('res', data)
-  //           setMerchants(data)
-  //         }else{
-  //           console.log("No data")
-  //         }
-  //       })
-  //   }
+  const handleSearch = debounce(e => {
+    console.log(e.target.value)
+    const searchTerm = e.target.value
+    if (searchTerm.length > 0) {
+      fetchSearchMerchantsData(searchTerm)
+        .then(data => {
+          if (data?.length > 0) {
+            console.log('res', data)
+            setMerchants(data)
+          }else{
+            console.log("No data")
+          }
+        })
+    }else{
+      fetchMerchantsData()
+    }
     
-  // }, 300)
+  }, 300)
 
   const clearData = () => {
     setSelectedInfo(null)
@@ -164,7 +167,7 @@ const ListTable = () => {
                 type="text"
                 class="form-control"
                 // value=""
-                // onChange={handleSearch}
+                onChange={handleSearch}
               />
               <Button.Ripple className="btn-icon ms-1" outline color="primary">
                 <Search size={16} />

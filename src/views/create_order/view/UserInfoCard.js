@@ -1,6 +1,7 @@
 // ** React Imports
 import { useState, Fragment } from 'react'
-
+import useJwt from "@src/auth/jwt/useJwt"
+import { getApi,  ORDER_STATUS_UPDATE} from '../../../constants/apiUrls'
 // ** Reactstrap Imports
 import { Row, Col, Card, Form, CardBody, Button, Badge, Modal, Input, Label, ModalBody, ModalHeader } from 'reactstrap'
 
@@ -48,7 +49,7 @@ const UserInfoCard = ({ selectedUser }) => {
   // ** State
   const [show, setShow] = useState(false)
   const [statusModalState, setStatusModalState] = useState(false)
-  const [selectedStatus, setSelectedStatus] = useState(null)
+  const [selectedStatus, setSelectedStatus] = useState(selectedUser?.status)
   const [selectedInfo, setSelectedInfo] = useState(null)
 
   const navigate = useNavigate()
@@ -78,7 +79,7 @@ const UserInfoCard = ({ selectedUser }) => {
       return (
         <Avatar
           initials
-          color={selectedUser?.avatarColor|| 'light-primary'}
+          color={selectedUser?.avatarColor || 'light-primary'}
           className='rounded mt-3 mb-2'
           content={selectedUser?.recipient_name}
           contentStyles={{
@@ -98,25 +99,18 @@ const UserInfoCard = ({ selectedUser }) => {
 
   const updateStatusAction = (e) => {
     e.preventDefault()
-    console.log("selectedInfo", selectedInfo)
-    console.log("selectedStatus", selectedStatus)
-    return false
-    // useJwt
-    // .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
-    // .then((res) => {
-    //   console.log("res", res.data)
-    //   setStatusModalState(false)
-    //   // SwalAlert("Deleted Successfully")
-    
-    // })
-    // .finally(() => fetchShipmentData())
-    
+    useJwt
+    .axiosPatch(getApi(ORDER_STATUS_UPDATE) + selectedInfo.id + "/",{status: selectedStatus})
+    .then((res) => {
+      console.log("res", res.data)
+      setStatusModalState(false)
+    })
   }
 
   const changeStatusAction = (e, info) => {
     e.preventDefault()
     setStatusModalState(true)
-    setSelectedStatus(info.status)
+    setSelectedStatus(selectedStatus)
     setSelectedInfo(info)
   }
 
@@ -125,21 +119,21 @@ const UserInfoCard = ({ selectedUser }) => {
     <Fragment>
       <Card>
         <CardBody>
-        <div className='user-avatar-section'>
+          <div className='user-avatar-section'>
             <div className='d-flex align-items-center flex-column'>
               {renderUserImg()}
               <div className='d-flex flex-column align-items-center text-center'>
                 <div className='user-info'>
                   <h4>{selectedUser?.recipient_name}</h4>
-                  
+
                   <Badge color={roleColors['Order']} className='text-capitalize'>
-                      {selectedUser.status}
-                   </Badge>
+                    {selectedUser.status}
+                  </Badge>
                 </div>
               </div>
             </div>
           </div>
-      
+
           <div className='d-flex justify-content-around my-2 pt-75'>
             <div className='d-flex align-items-start me-2'>
               <Badge color='light-primary' className='rounded p-75'>
@@ -180,13 +174,13 @@ const UserInfoCard = ({ selectedUser }) => {
             <Button color='primary' onClick={() => { navigate("/create_order/edit/" + selectedUser.id) }}>
               Edit
             </Button>
-            <Button className='ms-1' color='danger' outline onClick={e=>changeStatusAction(e, selectedUser)}>
+            <Button className='ms-1' color='danger' outline onClick={e => changeStatusAction(e, selectedUser)}>
               Change Status
             </Button>
           </div>
         </CardBody>
       </Card>
-   
+
       <StatusModal
         statusModalState={statusModalState}
         setStatusModalState={setStatusModalState}
@@ -194,22 +188,89 @@ const UserInfoCard = ({ selectedUser }) => {
         title={"Change Order Status"}
       >
         <div className='demo-inline-spacing'>
+          <div className="form-check">
+            <Input
+              type="radio"
+              name="ex1"
+              id="ex1-pending"
+              checked={selectedStatus == "pending" ? true : false}
+              onChange={() => setSelectedStatus("pending")}
+            />
+            <Label className="form-check-label" for="ex1-pending">
+              Pending
+            </Label>
+          </div>
           <div className='form-check'>
             <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "accepted" ? true : false} onChange={() => setSelectedStatus("accepted")} />
             <Label className='form-check-label' for='ex1-active'>
-            Accepted
+              Accepted
+            </Label>
+          </div>
+          <div className="form-check">
+            <Input
+              type="radio"
+              id="ex1-active"
+              name="ex1"
+              checked={selectedStatus == "pickedup" ? true : false}
+              onChange={() => setSelectedStatus("pickedup")}
+            />
+            <Label className="form-check-label" for="ex1-active">
+              Pickedup
+            </Label>
+          </div>
+          <div className="form-check">
+            <Input
+              type="radio"
+              id="ex1-active"
+              name="ex1"
+              checked={selectedStatus == "shipped" ? true : false}
+              onChange={() => setSelectedStatus("shipped")}
+            />
+            <Label className="form-check-label" for="ex1-active">
+              Shipped
+            </Label>
+          </div>
+          <div className="form-check">
+            <Input
+              type="radio"
+              id="ex1-active"
+              name="ex1"
+              checked={selectedStatus == "hold" ? true : false}
+              onChange={() => setSelectedStatus("hold")}
+            />
+            <Label className="form-check-label" for="ex1-active">
+              Hold
+            </Label>
+          </div>
+          <div className="form-check">
+            <Input
+              type="radio"
+              id="ex1-active"
+              name="ex1"
+              checked={selectedStatus == "returned" ? true : false}
+              onChange={() => setSelectedStatus("returned")}
+            />
+            <Label className="form-check-label" for="ex1-active">
+              Returned
+            </Label>
+          </div>
+
+          <div className="form-check">
+            <Input
+              type="radio"
+              id="ex1-active"
+              name="ex1"
+              checked={selectedStatus == "cancelled" ? true : false}
+              onChange={() => setSelectedStatus("cancelled")}
+            />
+            <Label className="form-check-label" for="ex1-active">
+              Cancelled
             </Label>
           </div>
           <div className='form-check'>
             <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "delivered" ? true : false} onChange={() => setSelectedStatus("delivered")} />
             <Label className='form-check-label' for='ex1-inactive'>
-            Delivered
-            </Label>
-          </div>
-          <div className='form-check'>
-            <Input type='radio' name='ex1' id='ex1-pending' checked={selectedStatus == "pending" ? true : false} onChange={() => setSelectedStatus("pending")} />
-            <Label className='form-check-label' for='ex1-pending'>
-             Pending
+              Delivered
             </Label>
           </div>
         </div>

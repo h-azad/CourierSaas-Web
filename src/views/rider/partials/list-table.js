@@ -61,6 +61,8 @@ const ListTable = () => {
 }
 
 
+
+
   const changeStatusAction = (e, info) => {
     e.preventDefault()
     setStatusModalState(true)
@@ -104,7 +106,7 @@ const ListTable = () => {
   const handleSearch = debounce(e => {
     console.log(e.target.value)
     const searchTerm = e.target.value
-    if (searchTerm.length > 2) {
+    if (searchTerm.length > 0) {
       fetchSearchRidersData(searchTerm)
         .then(data => {
           if (data.length > 0) {
@@ -114,6 +116,8 @@ const ListTable = () => {
             console.log("No data")
           }
         })
+    }else{
+      fetchRiderData()
     }
     
   }, 300)

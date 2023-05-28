@@ -16,7 +16,7 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, PRODUCT_TYPE_LIST, PRODUCT_TYPE_DELETE,SEARCH_PRODUCT } from "../../../constants/apiUrls"
+import { getApi, PRODUCT_TYPE_LIST, PRODUCT_TYPE_DELETE,SEARCH_PRODUCT, SEARCH_PRODUCT_TYPE } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
@@ -94,7 +94,7 @@ const ListTable = () => {
 
   const fetchSearchProductData = searchTerm => {
     return useJwt
-      .axiosGet(getApi(SEARCH_PRODUCT)+'?search='+ searchTerm)
+      .axiosGet(getApi(SEARCH_PRODUCT_TYPE)+'?search='+ searchTerm)
       .then((res) => {
         return res.data
       })
@@ -107,13 +107,15 @@ const ListTable = () => {
     if (searchTerm.length > 2) {
       fetchSearchProductData(searchTerm)
         .then(data => {
-          if (data.length > 0) {
+          if (data?.length > 0) {
             console.log('res', data)
             setProduct(data)
           }else{
             console.log("No data")
           }
         })
+    }else{
+      fetchProductData()
     }
     
   }, 300)

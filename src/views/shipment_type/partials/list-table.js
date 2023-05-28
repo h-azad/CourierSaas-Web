@@ -16,7 +16,7 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, SHIPMENT_TYPE_LIST, SHIPMENT_TYPE_DELETE,SEARCH_SHIPMENT,SHIPMENT_UPDATE_STATUS} from "../../../constants/apiUrls"
+import { getApi, SHIPMENT_TYPE_LIST, SHIPMENT_TYPE_DELETE,SEARCH_SHIPMENT,SHIPMENT_UPDATE_STATUS, SEARCH_SHIPMENT_TYPE} from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
@@ -97,7 +97,7 @@ const ListTable = () => {
 
   const fetchSearchShipmentData = searchTerm => {
     return useJwt
-      .axiosGet(getApi(SEARCH_SHIPMENT)+'?search='+ searchTerm)
+      .axiosGet(getApi(SEARCH_SHIPMENT_TYPE)+'?search='+ searchTerm)
       .then((res) => {
         return res.data
       })
@@ -107,16 +107,18 @@ const ListTable = () => {
   const handleSearch = debounce(e => {
     console.log(e.target.value)
     const searchTerm = e.target.value
-    if (searchTerm.length > 2) {
+    if (searchTerm.length > 0) {
       fetchSearchShipmentData(searchTerm)
         .then(data => {
-          if (data.length > 0) {
+          if (data?.length > 0) {
             console.log('res', data)
             setShipment(data)
           }else{
             console.log("No data")
           }
         })
+    }else{
+      fetchShipmentData()
     }
     
   }, 300)

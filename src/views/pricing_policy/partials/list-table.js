@@ -106,13 +106,15 @@ const changeStatusAction = (e, info) => {
     if (searchTerm.length > 0) {
       fetchSearchPricingPolicyData(searchTerm)
         .then(data => {
-          if (data.length > 0) {
+          if (data?.length > 0) {
             console.log('res', data)
             setPricingPolicy(data)
           }else{
             console.log("No data")
           }
         })
+    }else{
+      fetchPricingPolicyData()
     }
     
   }, 300)

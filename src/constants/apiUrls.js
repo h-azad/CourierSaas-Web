@@ -42,7 +42,10 @@ export const AGENT_EDIT = '/manage-user/agent/'
 export const AGENT_LIST = '/manage-user/agent '
 export const AGENT_DELETE = '/manage-user/agent/'
 export const AGENT_DETAILS = '/manage-user/agent/'
-export const AGENT_SEARCH = '/search-agent/'
+// export const AGENT_SEARCH = '/search-agent/'
+export const AGENT_SEARCH = "/api/agent_app/search-filter/"
+
+
 
 
 // Cities API's 
@@ -71,6 +74,8 @@ export const SHIPMENT_TYPE_DELETE = '/shipment_type/'
 export const SHIPMENT_TYPE_DETAILS = '/shipment_type/'
 export const SHIPMENT_UPDATE_STATUS= '/shipment_type/'
 export const SEARCH_SHIPMENT = '/search_shipment/'
+export const SEARCH_SHIPMENT_TYPE = "/search-shipment-type/"
+
 
 // Product Type API's 
 
@@ -80,6 +85,8 @@ export const PRODUCT_TYPE_LIST = '/product_type/'
 export const PRODUCT_TYPE_DELETE = '/product_type/'
 export const PRODUCT_TYPE_DETAILS = '/product_type/'
 export const SEARCH_PRODUCT = '/search_product/'
+export const SEARCH_PRODUCT_TYPE = "/search-product-type/"
+
 
 // Pricing Policy API's
 
@@ -88,7 +95,10 @@ export const PRICING_POLICY_EDIT = '/pricing_policy/'
 export const PRICING_POLICY_LIST = '/pricing_policy/'
 export const PRICING_POLICY_DELETE = '/pricing_policy/'
 export const PRICING_POLICY_DETAILS = '/pricing_policy/'
-export const SEARCH_PRICING_POLICY = '/search_pricing_policy/'
+// export const SEARCH_PRICING_POLICY = '/search_pricing_policy/'
+export const SEARCH_PRICING_POLICY = "/search-pricing-policy/"
+
+
 
 
 //Create Order API's 
