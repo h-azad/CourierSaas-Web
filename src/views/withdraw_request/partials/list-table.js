@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash,Search, Edit3  } from "react-feather"
+import { MoreVertical, Edit, Trash, Search, Edit3 } from "react-feather"
 import {
   Table,
   Badge,
@@ -16,7 +16,7 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, WITHDRAW_REQUEST_LIST, WITHDRAW_REQUEST_DELETE,WITHDRAW_REQUEST_SEARCH } from "../../../constants/apiUrls"
+import { getApi, WITHDRAW_REQUEST_LIST, WITHDRAW_REQUEST_DELETE, WITHDRAW_REQUEST_SEARCH } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
@@ -27,38 +27,38 @@ const ListTable = () => {
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
   const [selectedInfo, setSelectedInfo] = useState(null)
-
+  console.log('withdrawRequest', withdrawRequest)
   const deleteAction = (e, id) => {
     e.preventDefault()
     return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
       if (result.value) {
 
-      useJwt
-        .axiosDelete(getApi(WITHDRAW_REQUEST_DELETE+id+'/'))
-        .then((res) => {
-          // console.log("res", res.data)
-          SwalAlert("Deleted Successfully")
-          
-          // return res.data
-        })
-        .finally(() => fetchWithdrawRequesttData())
-        
+        useJwt
+          .axiosDelete(getApi(WITHDRAW_REQUEST_DELETE + id + '/'))
+          .then((res) => {
+            // console.log("res", res.data)
+            SwalAlert("Deleted Successfully")
+
+            // return res.data
+          })
+          .finally(() => fetchWithdrawRequesttData())
+
       }
     })
-   
+
   }
-  
+
 
   const updateStatusAction = (e) => {
-  e.preventDefault()
-  useJwt
-    .axiosPatch(getApi(ACCOUNT_WALLET_UPDATE_STATUS) + selectedInfo.id + "/", {
-      status: selectedStatus,
-    })
-    .then((res) => {
-      setStatusModalState(false)
-    })
-}
+    e.preventDefault()
+    useJwt
+      .axiosPatch(getApi(ACCOUNT_WALLET_UPDATE_STATUS) + selectedInfo.id + "/", {
+        status: selectedStatus,
+      })
+      .then((res) => {
+        setStatusModalState(false)
+      })
+  }
 
 
 
@@ -74,7 +74,7 @@ const ListTable = () => {
   }, [])
 
   useEffect(() => {
-    if(!statusModalState) {
+    if (!statusModalState) {
       clearData()
     }
     fetchWithdrawRequesttData()
@@ -93,7 +93,7 @@ const ListTable = () => {
 
   const fetchSearchWithdrawRequestData = searchTerm => {
     return useJwt
-      .axiosGet(getApi(WITHDRAW_REQUEST_SEARCH)+'?search='+ searchTerm)
+      .axiosGet(getApi(WITHDRAW_REQUEST_SEARCH) + '?search=' + searchTerm)
       .then((res) => {
         return res.data
       })
@@ -109,14 +109,14 @@ const ListTable = () => {
           if (data?.length > 0) {
             console.log('res', data)
             setWithdrawRequest(data)
-          }else{
+          } else {
             console.log("No data")
           }
         })
-    }else{
+    } else {
       fetchWithdrawRequesttData()
     }
-    
+
   }, 300)
 
   const clearData = () => {
@@ -124,10 +124,10 @@ const ListTable = () => {
     setSelectedStatus(null)
   }
 
-  function debounce (fn, time) {
+  function debounce(fn, time) {
     let timeoutId
     return wrapper
-    function wrapper (...args) {
+    function wrapper(...args) {
       if (timeoutId) {
         clearTimeout(timeoutId)
       }
@@ -141,30 +141,30 @@ const ListTable = () => {
   return (
     <>
       <CardText>
-          <div className="row justify-content-between">
-            <div className="col-lg-5">
-              <div className="d-flex align-items-center">
-                <Link to={'/account-wallet/add'}>
-                  <Button.Ripple color="primary">Add Withdraw Request</Button.Ripple>
-                </Link>
-              </div>
-            </div>
-            <div className="col-lg-5">
-              <div className="d-flex align-items-center ">
-                <input
-                  placeholder="Search Withdraw Request"
-                  name="marchant_name"
-                  type="text"
-                  class="form-control"
-                  onChange={handleSearch}
-                />
-                <Button.Ripple className="btn-icon ms-1" outline color="primary">
-                  <Search size={16} />
-                </Button.Ripple>
-              </div>
+        <div className="row justify-content-between">
+          <div className="col-lg-5">
+            <div className="d-flex align-items-center">
+              <Link to={'/withdraw-request/add'}>
+                <Button.Ripple color="primary">Add Withdraw Request</Button.Ripple>
+              </Link>
             </div>
           </div>
-        </CardText>
+          <div className="col-lg-5">
+            <div className="d-flex align-items-center ">
+              <input
+                placeholder="Search Withdraw Request"
+                name="marchant_name"
+                type="text"
+                class="form-control"
+                onChange={handleSearch}
+              />
+              <Button.Ripple className="btn-icon ms-1" outline color="primary">
+                <Search size={16} />
+              </Button.Ripple>
+            </div>
+          </div>
+        </div>
+      </CardText>
       <Table bordered>
         <thead>
           <tr>
@@ -172,6 +172,7 @@ const ListTable = () => {
             <th>Previous Balance</th>
             <th>Withdraw Balance</th>
             <th>Current Balance</th>
+            <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -185,6 +186,18 @@ const ListTable = () => {
                 <td>
                   <span className="align-middle fw-bold">{wallet.balance}</span>
                 </td>
+                <td>
+                  <span className="align-middle fw-bold">{wallet.withdraw_balance}</span>
+                </td>
+                <td>
+                  <span className="align-middle fw-bold">{wallet.current_balance}</span>
+                </td>
+                <td>
+                  <span className="align-middle fw-bold">{wallet.withdraw_status
+                  }</span>
+                </td>
+
+
                 <td>
                   <UncontrolledDropdown>
                     <DropdownToggle
@@ -200,11 +213,11 @@ const ListTable = () => {
                         <Edit className="me-50" size={15} />{" "}
                         <span className="align-middle">Edit</span>
                       </DropdownItem>
-                      <DropdownItem href="/" onClick={e=>deleteAction(e, wallet.id)}>
+                      <DropdownItem href="/" onClick={e => deleteAction(e, wallet.id)}>
                         <Trash className="me-50" size={15} />{" "}
                         <span className="align-middle">Delete</span>
                       </DropdownItem>
-                      <DropdownItem href="/" onClick={e=>changeStatusAction(e, wallet)}>
+                      <DropdownItem href="/" onClick={e => changeStatusAction(e, wallet)}>
                         <Edit3 className="me-50" size={15} />{" "}
                         <span className="align-middle">Change Status</span>
                       </DropdownItem>
@@ -231,10 +244,10 @@ const ListTable = () => {
           <div className='form-check'>
             <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "inactive" ? true : false} onChange={() => setSelectedStatus("inactive")} />
             <Label className='form-check-label' for='ex1-inactive'>
-             Inactive
+              Inactive
             </Label>
           </div>
-          
+
         </div>
       </StatusModal>
     </>
