@@ -130,6 +130,27 @@ export const PAYMENT_METHOD_DETAILS = '/payment_method/'
 export const PAYMENT_METHOD_UPDATE_STATUS = "/payment_method/"
 export const SEARCH_PAYMENT_METHOD = '/search_payment_method/'
 
+//Account Wallet
+export const ACCOUNT_WALLET_ADD = "/api/account-wallet/"
+export const ACCOUNT_WALLET_LIST = "/api/account-wallet/"
+export const ACCOUNT_WALLET_EDIT = "/api/account-wallet/"
+export const ACCOUNT_WALLET_DELETE = "/api/account-wallet/"
+export const ACCOUNT_WALLET_DETAILS = "/api/account-wallet/"
+export const ACCOUNT_WALLET_UPDATE_STATUS = "/api/account-wallet/"
+export const ACCOUNT_WALLET_SEARCH = "/api/account-wallet-search/"
+
+
+
+export const WITHDRAW_REQUEST_ADD = "/api/withdraw-reques/"
+export const WITHDRAW_REQUEST_LIST = "/api/withdraw-reques/"
+export const WITHDRAW_REQUEST_EDIT = "/api/withdraw-reques/"
+export const WITHDRAW_REQUEST_DELETE = "/api/withdraw-reques/"
+export const WITHDRAW_REQUEST_DETAILS = "/api/withdraw-reques/"
+export const WITHDRAW_REQUEST_UPDATE_STATUS = "/api/withdraw-reques/"
+export const WITHDRAW_REQUEST_SEARCH = "/api/withdraw-reques-search/"
+
+
+
 //Create Organization
 export const CREATE_ORGANIZATION = "/api/user/create-tanent"
 

@@ -1,4 +1,4 @@
-import { Mail, Home, User, Truck, ShoppingBag, Filter, Gift, Map, MapPin, Users, Sidebar, ShoppingCart, Shield, Circle, CreditCard, Send } from "react-feather"
+import { Mail, Home, User, Truck, ShoppingBag, Filter, Gift, Map, MapPin, Users, Sidebar, ShoppingCart, Shield, Circle, CreditCard, Send, home } from "react-feather"
 
 
 const adminMenu = [
@@ -82,6 +82,29 @@ const adminMenu = [
     resource: 'ADMIN', 
     navLink: "/agent"
   },
+
+  {
+    header: 'Accounts Wallet',
+    action: 'admin-pages',
+    resource: 'ADMIN', 
+  },
+  {
+    id: "account_wallet",
+    title: "Account Wallet",
+    icon: <Home size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN', 
+    navLink: "/account-wallet"
+  },
+  {
+    id: "withdraw_request",
+    title: "Withdraw Request",
+    icon: <Home size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN', 
+    navLink: "/withdraw-request"
+  },
+
   {
     header: 'Locations',
     action: 'admin-pages',
@@ -141,6 +164,10 @@ const adminMenu = [
     resource: 'ADMIN',
     navLink: "/payment_method"
   },
+
+
+    
+
 ]
 
 

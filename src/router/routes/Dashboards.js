@@ -56,12 +56,49 @@ import AddPaymentMethod from "../../views/payment_method/add"
 import EditPaymentMethod from "../../views/payment_method/edit"
 import AnalyticsDashboard from '../../views/dashboard/analytics'
 
+import AccountWallet from '../../views/account_wallet/list'
+import AccountWalletAdd from "../../views/account_wallet/add"
+import AccountWalletEdit from "../../views/account_wallet/edit"
+
+
+import WithdrawRequest from "../../views/withdraw_request/list"
+import WithdrawRequestAdd from "../../views/withdraw_request/add"
+import WithdrawRequestEdit from "../../views/withdraw_request/edit"
+
+
+
+
 
 const Home = lazy(() => import("../../views/Home"))
 const SecondPage = lazy(() => import("../../views/SecondPage"))
 const Error = lazy(() => import("../../views/Error"))
 
 const DashboardRoutes = [
+  {
+    path: "/account-wallet",
+    element: <AccountWallet />
+  },
+  {
+    path: "/account-wallet/add",
+    element: <AccountWalletAdd />
+  },
+  {
+    path: "/account-wallet/edit/:id",
+    element: <AccountWalletEdit />
+  },
+
+  {
+    path: "/withdraw-request",
+    element: <WithdrawRequest />
+  },
+  {
+    path: "/withdraw-request/add",
+    element: <WithdrawRequestAdd />
+  },
+  {
+    path: "/withdraw-request/edit/:id",
+    element: <WithdrawRequestEdit />
+  },
   
   {
     path: "/home",
