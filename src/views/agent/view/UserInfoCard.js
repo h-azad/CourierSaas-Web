@@ -10,6 +10,9 @@ import Select from 'react-select'
 import { Check, Briefcase, X, CreditCard } from 'react-feather'
 import { useForm, Controller } from 'react-hook-form'
 import withReactContent from 'sweetalert2-react-content'
+import useJwt from "@src/auth/jwt/useJwt"
+import { getApi, AGENT_UPDATE_STATUS } from "../../../constants/apiUrls"
+
 
 // ** Custom Components
 import Avatar from '@components/avatar'
@@ -48,7 +51,7 @@ const UserInfoCard = ({ selectedUser }) => {
   // ** State
   const [show, setShow] = useState(false)
   const [statusModalState, setStatusModalState] = useState(false)
-  const [selectedStatus, setSelectedStatus] = useState(null)
+  const [selectedStatus, setSelectedStatus] = useState(selectedUser?.status)
   const [selectedInfo, setSelectedInfo] = useState(null)
 
   const navigate = useNavigate()
@@ -78,7 +81,7 @@ const UserInfoCard = ({ selectedUser }) => {
       return (
         <Avatar
           initials
-          color={selectedUser?.avatarColor|| 'light-primary'}
+          color={selectedUser?.avatarColor || 'light-primary'}
           className='rounded mt-3 mb-2'
           content={selectedUser?.fullName}
           contentStyles={{
@@ -96,27 +99,24 @@ const UserInfoCard = ({ selectedUser }) => {
     }
   }
 
+
   const updateStatusAction = (e) => {
     e.preventDefault()
-    console.log("selectedInfo", selectedInfo)
-    console.log("selectedStatus", selectedStatus)
-    return false
-    // useJwt
-    // .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
-    // .then((res) => {
-    //   console.log("res", res.data)
-    //   setStatusModalState(false)
-    //   // SwalAlert("Deleted Successfully")
-    
-    // })
-    // .finally(() => fetchShipmentData())
-    
+    useJwt
+      .axiosPatch(getApi(AGENT_UPDATE_STATUS) + "/" + selectedInfo.id + "/", {
+        status: selectedStatus,
+      })
+      .then((res) => {
+        console.log("res", res.data)
+        setStatusModalState(false)
+      })
   }
+
 
   const changeStatusAction = (e, info) => {
     e.preventDefault()
     setStatusModalState(true)
-    setSelectedStatus(info.status)
+    setSelectedStatus(selectedStatus)
     setSelectedInfo(info)
   }
 
@@ -125,21 +125,21 @@ const UserInfoCard = ({ selectedUser }) => {
     <Fragment>
       <Card>
         <CardBody>
-        <div className='user-avatar-section'>
+          <div className='user-avatar-section'>
             <div className='d-flex align-items-center flex-column'>
               {renderUserImg()}
               <div className='d-flex flex-column align-items-center text-center'>
                 <div className='user-info'>
                   <h4>{selectedUser?.full_name}</h4>
-                  
+
                   <Badge color={roleColors['merchant']} className='text-capitalize'>
-                      {selectedUser.status}
-                   </Badge>
+                    {selectedUser.status}
+                  </Badge>
                 </div>
               </div>
             </div>
           </div>
-      
+
           <div className='d-flex justify-content-around my-2 pt-75'>
             <div className='d-flex align-items-start me-2'>
               <Badge color='light-primary' className='rounded p-75'>
@@ -180,13 +180,13 @@ const UserInfoCard = ({ selectedUser }) => {
             <Button color='primary' onClick={() => { navigate("/agent/edit/" + selectedUser.id) }}>
               Edit
             </Button>
-            <Button className='ms-1' color='danger' outline onClick={e=>changeStatusAction(e, selectedUser)}>
+            <Button className='ms-1' color='danger' outline onClick={e => changeStatusAction(e, selectedUser)}>
               Change Status
             </Button>
           </div>
         </CardBody>
       </Card>
-   
+
       <StatusModal
         statusModalState={statusModalState}
         setStatusModalState={setStatusModalState}
@@ -195,21 +195,21 @@ const UserInfoCard = ({ selectedUser }) => {
       >
         <div className='demo-inline-spacing'>
           <div className='form-check'>
-            <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "approved" ? true : false} onChange={() => setSelectedStatus("approved")} />
+            <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "active" ? true : false} onChange={() => setSelectedStatus("active")} />
             <Label className='form-check-label' for='ex1-active'>
-            Approved
+              Active
             </Label>
           </div>
           <div className='form-check'>
             <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "inactive" ? true : false} onChange={() => setSelectedStatus("inactive")} />
             <Label className='form-check-label' for='ex1-inactive'>
-             Inactive
+              Inactive
             </Label>
           </div>
           <div className='form-check'>
             <Input type='radio' name='ex1' id='ex1-pending' checked={selectedStatus == "pending" ? true : false} onChange={() => setSelectedStatus("pending")} />
             <Label className='form-check-label' for='ex1-pending'>
-             Pending
+              Pending
             </Label>
           </div>
         </div>

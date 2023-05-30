@@ -42,7 +42,8 @@ const AddCreateOrder = () => {
   const [charge, setCharge] = useState(null)
   const [amount, setAmount] = useState(null)
   const [delivaryCharge, setDelivaryCharge] = useState()
-  const [amountCollected, SetAmountCollected] = useState(0)
+  const [amountCollected, setAmountCollected] = useState(0)
+  console.log('amountCollected', amountCollected)
   const navigate = useNavigate()
   const [inputValue, setInputValue] = useState("")
   const {
@@ -154,10 +155,15 @@ const AddCreateOrder = () => {
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
-      console.log(value, name, type)
+
+
       if (name == "product_type" && type == "change") {
         fetchPricingPolicyData(value.product_type.value)
       }
+      if (name == "amount_to_be_collected" && type == "change") {
+        setAmountCollected(value.amount_to_be_collected)
+      }
+
     })
 
     return () => subscription.unsubscribe()
@@ -186,10 +192,11 @@ const AddCreateOrder = () => {
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
-      console.log(value, name, type)
+      // console.log(value, name, type)
       if (name == "pricing_policy" && type == "change") {
         fetchDelivaryChargeData(value?.pricing_policy?.value)
       }
+
     })
 
     return () => subscription.unsubscribe()
@@ -297,20 +304,20 @@ const AddCreateOrder = () => {
       })
       isFormValid = false
     }
-    if (!data.pickup_rider) {
-      setError("pickup_rider", {
-        type: "required",
-        message: " Pickup Rider is required",
-      })
-      isFormValid = false
-    }
-    if (!data.warehouse_status) {
-      setError("warehouse_status", {
-        type: "required",
-        message: "Warehouse Status is required",
-      })
-      isFormValid = false
-    }
+    // if (!data.pickup_rider) {
+    //   setError("pickup_rider", {
+    //     type: "required",
+    //     message: " Pickup Rider is required",
+    //   })
+    //   isFormValid = false
+    // }
+    // if (!data.warehouse_status) {
+    //   setError("warehouse_status", {
+    //     type: "required",
+    //     message: "Warehouse Status is required",
+    //   })
+    //   isFormValid = false
+    // }
 
     if (!isFormValid) {
       return false
@@ -328,8 +335,8 @@ const AddCreateOrder = () => {
       data.delivary_charge !== null &&
       data.pricing_policy.value !== null &&
       data.shipment_type.value !== null &&
-      data.pickup_rider !== null &&
-      data.warehouse_status !== null &&
+      // data.pickup_rider !== null &&
+      // data.warehouse_status !== null &&
       data.order_type !== null
     ) {
       let formData = {
@@ -344,8 +351,8 @@ const AddCreateOrder = () => {
         shipment_type: data.shipment_type.value,
         delivary_charge: data.delivary_charge,
         order_type: data.order_type.value,
-        pickup_rider: data.pickup_rider.value,
-        warehouse_status: data.warehouse_status.value,
+        pickup_rider: data?.pickup_rider?.value,
+        // warehouse_status: data.warehouse_status.value,
         pricing_policy: data.pricing_policy.value,
         status: "accepted",
       }
@@ -377,7 +384,7 @@ const AddCreateOrder = () => {
         <Form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-1">
             <Label className="form-label" for="marchant">
-              Marchant
+              Marchant*
             </Label>
             <Controller
               id="marchant"
@@ -408,7 +415,7 @@ const AddCreateOrder = () => {
             <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="recipient_name">
-                  Recipient Name
+                  Recipient Name*
                 </Label>
                 <Controller
                   defaultValue=""
@@ -431,7 +438,7 @@ const AddCreateOrder = () => {
             <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="phone_number">
-                  Phone Number
+                  Phone Number*
                 </Label>
                 <Controller
                   defaultValue=""
@@ -455,7 +462,7 @@ const AddCreateOrder = () => {
           </div>
           <div className="mb-1">
             <Label className="form-label" for="delivary_address">
-              Delivary Address
+              Delivary Address*
             </Label>
             <Controller
               defaultValue=""
@@ -479,7 +486,7 @@ const AddCreateOrder = () => {
             <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="order_type">
-                  Order Type
+                  Order Type*
                 </Label>
                 ;
                 <Controller
@@ -512,7 +519,7 @@ const AddCreateOrder = () => {
             <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="amount_to_be_collected">
-                  Amount to be Collected
+                  Amount to be Collected*
                 </Label>
                 <Controller
                   // defaultValue=''
@@ -523,7 +530,7 @@ const AddCreateOrder = () => {
                     <Input
                       type="number"
                       value={amountCollected}
-                      onChange={(e) => SetAmountCollected(e.target.value)}
+                      // onChange={(e) => setAmountCollected(e.target.value)}
                       placeholder=""
                       invalid={errors.amount_to_be_collected && true}
                       {...field}
@@ -540,7 +547,7 @@ const AddCreateOrder = () => {
             <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="product_type">
-                  Product Type
+                  Product Type*
                 </Label>
                 <Controller
                   id="product_type"
@@ -568,7 +575,7 @@ const AddCreateOrder = () => {
             <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="area">
-                  Percel Type(Pricing Policy)
+                  Percel Type(Pricing Policy)*
                 </Label>
                 <Controller
                   id="pricing_policy"
@@ -596,7 +603,7 @@ const AddCreateOrder = () => {
           </div>
           <div className="mb-1">
             <Label className="form-label" for="area">
-              Shipment Type
+              Shipment Type*
             </Label>
             <Controller
               id="shipment_type"
@@ -624,7 +631,7 @@ const AddCreateOrder = () => {
             <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="delivary_area">
-                  Delivary Area
+                  Delivary Area*
                 </Label>
                 <Controller
                   id="delivary_area"
@@ -652,7 +659,7 @@ const AddCreateOrder = () => {
             <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="delivary_charge">
-                  Delivary Charge
+                  Delivary Charge*
                 </Label>
                 <Controller
                   defaultValue={delivaryCharge}
@@ -707,7 +714,7 @@ const AddCreateOrder = () => {
                 )}
               </div>
             </div>
-            <div class="col-lg-6">
+            {/* <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="delivary_charge">
                   Warehouse Status
@@ -738,7 +745,7 @@ const AddCreateOrder = () => {
                   <span>{errors.warehouse_status.message}</span>
                 )}
               </div>
-            </div>
+            </div> */}
           </div>
           <hr></hr>
           <div>
@@ -749,7 +756,7 @@ const AddCreateOrder = () => {
                 <h5> Delivary charge = {delivaryCharge} </h5>
                 <h5> Ammount to be collected = {amountCollected} </h5>
                 <hr></hr>
-                <h5> Subtotal = </h5>
+                {/* <h5> Subtotal = {Number(delivaryCharge) + Number(amountCollected)} </h5> */}
                 <hr></hr>
               </div>
             </div>

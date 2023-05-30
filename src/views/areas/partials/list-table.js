@@ -16,7 +16,7 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, AREAS_LIST, AREAS_DELETE,AREAS_SEARCH } from "../../../constants/apiUrls"
+import { getApi, AREAS_LIST, AREAS_DELETE,AREAS_SEARCH, AREAS_UPDATE_STATUS } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
@@ -48,22 +48,19 @@ const ListTable = () => {
     })
    
   }
+  
+
   const updateStatusAction = (e) => {
-    e.preventDefault()
-    console.log("selectedInfo", selectedInfo)
-    console.log("selectedStatus", selectedStatus)
-  return false
-  // useJwt
-  // .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
-  // .then((res) => {
-  //   console.log("res", res.data)
-  //   setStatusModalState(false)
-  //   // SwalAlert("Deleted Successfully")
-  
-  // })
-  // .finally(() => fetchShipmentData())
-  
+  e.preventDefault()
+  useJwt
+    .axiosPatch(getApi(AREAS_UPDATE_STATUS) + selectedInfo.id + "/", {
+      status: selectedStatus,
+    })
+    .then((res) => {
+      setStatusModalState(false)
+    })
 }
+
 
 
   const changeStatusAction = (e, info) => {

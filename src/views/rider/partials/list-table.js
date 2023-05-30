@@ -22,6 +22,7 @@ import {
   RIDER_DELETE,
   RIDER_SEARCH,
   RIDER_SEARCH_FILTER,
+  RIDER_UPDATE_STATUS
 } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
@@ -52,13 +53,26 @@ const ListTable = () => {
     )
   }
 
+  //   const updateStatusAction = (e) => {
+  //     e.preventDefault()
+  //     console.log("selectedInfo", selectedInfo)
+  //     console.log("selectedStatus", selectedStatus)
+  //   return false
+
+  // }
   const updateStatusAction = (e) => {
     e.preventDefault()
-    console.log("selectedInfo", selectedInfo)
-    console.log("selectedStatus", selectedStatus)
-  return false
-  
-}
+    useJwt
+      .axiosPatch(getApi(RIDER_UPDATE_STATUS) + "/" + selectedInfo.id + "/", {
+        status: selectedStatus,
+      })
+      .then((res) => {
+        console.log("res", res.data)
+        setStatusModalState(false)
+      })
+      .finally(() => fetchRiderData())
+  }
+
 
 
 
@@ -74,9 +88,9 @@ const ListTable = () => {
     fetchRiderData()
   }, [])
 
-  
+
   useEffect(() => {
-    if(!statusModalState) {
+    if (!statusModalState) {
       clearData()
     }
     fetchRiderData()
@@ -96,7 +110,7 @@ const ListTable = () => {
   const fetchSearchRidersData = searchTerm => {
     return useJwt
       // .axiosGet(getApi(RIDER_SEARCH)+'?search='+ searchTerm) //after line
-      .axiosGet(getApi(RIDER_SEARCH_FILTER)+'?search='+ searchTerm)
+      .axiosGet(getApi(RIDER_SEARCH_FILTER) + '?search=' + searchTerm)
       .then((res) => {
         return res.data
       })
@@ -112,14 +126,14 @@ const ListTable = () => {
           if (data.length > 0) {
             console.log('res', data)
             setRider(data)
-          }else{
+          } else {
             console.log("No data")
           }
         })
-    }else{
+    } else {
       fetchRiderData()
     }
-    
+
   }, 300)
 
   const clearData = () => {
@@ -127,10 +141,10 @@ const ListTable = () => {
     setSelectedStatus(null)
   }
 
-  function debounce (fn, time) {
+  function debounce(fn, time) {
     let timeoutId
     return wrapper
-    function wrapper (...args) {
+    function wrapper(...args) {
       if (timeoutId) {
         clearTimeout(timeoutId)
       }
@@ -170,73 +184,73 @@ const ListTable = () => {
         </div>
       </CardText>
       <div class="table-responsive">
-      <Table bordered>
-        <thead>
-          <tr>
-            <th>Full Name</th>
-            <th>Contact Number 1*</th>
-            <th>Email</th>
-            {/* <th>City Name</th>
+        <Table bordered>
+          <thead>
+            <tr>
+              <th>Full Name</th>
+              <th>Contact Number 1*</th>
+              <th>Email</th>
+              {/* <th>City Name</th>
             <th>Area Name</th> */}
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rider &&
-            rider.map((info) => (
-              <tr key={info.id}>
-                <td>
-                  <span className="align-middle fw-bold">{info.full_name}</span>
-                </td>
-                <td>{info.contact_no}</td>
-                <td>{info.email}</td>
-                {/* <td>{info.city?.cities_name}</td>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rider &&
+              rider.map((info) => (
+                <tr key={info.id}>
+                  <td>
+                    <span className="align-middle fw-bold">{info.full_name}</span>
+                  </td>
+                  <td>{info.contact_no}</td>
+                  <td>{info.email}</td>
+                  {/* <td>{info.city?.cities_name}</td>
                 <td>{info.area?.areas_name}</td> */}
-                <td>
-                  <Badge pill color="light-primary" className="me-1">
-                    {info.status}
-                  </Badge>
-                </td>
-                <td>
-                  <UncontrolledDropdown>
-                    <DropdownToggle
-                      className="icon-btn hide-arrow"
-                      color="transparent"
-                      size="sm"
-                      caret
-                    >
-                      <MoreVertical size={15} />
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      <DropdownItem href={"/rider/view/" + info.id} >
-                        <Eye className="me-50" size={15} />{" "}
-                        <span className="align-middle">View</span>
-                      </DropdownItem>
-                      <DropdownItem href={"/rider/edit/" + info.id}>
-                        <Edit className="me-50" size={15} />{" "}
-                        <span className="align-middle">Edit</span>
-                      </DropdownItem>
-                      <DropdownItem
-                        href="/"
-                        onClick={(e) => deleteAction(e, info.id)}
+                  <td>
+                    <Badge pill color="light-primary" className="me-1">
+                      {info.status}
+                    </Badge>
+                  </td>
+                  <td>
+                    <UncontrolledDropdown>
+                      <DropdownToggle
+                        className="icon-btn hide-arrow"
+                        color="transparent"
+                        size="sm"
+                        caret
                       >
-                        <Trash className="me-50" size={15} />{" "}
-                        <span className="align-middle">Delete</span>
-                      </DropdownItem>
-                      <DropdownItem href="/" onClick={e=>changeStatusAction(e, info)}>
-                        <Edit3 className="me-50" size={15} />{" "}
-                        <span className="align-middle">Change Status</span>
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </UncontrolledDropdown>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </Table>
+                        <MoreVertical size={15} />
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        <DropdownItem href={"/rider/view/" + info.id} >
+                          <Eye className="me-50" size={15} />{" "}
+                          <span className="align-middle">View</span>
+                        </DropdownItem>
+                        <DropdownItem href={"/rider/edit/" + info.id}>
+                          <Edit className="me-50" size={15} />{" "}
+                          <span className="align-middle">Edit</span>
+                        </DropdownItem>
+                        <DropdownItem
+                          href="/"
+                          onClick={(e) => deleteAction(e, info.id)}
+                        >
+                          <Trash className="me-50" size={15} />{" "}
+                          <span className="align-middle">Delete</span>
+                        </DropdownItem>
+                        <DropdownItem href="/" onClick={e => changeStatusAction(e, info)}>
+                          <Edit3 className="me-50" size={15} />{" "}
+                          <span className="align-middle">Change Status</span>
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </Table>
       </div>
-     
+
       <StatusModal
         statusModalState={statusModalState}
         setStatusModalState={setStatusModalState}
@@ -247,19 +261,19 @@ const ListTable = () => {
           <div className='form-check'>
             <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "active" ? true : false} onChange={() => setSelectedStatus("active")} />
             <Label className='form-check-label' for='ex1-active'>
-            Active
+              Active
             </Label>
           </div>
           <div className='form-check'>
             <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "inactive" ? true : false} onChange={() => setSelectedStatus("inactive")} />
             <Label className='form-check-label' for='ex1-inactive'>
-             Inactive
+              Inactive
             </Label>
           </div>
           <div className='form-check'>
             <Input type='radio' name='ex1' id='ex1-pending' checked={selectedStatus == "pending" ? true : false} onChange={() => setSelectedStatus("pending")} />
             <Label className='form-check-label' for='ex1-pending'>
-             Pending
+              Pending
             </Label>
           </div>
         </div>

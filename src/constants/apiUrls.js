@@ -25,6 +25,7 @@ export const RIDER_EDIT = '/manage-user/rider/'
 export const RIDER_LIST = '/manage-user/rider'
 export const RIDER_DELETE = '/manage-user/rider/'
 export const RIDER_DETAILS = '/manage-user/rider/'
+export const RIDER_UPDATE_STATUS = "/manage-user/rider"
 export const RIDER_SEARCH = '/search-rider/'
 export const RIDER_PICKUP = '/rider_app/pickup/'
 export const RIDER_PICKUP_STATUS_UPDATE = '/rider_app/pickup/'
@@ -42,6 +43,7 @@ export const AGENT_EDIT = '/manage-user/agent/'
 export const AGENT_LIST = '/manage-user/agent '
 export const AGENT_DELETE = '/manage-user/agent/'
 export const AGENT_DETAILS = '/manage-user/agent/'
+export const AGENT_UPDATE_STATUS = "/manage-user/agent"
 // export const AGENT_SEARCH = '/search-agent/'
 export const AGENT_SEARCH = "/api/agent_app/search-filter/"
 
@@ -54,6 +56,7 @@ export const CITIES_EDIT = '/city/'
 export const CITIES_LIST = '/city/'
 export const CITIES_DELETE = '/city/'
 export const CITIES_DETAILS = '/city/'
+export const CITY_UPDATE_STATUS = "/city/"
 export const CITIES_SEARCH = '/search-city/'
 
 
@@ -63,6 +66,7 @@ export const AREAS_EDIT = '/area/'
 export const AREAS_LIST = '/area/'
 export const AREAS_DELETE = '/area/'
 export const AREAS_DETAILS = '/area/'
+export const AREAS_UPDATE_STATUS = "/area/"
 export const AREAS_SEARCH = '/search-area/'
 export const AREAS_BY_CITY = '/get-area/'
 
@@ -84,6 +88,7 @@ export const PRODUCT_TYPE_EDIT = '/product_type/'
 export const PRODUCT_TYPE_LIST = '/product_type/'
 export const PRODUCT_TYPE_DELETE = '/product_type/'
 export const PRODUCT_TYPE_DETAILS = '/product_type/'
+export const PRODUCT_UPDATE_STATUS = "/product_type/"
 export const SEARCH_PRODUCT = '/search_product/'
 export const SEARCH_PRODUCT_TYPE = "/search-product-type/"
 
@@ -95,6 +100,7 @@ export const PRICING_POLICY_EDIT = '/pricing_policy/'
 export const PRICING_POLICY_LIST = '/pricing_policy/'
 export const PRICING_POLICY_DELETE = '/pricing_policy/'
 export const PRICING_POLICY_DETAILS = '/pricing_policy/'
+export const PRICING_POLICY_UPDATE_STATUS = "/pricing_policy/"
 // export const SEARCH_PRICING_POLICY = '/search_pricing_policy/'
 export const SEARCH_PRICING_POLICY = "/search-pricing-policy/"
 
@@ -121,6 +127,7 @@ export const PAYMENT_METHOD_EDIT = '/payment_method/'
 export const PAYMENT_METHOD_LIST = '/payment_method/'
 export const PAYMENT_METHOD_DELETE = '/payment_method/'
 export const PAYMENT_METHOD_DETAILS = '/payment_method/'
+export const PAYMENT_METHOD_UPDATE_STATUS = "/payment_method/"
 export const SEARCH_PAYMENT_METHOD = '/search_payment_method/'
 
 //Create Organization

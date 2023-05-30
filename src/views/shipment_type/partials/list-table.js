@@ -49,21 +49,16 @@ const ListTable = () => {
   }
 
   const updateStatusAction = (e) => {
-    e.preventDefault()
-    console.log("selectedInfo", selectedInfo)
-    console.log("selectedStatus", selectedStatus)
-  return false
+  e.preventDefault()
   useJwt
-  .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
-  .then((res) => {
-    console.log("res", res.data)
-    setStatusModalState(false)
-    // SwalAlert("Deleted Successfully")
-  
-  })
-  .finally(() => fetchShipmentData())
-  
+    .axiosPatch(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/", {
+      status: selectedStatus,
+    })
+    .then((res) => {
+      setStatusModalState(false)
+    })
 }
+
 
 
   const changeStatusAction = (e, info) => {

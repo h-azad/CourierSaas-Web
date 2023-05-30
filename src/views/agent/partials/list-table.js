@@ -21,6 +21,7 @@ import {
   AGENT_LIST, 
   AGENT_DELETE ,
   AGENT_SEARCH ,
+  AGENT_UPDATE_STATUS
 } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
@@ -51,22 +52,18 @@ const ListTable = () => {
     )
   }
 
-  const updateStatusAction = (e) => {
-    e.preventDefault()
-    console.log("selectedInfo", selectedInfo)
-    console.log("selectedStatus", selectedStatus)
-  return false
-  // useJwt
-  // .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
-  // .then((res) => {
-  //   console.log("res", res.data)
-  //   setStatusModalState(false)
-  //   // SwalAlert("Deleted Successfully")
-  
-  // })
-  // .finally(() => fetchShipmentData())
-  
+ const updateStatusAction = (e) => {
+  e.preventDefault()
+  useJwt
+    .axiosPatch(getApi(AGENT_UPDATE_STATUS) + "/" + selectedInfo.id + "/", {
+      status: selectedStatus,
+    })
+    .then((res) => {
+      console.log("res", res.data)
+      setStatusModalState(false)
+    })
 }
+
 
 
   const changeStatusAction = (e, info) => {

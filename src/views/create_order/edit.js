@@ -330,13 +330,13 @@ const EditCreateOrder = () => {
       })
       isFormValid = false
     }
-    if (!data.pickup_rider && data.pickup_rider.value) {
-      setError("pickup_rider", {
-        type: "required",
-        message: " Pickup Rider is required",
-      })
-      isFormValid = false
-    }
+    // if (!data.pickup_rider && data.pickup_rider.value) {
+    //   setError("pickup_rider", {
+    //     type: "required",
+    //     message: " Pickup Rider is required",
+    //   })
+    //   isFormValid = false
+    // }
     // if (!data.delivary_rider && data.delivary_rider) {
     //   setError("delivary_rider", {
     //     type: "required",
@@ -344,13 +344,13 @@ const EditCreateOrder = () => {
     //   })
     //   isFormValid = false
     // }
-    if (!data.warehouse_status) {
-      setError("warehouse_status", {
-        type: "required",
-        message: "Warehouse Status is required",
-      })
-      isFormValid = false
-    }
+    // if (!data.warehouse_status) {
+    //   setError("warehouse_status", {
+    //     type: "required",
+    //     message: "Warehouse Status is required",
+    //   })
+    //   isFormValid = false
+    // }
 
     if (!isFormValid) {
       return false
@@ -367,9 +367,9 @@ const EditCreateOrder = () => {
       data.delivary_area.value !== null &&
       data.delivary_charge !== null &&
       data.pricing_policy.value !== null &&
-      data.shipment_type.value !== null &&
-      data.pickup_rider.value !== null &&
-      data.warehouse_status !== null
+      data.shipment_type.value !== null
+      // data.pickup_rider.value !== null &&
+      // data.warehouse_status !== null
       // data.delivary_rider.value !== null
     ) {
       let formData = {
@@ -383,10 +383,10 @@ const EditCreateOrder = () => {
         pricing_policy: data.pricing_policy.value,
         shipment_type: data.shipment_type.value,
         delivary_charge: data.delivary_charge,
-        pickup_rider: data.pickup_rider.value,
+        pickup_rider: data?.pickup_rider?.value,
         delivary_rider: data.delivary_rider?.value,
-        warehouse_status: data.warehouse_status,
-        status: "accepted",
+        // warehouse_status: data.warehouse_status,
+        // status: "accepted",
       }
 
       // console.log("formData", formData)
@@ -419,7 +419,7 @@ const EditCreateOrder = () => {
           <Form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-1">
               <Label className="form-label" for="marchant">
-                Marchant
+                Marchant*
               </Label>
               <Controller
                 defaultValue={{
@@ -453,7 +453,7 @@ const EditCreateOrder = () => {
               <div className="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="recipient_name">
-                    Recipient Name
+                    Recipient Name*
                   </Label>
                   <Controller
                     defaultValue={createOrderInfo.recipient_name}
@@ -475,7 +475,7 @@ const EditCreateOrder = () => {
               <div className="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="phone_number">
-                    Phone Number
+                    Phone Number*
                   </Label>
                   <Controller
                     defaultValue={createOrderInfo.phone_number}
@@ -494,7 +494,7 @@ const EditCreateOrder = () => {
             </div>
             <div className="mb-1">
               <Label className="form-label" for="delivary_address">
-                Delivary Address
+                Delivary Address*
               </Label>
               <Controller
                 defaultValue={createOrderInfo.delivary_address}
@@ -511,7 +511,7 @@ const EditCreateOrder = () => {
             </div>
             <div className="mb-1">
               <Label className="form-label" for="amount_to_be_collected">
-                Amount to be Collected
+                Amount to be Collected*
               </Label>
               <Controller
                 defaultValue={createOrderInfo.amount_to_be_collected}
@@ -533,7 +533,7 @@ const EditCreateOrder = () => {
               <div className="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="product_type">
-                    Product Type
+                    Product Type*
                   </Label>
                   <Controller
                     defaultValue={{
@@ -565,7 +565,7 @@ const EditCreateOrder = () => {
               <div className="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="area">
-                    Percel Type(Pricing Policy)
+                    Percel Type(Pricing Policy)*
                   </Label>
                   <Controller
                     defaultValue={{
@@ -600,7 +600,7 @@ const EditCreateOrder = () => {
               <div className="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="area">
-                    Shipment Type
+                    Shipment Type*
                   </Label>
                   <Controller
                     defaultValue={{
@@ -631,7 +631,7 @@ const EditCreateOrder = () => {
               <div className="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="area">
-                    Delivary Rider
+                    Delivary Rider*
                   </Label>
                   <Controller
                     defaultValue={createOrderInfo.delivary_rider?{ value: createOrderInfo.delivary_rider.id, label: createOrderInfo.delivary_rider.full_name }: null}
@@ -663,7 +663,7 @@ const EditCreateOrder = () => {
               <div className="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="delivary_area">
-                    Delivary Area
+                    Delivary Area*
                   </Label>
                   <Controller
                     defaultValue={{
@@ -695,7 +695,7 @@ const EditCreateOrder = () => {
               <div class="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="delivary_charge">
-                    Delivary Charge
+                    Delivary Charge*
                   </Label>
                   <Controller
                     defaultValue={delivaryCharge}
@@ -754,27 +754,8 @@ const EditCreateOrder = () => {
                     </span>
                   )}
                 </div>
-                {/* <div className='mb-1'>
-                <Label className='form-label' for='delivary_area'>
-                 Pickup Riders
-                </Label>
-                <Controller
-                    // defaultValue={{ value: createOrderInfo.pickup_rider.id, label: createOrderInfo.pickup_rider.full_name }}
-                    id='pickup_rider'
-                    name='pickup_rider'
-                  control={control}
-                  render={({ field }) => <Select
-                    isClearable
-                    className={classnames('react-select', { 'is-invalid': errors.pickup_rider && true })}
-                    classNamePrefix='select'
-                    options={selectboxArea}
-                    {...field}
-                  />}
-                />
-                  {errors && errors.pickup_rider && <span className="invalid-feedback">{errors.pickup_rider.message}</span>}
-              </div> */}
               </div>
-              <div className="col-lg-6">
+              {/* <div className="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="warehouse_status">
                     Warehouse Status
@@ -805,7 +786,7 @@ const EditCreateOrder = () => {
                     <span>{errors.warehouse_status.message}</span>
                   )}
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="d-flex">
               <Button className="me-1" color="primary" type="submit">

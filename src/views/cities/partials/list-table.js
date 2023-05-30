@@ -16,7 +16,7 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, CITIES_LIST, CITIES_DELETE,CITIES_SEARCH} from "../../../constants/apiUrls"
+import { getApi, CITIES_LIST, CITIES_DELETE, CITIES_SEARCH, CITY_UPDATE_STATUS } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
@@ -35,36 +35,32 @@ const ListTable = () => {
     return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
       if (result.value) {
 
-      useJwt
-        .axiosDelete(getApi(CITIES_DELETE+id+'/'))
-        .then((res) => {
-          // console.log("res", res.data)
-          SwalAlert("Deleted Successfully")
-          
-          // return res.data
-        })
-        .finally(() => fetchCitiesData())
-        
+        useJwt
+          .axiosDelete(getApi(CITIES_DELETE + id + '/'))
+          .then((res) => {
+            // console.log("res", res.data)
+            SwalAlert("Deleted Successfully")
+
+            // return res.data
+          })
+          .finally(() => fetchCitiesData())
+
       }
     })
-   
+
   }
   const updateStatusAction = (e) => {
     e.preventDefault()
-    console.log("selectedInfo", selectedInfo)
-    console.log("selectedStatus", selectedStatus)
-  return false
-  useJwt
-  .axiosPost(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/")
-  .then((res) => {
-    console.log("res", res.data)
-    setStatusModalState(false)
-    // SwalAlert("Deleted Successfully")
-  
-  })
-  .finally(() => fetchShipmentData())
-  
-}
+    useJwt
+      .axiosPatch(getApi(CITY_UPDATE_STATUS) + selectedInfo.id + "/", {
+        status: selectedStatus,
+      })
+      .then((res) => {
+        console.log("res", res.data)
+        setStatusModalState(false)
+      })
+  }
+
 
 
   const changeStatusAction = (e, info) => {
@@ -79,7 +75,7 @@ const ListTable = () => {
   }, [])
 
   useEffect(() => {
-    if(!statusModalState) {
+    if (!statusModalState) {
       clearData()
     }
     fetchCitiesData()
@@ -98,7 +94,7 @@ const ListTable = () => {
 
   const fetchSearchCityData = searchTerm => {
     return useJwt
-      .axiosGet(getApi(CITIES_SEARCH)+'?search='+ searchTerm)
+      .axiosGet(getApi(CITIES_SEARCH) + '?search=' + searchTerm)
       .then((res) => {
         return res.data
       })
@@ -114,14 +110,14 @@ const ListTable = () => {
           if (data?.length > 0) {
             console.log('res', data)
             setCities(data)
-          }else{
+          } else {
             console.log("No data")
           }
         })
-    }else{
+    } else {
       fetchCitiesData()
     }
-    
+
   }, 300)
 
   const clearData = () => {
@@ -129,10 +125,10 @@ const ListTable = () => {
     setSelectedStatus(null)
   }
 
-  function debounce (fn, time) {
+  function debounce(fn, time) {
     let timeoutId
     return wrapper
-    function wrapper (...args) {
+    function wrapper(...args) {
       if (timeoutId) {
         clearTimeout(timeoutId)
       }
@@ -205,11 +201,11 @@ const ListTable = () => {
                         <Edit className="me-50" size={15} />{" "}
                         <span className="align-middle">Edit</span>
                       </DropdownItem>
-                      <DropdownItem href="/" onClick={e=>deleteAction(e, info.id)}>
+                      <DropdownItem href="/" onClick={e => deleteAction(e, info.id)}>
                         <Trash className="me-50" size={15} />{" "}
                         <span className="align-middle">Delete</span>
                       </DropdownItem>
-                      <DropdownItem href="/" onClick={e=>changeStatusAction(e, info)}>
+                      <DropdownItem href="/" onClick={e => changeStatusAction(e, info)}>
                         <Edit3 className="me-50" size={15} />{" "}
                         <span className="align-middle">Change Status</span>
                       </DropdownItem>
@@ -236,10 +232,10 @@ const ListTable = () => {
           <div className='form-check'>
             <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "inactive" ? true : false} onChange={() => setSelectedStatus("inactive")} />
             <Label className='form-check-label' for='ex1-inactive'>
-             Inactive
+              Inactive
             </Label>
           </div>
-         
+
         </div>
       </StatusModal>
     </>
