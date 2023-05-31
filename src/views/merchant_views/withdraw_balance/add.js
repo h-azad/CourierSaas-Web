@@ -21,11 +21,10 @@ import {
   ACCOUNT_WALLET_LIST
 } from "@src/constants/apiUrls"
 import { useEffect, useState } from "react"
-import SwalAlert from "../../components/SwalAlert"
+import SwalAlert from "../../../components/SwalAlert"
 
-const AddAreas = () => {
+const MarchantBalanceWithrawRequestAdd = () => {
   const [data, setData] = useState(null)
-  const [selectboxWithdrawRequest, setSelectboxWithdrawRequest] = useState([])
   const [balance, setBalance] = useState()
   const [withdrawBalance, setWithdrawBalance] = useState()
   const [accountWallet, setAccountWallet] = useState()
@@ -55,15 +54,6 @@ const AddAreas = () => {
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
-      if (name == "withdraw_request" && type == "change") {
-        let data = value
-        let id = data?.withdraw_request?.value
-        // setAccountWallet()
-        console.log(id)
-        if (id) {
-          getMerchantBalance(id)
-        }
-      }
       if (name == "withdrawbalance" && type == "change") {
         let withdrawBalanceValue = value
         setWithdrawBalance(withdrawBalanceValue.withdrawbalance)
@@ -74,23 +64,6 @@ const AddAreas = () => {
   }, [watch])
 
 
-
-  const getMerchantBalance = (id) => {
-    console.log("getMerchantBalance", id)
-
-    useJwt
-      .axiosGet(getApi(ACCOUNT_WALLET_LIST) + id + "/")
-      .then((res) => {
-        let responseData = res.data
-        if (responseData.balance) {
-          setBalance(Number(responseData.balance))
-          setValue("balance", Number(responseData.balance))
-        }
-        return res.data
-      })
-      .catch((err) => console.log(err))
-  }
-
   useEffect(() => {
     console.log(withdrawBalance)
   }, [withdrawBalance])
@@ -98,21 +71,13 @@ const AddAreas = () => {
 
   const fetchWithdrawRequestData = () => {
     return useJwt
-      // .axiosGet(getApi(WITHDRAW_REQUEST_LIST))
       .axiosGet(getApi(ACCOUNT_WALLET_LIST))
-    
       .then((res) => {
-        console.log("res", res.data)
-        let withdrawRequest = []
-        res.data.map((data) => {
-          console.log('console data', data)
-          withdrawRequest.push({
-            value: data.id,
-            label: data.marchant.full_name,
-          })
-        })
+        setAccountWallet(res.data.id)
+        setBalance(res.data.balance)
+        setValue('balance', res.data.balance)
 
-        setSelectboxWithdrawRequest(withdrawRequest)
+        console.log('data is ', res.data)
         return res.data
       })
       .catch((err) => console.log(err))
@@ -121,13 +86,6 @@ const AddAreas = () => {
   const onSubmit = (data) => {
     let isFormValid = true
 
-    if (!data.withdraw_request) {
-      setError("Withdraw request", {
-        type: "required",
-        message: "wWthdraw request is required",
-      })
-      isFormValid = false
-    }
     if (!data.withdrawbalance) {
       setError("Withdraw request balance", {
         type: "required",
@@ -142,22 +100,19 @@ const AddAreas = () => {
 
     console.log("data", data)
     setData(data)
-    if (data.withdraw_request !== null && data.withdrawbalance !== null) {
+    if (data.withdrawbalance !== null) {
       let formData = {
-        // account_wallet: data.
-        account_wallet: data.withdraw_request.value,
         balance: data.balance,
         withdraw_balance: data.withdrawbalance,
         current_balance: data.current_balance,
-        withdraw_status: "Complete"
-
+        account_wallet: accountWallet,
       }
       console.log("formdata", formData)
       useJwt
         .axiosPost(getApi(WITHDRAW_REQUEST_ADD), formData)
         .then((res) => {
           SwalAlert("Area Added Successfully")
-          navigate("/withdraw-request")
+          navigate("/marchant-withdraw-request")
         })
         .catch((err) => console.log(err))
     }
@@ -172,31 +127,6 @@ const AddAreas = () => {
       <CardBody>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <div class="row">
-            <div class="col-lg-6">
-              <div className="mb-1">
-                <Label className="form-label" for="withdraw_request">
-                  Withdraw
-                </Label>
-                <Controller
-                  id="withdraw_request"
-                  name="withdraw_request"
-                  control={control}
-                  render={({ field }) => (
-                    <Select
-                      isClearable
-                      className={classnames("react-select", {
-                        "is-invalid":
-                          data !== null && data.withdraw_request === null,
-                      })}
-                      classNamePrefix="select"
-                      options={selectboxWithdrawRequest}
-                      {...field}
-                    />
-                  )}
-                />
-              </div>
-            </div>
-            <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="balance">
                   Balance
@@ -216,7 +146,7 @@ const AddAreas = () => {
                   )}
                 />
               </div>
-            </div>
+
           </div>
 
           <div class="row">
@@ -276,4 +206,4 @@ const AddAreas = () => {
     </Card>
   )
 }
-export default AddAreas
+export default MarchantBalanceWithrawRequestAdd

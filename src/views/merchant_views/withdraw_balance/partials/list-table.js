@@ -16,12 +16,13 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, WITHDRAW_REQUEST_LIST, WITHDRAW_REQUEST_DELETE, WITHDRAW_REQUEST_SEARCH, WITHDRAW_REQUEST_UPDATE_STATUS } from "../../../constants/apiUrls"
-import SwalAlert from "../../../components/SwalAlert"
-import SwalConfirm from "../../../components/SwalConfirm"
-import StatusModal from "../../../components/StatusModal"
 
-const ListTable = () => {
+import SwalAlert from "../../../../components/SwalAlert"
+import StatusModal from "../../../../components/StatusModal"
+import SwalConfirm from "../../../../components/SwalConfirm"
+import { getApi, WITHDRAW_REQUEST_LIST, WITHDRAW_REQUEST_DELETE, WITHDRAW_REQUEST_SEARCH } from "../../../../constants/apiUrls"
+
+const MarchantBalanceWithrawRequestList = () => {
   const [withdrawRequest, setWithdrawRequest] = useState([])
   const MySwal = withReactContent(Swal)
   const [statusModalState, setStatusModalState] = useState(false)
@@ -49,25 +50,24 @@ const ListTable = () => {
   }
 
 
- 
-
   const updateStatusAction = (e) => {
     e.preventDefault()
     useJwt
-      .axiosPatch(getApi(WITHDRAW_REQUEST_UPDATE_STATUS) + selectedInfo.id + '/', { selectedInfo, withdraw_status: selectedInfo.withdraw_status })
+      .axiosPatch(getApi(ACCOUNT_WALLET_UPDATE_STATUS) + selectedInfo.id + "/", {
+        status: selectedStatus,
+      })
       .then((res) => {
-        console.log("res", res.data)
         setStatusModalState(false)
       })
   }
 
 
+
   const changeStatusAction = (e, info) => {
-    console.log('ffffffffffffffffffffff',info)
     e.preventDefault()
     setStatusModalState(true)
-    setSelectedStatus(info.withdraw_status)
-    setSelectedInfo(info)
+    // setSelectedStatus(info.status)
+    // setSelectedInfo(info)
   }
 
   useEffect(() => {
@@ -145,7 +145,7 @@ const ListTable = () => {
         <div className="row justify-content-between">
           <div className="col-lg-5">
             <div className="d-flex align-items-center">
-              <Link to={'/withdraw-request/add'}>
+              <Link to={'/marchant-withdraw-request/add'}>
                 <Button.Ripple color="primary">Add Withdraw Request</Button.Ripple>
               </Link>
             </div>
@@ -174,7 +174,6 @@ const ListTable = () => {
             <th>Withdraw Balance</th>
             <th>Current Balance</th>
             <th>Status</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -197,67 +196,12 @@ const ListTable = () => {
                   <span className="align-middle fw-bold">{wallet.withdraw_status
                   }</span>
                 </td>
-
-
-                <td>
-                  <UncontrolledDropdown>
-                    <DropdownToggle
-                      className="icon-btn hide-arrow"
-                      color="transparent"
-                      size="sm"
-                      caret
-                    >
-                      <MoreVertical size={15} />
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      <DropdownItem href={"/withdraw-request/edit/" + wallet.id}>
-                        <Edit className="me-50" size={15} />{" "}
-                        <span className="align-middle">Edit</span>
-                      </DropdownItem>
-                      <DropdownItem href="/" onClick={e => deleteAction(e, wallet.id)}>
-                        <Trash className="me-50" size={15} />{" "}
-                        <span className="align-middle">Delete</span>
-                      </DropdownItem>
-                      <DropdownItem href="/" onClick={e => changeStatusAction(e, wallet)}>
-                        <Edit3 className="me-50" size={15} />{" "}
-                        <span className="align-middle">Change Status</span>
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </UncontrolledDropdown>
-                </td>
               </tr>
             ))}
         </tbody>
       </Table>
-      <StatusModal
-        statusModalState={statusModalState}
-        setStatusModalState={setStatusModalState}
-        updateStatusAction={updateStatusAction}
-        title={"Change Withdraw Request Status"}
-      >
-        <div className='demo-inline-spacing'>
-          <div className='form-check'>
-            <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "Pending" ? true : false} onChange={() => setSelectedStatus("Pending")} />
-            <Label className='form-check-label' for='ex1-active'>
-              Pending
-            </Label>
-          </div>
-          <div className='form-check'>
-            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "Accept" ? true : false} onChange={() => setSelectedStatus("Accept")} />
-            <Label className='form-check-label' for='ex1-inactive'>
-              Accept
-            </Label>
-          </div>
-          <div className='form-check'>
-            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "Complete" ? true : false} onChange={() => setSelectedStatus("Complete")} />
-            <Label className='form-check-label' for='ex1-inactive'>
-              Complete
-            </Label>
-          </div>
-        </div>
-      </StatusModal>
     </>
   )
 }
 
-export default ListTable
+export default MarchantBalanceWithrawRequestList

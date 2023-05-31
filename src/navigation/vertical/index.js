@@ -193,6 +193,29 @@ const marchantMenu = [
     resource: 'MARCHANT',
     navLink: "/marchant-orders"
   },
+
+  {
+    id: "withdraw",
+    title: "Balance Withdraw",
+    icon: <ShoppingCart size={20} />,
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+    navLink: "/marchant-withdraw-request"
+  },
+
+  // {
+  //   header: 'balance_withdraw',
+  //   action: 'marchant-pages',
+  //   resource: 'MARCHANT',
+  // },
+  // {
+  //   id: "balance_withdraw",
+  //   title: "Balance Withdraw",
+  //   icon: <ShoppingCart size={20} />,
+  //   action: 'marchant-pages',
+  //   resource: 'MARCHANT',
+  //   navLink: "/withdraw-request"
+  // },
   
  
 ]

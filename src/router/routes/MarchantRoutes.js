@@ -3,6 +3,10 @@ import MerchantAddOrder from "../../views/merchant_views/order/add-order"
 import EditMarchantOrder from "../../views/merchant_views/order/edit"
 import MerchantOrdersList from "../../views/merchant_views/order/list"
 import MarchantOrderView from "../../views/merchant_views/order/view"
+import MarchantBalanceWithrawRequestAdd from "../../views/merchant_views/withdraw_balance/add"
+import MarchantBalanceWithrawRequestList from "../../views/merchant_views/withdraw_balance/partials/list-table"
+
+
 
 
 const MarchantRoutes = [
@@ -26,6 +30,16 @@ const MarchantRoutes = [
         path: "/marchant_order/edit/:id",
         element: <EditMarchantOrder />
     },
+
+    {
+        path: "/marchant-withdraw-request/",
+        element: <MarchantBalanceWithrawRequestList />
+    },
+    {
+        path: "/marchant-withdraw-request/add",
+        element: <MarchantBalanceWithrawRequestAdd/>
+    }
+
   
 ]
 
