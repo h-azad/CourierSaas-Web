@@ -150,6 +150,14 @@ export const WITHDRAW_REQUEST_UPDATE_STATUS = "/api/withdraw-reques/"
 export const WITHDRAW_REQUEST_SEARCH = "/api/withdraw-request-search/"
 
 
+export const ADMIN_ADD = "/api/user/admin-viewset/"
+export const ADMIN_LIST = "/api/user/admin-viewset/"
+export const ADMIN_EDIT = "/api/user/admin-viewset/"
+export const ADMIN_DELETE = "/api/user/admin-viewset/"
+export const ADMIN_DETAILS = "/api/user/admin-viewset/"
+// export const ADMIN_ADD_SEARCH = "/api/withdraw-request-search/"
+
+
 
 //Create Organization
 export const CREATE_ORGANIZATION = "/api/user/create-tanent"

@@ -20,7 +20,7 @@ import useJwt from '@src/auth/jwt/useJwt'
 import SwalAlert from "../../../../components/SwalAlert"
 import StatusModal from "../../../../components/StatusModal"
 import SwalConfirm from "../../../../components/SwalConfirm"
-import { getApi, WITHDRAW_REQUEST_LIST, WITHDRAW_REQUEST_DELETE, WITHDRAW_REQUEST_SEARCH } from "../../../../constants/apiUrls"
+import { getApi, WITHDRAW_REQUEST_LIST, WITHDRAW_REQUEST_DELETE, WITHDRAW_REQUEST_SEARCH, WITHDRAW_REQUEST_UPDATE_STATUS } from "../../../../constants/apiUrls"
 
 const MarchantBalanceWithrawRequestList = () => {
   const [withdrawRequest, setWithdrawRequest] = useState([])
@@ -53,8 +53,8 @@ const MarchantBalanceWithrawRequestList = () => {
   const updateStatusAction = (e) => {
     e.preventDefault()
     useJwt
-      .axiosPatch(getApi(ACCOUNT_WALLET_UPDATE_STATUS) + selectedInfo.id + "/", {
-        status: selectedStatus,
+      .axiosPatch(getApi(WITHDRAW_REQUEST_UPDATE_STATUS) + selectedInfo.id + "/", {
+        withdraw_status: selectedStatus, info: selectedInfo
       })
       .then((res) => {
         setStatusModalState(false)
@@ -62,12 +62,11 @@ const MarchantBalanceWithrawRequestList = () => {
   }
 
 
-
   const changeStatusAction = (e, info) => {
     e.preventDefault()
     setStatusModalState(true)
-    // setSelectedStatus(info.status)
-    // setSelectedInfo(info)
+    setSelectedStatus(info.withdraw_status)
+    setSelectedInfo(info)
   }
 
   useEffect(() => {
@@ -174,6 +173,7 @@ const MarchantBalanceWithrawRequestList = () => {
             <th>Withdraw Balance</th>
             <th>Current Balance</th>
             <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -196,10 +196,43 @@ const MarchantBalanceWithrawRequestList = () => {
                   <span className="align-middle fw-bold">{wallet.withdraw_status
                   }</span>
                 </td>
+                {wallet.withdraw_status ==="Pending" &&
+                <td>
+                  <UncontrolledDropdown>
+                    <DropdownToggle
+                      className="icon-btn hide-arrow"
+                      color="transparent"
+                      size="sm"
+                      caret
+                    >
+                      <MoreVertical size={15} />
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      <DropdownItem href="/" onClick={e => changeStatusAction(e, wallet)}>
+                        <Edit3 className="me-50" size={15} />{" "}
+                        <span className="align-middle">Cancel</span>
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </td>}
+
               </tr>
             ))}
         </tbody>
       </Table>
+      <StatusModal
+        statusModalState={statusModalState}
+        setStatusModalState={setStatusModalState}
+        updateStatusAction={updateStatusAction}
+        title={"Change Withdraw Request Status"}
+      >
+        <div className='form-check'>
+          <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "Cancel" ? true : false} onChange={() => setSelectedStatus("Cancel")} />
+          <Label className='form-check-label' for='ex1-inactive'>
+            Cancel
+          </Label>
+        </div>
+      </StatusModal>
     </>
   )
 }

@@ -58,6 +58,16 @@ const adminMenu = [
     action: 'admin-pages',
     resource: 'ADMIN', 
   },
+
+  {
+    id: "admin",
+    title: "Admin",
+    icon: <Users size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN',
+    navLink: "/admin"
+  },
+
   {
     id: "merchants",
     title: "Merchants",

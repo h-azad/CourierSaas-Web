@@ -64,6 +64,9 @@ import AccountWalletEdit from "../../views/account_wallet/edit"
 import WithdrawRequest from "../../views/withdraw_request/list"
 import WithdrawRequestAdd from "../../views/withdraw_request/add"
 import WithdrawRequestEdit from "../../views/withdraw_request/edit"
+import AdminList from '../../views/admin/partials/list-table'
+import AddAdmin from '../../views/admin/add'
+import EditAdmin from '../../views/admin/edit'
 
 
 
@@ -112,6 +115,25 @@ const DashboardRoutes = [
     path: "/marchantlogin",
     element: <MarchantLogin />
   },
+
+
+  {
+    path: "/admin",
+    element: <AdminList />
+  },
+  {
+    path: "/admin/add",
+    element: <AddAdmin />
+  },
+  {
+    path: "/admin/edit/:id",
+    element: <EditAdmin />
+  },
+  {
+    path: "/admin/view/:id",
+    element: <MarchantView />
+  },
+
  
   {
     path: "/merchants",

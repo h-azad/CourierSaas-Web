@@ -54,16 +54,16 @@ const ListTable = () => {
   const updateStatusAction = (e) => {
     e.preventDefault()
     useJwt
-      .axiosPatch(getApi(WITHDRAW_REQUEST_UPDATE_STATUS) + selectedInfo.id + '/', { selectedInfo, withdraw_status: selectedInfo.withdraw_status })
+      .axiosPatch(getApi(WITHDRAW_REQUEST_UPDATE_STATUS) + selectedInfo.id + "/", {
+        withdraw_status: selectedStatus,info:selectedInfo
+      })
       .then((res) => {
-        console.log("res", res.data)
         setStatusModalState(false)
       })
   }
 
 
   const changeStatusAction = (e, info) => {
-    console.log('ffffffffffffffffffffff',info)
     e.preventDefault()
     setStatusModalState(true)
     setSelectedStatus(info.withdraw_status)
@@ -198,8 +198,9 @@ const ListTable = () => {
                   }</span>
                 </td>
 
-
+                {wallet.withdraw_status !== "Complete" &&
                 <td>
+                  
                   <UncontrolledDropdown>
                     <DropdownToggle
                       className="icon-btn hide-arrow"
@@ -210,21 +211,21 @@ const ListTable = () => {
                       <MoreVertical size={15} />
                     </DropdownToggle>
                     <DropdownMenu>
-                      <DropdownItem href={"/withdraw-request/edit/" + wallet.id}>
+                      {/* <DropdownItem href={"/withdraw-request/edit/" + wallet.id}>
                         <Edit className="me-50" size={15} />{" "}
                         <span className="align-middle">Edit</span>
                       </DropdownItem>
                       <DropdownItem href="/" onClick={e => deleteAction(e, wallet.id)}>
                         <Trash className="me-50" size={15} />{" "}
                         <span className="align-middle">Delete</span>
-                      </DropdownItem>
+                      </DropdownItem> */}
                       <DropdownItem href="/" onClick={e => changeStatusAction(e, wallet)}>
                         <Edit3 className="me-50" size={15} />{" "}
                         <span className="align-middle">Change Status</span>
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
-                </td>
+                </td>}
               </tr>
             ))}
         </tbody>
@@ -254,6 +255,12 @@ const ListTable = () => {
               Complete
             </Label>
           </div>
+        </div>
+        <div className='form-check'>
+          <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "Cancel" ? true : false} onChange={() => setSelectedStatus("Cancel")} />
+          <Label className='form-check-label' for='ex1-inactive'>
+            Cancel
+          </Label>
         </div>
       </StatusModal>
     </>
