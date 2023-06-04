@@ -36,6 +36,11 @@ export const RIDER_CURRENT_TASK_LIST = '/rider_app/current-task/'
 export const RIDER_SEARCH_FILTER = '/rider_app/search-filter/'
 
 
+export const RIDER_ASSIGNMENT = '/rider_app/rider-assignment'
+export const UNPICKUP_ORDER_LIST = '/rider_app/unpickup-order-list'
+
+
+
 
 //AGENT API's
 export const AGENT_ADD = '/manage-user/create-agent'

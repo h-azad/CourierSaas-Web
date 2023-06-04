@@ -45,15 +45,7 @@ const EditAdmin = () => {
         return res.data
       })
       .catch(err => console.log(err))
-
   }, [])
-
-
-
-
-
-
-
 
   const onSubmit = data => {
     let isFormValid = true
@@ -96,7 +88,6 @@ const EditAdmin = () => {
     }
   }
 
-  console.log('adminInfo', adminInfo)
   return (
     <Card>
       <CardHeader>

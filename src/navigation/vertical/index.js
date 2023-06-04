@@ -45,11 +45,19 @@ const adminMenu = [
 },
   {
     id: "create_order",
-    title: "Create Order",
+    title: "Order Manage",
     icon: <CreditCard size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN',
     navLink: "/create_order"
+  },
+  {
+    id: "assignment",
+    title: "Assignment",
+    icon: <CreditCard size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN',
+    navLink: "/assignment"
   },
 
 
@@ -61,13 +69,12 @@ const adminMenu = [
 
   {
     id: "admin",
-    title: "Admin",
+    title: "Staff Users",
     icon: <Users size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN',
     navLink: "/admin"
   },
-
   {
     id: "merchants",
     title: "Merchants",
@@ -205,8 +212,23 @@ const marchantMenu = [
   },
 
   {
+    header: 'Wallet',
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+  },
+
+  {
+    id: "wallet",
+    title: "My Wallet",
+    icon: <ShoppingCart size={20} />,
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+    navLink: "/marchant-wallet"
+  },
+
+  {
     id: "withdraw",
-    title: "Balance Withdraw",
+    title: "Withdraw Balance",
     icon: <ShoppingCart size={20} />,
     action: 'marchant-pages',
     resource: 'MARCHANT',

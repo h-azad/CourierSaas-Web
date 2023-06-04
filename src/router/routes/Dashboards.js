@@ -67,6 +67,7 @@ import WithdrawRequestEdit from "../../views/withdraw_request/edit"
 import AdminList from '../../views/admin/partials/list-table'
 import AddAdmin from '../../views/admin/add'
 import EditAdmin from '../../views/admin/edit'
+import RiderAssignmentList from '../../views/assignment/rider/riderAssignment'
 
 
 
@@ -77,6 +78,10 @@ const SecondPage = lazy(() => import("../../views/SecondPage"))
 const Error = lazy(() => import("../../views/Error"))
 
 const DashboardRoutes = [
+  {
+    path: "/assignment",
+    element: <RiderAssignmentList />
+  },
   {
     path: "/account-wallet",
     element: <AccountWallet />

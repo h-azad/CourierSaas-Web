@@ -24,9 +24,7 @@ import StatusModal from "../../../components/StatusModal"
 const AdminList = () => {
   const [admin, setAdmin] = useState([])
   const MySwal = withReactContent(Swal)
-  const [statusModalState, setStatusModalState] = useState(false)
-  const [selectedStatus, setSelectedStatus] = useState(null)
-  const [selectedInfo, setSelectedInfo] = useState(null)
+
 
   const deleteAction = (e, id) => {
     console.log('id is ', id)
@@ -48,38 +46,11 @@ const AdminList = () => {
     })
    
   }
-  
 
-  const updateStatusAction = (e) => {
-  e.preventDefault()
-  useJwt
-    .axiosPatch(getApi(ACCOUNT_WALLET_UPDATE_STATUS) + selectedInfo.id + "/", {
-      status: selectedStatus,
-    })
-    .then((res) => {
-      setStatusModalState(false)
-    })
-}
-
-
-
-  const changeStatusAction = (e, info) => {
-    e.preventDefault()
-    setStatusModalState(true)
-    // setSelectedStatus(info.status)
-    // setSelectedInfo(info)
-  }
 
   useEffect(() => {
     fetchadminData()
   }, [])
-
-  useEffect(() => {
-    if(!statusModalState) {
-      clearData()
-    }
-    fetchadminData()
-  }, [statusModalState])
 
   const fetchadminData = () => {
     return useJwt
@@ -120,24 +91,7 @@ const AdminList = () => {
     
   // }, 300)
 
-  const clearData = () => {
-    setSelectedInfo(null)
-    setSelectedStatus(null)
-  }
 
-  function debounce (fn, time) {
-    let timeoutId
-    return wrapper
-    function wrapper (...args) {
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-      }
-      timeoutId = setTimeout(() => {
-        timeoutId = null
-        fn(...args)
-      }, time)
-    }
-  }
 
   return (
     <>
@@ -207,10 +161,6 @@ const AdminList = () => {
                         <Trash className="me-50" size={15} />{" "}
                         <span className="align-middle">Delete</span>
                       </DropdownItem>
-                      <DropdownItem href="/" onClick={e=>changeStatusAction(e, admin)}>
-                        <Edit3 className="me-50" size={15} />{" "}
-                        <span className="align-middle">Change Status</span>
-                      </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
                 </td>
@@ -218,28 +168,6 @@ const AdminList = () => {
             ))}
         </tbody>
       </Table>
-      <StatusModal
-        statusModalState={statusModalState}
-        setStatusModalState={setStatusModalState}
-        updateStatusAction={updateStatusAction}
-        title={"Change Admin Status"}
-      >
-        <div className='demo-inline-spacing'>
-          <div className='form-check'>
-            <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "active" ? true : false} onChange={() => setSelectedStatus("active")} />
-            <Label className='form-check-label' for='ex1-active'>
-              Active
-            </Label>
-          </div>
-          <div className='form-check'>
-            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "inactive" ? true : false} onChange={() => setSelectedStatus("inactive")} />
-            <Label className='form-check-label' for='ex1-inactive'>
-             Inactive
-            </Label>
-          </div>
-          
-        </div>
-      </StatusModal>
     </>
   )
 }

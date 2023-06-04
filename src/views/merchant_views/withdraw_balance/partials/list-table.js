@@ -103,6 +103,7 @@ const MarchantBalanceWithrawRequestList = () => {
   const handleSearch = debounce(e => {
     console.log(e.target.value)
     const searchTerm = e.target.value
+    console.log('search', searchTerm)
     if (searchTerm.length > 0) {
       fetchSearchWithdrawRequestData(searchTerm)
         .then(data => {
@@ -154,7 +155,7 @@ const MarchantBalanceWithrawRequestList = () => {
               <input
                 placeholder="Search Withdraw Request"
                 name="marchant_name"
-                type="text"
+                type="date"
                 class="form-control"
                 onChange={handleSearch}
               />
