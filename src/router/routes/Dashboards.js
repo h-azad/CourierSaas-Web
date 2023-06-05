@@ -68,6 +68,7 @@ import AdminList from '../../views/admin/partials/list-table'
 import AddAdmin from '../../views/admin/add'
 import EditAdmin from '../../views/admin/edit'
 import RiderAssignmentList from '../../views/assignment/rider/riderAssignment'
+import RiderTasks from '../../views/assignment/rider/riderTaks'
 
 
 
@@ -78,6 +79,10 @@ const SecondPage = lazy(() => import("../../views/SecondPage"))
 const Error = lazy(() => import("../../views/Error"))
 
 const DashboardRoutes = [
+  {
+    path: "/assignment/task/:id",
+    element: <RiderTasks />
+  },
   {
     path: "/assignment",
     element: <RiderAssignmentList />

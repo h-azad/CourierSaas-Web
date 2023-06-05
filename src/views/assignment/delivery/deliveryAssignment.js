@@ -27,9 +27,7 @@ import {
   UNPICKUP_ORDER_LIST,
   RIDER_SEARCH_FILTER,
   RIDER_UPDATE_STATUS,
-  CREATE_ORDER_LIST,
-  UNDELIVERY_ORDER_LIST,
-  DELIVERY_ASSIGNMENT,
+  CREATE_ORDER_LIST
 } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
@@ -46,7 +44,6 @@ const RiderAssignmentList = () => {
 
   const [selectedOrderIds, setselectedOrderid] = useState([])
   const [riderId, setRiderId] = useState()
-  const [assignType, setAssignType] = useState()
   console.log('select', selectedOrderIds)
 
   const deleteAction = (e, id) => {
@@ -68,32 +65,11 @@ const RiderAssignmentList = () => {
 
 
   const updateStatusAction = (e) => {
-    console.log("picup type")
     console.log('rider id', riderId)
     console.log('order id', selectedOrderIds)
-    
     e.preventDefault()
     useJwt
       .axiosPost(getApi(RIDER_ASSIGNMENT + "/"), {
-        riderId: riderId,
-        selectedOrderIds: selectedOrderIds
-      })
-      .then((res) => {
-        console.log("res", res.data)
-        setStatusModalState(false)
-      })
-    //   .finally(() => fetchRiderData())
-  }
-
-
-  const delivaryHandler = (e) => {
-    console.log("delivery type ")
-    console.log('rider id', riderId)
-    console.log('order id', selectedOrderIds)
-    
-    e.preventDefault()
-    useJwt
-      .axiosPost(getApi(DELIVERY_ASSIGNMENT + "/"), {
         riderId: riderId,
         selectedOrderIds: selectedOrderIds
       })
@@ -121,21 +97,9 @@ const RiderAssignmentList = () => {
 
   const changeStatusAction = (e, info) => {
     e.preventDefault()
-    setselectedOrderid([])
-    setAssignType('pickup')
+    console.log('info is ', info)
     setRiderId(info.id)
     fetchOrderData()
-    setStatusModalState(true)
-    setSelectedStatus(info)
-    setSelectedInfo(info)
-  }
-
-  const deliveryAssign = (e, info) => {
-    e.preventDefault()
-    setselectedOrderid([])
-    setAssignType('delivery')
-    setRiderId(info.id)
-    fetchUnDeliveryData()
     setStatusModalState(true)
     setSelectedStatus(info)
     setSelectedInfo(info)
@@ -165,16 +129,6 @@ const RiderAssignmentList = () => {
 
   const fetchOrderData = () => {
     return useJwt.axiosGet(getApi(UNPICKUP_ORDER_LIST))
-      .then((res) => {
-        console.log(res.data)
-        setOrder(res.data)
-      }).catch((err) => {
-        console.log(err)
-      })
-  }
-
-  const fetchUnDeliveryData = () => {
-    return useJwt.axiosGet(getApi(UNDELIVERY_ORDER_LIST))
       .then((res) => {
         console.log(res.data)
         setOrder(res.data)
@@ -293,17 +247,13 @@ const RiderAssignmentList = () => {
                           <Edit3 className="me-50" size={15} />{" "}
                           <span className="align-middle">Pickup</span>
                         </DropdownItem>
-                        <DropdownItem href="/" onClick={e => deliveryAssign(e, info)}>
+                        {/* <DropdownItem href="/" onClick={e => changeStatusAction(e, info)}>
                           <Edit3 className="me-50" size={15} />{" "}
                           <span className="align-middle">Delivary</span>
-                        </DropdownItem>
-                        {/* <DropdownItem href={"/rider/view/" + info.id} >
-                          <Eye className="me-50" size={15} />{" "}
-                          <span className="align-middle">Tasks</span>
                         </DropdownItem> */}
-                        <DropdownItem tag={Link} to={"/assignment/task/" + info.id} >
+                        <DropdownItem href={"/rider/view/" + info.id} >
                           <Eye className="me-50" size={15} />{" "}
-                          <span className="align-middle">Pickup Rider Tasks</span>
+                          <span className="align-middle">View</span>
                         </DropdownItem>
                         <DropdownItem href={"/rider/edit/" + info.id}>
                           <Edit className="me-50" size={15} />{" "}
@@ -327,7 +277,7 @@ const RiderAssignmentList = () => {
       </div>
 
       <Modal isOpen={statusModalState} toggle={() => setStatusModalState(!statusModalState)} className='modal-dialog-centered'>
-        <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>{assignType==="pickup" ? 'Pickup Assign' : 'Delivery Assign'}</ModalHeader>
+        <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Pickup Assign</ModalHeader>
         <ModalBody>
           {/* <div className='demo-inline-spacing'> */}
 
@@ -362,7 +312,7 @@ const RiderAssignmentList = () => {
           {/* </div> */}
         </ModalBody>
         <ModalFooter>
-          <Button color='primary' onClick={assignType === "pickup" ? updateStatusAction : delivaryHandler}>Assign</Button>
+          <Button color='primary' onClick={updateStatusAction}>Assign</Button>
         </ModalFooter>
       </Modal>
     </>

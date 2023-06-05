@@ -38,8 +38,11 @@ export const RIDER_SEARCH_FILTER = '/rider_app/search-filter/'
 
 export const RIDER_ASSIGNMENT = '/rider_app/rider-assignment'
 export const UNPICKUP_ORDER_LIST = '/rider_app/unpickup-order-list'
+export const PICKUP_RIDER_TASK= '/rider_app/pickup-rider-task'
 
 
+export const DELIVERY_ASSIGNMENT = '/rider_app/delivery-assignment'
+export const UNDELIVERY_ORDER_LIST = '/rider_app/undelivery-order-list'
 
 
 //AGENT API's

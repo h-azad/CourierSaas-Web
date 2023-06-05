@@ -354,7 +354,7 @@ const AddCreateOrder = () => {
         pickup_rider: data?.pickup_rider?.value,
         // warehouse_status: data.warehouse_status.value,
         pricing_policy: data.pricing_policy.value,
-        status: "accepted",
+        // status: "accepted",
       }
 
       console.log("formData", formData)
@@ -685,7 +685,7 @@ const AddCreateOrder = () => {
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-6">
+            {/* <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="pickup_rider">
                   Pickup Rider
@@ -713,7 +713,7 @@ const AddCreateOrder = () => {
                   </span>
                 )}
               </div>
-            </div>
+            </div> */}
             {/* <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="delivary_charge">
