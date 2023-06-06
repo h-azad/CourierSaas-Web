@@ -165,7 +165,7 @@ export const ADMIN_DELETE = "/api/user/admin-viewset/"
 export const ADMIN_DETAILS = "/api/user/admin-viewset/"
 // export const ADMIN_ADD_SEARCH = "/api/withdraw-request-search/"
 
-
+export const USER_LIST = "/api/user/user-viewset/"
 
 //Create Organization
 export const CREATE_ORGANIZATION = "/api/user/create-tanent"

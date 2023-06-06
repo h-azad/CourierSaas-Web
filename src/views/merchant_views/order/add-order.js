@@ -1047,69 +1047,7 @@ const MerchantAddOrder = () => {
               </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col-lg-6">
-              <div className="mb-1">
-                <Label className="form-label" for="pickup_rider">
-                  Pickup Rider
-                </Label>
-                <Controller
-                  id="pickup_rider"
-                  name="pickup_rider"
-                  defaultValue=""
-                  control={control}
-                  render={({ field }) => (
-                    <Select
-                      isClearable
-                      className={classnames("react-select", {
-                        "is-invalid": errors.pickup_rider && true,
-                      })}
-                      classNamePrefix="select"
-                      options={selectboxRider}
-                      {...field}
-                    />
-                  )}
-                />
-                {errors && errors.pickup_rider && (
-                  <span className="invalid-feedback">
-                    {errors.pickup_rider.message}
-                  </span>
-                )}
-              </div>
-            </div>
-            {/* <div className="col-lg-6">
-              <div className="mb-1">
-                <Label className="form-label" for="delivary_charge">
-                  Warehouse Status
-                </Label>
-                <Controller
-                  defaultValue=""
-                  control={control}
-                  id="warehouse_status"
-                  name="warehouse_status"
-                  // render={({ field }) => <Input placeholder='' invalid={errors.warehouse_status && true} {...field} />}
-                  render={({ field }) => (
-                    <Select
-                      isClearable
-                      className={classnames("react-select", {
-                        "is-invalid": errors.warehouse_status && true,
-                      })}
-                      classNamePrefix="select"
-                      options={[
-                        { value: "", label: "Select" },
-                        { value: true, label: "Yes" },
-                        { value: false, label: "No" },
-                      ]}
-                      {...field}
-                    />
-                  )}
-                />
-                {errors && errors.warehouse_status && (
-                  <span>{errors.warehouse_status.message}</span>
-                )}
-              </div>
-            </div> */}
-          </div>
+         
           <hr></hr>
           <div>
             <div className="row">
@@ -1119,7 +1057,7 @@ const MerchantAddOrder = () => {
                 <h5> Delivary charge = {delivaryCharge} </h5>
                 <h5> Ammount to be collected = {amountCollected} </h5>
                 <hr></hr>
-                {/* <h5> Subtotal = {Number(delivaryCharge) + Number(amountCollected)} </h5> */}
+                <h5> Total = {Number(delivaryCharge) + Number(amountCollected)} </h5>
                 <hr></hr>
               </div>
             </div>

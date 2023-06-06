@@ -21,7 +21,8 @@ import { selectThemeColors } from '@utils'
 // ** Styles
 import '@styles/react/libs/react-select/_react-select.scss'
 import { useNavigate } from 'react-router-dom'
-import StatusModal from '../../../components/StatusModal'
+// import StatusModal from '../../../components/StatusModal'
+import ChangeStatusModal from "../partials/ChangeStatusModal"
 
 const roleColors = {
   merchant: 'light-info',
@@ -127,7 +128,7 @@ const UserInfoCard = ({ selectedUser }) => {
                   <h4>{selectedUser?.recipient_name}</h4>
 
                   <Badge color={roleColors['Order']} className='text-capitalize'>
-                    {selectedUser.status}
+                    {selectedStatus}
                   </Badge>
                 </div>
               </div>
@@ -181,100 +182,12 @@ const UserInfoCard = ({ selectedUser }) => {
         </CardBody>
       </Card>
 
-      <StatusModal
+      <ChangeStatusModal
         statusModalState={statusModalState}
         setStatusModalState={setStatusModalState}
-        updateStatusAction={updateStatusAction}
-        title={"Change Order Status"}
-      >
-        <div className='demo-inline-spacing'>
-          <div className="form-check">
-            <Input
-              type="radio"
-              name="ex1"
-              id="ex1-pending"
-              checked={selectedStatus == "pending" ? true : false}
-              onChange={() => setSelectedStatus("pending")}
-            />
-            <Label className="form-check-label" for="ex1-pending">
-              Pending
-            </Label>
-          </div>
-          <div className='form-check'>
-            <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "accepted" ? true : false} onChange={() => setSelectedStatus("accepted")} />
-            <Label className='form-check-label' for='ex1-active'>
-              Accepted
-            </Label>
-          </div>
-          <div className="form-check">
-            <Input
-              type="radio"
-              id="ex1-active"
-              name="ex1"
-              checked={selectedStatus == "pickedup" ? true : false}
-              onChange={() => setSelectedStatus("pickedup")}
-            />
-            <Label className="form-check-label" for="ex1-active">
-              Pickedup
-            </Label>
-          </div>
-          <div className="form-check">
-            <Input
-              type="radio"
-              id="ex1-active"
-              name="ex1"
-              checked={selectedStatus == "shipped" ? true : false}
-              onChange={() => setSelectedStatus("shipped")}
-            />
-            <Label className="form-check-label" for="ex1-active">
-              Shipped
-            </Label>
-          </div>
-          <div className="form-check">
-            <Input
-              type="radio"
-              id="ex1-active"
-              name="ex1"
-              checked={selectedStatus == "hold" ? true : false}
-              onChange={() => setSelectedStatus("hold")}
-            />
-            <Label className="form-check-label" for="ex1-active">
-              Hold
-            </Label>
-          </div>
-          <div className="form-check">
-            <Input
-              type="radio"
-              id="ex1-active"
-              name="ex1"
-              checked={selectedStatus == "returned" ? true : false}
-              onChange={() => setSelectedStatus("returned")}
-            />
-            <Label className="form-check-label" for="ex1-active">
-              Returned
-            </Label>
-          </div>
-
-          <div className="form-check">
-            <Input
-              type="radio"
-              id="ex1-active"
-              name="ex1"
-              checked={selectedStatus == "cancelled" ? true : false}
-              onChange={() => setSelectedStatus("cancelled")}
-            />
-            <Label className="form-check-label" for="ex1-active">
-              Cancelled
-            </Label>
-          </div>
-          <div className='form-check'>
-            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "delivered" ? true : false} onChange={() => setSelectedStatus("delivered")} />
-            <Label className='form-check-label' for='ex1-inactive'>
-              Delivered
-            </Label>
-          </div>
-        </div>
-      </StatusModal>
+        orderInfo={selectedInfo}
+        // fetchCreateOrderData={fetchCreateOrderData}
+      />
     </Fragment>
   )
 }

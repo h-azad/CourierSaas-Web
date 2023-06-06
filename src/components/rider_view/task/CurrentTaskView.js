@@ -59,11 +59,8 @@ const CurrentTaskView = ({ currentTask }) => {
   const changeDeliveryStatusAction = (e, info) => {
     e.preventDefault()
     useJwt
-      .axiosPost(getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/confirm_delivery/`))
+      .axiosPost(getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/confirm_delivery/`),{details:info})
       .then((res) => {
-        // console.log(res.data)
-        // setCurrentTask(res.data.data)
-        // return res.data
         toast.success(res.data)
         fetchCurrentTaskData()
       })
@@ -140,7 +137,8 @@ const CurrentTaskView = ({ currentTask }) => {
                 <h6 className='mb-25'>Product type : {info.product_type.product_type}</h6>
                 <h6 className='mb-25'>Shipment type : {info.shipment_type.shipment_type}</h6>
                 <h6 className='mb-25'>Delivary Charge: {info?.delivary_charge}</h6>
-                <h6 className='mb-25'>Total Amount : {info?.amount_to_be_collected}</h6>
+                <h6 className='mb-25'>Collection Amount : {info?.amount_to_be_collected}</h6>
+                <h6 className='mb-25'>Total Amount : {Number(info?.amount_to_be_collected) + Number(info?.delivary_charge)}</h6>
               </Col>
             </Row>
           </CardBody>

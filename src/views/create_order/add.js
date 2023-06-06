@@ -43,6 +43,8 @@ const AddCreateOrder = () => {
   const [amount, setAmount] = useState(null)
   const [delivaryCharge, setDelivaryCharge] = useState()
   const [amountCollected, setAmountCollected] = useState(0)
+  const [CODCharge, setCODCharge] = useState(0)
+  const [orderType, setOrderType] = useState()
   console.log('amountCollected', amountCollected)
   const navigate = useNavigate()
   const [inputValue, setInputValue] = useState("")
@@ -161,7 +163,21 @@ const AddCreateOrder = () => {
         fetchPricingPolicyData(value.product_type.value)
       }
       if (name == "amount_to_be_collected" && type == "change") {
+        fetchDelivaryChargeData(value?.pricing_policy?.value)
         setAmountCollected(value.amount_to_be_collected)
+        setCODCharge(CODCharge)
+      }
+      if (name ==='order_type' && type==="change"){
+        if (value.order_type.value === "COD"){
+          setOrderType(value.order_type.value)
+          setCODCharge(CODCharge)
+          
+        }else{
+          setOrderType(value.order_type.value)
+          setCODCharge(0)
+          setValue('amount_to_be_collected', 0.00)
+          setAmountCollected(0.00)
+        }
       }
 
     })
@@ -177,6 +193,8 @@ const AddCreateOrder = () => {
 
         res.data.map((data) => {
           setDelivaryCharge(data.delivary_charge)
+          setCODCharge(data.cod_charge)
+          console.log('cod charge is ', data)
           setValue('delivary_charge', data.delivary_charge)
           delivaryChargeData.push({
             value: data.id,
@@ -195,6 +213,7 @@ const AddCreateOrder = () => {
       // console.log(value, name, type)
       if (name == "pricing_policy" && type == "change") {
         fetchDelivaryChargeData(value?.pricing_policy?.value)
+        console.log('pricing_policy is fffffff', value)
       }
 
     })
@@ -250,7 +269,7 @@ const AddCreateOrder = () => {
       })
       isFormValid = false
     }
-    if (data.order_type.value === 'pre-paid' && !data.amount_to_be_collected) {
+    if (data.order_type.value === 'COD' && !data.amount_to_be_collected) {
       setError("amount_to_be_collected", {
         type: "required",
         message: "Amount is required",
@@ -354,6 +373,7 @@ const AddCreateOrder = () => {
         pickup_rider: data?.pickup_rider?.value,
         // warehouse_status: data.warehouse_status.value,
         pricing_policy: data.pricing_policy.value,
+        cash_on_delivery: CODCharge
         // status: "accepted",
       }
 
@@ -529,6 +549,7 @@ const AddCreateOrder = () => {
                   render={({ field }) => (
                     <Input
                       type="number"
+                      readOnly={orderType ==='pre-paid'? true: false}
                       value={amountCollected}
                       // onChange={(e) => setAmountCollected(e.target.value)}
                       placeholder=""
@@ -754,7 +775,9 @@ const AddCreateOrder = () => {
               <div class="col-lg-6">
                 {/* <h5> Delivary charge = {charge} </h5> */}
                 <h5> Delivary charge = {delivaryCharge} </h5>
+                <h5> Cash on delivary charge = {(Number(CODCharge) * Number(amountCollected))/100} </h5>
                 <h5> Ammount to be collected = {amountCollected} </h5>
+                <h5> Total amount = {Number(amountCollected) + Number(delivaryCharge) + ((Number(CODCharge) * Number(amountCollected)/100))} </h5>
                 <hr></hr>
                 {/* <h5> Subtotal = {Number(delivaryCharge) + Number(amountCollected)} </h5> */}
                 <hr></hr>

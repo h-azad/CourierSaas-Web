@@ -71,6 +71,7 @@ const ListTable = () => {
 
   useEffect(() => {
     fetchAccountWalletData()
+    console.log('accountWallet', accountWallet)
   }, [])
 
   useEffect(() => {
@@ -168,7 +169,8 @@ const ListTable = () => {
       <Table bordered>
         <thead>
           <tr>
-            <th>Marchant Name</th>
+            <th>User Name</th>
+            <th>User Role</th>
             <th>Balance</th>
             <th>Actions</th>
           </tr>
@@ -178,10 +180,13 @@ const ListTable = () => {
             accountWallet.map((wallet) => (
               <tr key={wallet.id}>
                 <td>
-                  <span className="align-middle fw-bold">{wallet?.marchant?.full_name}</span>
+                  <span className="align-middle fw-bold">{wallet?.user?.name}</span>
                 </td>
                 <td>
-                  <span className="align-middle fw-bold">{wallet.balance}</span>
+                  <span className="align-middle fw-bold">{wallet?.user?.role}</span>
+                </td>
+                <td>
+                  <span className="align-middle fw-bold">{wallet?.balance}</span>
                 </td>
                 <td>
                   <UncontrolledDropdown>

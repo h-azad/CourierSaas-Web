@@ -14,13 +14,13 @@ import Select from "react-select"
 import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, ACCOUNT_WALLET_ADD, MARCHANT_LIST } from '@src/constants/apiUrls'
+import { getApi, ACCOUNT_WALLET_ADD, USER_LIST } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
 
 const AddAreas = () => {
   const [data, setData] = useState(null)
-  const [selectboxMarchant, setSelectboxMarchant] = useState([])
+  const [selectboxUser, setselectboxUser] = useState([])
   const navigate = useNavigate()
   const {
     control,
@@ -31,26 +31,26 @@ const AddAreas = () => {
   } = useForm({
     defaultValues: {
       balance: '',
-      marchant: {}
+      // marchant: {}
     }
   })
 
   useEffect(() => {
-    fetchMarchantData()
+    fetchUsertData()
   }, [])
 
-  const fetchMarchantData = () => {
+  const fetchUsertData = () => {
     return useJwt
-      .axiosGet(getApi(MARCHANT_LIST))
+      .axiosGet(getApi(USER_LIST))
       .then((res) => {
-        console.log(res)
-        let marchantData = []
+        console.log("response data", res)
+        let userData = []
 
-        res.data.data.map((data) => {
-          marchantData.push({ value: data.id, label: data.full_name })
+        res.data.map((data) => {
+          userData.push({ value: data.id, label: data.name })
         })
-
-        setSelectboxMarchant(marchantData)
+        console.log('userdata', userData)
+        setselectboxUser(userData)
         return res.data.data
       })
       .catch((err) => console.log(err))
@@ -59,11 +59,10 @@ const AddAreas = () => {
 
   const onSubmit = data => {
     let isFormValid = true
-
-    if (!data.marchant) {
-      setError("marchant", {
+    if (!data.user_name) {
+      setError("user", {
         type: "required",
-        message: "Marchant is required",
+        message: "User is required",
       })
       isFormValid = false
     }
@@ -81,10 +80,10 @@ const AddAreas = () => {
 
     console.log("data", data)
     setData(data)
-    if (data.marchant_name !== null && data.balance !== null) {
+    if (data.user_name !== null && data.balance !== null) {
 
       let formData = {
-        marchant: data.marchant_name.value,
+        user: data.user_name.value,
         balance: data.balance
 
       }
@@ -102,24 +101,24 @@ const AddAreas = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle tag="h4">Add Areas</CardTitle>
+        <CardTitle tag="h4">Add Account Wallet</CardTitle>
       </CardHeader>
 
       <CardBody>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-1'>
-            <Label className='form-label' for='marchant_name'>
-              Marchant
+            <Label className='form-label' for='user_name'>
+              User
             </Label>
             <Controller
-              id="marchant_name"
-              name="marchant_name"
+              id="user_name"
+              name="user_name"
               control={control}
               render={({ field }) => <Select
                 isClearable
-                className={classnames('react-select', { 'is-invalid': data !== null && data.marchant === null })}
+                className={classnames('react-select', { 'is-invalid': data !== null && data.user === null })}
                 classNamePrefix='select'
-                options={selectboxMarchant}
+                options={selectboxUser}
                 {...field}
               />}
             />
