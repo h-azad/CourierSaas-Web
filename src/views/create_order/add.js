@@ -41,7 +41,7 @@ const AddCreateOrder = () => {
   const [data, setData] = useState(null)
   const [charge, setCharge] = useState(null)
   const [amount, setAmount] = useState(null)
-  const [delivaryCharge, setDelivaryCharge] = useState()
+  const [delivaryCharge, setDelivaryCharge] = useState(0)
   const [amountCollected, setAmountCollected] = useState(0)
   const [CODCharge, setCODCharge] = useState(0)
   const [orderType, setOrderType] = useState()
@@ -194,7 +194,6 @@ const AddCreateOrder = () => {
         res.data.map((data) => {
           setDelivaryCharge(data.delivary_charge)
           setCODCharge(data.cod_charge)
-          console.log('cod charge is ', data)
           setValue('delivary_charge', data.delivary_charge)
           delivaryChargeData.push({
             value: data.id,
@@ -373,7 +372,7 @@ const AddCreateOrder = () => {
         pickup_rider: data?.pickup_rider?.value,
         // warehouse_status: data.warehouse_status.value,
         pricing_policy: data.pricing_policy.value,
-        cash_on_delivery: CODCharge
+        // cash_on_delivery_charge: CODCharge
         // status: "accepted",
       }
 

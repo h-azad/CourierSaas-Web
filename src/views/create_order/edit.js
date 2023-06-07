@@ -41,7 +41,10 @@ const EditCreateOrder = () => {
   const [data, setData] = useState(null)
   const [selectboxDelivaryCharge, setSelectboxDelivaryCharge] = useState([])
   const [selectWareHouseStatus, setSelectWareHouseStatus] = useState([])
-  const [delivaryCharge, setDelivaryCharge] = useState()
+  const [delivaryCharge, setDelivaryCharge] = useState(0)
+  const [amountCollected, setAmountCollected] = useState(0)
+  const [CODCharge, setCODCharge] = useState(0)
+  const [orderType, setOrderType] = useState()
 
   // console.log('selectPricingPolicybyProduct', selectPricingPolicybyProduct)
   console.log("createOrderInfo ======", createOrderInfo)
@@ -56,7 +59,7 @@ const EditCreateOrder = () => {
         setCreateOrderInfo(res.data)
         // console.log('selectbox delivary charge', res.data.delivary_charge)
         setDelivaryCharge(res.data.delivary_charge)
-
+        setOrderType(res.data.order_type)
         setSelectboxDelivaryCharge([
           { value: res.data.delivary_charge, label: res.data.delivary_charge },
         ])
@@ -82,9 +85,9 @@ const EditCreateOrder = () => {
         res.data.map((data) => {
           setDelivaryCharge(data.delivary_charge)
           setValue("delivary_charge", data.delivary_charge)
-          // setDelivaryCharge(data.delivary_charge)
+          setCODCharge(data.cod_charge)
           delivaryChargeData.push({
-            value: data.delivary_charge,
+            value: data.id,
             label: data.delivary_charge,
           })
         })
@@ -207,10 +210,33 @@ const EditCreateOrder = () => {
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
       // console.log(value, name, type)
+      // if (name == "product_type" && type == "change") {
+      //   setValue("delivary_charge", null)
+      //   fetchPricingPolicyData(value.product_type.value)
+      // }
+
       if (name == "product_type" && type == "change") {
-        setValue("delivary_charge", null)
         fetchPricingPolicyData(value.product_type.value)
       }
+      if (name == "amount_to_be_collected" && type == "change") {
+        fetchDelivaryChargeData(value?.pricing_policy?.value)
+        setAmountCollected(value.amount_to_be_collected)
+        setCODCharge(CODCharge)
+      }
+      if (name === 'order_type' && type === "change") {
+        if (value.order_type.value === "COD") {
+          setOrderType(value.order_type.value)
+          setCODCharge(CODCharge)
+
+        } else {
+          setOrderType(value.order_type.value)
+          setCODCharge(0)
+          setValue('amount_to_be_collected', 0.00)
+          setAmountCollected(0.00)
+        }
+      }
+
+
     })
 
     return () => subscription.unsubscribe()
@@ -368,9 +394,7 @@ const EditCreateOrder = () => {
       data.delivary_charge !== null &&
       data.pricing_policy.value !== null &&
       data.shipment_type.value !== null
-      // data.pickup_rider.value !== null &&
-      // data.warehouse_status !== null
-      // data.delivary_rider.value !== null
+
     ) {
       let formData = {
         marchant: data.marchant.value,
@@ -383,13 +407,13 @@ const EditCreateOrder = () => {
         pricing_policy: data.pricing_policy.value,
         shipment_type: data.shipment_type.value,
         delivary_charge: data.delivary_charge,
+        order_type: data.order_type.value,
         pickup_rider: data?.pickup_rider?.value,
-        delivary_rider: data.delivary_rider?.value,
-        // warehouse_status: data.warehouse_status,
-        // status: "accepted",
-      }
+        pricing_policy: data.pricing_policy.value,
+        cash_on_delivery_charge: (Number(CODCharge) * Number(amountCollected)) / 100
+      
+}
 
-      // console.log("formData", formData)
       const headers = {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -398,7 +422,7 @@ const EditCreateOrder = () => {
 
       useJwt
         // .axiosPost(getApi(CREATE_ORDER_EDIT), formData)
-        .axiosPut(getApi(CREATE_ORDER_EDIT) + id + "/", formData, headers)
+        .axiosPatch(getApi(CREATE_ORDER_EDIT) + id + "/", formData, headers)
         .then((res) => {
           // console.log("res", res.data)
           SwalAlert("Order Edited Successfully")
@@ -417,24 +441,23 @@ const EditCreateOrder = () => {
       <CardBody>
         {createOrderInfo && (
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <div className="mb-1">
+            <div className="mb-1" >
               <Label className="form-label" for="marchant">
                 Marchant*
               </Label>
               <Controller
+                id="marchant"
+                name="marchant"
                 defaultValue={{
                   value: createOrderInfo.marchant.id,
                   label: createOrderInfo.marchant.full_name,
                 }}
-                id="marchant"
-                name="marchant"
                 control={control}
                 render={({ field }) => (
                   <Select
                     isClearable
                     className={classnames("react-select", {
-                      "is-invalid":
-                        errors.marchant && errors.marchant.full_name && true,
+                      "is-invalid": errors.marchant && errors.marchant && true,
                     })}
                     classNamePrefix="select"
                     options={selectboxMarchant}
@@ -442,15 +465,18 @@ const EditCreateOrder = () => {
                   />
                 )}
               />
-              {errors && errors.marchant && (
-                <span className="invalid-feedback">
-                  {errors.marchant.message}
-                </span>
-              )}
+
+              {
+                errors && errors.marchant && (
+                  <span className="invalid-feedback">
+                    {errors.marchant.message}
+                  </span>
+                )
+              }
             </div>
 
-            <div className="row">
-              <div className="col-lg-6">
+            <div class="row">
+              <div class="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="recipient_name">
                     Recipient Name*
@@ -462,6 +488,7 @@ const EditCreateOrder = () => {
                     name="recipient_name"
                     render={({ field }) => (
                       <Input
+                        placeholder=""
                         invalid={errors.recipient_name && true}
                         {...field}
                       />
@@ -472,7 +499,7 @@ const EditCreateOrder = () => {
                   )}
                 </div>
               </div>
-              <div className="col-lg-6">
+              <div class="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="phone_number">
                     Phone Number*
@@ -483,7 +510,12 @@ const EditCreateOrder = () => {
                     id="phone_number"
                     name="phone_number"
                     render={({ field }) => (
-                      <Input invalid={errors.phone_number && true} {...field} />
+                      <Input
+                        type="number"
+                        placeholder=""
+                        invalid={errors.phone_number && true}
+                        {...field}
+                      />
                     )}
                   />
                   {errors && errors.phone_number && (
@@ -502,43 +534,89 @@ const EditCreateOrder = () => {
                 id="delivary_address"
                 name="delivary_address"
                 render={({ field }) => (
-                  <Input invalid={errors.delivary_address && true} {...field} />
+                  <Input
+                    placeholder=""
+                    invalid={errors.delivary_address && true}
+                    {...field}
+                  />
                 )}
               />
               {errors && errors.delivary_address && (
                 <span>{errors.delivary_address.message}</span>
               )}
             </div>
-            <div className="mb-1">
-              <Label className="form-label" for="amount_to_be_collected">
-                Amount to be Collected*
-              </Label>
-              <Controller
-                defaultValue={createOrderInfo.amount_to_be_collected}
-                control={control}
-                id="amount_to_be_collected"
-                name="amount_to_be_collected"
-                render={({ field }) => (
-                  <Input
-                    invalid={errors.amount_to_be_collected && true}
-                    {...field}
+
+            <div class="row">
+              <div class="col-lg-6">
+                <div className="mb-1">
+                  <Label className="form-label" for="order_type">
+                    Order Type*
+                  </Label>
+                  ;
+                  <Controller
+                    defaultValue={createOrderInfo.order_type === 'pre-paid' ? { value: "pre-paid", label: "Pre-Paid" } : { value: "COD", label: "COD" }}
+                    control={control}
+                    id="order_type"
+                    name="order_type"
+                    render={({ field }) => (
+                      <Select
+                        isClearable
+                        className={classnames("react-select", {
+                          "is-invalid": errors.order_type && true,
+                        })}
+                        classNamePrefix="select"
+                        options={[
+                          { value: "", label: "Select" },
+                          { value: "pre-paid", label: "Pre-Paid" },
+                          { value: "COD", label: "COD" },
+                        ]}
+                        {...field}
+                      />
+                    )}
                   />
-                )}
-              />
-              {errors && errors.amount_to_be_collected && (
-                <span>{errors.amount_to_be_collected.message}</span>
-              )}
+                  {errors && errors.order_type && (
+                    <span>{errors.order_type.message}</span>
+                  )}
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div className="mb-1">
+                  <Label className="form-label" for="amount_to_be_collected">
+                    Amount to be Collected*
+                  </Label>
+                  <Controller
+                    defaultValue={createOrderInfo.amount_to_be_collected}
+                    control={control}
+                    id="amount_to_be_collected"
+                    name="amount_to_be_collected"
+                    render={({ field }) => (
+                      <Input
+                        type="number"
+                        readOnly={orderType === 'pre-paid' ? true : false}
+                        value={amountCollected}
+                        onChange={(e) => setAmountCollected(e.target.value)}
+                        placeholder=""
+                        invalid={errors.amount_to_be_collected && true}
+                        {...field}
+                      />
+                    )}
+                  />
+                  {errors && errors.amount_to_be_collected && (
+                    <span>{errors.amount_to_be_collected.message}</span>
+                  )}
+                </div>
+              </div>
             </div>
-            <div className="row">
-              <div className="col-lg-6">
+            <div class="row">
+              <div class="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="product_type">
                     Product Type*
                   </Label>
                   <Controller
                     defaultValue={{
-                      value: createOrderInfo.product_type.id,
-                      label: createOrderInfo.product_type.product_type,
+                      value: createOrderInfo.pricing_policy?.id,
+                      label: createOrderInfo.pricing_policy?.policy_title,
                     }}
                     id="product_type"
                     name="product_type"
@@ -562,7 +640,7 @@ const EditCreateOrder = () => {
                   )}
                 </div>
               </div>
-              <div className="col-lg-6">
+              <div class="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="area">
                     Percel Type(Pricing Policy)*
@@ -572,13 +650,12 @@ const EditCreateOrder = () => {
                       value: createOrderInfo.pricing_policy?.id,
                       label: createOrderInfo.pricing_policy?.policy_title,
                     }}
-
                     id="pricing_policy"
                     name="pricing_policy"
                     control={control}
                     render={({ field }) => (
                       <Select
-                        // isClearable
+                        isClearable
                         className={classnames("react-select", {
                           "is-invalid": errors.pricing_policy && true,
                         })}
@@ -596,71 +673,38 @@ const EditCreateOrder = () => {
                 </div>
               </div>
             </div>
-            <div className="row">
-              <div className="col-lg-6">
-                <div className="mb-1">
-                  <Label className="form-label" for="area">
-                    Shipment Type*
-                  </Label>
-                  <Controller
-                    defaultValue={{
-                      value: createOrderInfo.shipment_type.id,
-                      label: createOrderInfo.shipment_type.shipment_type,
-                    }}
-                    id="shipment_type"
-                    name="shipment_type"
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        className={classnames("react-select", {
-                          "is-invalid": errors.shipment_type && true,
-                        })}
-                        classNamePrefix="select"
-                        options={selectboxShipmentType}
-                        {...field}
-                      />
-                    )}
+            <div className="mb-1">
+              <Label className="form-label" for="area">
+                Shipment Type*
+              </Label>
+              <Controller
+                id="shipment_type"
+                name="shipment_type"
+                control={control}
+                defaultValue={{
+                  value: createOrderInfo.shipment_type.id,
+                  label: createOrderInfo.shipment_type.shipment_type,
+                }}
+                render={({ field }) => (
+                  <Select
+                    isClearable
+                    className={classnames("react-select", {
+                      "is-invalid": errors.shipment_type && true,
+                    })}
+                    classNamePrefix="select"
+                    options={selectboxShipmentType}
+                    {...field}
                   />
-                  {errors && errors.shipment_type && (
-                    <span className="invalid-feedback">
-                      {errors.shipment_type.message}
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="col-lg-6">
-                <div className="mb-1">
-                  <Label className="form-label" for="area">
-                    Delivary Rider*
-                  </Label>
-                  <Controller
-                    defaultValue={createOrderInfo.delivary_rider?{ value: createOrderInfo.delivary_rider.id, label: createOrderInfo.delivary_rider.full_name }: null}
-                    id="delivary_rider"
-                    name="delivary_rider"
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        // isClearable
-                        className={classnames("react-select", {
-                          "is-invalid": errors.delivary_rider && true,
-                        })}
-                        classNamePrefix="select"
-                        options={selectboxRider}
-                        {...field}
-                      />
-                    )}
-                  />
-                  {errors && errors.delivary_rider && (
-                    <span className="invalid-feedback">
-                      {errors.delivary_rider.message}
-                    </span>
-                  )}
-                </div>
-              </div>
+                )}
+              />
+              {errors && errors.shipment_type && (
+                <span className="invalid-feedback">
+                  {errors.shipment_type.message}
+                </span>
+              )}
             </div>
-
-            <div className="row">
-              <div className="col-lg-6">
+            <div class="row">
+              <div class="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="delivary_area">
                     Delivary Area*
@@ -713,80 +757,28 @@ const EditCreateOrder = () => {
                     )}
                   />
                   {errors && errors.delivary_charge && (
-                    <span className="invalid-feedback">{errors.delivary_charge.message}</span>
-                  )}
-                </div>
-              </div>
-
-            </div>
-            <div className="row">
-              <div className="col-lg-6">
-                <div className="mb-1">
-                  <Label className="form-label" for="pickup_rider">
-                    Pickup Rider
-                  </Label>
-                  <Controller
-                    defaultValue={{
-                      value: createOrderInfo.pickup_rider?.id,
-                      label: createOrderInfo.pickup_rider?.full_name,
-                    }}
-                    id="pickup_rider"
-                    name="pickup_rider"
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        isClearable
-                        className={classnames("react-select", {
-                          "is-invalid":
-                            errors.pickup_rider &&
-                            errors.pickup_rider.full_name &&
-                            true,
-                        })}
-                        classNamePrefix="select"
-                        options={selectboxRider}
-                        {...field}
-                      />
-                    )}
-                  />
-                  {errors && errors.rider && (
                     <span className="invalid-feedback">
-                      {errors.rider.message}
+                      {errors.delivary_charge.message}
                     </span>
                   )}
                 </div>
               </div>
-              {/* <div className="col-lg-6">
-                <div className="mb-1">
-                  <Label className="form-label" for="warehouse_status">
-                    Warehouse Status
-                  </Label>
-                  ;
-                  <Controller
-                    defaultValue={selectWareHouseStatus}
-                    control={control}
-                    id="warehouse_status"
-                    name="warehouse_status"
-                    // render={({ field }) => <Input placeholder='' invalid={errors.warehouse_status && true} {...field} />}
-                    render={({ field }) => (
-                      <Select
-                        isClearable
-                        className={classnames("react-select", {
-                          "is-invalid": errors.warehouse_status && true,
-                        })}
-                        classNamePrefix="select"
-                        options={[
-                          { value: true, label: "Yes" },
-                          { value: false, label: "No" },
-                        ]}
-                        {...field}
-                      />
-                    )}
-                  />
-                  {errors && errors.warehouse_status && (
-                    <span>{errors.warehouse_status.message}</span>
-                  )}
+            </div>
+            <hr></hr>
+            <div>
+              <div class="row">
+                <div class="col-lg-6"></div>
+                <div class="col-lg-6">
+                  {/* <h5> Delivary charge = {charge} </h5> */}
+                  <h5> Delivary charge = {delivaryCharge} </h5>
+                  <h5> Cash on delivary charge = {(Number(CODCharge) * Number(amountCollected)) / 100} </h5>
+                  <h5> Ammount to be collected = {amountCollected} </h5>
+                  <h5> Total amount = {Number(amountCollected) + Number(delivaryCharge) + ((Number(CODCharge) * Number(amountCollected) / 100))} </h5>
+                  <hr></hr>
+                  <h5> Subtotal = {Number(delivaryCharge) + Number(amountCollected)} </h5>
+                  <hr></hr>
                 </div>
-              </div> */}
+              </div>
             </div>
             <div className="d-flex">
               <Button className="me-1" color="primary" type="submit">

@@ -469,8 +469,13 @@ const MerchantAddOrder = () => {
   const [data, setData] = useState(null)
   const [charge, setCharge] = useState(null)
   const [amount, setAmount] = useState(null)
-  const [delivaryCharge, setDelivaryCharge] = useState()
+
+
+  const [delivaryCharge, setDelivaryCharge] = useState(0)
   const [amountCollected, setAmountCollected] = useState(0)
+  const [CODCharge, setCODCharge] = useState(0)
+  const [orderType, setOrderType] = useState()
+
   console.log('amountCollected', amountCollected)
   const navigate = useNavigate()
   const [inputValue, setInputValue] = useState("")
@@ -567,12 +572,25 @@ const MerchantAddOrder = () => {
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
 
-
       if (name == "product_type" && type == "change") {
         fetchPricingPolicyData(value.product_type.value)
       }
       if (name == "amount_to_be_collected" && type == "change") {
+        fetchDelivaryChargeData(value?.pricing_policy?.value)
         setAmountCollected(value.amount_to_be_collected)
+        setCODCharge(CODCharge)
+      }
+      if (name === 'order_type' && type === "change") {
+        if (value.order_type.value === "COD") {
+          setOrderType(value.order_type.value)
+          setCODCharge(CODCharge)
+
+        } else {
+          setOrderType(value.order_type.value)
+          setCODCharge(0)
+          setValue('amount_to_be_collected', 0.00)
+          setAmountCollected(0.00)
+        }
       }
 
     })
@@ -588,6 +606,7 @@ const MerchantAddOrder = () => {
 
         res.data.map((data) => {
           setDelivaryCharge(data.delivary_charge)
+          setCODCharge(data.cod_charge)
           setValue('delivary_charge', data.delivary_charge)
           delivaryChargeData.push({
             value: data.id,
@@ -774,8 +793,8 @@ const MerchantAddOrder = () => {
       <CardBody>
         <Form onSubmit={handleSubmit(onSubmit)}>
 
-          <div className="row">
-            <div className="col-lg-6">
+          <div class="row">
+            <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="recipient_name">
                   Recipient Name*
@@ -798,7 +817,7 @@ const MerchantAddOrder = () => {
                 )}
               </div>
             </div>
-            <div className="col-lg-6">
+            <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="phone_number">
                   Phone Number*
@@ -845,8 +864,8 @@ const MerchantAddOrder = () => {
             )}
           </div>
 
-          <div className="row">
-            <div className="col-lg-6">
+          <div class="row">
+            <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="order_type">
                   Order Type*
@@ -879,7 +898,7 @@ const MerchantAddOrder = () => {
                 )}
               </div>
             </div>
-            <div className="col-lg-6">
+            <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="amount_to_be_collected">
                   Amount to be Collected*
@@ -892,6 +911,7 @@ const MerchantAddOrder = () => {
                   render={({ field }) => (
                     <Input
                       type="number"
+                      readOnly={orderType === 'pre-paid' ? true : false}
                       value={amountCollected}
                       // onChange={(e) => setAmountCollected(e.target.value)}
                       placeholder=""
@@ -906,8 +926,8 @@ const MerchantAddOrder = () => {
               </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col-lg-6">
+          <div class="row">
+            <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="product_type">
                   Product Type*
@@ -935,7 +955,7 @@ const MerchantAddOrder = () => {
                 )}
               </div>
             </div>
-            <div className="col-lg-6">
+            <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="area">
                   Percel Type(Pricing Policy)*
@@ -990,8 +1010,8 @@ const MerchantAddOrder = () => {
               </span>
             )}
           </div>
-          <div className="row">
-            <div className="col-lg-6">
+          <div class="row">
+            <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="delivary_area">
                   Delivary Area*
@@ -1019,7 +1039,7 @@ const MerchantAddOrder = () => {
                 )}
               </div>
             </div>
-            <div className="col-lg-6">
+            <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="delivary_charge">
                   Delivary Charge*
@@ -1047,17 +1067,18 @@ const MerchantAddOrder = () => {
               </div>
             </div>
           </div>
-         
           <hr></hr>
           <div>
-            <div className="row">
-              <div className="col-lg-6"></div>
-              <div className="col-lg-6">
+            <div class="row">
+              <div class="col-lg-6"></div>
+              <div class="col-lg-6">
                 {/* <h5> Delivary charge = {charge} </h5> */}
                 <h5> Delivary charge = {delivaryCharge} </h5>
+                <h5> Cash on delivary charge = {(Number(CODCharge) * Number(amountCollected)) / 100} </h5>
                 <h5> Ammount to be collected = {amountCollected} </h5>
+                <h5> Total amount = {Number(amountCollected) + Number(delivaryCharge) + ((Number(CODCharge) * Number(amountCollected) / 100))} </h5>
                 <hr></hr>
-                <h5> Total = {Number(delivaryCharge) + Number(amountCollected)} </h5>
+                {/* <h5> Subtotal = {Number(delivaryCharge) + Number(amountCollected)} </h5> */}
                 <hr></hr>
               </div>
             </div>

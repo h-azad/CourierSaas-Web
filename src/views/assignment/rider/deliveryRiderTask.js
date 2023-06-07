@@ -20,7 +20,7 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, CREATE_ORDER_DELETE, PICKUP_RIDER_TASK, CREATE_ORDER_EDIT, PICKUP_RIDER_TASK_SEARCH_FILTER } from "../../../constants/apiUrls"
+import { getApi, CREATE_ORDER_DELETE, DELIVERY_RIDER_TASK, CREATE_ORDER_EDIT, DELIVERY_ASSIGNMENT, DELIVERY_RIDER_TASK_SEARCH_FILTER } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
@@ -28,7 +28,7 @@ import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
 import { EyeOutlined } from '@ant-design/icons'
 import { useParams } from "react-router-dom"
 
-const ListTable = () => {
+const DeliveryRiderTask = () => {
   const [createOrder, setCreateOrder] = useState([])
   const MySwal = withReactContent(Swal)
   const [statusModalState, setStatusModalState] = useState(false)
@@ -57,7 +57,7 @@ const ListTable = () => {
     console.log("selectedInfo", selectedInfo)
     console.log("selectedStatus", selectedStatus)
     useJwt
-      .axiosPatch(getApi(CREATE_ORDER_EDIT + selectedInfo.id + '/'),{
+      .axiosPatch(getApi(CREATE_ORDER_EDIT + selectedInfo.id + '/'), {
         status: "in_warehouse",
         warehouse_status: true
       })
@@ -71,12 +71,9 @@ const ListTable = () => {
   const changeStatusAction = (e, info) => {
     e.preventDefault()
     useJwt
-      .axiosPatch(getApi(CREATE_ORDER_EDIT + info.id + '/'), {
-        status: "in_warehouse",
-        warehouse_status: true
-      })
+      .axiosPost(getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/admin_confirm_delivery/`), { details: info, status: "completed", })
       .then((res) => {
-        SwalAlert("Receive Confirm")
+        SwalAlert("Delivery Confirm")
         fetchCreateOrderData()
       })
   }
@@ -87,7 +84,7 @@ const ListTable = () => {
 
   const fetchCreateOrderData = () => {
     return useJwt
-      .axiosGet(getApi(PICKUP_RIDER_TASK + "/" + id))
+      .axiosGet(getApi(DELIVERY_RIDER_TASK + "/" + id))
       .then((res) => {
         console.log("res", res.data)
         setCreateOrder(res.data)
@@ -103,9 +100,9 @@ const ListTable = () => {
     fetchCreateOrderData()
   }, [statusModalState])
 
-  const fetchSearchCreateOrderData = (searchTerm) => {
+  const fetchSearchCreateOrderData = searchTerm => {
     return useJwt
-      .axiosGet(getApi(PICKUP_RIDER_TASK_SEARCH_FILTER) + `?pickup_rider__id=${id}&parcel_id=${searchTerm}`)
+      .axiosGet(getApi(DELIVERY_RIDER_TASK_SEARCH_FILTER) + '?search=' + searchTerm)
       .then((res) => {
         return res.data
       })
@@ -167,7 +164,7 @@ const ListTable = () => {
                 name="user_name"
                 type="text"
                 class="form-control"
-                onChange={handleSearch}
+              // onChange={handleSearch}
               />
               <Button.Ripple className="btn-icon ms-1" outline color="primary">
                 <Search size={16} />
@@ -206,11 +203,10 @@ const ListTable = () => {
                         <MoreVertical size={15} />
                       </DropdownToggle>
                       <DropdownMenu>
-                        {info.warehouse_status == false && <DropdownItem href="/" onClick={e => changeStatusAction(e, info)}>
+                        {info.status === "delivered" && <DropdownItem href="/" onClick={e => changeStatusAction(e, info)}>
                           <Edit3 className="me-50" size={15} />{" "}
-                          <span className="align-middle">Receive Confirm</span>
+                          <span className="align-middle">Delivery Confirm</span>
                         </DropdownItem>}
-                        
                       </DropdownMenu>
                     </UncontrolledDropdown>
                   </div>
@@ -221,7 +217,7 @@ const ListTable = () => {
                   <h6 className='mb-25'><b>Recipient Name :{info?.recipient_name}</b>  </h6>
                   <h6 className='mb-25'>Phone Number : {info?.phone_number}</h6>
                   <h6 className='mb-25'>Delivary Address : {info?.delivary_address}</h6>
-                  <h6 className='mb-25 '>Order Status : <span className='highlight-status'>{info.status === "in_warehouse"? "In Warehouse": info.status }</span></h6>
+                  <h6 className='mb-25 '>Order Status : <span className='highlight-status'>{info.status === "in_warehouse" ? "In Warehouse" : info.status}</span></h6>
                   <h6 className='mb-25'>Pickup Status :<span className='highlight-pickup-status'>{info.pickup_status == true ? 'True' : 'False'}</span></h6>
                 </Col>
                 <Col xl='5'>
@@ -278,4 +274,4 @@ const ListTable = () => {
   )
 }
 
-export default ListTable
+export default DeliveryRiderTask

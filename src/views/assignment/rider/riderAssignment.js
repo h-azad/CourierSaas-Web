@@ -303,20 +303,12 @@ const RiderAssignmentList = () => {
                         </DropdownItem> */}
                         <DropdownItem tag={Link} to={"/assignment/task/" + info.id} >
                           <Eye className="me-50" size={15} />{" "}
-                          <span className="align-middle">Pickup Rider Tasks</span>
+                          <span className="align-middle">Pickup Tasks</span>
                         </DropdownItem>
-                        <DropdownItem href={"/rider/edit/" + info.id}>
-                          <Edit className="me-50" size={15} />{" "}
-                          <span className="align-middle">Edit</span>
+                        <DropdownItem tag={Link} to={"/assignment/delivery/" + info.id} >
+                          <Eye className="me-50" size={15} />{" "}
+                          <span className="align-middle">Delivery Tasks</span>
                         </DropdownItem>
-                        <DropdownItem
-                          href="/"
-                          onClick={(e) => deleteAction(e, info.id)}
-                        >
-                          <Trash className="me-50" size={15} />{" "}
-                          <span className="align-middle">Delete</span>
-                        </DropdownItem>
-
                       </DropdownMenu>
                     </UncontrolledDropdown>
                   </td>

@@ -168,6 +168,7 @@ const UserInfoCard = ({ selectedUser }) => {
                   <span className='fw-bolder me-25'>Delivery Address:</span>
                   <span >{selectedUser?.delivary_address}</span>
                 </li>
+                
               </ul>
             ) : null}
           </div>

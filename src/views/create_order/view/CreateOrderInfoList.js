@@ -59,7 +59,19 @@ const CreateOrderInfoList = ({userInfo}) => {
               <th>Delivary Charge</th>
               <th>{userInfo.delivary_charge}</th>
             </tr>
-            
+
+            <tr>
+                <th>Cash On Delivery Charge</th>
+                <th>{userInfo.cash_on_delivery_charge}</th>
+            </tr>
+              <tr>
+                <th>Collection Amount</th>
+                <th>{userInfo.amount_to_be_collected}</th>
+              </tr>
+              <tr>
+                <th>Total Amount</th>
+                <th>{Number(userInfo?.amount_to_be_collected) + Number(userInfo?.delivary_charge) + Number(userInfo?.cash_on_delivery_charge)}</th>
+              </tr>
           </tbody>
         </Table>
         )}

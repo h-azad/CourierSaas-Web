@@ -363,6 +363,7 @@ const RiderTasks = () => {
                   <h6 className='mb-25'>Product type : {info.product_type.product_type}</h6>
                   <h6 className='mb-25'>Shipment type : {info.shipment_type.shipment_type}</h6>
                   <h6 className='mb-25'>Delivary Charge: {info?.delivary_charge}</h6>
+                  <h6 className='mb-25'>Cash On Delivery Charge : {info?.cash_on_delivery_charge}</h6>
                   <h6 className='mb-25'>Collection Amount : {info?.amount_to_be_collected}</h6>
                   <h6 className='mb-25'>Total Amount : {Number(info?.amount_to_be_collected) + Number(info?.delivary_charge)}</h6>
                   
