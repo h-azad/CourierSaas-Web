@@ -102,7 +102,7 @@ const DeliveryRiderTask = () => {
 
   const fetchSearchCreateOrderData = searchTerm => {
     return useJwt
-      .axiosGet(getApi(DELIVERY_RIDER_TASK_SEARCH_FILTER) + '?search=' + searchTerm)
+      .axiosGet(getApi(DELIVERY_RIDER_TASK_SEARCH_FILTER) + `?delivery_rider=${id}&search_query=${searchTerm}`)
       .then((res) => {
         return res.data
       })
@@ -164,7 +164,7 @@ const DeliveryRiderTask = () => {
                 name="user_name"
                 type="text"
                 class="form-control"
-              // onChange={handleSearch}
+              onChange={handleSearch}
               />
               <Button.Ripple className="btn-icon ms-1" outline color="primary">
                 <Search size={16} />

@@ -91,7 +91,7 @@ function MerchantOrdersList() {
         <Col sm="4">
           <Card title="Bordered">
             <CardBody>
-              <OrdersList setActiveOrderData={setActiveOrderData} orders={orders} setOrders={setOrders} activeOrder={activeOrder}  setActiveOrder={setActiveOrder} />                          
+              <OrdersList setActiveOrderData={setActiveOrderData} orders={orders} setOrders={setOrders} activeOrder={activeOrder} setActiveOrder={setActiveOrder} fetchCreateOrderData={fetchCreateOrderData} />                          
               {/* <ListTable /> */}
             </CardBody>
           </Card>

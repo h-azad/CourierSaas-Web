@@ -105,7 +105,7 @@ const ListTable = () => {
 
   const fetchSearchCreateOrderData = (searchTerm) => {
     return useJwt
-      .axiosGet(getApi(PICKUP_RIDER_TASK_SEARCH_FILTER) + `?pickup_rider__id=${id}&parcel_id=${searchTerm}`)
+      .axiosGet(getApi(PICKUP_RIDER_TASK_SEARCH_FILTER) + `?pickup_rider=${id}&search_query=${searchTerm}`)
       .then((res) => {
         return res.data
       })

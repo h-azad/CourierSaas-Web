@@ -18,6 +18,10 @@ export const MARCHANT_DELETE_ORDER = '/marchant_app/orders/'
 export const MARCHANT_ORDER_STATUS_UPDATE = '/marchant_app/orders/'
 export const MARCHANT_SEARCH_FILTER = '/marchant_app/search-filter/'
 
+export const MARCHANT_SEARCH_CREATE_ORDER_FILTER = '/marchant_app/marchant-serach-order-filter/'
+
+
+
 
 //Rider API's
 export const RIDER_ADD = '/manage-user/create-rider'
