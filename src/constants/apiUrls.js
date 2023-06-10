@@ -135,6 +135,10 @@ export const PRICING_POLICY_BY_PRODUCT = '/get-price-policy/'
 export const DELIVARY_CHARGE_BY_PERCEL_TYPE = '/get-delivary-charge/'
 export const ORDER_STATUS_UPDATE = '/create_order/'
 
+
+export const ADMIN_SEARCH_CREATE_ORDER_FILTER = '/admin-serach-order-filter/'
+
+
 //Payment Method API's 
 
 export const PAYMENT_METHOD_ADD = '/payment_method/'

@@ -35,6 +35,13 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
   const [searchFields, setSearchFields] = useState()
   console.log("statusValxx", statusVal)
 
+  const [date, setDate] = useState(false)
+
+  function onSelectDate(date, dateString) {
+    console.log('yes on select date colling')
+    handleSearch('date', dateString)
+  }
+
   const [collapsed, setCollapsed] = useState(false)
   const toggleCollapsed = () => {
     setCollapsed(!collapsed)
@@ -53,6 +60,7 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
     { value: "pending", label: "Pending" },
     { value: "accepted", label: "Accepted" },
     { value: "pickedup", label: "Picked Up" },
+    { value: "in_warehouse", label: "In Warehouse" },
     { value: "shipped", label: "Shipped" },
     { value: "delivered", label: "Delivered" },
     { value: "hold", label: "Hold" },
@@ -80,6 +88,15 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
 
 
   const handleSearch = (e,property)=>{
+    console.log('handle search e', e)
+    console.log('handle property', property)
+    // e, 'pickup') 
+    // if(e==='date'){
+    //   searchTerm = property
+    //   // console.log('clicked e', e)
+    //   // console.log('change date', property)
+    // }
+
     let searchTerm
     if (e?.target?.value){
       searchTerm = e.target?.value
@@ -208,11 +225,12 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
 
         <div className=" mt-2">
           <h6>Search Order Date</h6>
-          <DatePicker onChange={changeDate} onOk={onOk}
+          {/* <DatePicker onChange={(e) => { handleSearch(date, 'date') }} onOk={onOk}
           
             style={{
               width: 280,
-            }} />
+            }} /> */}
+          <DatePicker onChange={onSelectDate} />
         </div>
 
       </div>

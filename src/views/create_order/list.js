@@ -48,15 +48,15 @@ function CreateOrderList() {
         </Col>
       </Row>
 
-      <Row>
+      {/* <Row>
         <Col sm="12">
           <Card title="Bordered">
-            <CardBody>                          
+            <CardBody>                           */}
               <ListTable />
-            </CardBody>
+            {/* </CardBody>
           </Card>
         </Col>
-      </Row>
+      </Row> */}
     </Fragment>
   )
 }
