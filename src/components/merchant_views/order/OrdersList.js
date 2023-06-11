@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Select from "react-select"
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, MARCHANT_ORDER_LIST, MARCHANT_SEARCH_CREATE_ORDER_FILTER, } from "@src/constants/apiUrls"
@@ -34,7 +34,25 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
   const [statusVal, setSelectedStatus] = useState("")
   const [searchFields, setSearchFields] = useState()
   const [value, setValue] = useState("")
-  console.log("statusValxx", statusVal)
+
+  const [orderStatus, setOrderStatus] = useState("")
+  const [orderID, setorderID] = useState("")
+  const [receipientName, setReceipientName] = useState("")
+  const [phoneNumber, setphoneNumber] = useState("")
+  const [selectedDate, setSelectedDate] = useState(null)
+  const datePickerRef = useRef(null)
+  const [selectedValue, setSelectedValue] = useState('')
+
+  const clearFilter = () => {
+    setOrderStatus("")
+    setorderID('')
+    setReceipientName('')
+    setphoneNumber('')
+    setSelectedValue('')
+    fetchCreateOrderData()
+    setSelectedDate(null)
+
+  }
 
 
   const [date, setDate] = useState(false)
@@ -76,7 +94,7 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
   }
 
 
-  const filterHanle = (e, property) => {
+  const filterHandle = (e, property) => {
     setValue(e?.target?.value)
     console.log("handle search e", e)
     console.log("handle property", property)
@@ -162,7 +180,7 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
     <div>
       <div className="invoice-title-card">
         <h3>Filter : </h3>
-        <Button type="primary" color="primary" onClick={reloadPage}>Clear</Button>
+        <Button type="primary" color="primary" onClick={clearFilter}>Clear</Button>
       </div>
       <div className="mt-2">
         <h6>Filter by Order Status</h6>
@@ -174,10 +192,10 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
           className={classNames("react-select")}
           classNamePrefix="select"
           onChange={(e) => {
-            filterHanle(e, "status")
+            filterHandle(e, "status")
           }}
           options={statusOptions}
-        // onChange={val => val && filterHanle(val)}
+          value={orderStatus}
         />
       </div>
 
@@ -186,8 +204,9 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
         <Search
           placeholder="eg. ODR23031301d6"
           onChange={(e) => {
-            filterHanle(e, "order_id")
+            filterHandle(e, "order_id"), setorderID(e.target.value)
           }}
+          value={orderID}
         // style={{
         //   width: 280,
         // }}
@@ -198,8 +217,9 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
         <Search
           placeholder="eg. Jhon Doe"
           onChange={(e) => {
-            filterHanle(e, "receipient_name")
+            filterHandle(e, "receipient_name"), setReceipientName(e.target.value)
           }}
+          value={receipientName}
         // style={{
         //   width: 280,
         // }}
@@ -210,8 +230,9 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
         <Search
           placeholder="eg. 01793912259"
           onChange={(e) => {
-            filterHanle(e, "phone")
+            filterHandle(e, "phone"), setphoneNumber(e.target.value)
           }}
+          value={phoneNumber}
         // style={{
         //   width: 280,
         // }}
@@ -219,39 +240,26 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
       </div>
       <div className=" mt-2">
         <h6>Filter by Order Type</h6>
-        <ConfigProvider
-          theme={{
-            components: {
-              Checkbox: {
-                colorPrimary: "#ff4d4f",
-              },
-            },
-          }}
-        >
-
-          {checkedFields.map((item) => {
-            return (
-
-              <Checkbox
-                key={item.label}
-                onChange={(e) => { filterHanle(e, item.label) }}
-                checked={item.value == value}
-                value={item.value}
-              >
-                {item.value}
-              </Checkbox>
-            )
-          })}
-        </ConfigProvider>
+        <Checkbox checked={selectedValue === 'pickup'} value="pickup" onChange={(e) => { filterHandle(e, "pickup"), setSelectedValue(e.target.value) }}>
+          Pickup
+        </Checkbox>
+        <Checkbox checked={selectedValue === 'warehouse'} value="warehouse" onChange={(e) => { filterHandle(e, "warehouse"), setSelectedValue(e.target.value) }}>
+          Warehouse
+        </Checkbox>
+        <Checkbox checked={selectedValue === 'delivery'} value="delivery" onChange={(e) => { filterHandle(e, "delivery"), setSelectedValue(e.target.value) }}>
+          Delivery
+        </Checkbox>
       </div>
 
       <div className=" mt-2">
         <h6>Search Order Date</h6>
-        < DatePicker
+        <DatePicker
+          ref={datePickerRef}
           style={{
             width: '100%',
           }}
-          onChange={(values) => { filterHanle(values.format('YYYY-MM-DD'), 'date') }}
+          value={selectedDate}
+          onChange={(date) => { setSelectedDate(date), filterHandle(date.format('YYYY-MM-DD'), 'date') }}
         />
       </div>
     </div>

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import Select from "react-select"
 import classNames from "classnames"
 import { MoreVertical, Edit, Trash, Edit3 } from "react-feather"
-import { Checkbox, ConfigProvider, DatePicker, Input, Typography } from "antd"
+import { Checkbox, DatePicker, Input, Typography } from "antd"
 import {
   UncontrolledDropdown,
   DropdownMenu,
@@ -14,7 +14,7 @@ import {
   Row,
   Col,
 } from "reactstrap"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
@@ -25,12 +25,7 @@ import {
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
-import dayjs from 'dayjs'
-import 'dayjs/locale/zh-cn'
-import locale from 'antd/locale/zh_CN'
-import { useRef } from "react"
 
-const moment = require('moment') // If you're using Node.js with npm
 
 const CreateOrderList = () => {
   const { Search } = Input
@@ -96,13 +91,6 @@ const CreateOrderList = () => {
     // setSelectedStatus(null)
   }
 
-  const checkedFields = [
-    { value: "pickup", label: "Pickup" },
-    { value: "warehouse", label: "Warehouse" },
-    { value: "delivery", label: "Delivery" },
-  ]
-
-
   const statusOptions = [
     { value: "pending", label: "Pending" },
     { value: "accepted", label: "Accepted" },
@@ -123,7 +111,6 @@ const CreateOrderList = () => {
     let searchTerm
     if (property==='date'){
       searchTerm=e
-
 
     }
     else if (e?.target?.value) {
@@ -157,12 +144,6 @@ const CreateOrderList = () => {
       })
       .catch((err) => console.log(err))
   }
-
-
-
-  const reloadPage = () => {
-    window.location.reload()
-  }
   
   const clearFilter = () => {
     setOrderStatus("")
@@ -175,12 +156,6 @@ const CreateOrderList = () => {
 
   }
 
-  
-
-  const handleChange = (e) => {
-    const { value } = e.target
-    setSelectedValue(value)
-  }
 
   return (
     <Row>
