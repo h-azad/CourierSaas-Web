@@ -33,7 +33,9 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
   // ant menu
   const [statusVal, setSelectedStatus] = useState("")
   const [searchFields, setSearchFields] = useState()
+  const [value, setValue] = useState("")
   console.log("statusValxx", statusVal)
+
 
   const [date, setDate] = useState(false)
 
@@ -56,19 +58,6 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
     }
   }
 
-  const statusOptions = [
-    { value: "pending", label: "Pending" },
-    { value: "accepted", label: "Accepted" },
-    { value: "pickedup", label: "Picked Up" },
-    { value: "in_warehouse", label: "In Warehouse" },
-    { value: "shipped", label: "Shipped" },
-    { value: "delivered", label: "Delivered" },
-    { value: "hold", label: "Hold" },
-    { value: "returned", label: "Returned" },
-    { value: "cancelled", label: "Cancelled" },
-    { value: "completed", label: "Completed" },
-  ]
-
 
 
   useEffect(() => {
@@ -87,32 +76,30 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
   }
 
 
-  const handleSearch = (e,property)=>{
-    console.log('handle search e', e)
-    console.log('handle property', property)
-    // e, 'pickup') 
-    // if(e==='date'){
-    //   searchTerm = property
-    //   // console.log('clicked e', e)
-    //   // console.log('change date', property)
-    // }
+  const filterHanle = (e, property) => {
+    setValue(e?.target?.value)
+    console.log("handle search e", e)
+    console.log("handle property", property)
 
     let searchTerm
-    if (e?.target?.value){
+    if (property === 'date') {
+      searchTerm = e
+    }
+    else if (e?.target?.value) {
       searchTerm = e.target?.value
-    }else{
+    } else {
       searchTerm = e?.value
     }
     if (searchTerm?.length > 0) {
-      fetchSearchFilterMerchant(property,searchTerm)
-        .then(data => {
-          if (data?.length > 0) {
-            setOrders(data)
-          } else {
-            console.log("No data")
-          }
-        })
-    }else{
+      fetchSearchFilterMerchant(property, searchTerm).then((data) => {
+        if (data?.length > 0) {
+          setOrders(data)
+          return data
+        } else {
+          console.log("No data")
+        }
+      })
+    } else {
       fetchCreateOrderData()
     }
   }
@@ -145,94 +132,127 @@ const OrdersList = ({ setActiveOrderData, orders, setOrders, activeOrder, setAct
     console.log('onOk: ', value)
   }
 
-  
+  const reloadPage = () => {
+    window.location.reload()
+  }
 
+  const checkedFields = [
+    { label: "pickup", value: "Pickup" },
+    { label: "warehouse", value: "Warehouse" },
+    { label: "delivery", value: "Delivery" },
+  ]
+
+
+  const statusOptions = [
+    { value: "pending", label: "Pending" },
+    { value: "accepted", label: "Accepted" },
+    { value: "pickedup", label: "Picked Up" },
+    { value: "in_warehouse", label: "In Warehouse" },
+    { value: "shipped", label: "Shipped" },
+    { value: "delivered", label: "Delivered" },
+    { value: "hold", label: "Hold" },
+    { value: "returned", label: "Returned" },
+    { value: "cancelled", label: "Cancelled" },
+    { value: "completed", label: "Completed" },
+  ]
+  
 
   return (
 
     <div>
-      <div>
-        <div className='invoice-title-card'>
-          <h3>Filter : </h3>
-        </div>
-        <div className="mt-2">
-          <h6>
-            Filter by Order Status
-          </h6>
-          <Select
-            id="status"
-            name="status"
-            placeholder="Select Order Status"
-            isClearable={true}
-            className={classNames('react-select')}
-            classNamePrefix='select'
-            onChange={(e) => { handleSearch(e, 'status') }}
-            options={statusOptions}
-            // onChange={val => val && handleSearch(val)}
-          />
-        </div>
+      <div className="invoice-title-card">
+        <h3>Filter : </h3>
+        <Button type="primary" color="primary" onClick={reloadPage}>Clear</Button>
+      </div>
+      <div className="mt-2">
+        <h6>Filter by Order Status</h6>
+        <Select
+          id="status"
+          name="status"
+          placeholder="Select Order Status"
+          isClearable={true}
+          className={classNames("react-select")}
+          classNamePrefix="select"
+          onChange={(e) => {
+            filterHanle(e, "status")
+          }}
+          options={statusOptions}
+        // onChange={val => val && filterHanle(val)}
+        />
+      </div>
 
-        <div className=" mt-2">
-          <h6>Search Order ID </h6>
-          <Search
-            placeholder="eg. ODR23031301d6"
-            onChange={(e) => { handleSearch(e, 'order_id') }}
-            style={{
-              width: 280,
-            }}
-          />
-        </div>
-        <div className=" mt-2">
-          <h6>Search Receipient Name</h6>
-          <Search
-            placeholder="eg. Jhon Doe"
-            onChange={(e) => { handleSearch(e, 'receipient_name') }}
-            style={{
-              width: 280,
-            }}
-          />
-        </div>
-        <div className=" mt-2">
-          <h6>Phone Number </h6>
-          <Search
-            placeholder="eg. 01793912259"
-            
-            onChange={(e) => { handleSearch(e,'phone')}}
-            style={{
-              width: 280,
-            }}
-          />
-        </div>
-        <div className=" mt-2">
-          <h6>
-            Filter by Order Type
-          </h6>
-          <ConfigProvider
-            theme={{
-              components: {
-                Checkbox: {
-                  colorPrimary: '#ff4d4f',
-                },
+      <div className=" mt-2">
+        <h6>Search Order ID </h6>
+        <Search
+          placeholder="eg. ODR23031301d6"
+          onChange={(e) => {
+            filterHanle(e, "order_id")
+          }}
+        // style={{
+        //   width: 280,
+        // }}
+        />
+      </div>
+      <div className=" mt-2">
+        <h6>Search Receipient Name</h6>
+        <Search
+          placeholder="eg. Jhon Doe"
+          onChange={(e) => {
+            filterHanle(e, "receipient_name")
+          }}
+        // style={{
+        //   width: 280,
+        // }}
+        />
+      </div>
+      <div className=" mt-2">
+        <h6>Phone Number </h6>
+        <Search
+          placeholder="eg. 01793912259"
+          onChange={(e) => {
+            filterHanle(e, "phone")
+          }}
+        // style={{
+        //   width: 280,
+        // }}
+        />
+      </div>
+      <div className=" mt-2">
+        <h6>Filter by Order Type</h6>
+        <ConfigProvider
+          theme={{
+            components: {
+              Checkbox: {
+                colorPrimary: "#ff4d4f",
               },
-            }}
-          >
-            <Checkbox onClick={(e) => { handleSearch(e, 'pickup') }}>Picked Up Order</Checkbox>
-            <Checkbox onClick={(e) => { handleSearch(e, 'delivery') }}>Delivered Order</Checkbox>
-            <Checkbox onClick={(e) => { handleSearch(e, 'warehouse') }}>WareHouse</Checkbox>
-          </ConfigProvider>
-        </div>
-        
+            },
+          }}
+        >
 
-        <div className=" mt-2">
-          <h6>Search Order Date</h6>
-          {/* <DatePicker onChange={(e) => { handleSearch(date, 'date') }} onOk={onOk}
-          
-            style={{
-              width: 280,
-            }} /> */}
-          <DatePicker onChange={onSelectDate} />
-        </div>
+          {checkedFields.map((item) => {
+            return (
 
+              <Checkbox
+                key={item.label}
+                onChange={(e) => { filterHanle(e, item.label) }}
+                checked={item.value == value}
+                value={item.value}
+              >
+                {item.value}
+              </Checkbox>
+            )
+          })}
+        </ConfigProvider>
+      </div>
+
+      <div className=" mt-2">
+        <h6>Search Order Date</h6>
+        < DatePicker
+          style={{
+            width: '100%',
+          }}
+          onChange={(values) => { filterHanle(values.format('YYYY-MM-DD'), 'date') }}
+        />
       </div>
     </div>
   )

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import Select from "react-select"
 import classNames from "classnames"
 import { MoreVertical, Edit, Trash, Edit3 } from "react-feather"
-import { Checkbox, ConfigProvider, DatePicker, Input } from "antd"
+import { Checkbox, ConfigProvider, DatePicker, Input, Typography } from "antd"
 import {
   UncontrolledDropdown,
   DropdownMenu,
@@ -25,12 +25,26 @@ import {
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
+import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'
+import locale from 'antd/locale/zh_CN'
+import { useRef } from "react"
+
+const moment = require('moment') // If you're using Node.js with npm
 
 const CreateOrderList = () => {
   const { Search } = Input
   const [createOrder, setCreateOrder] = useState([])
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedInfo, setSelectedInfo] = useState(null)
+  const [value, setValue] = useState("")
+  const [orderStatus, setOrderStatus] = useState("")
+  const [orderID, setorderID] = useState("")
+  const [receipientName, setReceipientName] = useState("")
+  const [phoneNumber, setphoneNumber] = useState("")
+  const [selectedDate, setSelectedDate] = useState(null)
+  const datePickerRef = useRef(null)
+  const [selectedValue, setSelectedValue] = useState('')
 
   const deleteAction = (e, id) => {
     e.preventDefault()
@@ -82,6 +96,13 @@ const CreateOrderList = () => {
     // setSelectedStatus(null)
   }
 
+  const checkedFields = [
+    { value: "pickup", label: "Pickup" },
+    { value: "warehouse", label: "Warehouse" },
+    { value: "delivery", label: "Delivery" },
+  ]
+
+
   const statusOptions = [
     { value: "pending", label: "Pending" },
     { value: "accepted", label: "Accepted" },
@@ -95,15 +116,21 @@ const CreateOrderList = () => {
     { value: "completed", label: "Completed" },
   ]
 
-  const filterHanle = (e, property) => {
-    console.log("handle search e", e)
-    console.log("handle property", property)
-
+  const filterHandle = (e, property) => {
+    setOrderStatus(e?.target?.value)
+    setValue(e?.target?.value)
+ 
     let searchTerm
-    if (e?.target?.value) {
+    if (property==='date'){
+      searchTerm=e
+
+
+    }
+    else if (e?.target?.value) {
       searchTerm = e.target?.value
     } else {
       searchTerm = e?.value
+      
     }
     if (searchTerm?.length > 0) {
       fetchSearchFilterAdmin(property, searchTerm).then((data) => {
@@ -131,118 +158,114 @@ const CreateOrderList = () => {
       .catch((err) => console.log(err))
   }
 
+
+
+  const reloadPage = () => {
+    window.location.reload()
+  }
+  
+  const clearFilter = () => {
+    setOrderStatus("")
+    setorderID('')
+    setReceipientName('')
+    setphoneNumber('')
+    setSelectedValue('')
+    fetchCreateOrderData()
+    setSelectedDate(null)
+
+  }
+
+  
+
+  const handleChange = (e) => {
+    const { value } = e.target
+    setSelectedValue(value)
+  }
+
   return (
     <Row>
       <Col sm="4">
         <Card title="Bordered">
           <CardBody>
+
             <div>
-              <div>
-                <div className="invoice-title-card">
-                  <h3>Filter : </h3>
-                </div>
-                <div className="mt-2">
-                  <h6>Filter by Order Status</h6>
-                  <Select
-                    id="status"
-                    name="status"
-                    placeholder="Select Order Status"
-                    isClearable={true}
-                    className={classNames("react-select")}
-                    classNamePrefix="select"
-                    onChange={(e) => {
-                      filterHanle(e, "status")
-                    }}
-                    options={statusOptions}
-                    // onChange={val => val && filterHanle(val)}
-                  />
-                </div>
+              <div className="invoice-title-card">
+                <h3>Filter : </h3>
+                <Button type="primary" color="primary" onClick={clearFilter}>Clear</Button>
+              </div>
+              <div className="mt-2">
+                <h6>Filter by Order Status</h6>
+                <Select
+                  id="status"
+                  name="status"
+                  placeholder="Select Order Status"
+                  isClearable={true}
+                  className={classNames("react-select")}
+                  classNamePrefix="select"
+                  onChange={(e) => {
+                    filterHandle(e, "status")
+                  }}
+                  options={statusOptions}
+                  value={orderStatus}
+                />
+              </div>
 
-                <div className=" mt-2">
-                  <h6>Search Order ID </h6>
-                  <Search
-                    placeholder="eg. ODR23031301d6"
-                    onChange={(e) => {
-                      filterHanle(e, "order_id")
-                    }}
-                    style={{
-                      width: 280,
-                    }}
-                  />
-                </div>
-                <div className=" mt-2">
-                  <h6>Search Receipient Name</h6>
-                  <Search
-                    placeholder="eg. Jhon Doe"
-                    onChange={(e) => {
-                      filterHanle(e, "receipient_name")
-                    }}
-                    style={{
-                      width: 280,
-                    }}
-                  />
-                </div>
-                <div className=" mt-2">
-                  <h6>Phone Number </h6>
-                  <Search
-                    placeholder="eg. 01793912259"
-                    onChange={(e) => {
-                      filterHanle(e, "phone")
-                    }}
-                    style={{
-                      width: 280,
-                    }}
-                  />
-                </div>
-                <div className=" mt-2">
-                  <h6>Filter by Order Type</h6>
-                  <ConfigProvider
-                    theme={{
-                      components: {
-                        Checkbox: {
-                          colorPrimary: "#ff4d4f",
-                        },
-                      },
-                    }}
-                  >
-                    <Checkbox
-                      onClick={(e) => {
-                        filterHanle(e, "pickup")
-                      }}
-                    >
-                      Picked Up Order
-                    </Checkbox>
-                    <Checkbox
-                      onClick={(e) => {
-                        filterHanle(e, "delivery")
-                      }}
-                    >
-                      Delivered Order
-                    </Checkbox>
-                    <Checkbox
-                      onClick={(e) => {
-                        filterHanle(e, "warehouse")
-                      }}
-                    >
-                      WareHouse
-                    </Checkbox>
-                  </ConfigProvider>
-                </div>
+              <div className=" mt-2">
+                <h6>Search Order ID </h6>
+                <Search
+                  placeholder="eg. ODR23031301d6"
+                  onChange={(e) => {
+                    filterHandle(e, "order_id"), setorderID(e.target.value)
+                  }}
+                  value={orderID}
+                />
+              </div>
+              <div className=" mt-2">
+                <h6>Search Receipient Name</h6>
+                <Search
+                  placeholder="eg. Jhon Doe"
+                  onChange={(e) => {
+                    filterHandle(e, "receipient_name"), setReceipientName(e.target.value)
+                  }}
+                  value={receipientName}
+                />
+              </div>
+              <div className=" mt-2">
+                <h6>Phone Number </h6>
+                <Search
+                  placeholder="eg. 01793912259"
+                  onChange={(e) => {
+                    filterHandle(e, "phone"), setphoneNumber(e.target.value)
+                  }}
+                  value={phoneNumber}
+                />
+              </div>
+              <div className=" mt-2">
+                <h6>Filter by Order Type</h6>
+                <Checkbox checked={selectedValue === 'pickup'} value="pickup" onChange={(e) => { filterHandle(e, "pickup"), setSelectedValue(e.target.value) }}>
+                  Pickup
+                </Checkbox>
+                <Checkbox checked={selectedValue === 'warehouse'} value="warehouse" onChange={(e) => { filterHandle(e, "warehouse"), setSelectedValue(e.target.value) }}>
+                  Warehouse
+                </Checkbox>
+                <Checkbox checked={selectedValue === 'delivery'} value="delivery" onChange={(e) => { filterHandle(e, "delivery"), setSelectedValue(e.target.value) }}>
+                  Delivery
+                </Checkbox>
+              </div>
 
-                <div className=" mt-2">
-                  <h6>Search Order Date</h6>
-                  <DatePicker
-                    onChange={(e) => {
-                      filterHanle(date, "date")
-                    }}
-                    style={{
-                      width: 280,
-                    }}
-                  />
-                  {/* <DatePicker  /> */}
-                </div>
+              <div className=" mt-2">
+                <h6>Search Order Date</h6>
+                <DatePicker
+                  ref={datePickerRef}
+                  style={{
+                    width: '100%',
+                  }}
+                  value={selectedDate}
+                  onChange={(date) => { setSelectedDate(date), filterHandle(date.format('YYYY-MM-DD'), 'date') }}
+                />
               </div>
             </div>
+
           </CardBody>
         </Card>
       </Col>
@@ -266,9 +289,17 @@ const CreateOrderList = () => {
                   <CardBody>
                     <Row>
                       <Col xl="9">
-                        <h5 className="mb-25">
-                          <b>Parcel Id :{info?.parcel_id} </b>{" "}
-                        </h5>
+                          <Typography.Title
+                            level={5}
+                            style={{
+                              margin: 0,
+                            }}
+                          >
+                            Order ID:{" "}
+                            <Typography.Text copyable>
+                              {info?.parcel_id}
+                            </Typography.Text>
+                          </Typography.Title>
                         <h9 className="mb-25">Created: {info.created_at}</h9>
                       </Col>
                       <Col xl="3">

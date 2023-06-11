@@ -281,7 +281,7 @@ const OrderView = ({ activeOrderData, orders, fetchCreateOrderData }) => {
                       >
                         <MoreVertical size={15} />
                       </DropdownToggle>
-                      <DropdownMenu>
+                      {info.status === 'pending' && <DropdownMenu>
                         <DropdownItem href={"/marchant_order/edit/" + info?.id}>
                           <Edit className="me-50" size={15} />{" "}
                           <span className="align-middle">Edit</span>
@@ -293,14 +293,8 @@ const OrderView = ({ activeOrderData, orders, fetchCreateOrderData }) => {
                           <Trash className="me-50" size={15} />{" "}
                           <span className="align-middle">Delete</span>
                         </DropdownItem>
-                        <DropdownItem
-                          href="/"
-                          onClick={(e) => changeStatusAction(e, info)}
-                        >
-                          <Edit3 className="me-50" size={15} />{" "}
-                          <span className="align-middle">Change Status</span>
-                        </DropdownItem>
-                      </DropdownMenu>
+                      </DropdownMenu> }
+                      
                     </UncontrolledDropdown>
                   </div>
                 </Col>
@@ -346,8 +340,7 @@ const OrderView = ({ activeOrderData, orders, fetchCreateOrderData }) => {
                   <h6 className="mb-25">
                     Total Amount :{" "}
                     {Number(info?.amount_to_be_collected) +
-                      Number(info?.delivary_charge) +
-                      Number(info?.cash_on_delivery_charge)}
+                      Number(info?.delivary_charge)}
                   </h6>
                 </Col>
               </Row>

@@ -673,7 +673,7 @@ const MerchantAddOrder = () => {
       })
       isFormValid = false
     }
-    if (data.order_type.value === 'pre-paid' && !data.amount_to_be_collected) {
+    if (data.order_type.value === 'COD' && !data.amount_to_be_collected) {
       setError("amount_to_be_collected", {
         type: "required",
         message: "Amount is required",
