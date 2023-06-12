@@ -123,6 +123,15 @@ const adminMenu = [
   },
 
   {
+    id: "transections",
+    title: "Transections",
+    icon: <Home size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN',
+    navLink: "/transections"
+  },
+
+  {
     header: 'Locations',
     action: 'admin-pages',
     resource: 'ADMIN', 
@@ -261,18 +270,41 @@ const riderMenu = [
     navLink: "/rider-dashboard"
   },
   {
-    header: 'Current Task List',
+    header: 'Current Tasks',
+    action: 'rider-pages',
+    resource: 'RIDER',
+  },
+  {
+    id: "pickup",
+    title: "Pickup Tasks",
+    icon: <CreditCard size={20} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/rider-orders/pickup"
+  },
+  {
+    id: "delivary",
+    title: "Delivary",
+    icon: <ShoppingBag size={20} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/rider-orders/delivary"
+  },
+  {
+    header: 'Rider Tasks',
     action: 'rider-pages',
     resource: 'RIDER',
   },
   {
     id: "current-task",
-    title: "Current Task",
+    title: "Tasks History",
     icon: <CreditCard size={20} />,
     action: 'rider-pages',
     resource: 'RIDER',
     navLink: "/rider-orders/current-task"
   },
+  
+
   {
     header: 'Order Status',
     action: 'rider-pages',
@@ -287,32 +319,32 @@ const riderMenu = [
     navLink: "/rider-orders/status"
   },
  
-  {
-    header: 'Assigned Pickup',
-    action: 'rider-pages',
-    resource: 'RIDER',
-  },
-  {
-    id: "pickup",
-    title: "Pickup",
-    icon: <CreditCard size={20} />,
-    action: 'rider-pages',
-    resource: 'RIDER',
-    navLink: "/rider-orders/pickup"
-  },
-  {
-    header: 'Assigned Delivary',
-    action: 'rider-pages',
-    resource: 'RIDER',
-  },
-  {
-    id: "delivary",
-    title: "Delivary",
-    icon: <ShoppingBag size={20} />,
-    action: 'rider-pages',
-    resource: 'RIDER',
-    navLink: "/rider-orders/delivary"
-  },
+  // {
+  //   header: 'Assigned Pickup',
+  //   action: 'rider-pages',
+  //   resource: 'RIDER',
+  // },
+  // {
+  //   id: "pickup",
+  //   title: "Pickup",
+  //   icon: <CreditCard size={20} />,
+  //   action: 'rider-pages',
+  //   resource: 'RIDER',
+  //   navLink: "/rider-orders/pickup"
+  // },
+  // {
+  //   header: 'Assigned Delivary',
+  //   action: 'rider-pages',
+  //   resource: 'RIDER',
+  // },
+  // {
+  //   id: "delivary",
+  //   title: "Delivary",
+  //   icon: <ShoppingBag size={20} />,
+  //   action: 'rider-pages',
+  //   resource: 'RIDER',
+  //   navLink: "/rider-orders/delivary"
+  // },
 
 
 ]

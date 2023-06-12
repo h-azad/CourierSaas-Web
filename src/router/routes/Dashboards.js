@@ -70,6 +70,7 @@ import EditAdmin from '../../views/admin/edit'
 import RiderAssignmentList from '../../views/assignment/rider/riderAssignment'
 import RiderTasks from '../../views/assignment/rider/riderTaks'
 import DeliveryRiderTask from '../../views/assignment/rider/deliveryRiderTask'
+import Transections from '../../views/transection/transections'
 
 
 
@@ -116,6 +117,11 @@ const DashboardRoutes = [
   {
     path: "/withdraw-request/edit/:id",
     element: <WithdrawRequestEdit />
+  },
+
+  {
+    path: "/transections",
+    element: <Transections />
   },
   
   {

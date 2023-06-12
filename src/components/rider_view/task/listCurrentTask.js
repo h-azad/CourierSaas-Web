@@ -14,6 +14,8 @@ function CurrentTaskList() {
   const [activeTaskData, setActiveTaskData] = useState(null)
   const [currentTask, setCurrentTask] = useState([])
 
+  
+
   const fetchRiderTaskData = () => {
     return useJwt
       .axiosGet(getApi(RIDER_CURRENT_TASK_LIST))
@@ -29,6 +31,13 @@ function CurrentTaskList() {
   useEffect(() => {
     fetchRiderTaskData()
   }, [])
+
+
+
+
+
+
+
 
   useEffect(() => {
     console.log(activeTask)
@@ -101,7 +110,7 @@ function CurrentTaskList() {
         <Col sm="4">
           <Card title="Bordered">
             <CardBody>
-              <TaskFilter setCurrentTask={setCurrentTask} setActiveTaskData={setActiveTaskData}  task={task} setTask={setTask} activeTask={activeTask} setActiveTask={setActiveTask} /> 
+              <TaskFilter setCurrentTask={setCurrentTask} setActiveTaskData={setActiveTaskData} task={task} setTask={setTask} activeTask={activeTask} setActiveTask={setActiveTask} fetchCurrentTaskData={fetchCurrentTaskData } /> 
             </CardBody>
           </Card>
         </Col>

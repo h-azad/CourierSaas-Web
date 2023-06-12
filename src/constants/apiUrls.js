@@ -39,6 +39,10 @@ export const RIDER_ORDER_STATUS = '/rider_app/status/'
 export const RIDER_CURRENT_TASK_LIST = '/rider_app/current-task/'
 export const RIDER_SEARCH_FILTER = '/rider_app/search-filter/'
 
+export const RIDER_SEARCH_CREATE_ORDER_FILTER = '/rider_app/rider-serach-order-filter/'
+export const RIDER_PICKUP_CREATE_ORDER_FILTER = '/rider_app/rider-pickup-order-filter/'
+export const RIDER_DELIVERY_CREATE_ORDER_FILTER = '/rider_app/rider-delivery-order-filter/'
+
 
 export const RIDER_ASSIGNMENT = '/rider_app/rider-assignment'
 export const UNPICKUP_ORDER_LIST = '/rider_app/unpickup-order-list'
@@ -177,6 +181,9 @@ export const ADMIN_DETAILS = "/api/user/admin-viewset/"
 // export const ADMIN_ADD_SEARCH = "/api/withdraw-request-search/"
 
 export const USER_LIST = "/api/user/user-viewset/"
+
+
+export const TRANSECTIONS = "/api/transection/"
 
 //Create Organization
 export const CREATE_ORGANIZATION = "/api/user/create-tanent"
