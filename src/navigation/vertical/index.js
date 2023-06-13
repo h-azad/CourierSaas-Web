@@ -244,6 +244,31 @@ const marchantMenu = [
     navLink: "/marchant-withdraw-request"
   },
 
+
+  {
+    header: 'Pickup Address',
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+  },
+
+  {
+    id: "pickup_address",
+    title: "Add Pickup Address",
+    icon: <ShoppingCart size={20} />,
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+    navLink: "/marchant-pickup-address"
+  },
+
+  // {
+  //   id: "withdraw",
+  //   title: "Withdraw Balance",
+  //   icon: <ShoppingCart size={20} />,
+  //   action: 'marchant-pages',
+  //   resource: 'MARCHANT',
+  //   navLink: "/marchant-withdraw-request"
+  // },
+
   // {
   //   header: 'balance_withdraw',
   //   action: 'marchant-pages',

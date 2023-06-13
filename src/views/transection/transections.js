@@ -13,7 +13,7 @@ import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
    TRANSECTIONS,
-  RIDER_SEARCH_FILTER,
+  TRANSECTIONS_FILTER,
 } from "../../constants/apiUrls"
 
 // import { TRANSECTIONS } from "../../constants/apiUrls"
@@ -45,7 +45,7 @@ const Transections = () => {
   const  fetchSearchsetTransectionsData = searchTerm => {
     return useJwt
       // .axiosGet(getApi(RIDER_SEARCH)+'?search='+ searchTerm) //after line
-      .axiosGet(getApi(RIDER_SEARCH_FILTER) + '?search=' + searchTerm)
+      .axiosGet(getApi(TRANSECTIONS_FILTER) + '?search=' + searchTerm)
       .then((res) => {
         return res.data
       })
@@ -115,10 +115,12 @@ const Transections = () => {
         <Table bordered>
           <thead>
             <tr>
-              <th>Wallet ID</th>
+              <th>User Name</th>
               <th>Amount</th>
+              <th>Transections ID</th>
               <th>Remark</th>
               <th>Type</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody>
@@ -126,11 +128,13 @@ const Transections = () => {
               transections.map((info) => (
                 <tr key={info.id}>
                   <td>
-                    <span className="align-middle fw-bold">{info.wallet}</span>
+                    <span className="align-middle fw-bold">{info.user_name}</span>
                   </td>
                   <td>{info.amount}</td>
+                  <td>{info.transection_id}</td>
                   <td>{info.remark}</td>
                   <td>{info.type}</td>
+                  <td>{info.created_at}</td>
                 </tr>
               ))}
           </tbody>

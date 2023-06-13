@@ -19,6 +19,7 @@ export const MARCHANT_ORDER_STATUS_UPDATE = '/marchant_app/orders/'
 export const MARCHANT_SEARCH_FILTER = '/marchant_app/search-filter/'
 
 export const MARCHANT_SEARCH_CREATE_ORDER_FILTER = '/marchant_app/marchant-serach-order-filter/'
+export const MARCHANT_PICKUP_ADDRESS = '/marchant_app/marchant-pickup-addreess/'
 
 
 
@@ -88,6 +89,9 @@ export const AREAS_DETAILS = '/area/'
 export const AREAS_UPDATE_STATUS = "/area/"
 export const AREAS_SEARCH = '/search-area/'
 export const AREAS_BY_CITY = '/get-area/'
+
+
+// export const AREAS_FILTER_BY_CITY = '/filter-by-city/'
 
 // Shipment Type API's 
 export const SHIPMENT_TYPE_ADD = '/shipment_type/'
@@ -184,6 +188,7 @@ export const USER_LIST = "/api/user/user-viewset/"
 
 
 export const TRANSECTIONS = "/api/transection/"
+export const TRANSECTIONS_FILTER = "/api/transection-filter/"
 
 //Create Organization
 export const CREATE_ORGANIZATION = "/api/user/create-tanent"
