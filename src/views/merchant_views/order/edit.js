@@ -467,6 +467,7 @@ import {
   SHIPMENT_TYPE_LIST,
   PRICING_POLICY_BY_PRODUCT,
   DELIVARY_CHARGE_BY_PERCEL_TYPE,
+  MARCHANT_PICKUP_ADDRESS
 } from "@src/constants/apiUrls"
 import { useEffect, useState } from "react"
 import SwalAlert from "../../../components/SwalAlert"
@@ -484,6 +485,13 @@ const EditMarchantOrder = () => {
   const [selectWareHouseStatus, setSelectWareHouseStatus] = useState([])
   const [delivaryCharge, setDelivaryCharge] = useState()
 
+  const [orderType, setOrderType] = useState()
+  const [amountCollected, setAmountCollected] = useState(0)
+  const [CODCharge, setCODCharge] = useState(0)
+  const [selectboxStreetAddress, setSelectboxStreetAddress] = useState([])
+
+  
+
   // console.log('selectPricingPolicybyProduct', selectPricingPolicybyProduct)
   console.log("createOrderInfo ======", createOrderInfo)
   let { id } = useParams()
@@ -497,6 +505,7 @@ const EditMarchantOrder = () => {
         setCreateOrderInfo(res.data)
         // console.log('selectbox delivary charge', res.data.delivary_charge)
         setDelivaryCharge(res.data.delivary_charge)
+        setOrderType(res.data.order_type)
 
         setSelectboxDelivaryCharge([
           { value: res.data.delivary_charge, label: res.data.delivary_charge },
@@ -558,8 +567,31 @@ const EditMarchantOrder = () => {
     fetchAreaData()
     fetchPricingPolicyData()
     fetchShipmentTypeData()
+    fetchPickupsetStreetAddress()
   }, [])
 
+
+  const fetchPickupsetStreetAddress = () => {
+    return useJwt
+      .axiosGet(getApi(MARCHANT_PICKUP_ADDRESS))
+      .then((res) => {
+
+        setSelectboxStreetAddress(res.data)
+
+        return res.data
+      })
+      .catch((err) => console.log(err))
+  }
+
+  useEffect(() => {
+    if (selectboxStreetAddress.length > 0) {
+      const ss = selectboxStreetAddress.find(x => x.default)
+      console.log('ss', ss)
+      if (ss) {
+        setValue('pickup_address', { value: ss.id, label: ss.street_address })
+      }
+    }
+  }, [selectboxStreetAddress])
 
   const fetchRiderData = () => {
     return useJwt
@@ -642,8 +674,29 @@ const EditMarchantOrder = () => {
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
       console.log(value, name, type)
-      if (name == "pricing_policy" && type == "change") {
+      // if (name == "pricing_policy" && type == "change") {
+      //   fetchDelivaryChargeData(value?.pricing_policy?.value)
+      // }
+
+      if (name == "product_type" && type == "change") {
+        fetchPricingPolicyData(value.product_type.value)
+      }
+      if (name == "amount_to_be_collected" && type == "change") {
         fetchDelivaryChargeData(value?.pricing_policy?.value)
+        setAmountCollected(value.amount_to_be_collected)
+        setCODCharge(CODCharge)
+      }
+      if (name === 'order_type' && type === "change") {
+        if (value.order_type.value === "COD") {
+          setOrderType(value.order_type.value)
+          setCODCharge(CODCharge)
+
+        } else {
+          setOrderType(value.order_type.value)
+          setCODCharge(0)
+          setValue('amount_to_be_collected', 0.00)
+          setAmountCollected(0.00)
+        }
       }
     })
 
@@ -702,7 +755,7 @@ const EditMarchantOrder = () => {
       })
       isFormValid = false
     }
-    if (!data.amount_to_be_collected) {
+    if (data.order_type.value === 'COD' && !data.amount_to_be_collected) {
       setError("amount_to_be_collected", {
         type: "required",
         message: "Amount is required",
@@ -788,6 +841,7 @@ const EditMarchantOrder = () => {
       // data.delivary_rider.value !== null
     ) {
       let formData = {
+        order_type: data.order_type.value,
         recipient_name: data.recipient_name,
         phone_number: data.phone_number,
         delivary_address: data.delivary_address,
@@ -892,7 +946,8 @@ const EditMarchantOrder = () => {
                 <span>{errors.delivary_address.message}</span>
               )}
             </div>
-            <div className="mb-1">
+
+            {/* <div className="mb-1">
               <Label className="form-label" for="amount_to_be_collected">
                 Amount to be Collected*
               </Label>
@@ -911,7 +966,74 @@ const EditMarchantOrder = () => {
               {errors && errors.amount_to_be_collected && (
                 <span>{errors.amount_to_be_collected.message}</span>
               )}
+            </div> */}
+
+
+            <div class="row">
+              <div class="col-lg-6">
+                <div className="mb-1">
+                  <Label className="form-label" for="order_type">
+                    Order Type*
+                  </Label>
+                  ;
+                  <Controller
+                    // defaultValue=""
+                    defaultValue={createOrderInfo?.order_type == "COD" ? { value: "COD", label: "COD" } : { value: "pre-paid", label: "Pre-Paid" }}
+                    control={control}
+                    id="order_type"
+                    name="order_type"
+                    // render={({ field }) => <Input placeholder='' invalid={errors.warehouse_status && true} {...field} />}
+                    render={({ field }) => (
+                      <Select
+                        isClearable
+                        className={classnames("react-select", {
+                          "is-invalid": errors.order_type && true,
+                        })}
+                        classNamePrefix="select"
+                        options={[
+                          { value: "", label: "Select" },
+                          { value: "pre-paid", label: "Pre-Paid" },
+                          { value: "COD", label: "COD" },
+                        ]}
+                        {...field}
+                      />
+                    )}
+                  />
+                  {errors && errors.order_type && (
+                    <span>{errors.order_type.message}</span>
+                  )}
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div className="mb-1">
+                  <Label className="form-label" for="amount_to_be_collected">
+                    Amount to be Collected*
+                  </Label>
+                  <Controller
+                    defaultValue={createOrderInfo.amount_to_be_collected}
+                    control={control}
+                    id="amount_to_be_collected"
+                    name="amount_to_be_collected"
+                    render={({ field }) => (
+                      <Input
+                        type="number"
+                        readOnly={orderType === 'pre-paid' ? true : false}
+                        value={amountCollected}
+                        // onChange={(e) => setAmountCollected(e.target.value)}
+                        placeholder=""
+                        invalid={errors.amount_to_be_collected && true}
+                        {...field}
+                      />
+                    )}
+                  />
+                  {errors && errors.amount_to_be_collected && (
+                    <span>{errors.amount_to_be_collected.message}</span>
+                  )}
+                </div>
+              </div>
             </div>
+
+
             <div className="row">
               <div className="col-lg-6">
                 <div className="mb-1">
@@ -1011,7 +1133,7 @@ const EditMarchantOrder = () => {
                   )}
                 </div>
               </div>
-              <div className="col-lg-6">
+              {/* <div className="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="area">
                     Delivary Rider*
@@ -1037,6 +1159,31 @@ const EditMarchantOrder = () => {
                     <span className="invalid-feedback">
                       {errors.delivary_rider.message}
                     </span>
+                  )}
+                </div>
+              </div> */}
+              <div class="col-lg-6">
+                <div className="mb-1">
+                  <Label className="form-label" for="delivary_charge">
+                    Delivary Charge*
+                  </Label>
+                  <Controller
+                    defaultValue={delivaryCharge}
+                    key={delivaryCharge}
+                    control={control}
+                    id="delivary_charge"
+                    name="delivary_charge"
+                    render={({ field }) => (
+                      <Input
+                        readOnly={true}
+                        placeholder=""
+                        invalid={errors.delivary_charge && true}
+                        {...field}
+                      />
+                    )}
+                  />
+                  {errors && errors.delivary_charge && (
+                    <span className="invalid-feedback">{errors.delivary_charge.message}</span>
                   )}
                 </div>
               </div>
@@ -1075,35 +1222,44 @@ const EditMarchantOrder = () => {
                   )}
                 </div>
               </div>
-              <div class="col-lg-6">
-                <div className="mb-1">
-                  <Label className="form-label" for="delivary_charge">
-                    Delivary Charge*
-                  </Label>
-                  <Controller
-                    defaultValue={delivaryCharge}
-                    key={delivaryCharge}
-                    control={control}
-                    id="delivary_charge"
-                    name="delivary_charge"
-                    render={({ field }) => (
-                      <Input
-                        readOnly={true}
-                        placeholder=""
-                        invalid={errors.delivary_charge && true}
-                        {...field}
-                      />
+
+      
+                <div class="col-lg-6">
+                  <div className="mb-1">
+                    <Label className="form-label" for="pickup_address">
+                      Pickup Address
+                    </Label>
+                    <Controller
+                      id="pickup_address"
+                      name="pickup_address"
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          isClearable
+                          className={classnames("react-select", {
+                            "is-invalid": errors.pickup_address && true,
+                          })}
+                          classNamePrefix="select"
+                          options={selectboxStreetAddress.map(val => {
+                            return { value: val.id, label: val.street_address }
+                          })}
+                          {...field}
+                        />
+                      )}
+                    />
+                    {errors && errors.pickup_address && (
+                      <span className="invalid-feedback">
+                        {errors.pickup_address.message}
+                      </span>
                     )}
-                  />
-                  {errors && errors.delivary_charge && (
-                    <span className="invalid-feedback">{errors.delivary_charge.message}</span>
-                  )}
+                  </div>
                 </div>
-              </div>
+            
+              
 
             </div>
             <div className="row">
-              <div className="col-lg-6">
+              {/* <div className="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="pickup_rider">
                     Pickup Rider
@@ -1137,7 +1293,7 @@ const EditMarchantOrder = () => {
                     </span>
                   )}
                 </div>
-              </div>
+              </div> */}
               {/* <div className="col-lg-6">
                 <div className="mb-1">
                   <Label className="form-label" for="warehouse_status">

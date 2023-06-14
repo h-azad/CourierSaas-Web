@@ -16,18 +16,17 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, MARCHANT_PICKUP_ADDRESS, MARCHANT_ORDER_STATUS_UPDATE, CREATE_ORDER_DELETE, SEARCH_CREATE_ORDER } from "../../../../constants/apiUrls"
-import SwalAlert from "../../../../components/SwalAlert"
-import SwalConfirm from "../../../../components/SwalConfirm"
-import StatusModal from "../../../../components/StatusModal"
-import classnames from 'classnames'
-import { useForm, Controller } from 'react-hook-form'
-import Select from "react-select"
-import ChangeStatusModal from "../../../../components/merchant_views/order/ChangeStatusModal"
+import { getApi, ADJUSTMENT_LIST, MARCHANT_ORDER_STATUS_UPDATE, CREATE_ORDER_DELETE, SEARCH_CREATE_ORDER } from "../../../constants/apiUrls"
 
-const MarchantPickupAddressList = () => {
-  const [pickupAddressData, setPickupAddressData] = useState([])
-  console.log("pickupAddressData", pickupAddressData)
+import SwalAlert from "../../../components/SwalAlert"
+
+import SwalConfirm from "../../../components/SwalConfirm"
+// import ChangeStatusModal from "../../../../components/merchant_views/order/ChangeStatusModal"
+
+
+const WalletAdjustment = () => {
+  const [adjustmentData, setAdjustmentData] = useState([])
+  console.log("adjustmentData", adjustmentData)
   const MySwal = withReactContent(Swal)
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
@@ -39,11 +38,11 @@ const MarchantPickupAddressList = () => {
       if (result.value) {
 
         useJwt
-          .axiosDelete(getApi(MARCHANT_PICKUP_ADDRESS + id + '/'))
+          .axiosDelete(getApi(ADJUSTMENT_LIST + id + '/'))
           .then((res) => {
             SwalAlert("Deleted Successfully")
           })
-          .finally(() => fetchPickupAddressData())
+          .finally(() => fetchAdjustmentData())
 
       }
     })
@@ -54,25 +53,25 @@ const MarchantPickupAddressList = () => {
   const defaultAddress = (e, info) => {
     e.preventDefault()
     useJwt
-      .axiosPatch(getApi(MARCHANT_PICKUP_ADDRESS + info.id + '/'), {
+      .axiosPatch(getApi(ADJUSTMENT_LIST + info.id + '/'), {
         id: info.id
       })
       .then((res) => {
         // SwalConfirm("Default Address Set")
-        fetchPickupAddressData()
+        fetchAdjustmentData()
       })
   }
 
   useEffect(() => {
-    fetchPickupAddressData()
+    fetchAdjustmentData()
   }, [])
 
-  const fetchPickupAddressData = () => {
+  const fetchAdjustmentData = () => {
     return useJwt
-      .axiosGet(getApi(MARCHANT_PICKUP_ADDRESS))
+      .axiosGet(getApi(ADJUSTMENT_LIST))
       .then((res) => {
         console.log("res", res.data)
-        setPickupAddressData(res.data)
+        setAdjustmentData(res.data)
         return res.data
       })
       .catch(err => console.log(err))
@@ -84,8 +83,8 @@ const MarchantPickupAddressList = () => {
         <div className="row justify-content-between">
           <div className="col-lg-5">
             <div className="d-flex align-items-center">
-              <Link to={'/marchant-pickup-address/add'}>
-                <Button.Ripple color="primary">Add Pickup Address</Button.Ripple>
+              <Link to={'/wallet-adjustment/add'}>
+                <Button.Ripple color="primary">Adjustment Wallet</Button.Ripple>
               </Link>
             </div>
           </div>
@@ -95,30 +94,25 @@ const MarchantPickupAddressList = () => {
         <Table bordered>
           <thead>
             <tr>
-              <th>City</th>
-              <th>Area</th>
-              <th>Pickup Address</th>
-              <th>Phone</th>
+              <th>Marchant</th>
+              <th>Receiver Admin</th>
+              <th>Adjust Amount</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {pickupAddressData &&
-              pickupAddressData.map((info) => (
+            {adjustmentData &&
+              adjustmentData.map((info) => (
                 <tr key={info.id}>
-                  <td>
-                    <span className="align-middle fw-bold">{info.city.city_name}</span>
+                  {/* <td>
+                    <span className="align-middle fw-bold">{info.wallet}</span>
                   </td>
                   <td>
-                    <span className="align-middle fw-bold">{info.area.area_name}</span>
+                    <span className="align-middle fw-bold">{info.adjust_amount}</span>
                   </td>
                   <td>
-                    <span className="align-middle fw-bold">{info.street_address}</span>
-                  </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.phone}</span>
-                  </td>
-                  
+                    <span className="align-middle fw-bold">{info.receiver}</span>
+                  </td>                 */}
                   <td>
                     <UncontrolledDropdown>
                       <DropdownToggle
@@ -130,7 +124,7 @@ const MarchantPickupAddressList = () => {
                         <MoreVertical size={15} />
                       </DropdownToggle>
                       <DropdownMenu>
-                        <DropdownItem href={"/marchant-pickup-address/edit/" + info.id}>
+                        <DropdownItem href={"/wallet-adjustment/edit/" + info.id}>
                           <Edit className="me-50" size={15} />{" "}
                           <span className="align-middle">Edit</span>
                         </DropdownItem>
@@ -149,13 +143,13 @@ const MarchantPickupAddressList = () => {
               ))}
           </tbody>
         </Table>
-
+{/* 
         <ChangeStatusModal
           statusModalState={statusModalState}
           setStatusModalState={setStatusModalState}
           orderInfo={selectedInfo}
-          fetchPickupAddressData={fetchPickupAddressData}
-        />
+          fetchAdjustmentData={fetchAdjustmentData}
+        /> */}
 
       </div>
 
@@ -163,4 +157,4 @@ const MarchantPickupAddressList = () => {
   )
 }
 
-export default MarchantPickupAddressList
+export default WalletAdjustment

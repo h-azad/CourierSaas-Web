@@ -186,6 +186,7 @@ export const ADMIN_DETAILS = "/api/user/admin-viewset/"
 
 export const USER_LIST = "/api/user/user-viewset/"
 
+export const ADJUSTMENT_LIST = '/api/wallet-adjust/'
 
 export const TRANSECTIONS = "/api/transection/"
 export const TRANSECTIONS_FILTER = "/api/transection-filter/"

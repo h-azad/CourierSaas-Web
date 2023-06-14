@@ -130,6 +130,14 @@ const adminMenu = [
     resource: 'ADMIN',
     navLink: "/transections"
   },
+  {
+    id: "wallet_adjustment",
+    title: "Wallet Adjustment",
+    icon: <Home size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN',
+    navLink: "/wallet-adjustment"
+  },
 
   {
     header: 'Locations',
@@ -258,6 +266,28 @@ const marchantMenu = [
     action: 'marchant-pages',
     resource: 'MARCHANT',
     navLink: "/marchant-pickup-address"
+  },
+  {
+    header: 'Report',
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+  },
+
+  {
+    id: "order_report",
+    title: "Order Report",
+    icon: <ShoppingCart size={20} />,
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+    navLink: "/order-report"
+  },
+  {
+    id: "transection_report",
+    title: "Transection Report",
+    icon: <ShoppingCart size={20} />,
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+    navLink: "/transection-report"
   },
 
   // {

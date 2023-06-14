@@ -10,7 +10,7 @@ import {
   Button,
   Label,
 } from "reactstrap"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import Select from "react-select"
 import classnames from "classnames"
 import { useForm, Controller } from "react-hook-form"
@@ -25,12 +25,15 @@ import { useEffect, useState } from "react"
 import SwalAlert from "../../../components/SwalAlert"
 // import { getUserData } from "../../../auth/utils"
 
-const MerchantAddPickupAddress = () => {
+const MerchantEditPickupAddress = () => {
 
   const [selectboxProduct, setSelectboxCity] = useState([])
   const [selectboxArea, setSelectboxArea] = useState([])
   const [data, setData] = useState(null)
+
   const navigate = useNavigate()
+  let { id } = useParams()
+
   const {
     reset,
     control,
@@ -51,7 +54,7 @@ const MerchantAddPickupAddress = () => {
 
   const fetchCityData = () => {
     return useJwt
-      .axiosGet(getApi(CITIES_LIST))
+      .axiosGet(getApi(CITIES_LIST + id + '/'))
       .then((res) => {
         let cityData = []
         res.data.map((data) => {
@@ -118,16 +121,6 @@ const MerchantAddPickupAddress = () => {
       isFormValid = false
     }
 
-    if (!(data.street_address)) {
-      setError("street_address", {
-        type: "required",
-        message: "Street Address is required",
-      })
-      isFormValid = false
-    }
-
-    
-
     if (!isFormValid) {
       return false
     }
@@ -136,32 +129,30 @@ const MerchantAddPickupAddress = () => {
     if (
       data.phone !== null &&
       data.city.value !== null &&
-      data.area.value !== null &&
-      data.street_address !== null
+      data.area.value !== null
     ) {
       let formData = {
         phone: data.phone,
         city: data.city.value,
         area: data.area.value,
-        street_address: data.street_address
       }
 
       console.log("formData", formData)
 
       const headers = {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
       }
 
       useJwt
-        .axiosPost(getApi(MARCHANT_PICKUP_ADDRESS), formData, headers )
+        .axiosPost(getApi(MARCHANT_PICKUP_ADDRESS), formData, headers)
         .then((res) => {
           SwalAlert("Pickup Address Added Successfully")
           navigate("/marchant-pickup-address")
         })
         .catch(err => console.log(err))
-      }
+    }
   }
 
 
@@ -173,7 +164,7 @@ const MerchantAddPickupAddress = () => {
 
       <CardBody>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          
+
           <div class="row">
             <div class="col-lg-6">
               <div className="mb-1">
@@ -196,30 +187,6 @@ const MerchantAddPickupAddress = () => {
                 />
                 {errors && errors.phone && (
                   <span>{errors.phone.message}</span>
-                )}
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div className="mb-1">
-                <Label className="form-label" for="street_address">
-                  Pickup Address
-                </Label>
-                <Controller
-                  defaultValue=""
-                  control={control}
-                  id="street_address"
-                  name="street_address"
-                  render={({ field }) => (
-                    <Input
-                      type="text"
-                      placeholder=""
-                      invalid={errors.street_address && true}
-                      {...field}
-                    />
-                  )}
-                />
-                {errors && errors.street_address && (
-                  <span>{errors.street_address.message}</span>
                 )}
               </div>
             </div>
@@ -294,5 +261,5 @@ const MerchantAddPickupAddress = () => {
     </Card>
   )
 }
-export default MerchantAddPickupAddress
+export default MerchantEditPickupAddress
 

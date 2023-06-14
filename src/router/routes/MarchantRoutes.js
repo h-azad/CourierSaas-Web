@@ -6,6 +6,8 @@ import MarchantOrderView from "../../views/merchant_views/order/view"
 import MerchantAddPickupAddress from "../../views/merchant_views/pickup_address/addAddress"
 import MerchantEditPickupAddress from "../../views/merchant_views/pickup_address/edit"
 import MarchantPickupAddressList from "../../views/merchant_views/pickup_address/partials/marchant_pickup_address_list"
+import OrderReport from "../../views/merchant_views/report/orderReport"
+import TransectionReport from "../../views/merchant_views/report/transectionReport"
 import MarchantWallet from "../../views/merchant_views/wallet"
 import MarchantBalanceWithrawRequestAdd from "../../views/merchant_views/withdraw_balance/add"
 import MarchantBalanceWithrawRequestList from "../../views/merchant_views/withdraw_balance/partials/list-table"
@@ -59,7 +61,15 @@ const MarchantRoutes = [
     {
         path: "/marchant-pickup-address",
         element: <MarchantPickupAddressList />
-    }
+    },
+    {
+        path: "/transection-report",
+        element: <TransectionReport />
+    },
+    {
+        path: "/order-report",
+        element: <OrderReport />
+    },
 
 
   

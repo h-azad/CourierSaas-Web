@@ -71,6 +71,8 @@ import RiderAssignmentList from '../../views/assignment/rider/riderAssignment'
 import RiderTasks from '../../views/assignment/rider/riderTaks'
 import DeliveryRiderTask from '../../views/assignment/rider/deliveryRiderTask'
 import Transections from '../../views/transection/transections'
+import WalletAdjustment from '../../views/wallet_adjustment/partials/wallet_adjustment'
+import AddWalletAdjustment from '../../views/wallet_adjustment/add_wallet_adjustment'
 
 
 
@@ -122,6 +124,14 @@ const DashboardRoutes = [
   {
     path: "/transections",
     element: <Transections />
+  },
+  {
+    path: "/wallet-adjustment",
+    element: <WalletAdjustment />
+  },
+  {
+    path: "/wallet-adjustment/add",
+    element: <AddWalletAdjustment />
   },
   
   {
