@@ -104,17 +104,17 @@ const WalletAdjustment = () => {
             {adjustmentData &&
               adjustmentData.map((info) => (
                 <tr key={info.id}>
-                  {/* <td>
-                    <span className="align-middle fw-bold">{info.wallet}</span>
+                  <td>
+                    <span className="align-middle fw-bold">{info.username}</span>
                   </td>
                   <td>
                     <span className="align-middle fw-bold">{info.adjust_amount}</span>
                   </td>
                   <td>
                     <span className="align-middle fw-bold">{info.receiver}</span>
-                  </td>                 */}
+                  </td>                
                   <td>
-                    <UncontrolledDropdown>
+                    {/* <UncontrolledDropdown>
                       <DropdownToggle
                         className="icon-btn hide-arrow"
                         color="transparent"
@@ -137,7 +137,7 @@ const WalletAdjustment = () => {
                           <span className="align-middle">Default</span>
                         </DropdownItem>
                       </DropdownMenu>
-                    </UncontrolledDropdown>
+                    </UncontrolledDropdown> */}
                   </td>
                 </tr>
               ))}
