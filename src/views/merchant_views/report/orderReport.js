@@ -4,30 +4,47 @@ import {Search} from "react-feather"
 import { Table, Button, CardText } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
-import { DatePicker, Space } from 'antd'
-import { getApi } from "../../../constants/apiUrls"
+import { getApi, MARCHANT_ORDER_REPORT, MARCHANT_ORDER_FILTER_BY_DATE_RANGE_REPORT, MARCHANT_ORDER_FILTER_BY_DATE_RANGE_REPORT_PDF } from "../../../constants/apiUrls"
+import ReportHead from "./ReportHead"
+import { number } from "prop-types"
+import React from 'react'
+// import { renderToString } from 'react-dom/server'
+import html2pdf from "html2pdf.js"
+
 
 const OrderReport = () => {
-	const { RangePicker } = DatePicker
-	const [rider, setRider] = useState([])
+	const [order, setOrder] = useState([])
+	const [dates, setDates] = useState(null)
+	const [datesNumber, setDatesNumber] = useState(null)
+	console.log('datesNumber', datesNumber)
+	console.log('date is ', dates)
+
+	// const generatePDF = () => {
+	// 	const table = document.getElementById('my-table') // Replace 'my-table' with the ID of your table element
+	// 	const tableHTML = table.outerHTML
+
+	// 	html2pdf()
+	// 		.set({
+	// 			filename: 'table_data.pdf',
+	// 			// margin: [15, 15, 15, 15], // Optional: Set the PDF margins
+	// 			image: { type: 'jpeg', quality: 0.98 }, // Optional: Set the image quality
+	// 			html2canvas: { dpi: 192, letterRendering: true },
+	// 			jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' },
+	// 		})
+	// 		.from(tableHTML)
+	// 		.save()
+	// }
 
 
-	
 	const defaultFetchOrderData = () => {
-		return useJwt.axiosGet(getApi())
+		return useJwt.axiosGet(getApi(MARCHANT_ORDER_REPORT))
 			.then((res) => {
-				console.log(res.data)
+				console.log('response data',res.data)
 				setOrder(res.data)
 			}).catch((err) => {
 				console.log(err)
 			})
 	}
-
-
-
-	
-
-
 
 	useEffect(() => {
 		defaultFetchOrderData()
@@ -36,10 +53,11 @@ const OrderReport = () => {
 
 
 
-	const fetchSearchRidersData = searchTerm => {
+	const fetchSearchOrdersDataByDateRange = searchTerm => {
+		console.log('click')
 		return useJwt
 			// .axiosGet(getApi(RIDER_SEARCH)+'?search='+ searchTerm) //after line
-			.axiosGet(getApi(RIDER_SEARCH_FILTER) + '?search=' + searchTerm)
+			.axiosGet(getApi(MARCHANT_ORDER_FILTER_BY_DATE_RANGE_REPORT) + '?search=' + searchTerm)
 			.then((res) => {
 				return res.data
 			})
@@ -47,14 +65,60 @@ const OrderReport = () => {
 	}
 
 	const handleSearch = debounce(e => {
-		console.log(e.target.value)
-		const searchTerm = e.target.value
-		if (searchTerm.length > 0) {
-			fetchSearchRidersData(searchTerm)
+	
+		console.log('change value', datesNumber)
+		let searchTerm
+		if(dates !== null){
+		 searchTerm = [dates[0], dates[1]]
+		}else{
+		 searchTerm = datesNumber
+		}
+		console.log('searchTerm', searchTerm)
+		if (searchTerm?.length > 0) {
+			fetchSearchOrdersDataByDateRange(searchTerm)
 				.then(data => {
-					if (data.length > 0) {
+					if (data?.length > 0) {
 						console.log('res', data)
-						setRider(data)
+						setOrder(data)
+					} else {
+						console.log("No data")
+					}
+				})
+		} else {
+			defaultFetchOrderData()
+		}
+
+	}, 300)
+
+
+
+	const fetchSearchOrdersDataByDateRangeReportGenerate = searchTerm => {
+		console.log('click pdf')
+		return useJwt
+			// .axiosGet(getApi(RIDER_SEARCH)+'?search='+ searchTerm) //after line
+			.axiosGet(getApi(MARCHANT_ORDER_FILTER_BY_DATE_RANGE_REPORT_PDF) + '?search=' + searchTerm)
+			.then((res) => {
+				return res.data
+			})
+			.catch((err) => console.log(err))
+	}
+
+	const handleSearchReportGenerate = debounce(e => {
+
+		console.log('change value', datesNumber)
+		let searchTerm
+		if (dates !== null) {
+			searchTerm = [dates[0], dates[1]]
+		} else {
+			searchTerm = datesNumber
+		}
+		console.log('searchTerm', searchTerm)
+		if (searchTerm?.length > 0) {
+			fetchSearchOrdersDataByDateRangeReportGenerate(searchTerm)
+				.then(data => {
+					if (data?.length > 0) {
+						console.log('res', data)
+						setOrder(data)
 					} else {
 						console.log("No data")
 					}
@@ -83,61 +147,51 @@ const OrderReport = () => {
 
 	return (
 		<>
-			<CardText>
-				<div className="row justify-content-between">
-					<div className="col-lg-3">
-						<div className="d-flex align-items-center">
-							<Button.Ripple color="primary">PDF</Button.Ripple>
-						</div>
-					</div>
 
-					
+			<ReportHead setDates={setDates} fetchSearchOrdersDataByDateRange={handleSearch} setDatesNumber={setDatesNumber} handleSearchReportGenerate={handleSearchReportGenerate} />
 
-					<div className="col-lg-3">
-						<div className="d-flex align-items-center ">
-						<Space direction="vertical" size={12}>
-							<RangePicker />
-						</Space>
-						</div>
-					</div>
-
-
-					<div className="col-lg-5">
-						<div className="d-flex align-items-center ">
-							<input
-								placeholder="Search Rider"
-								name="user_name"
-								type="text"
-								class="form-control"
-								// value=""
-								onChange={handleSearch}
-							/>
-							<Button.Ripple className="btn-icon ms-1" outline color="primary">
-								<Search size={16} />
-							</Button.Ripple>
-						</div>
-					</div>
-				</div>
-			</CardText>
-			<div class="table-responsive">
+			<div id="my-table" class="table-responsive">
 				<Table bordered>
 					<thead>
 						<tr>
-							<th>Full Name</th>
-							<th>Contact Number</th>
-							<th>Email</th>
-							<th>Actions</th>
+							<th>Order ID</th>
+							<th>Status</th>
+							<th>Date</th>
+							<th>Delivery Charge</th>
+							<th>COD Charge</th>
+							<th>COD Amount</th>
+							<th>Accumutated Amount</th>
+							<th>Total Amount</th>
 						</tr>
 					</thead>
 					<tbody>
-						{rider &&
-							rider.map((info) => (
+						{order &&
+							order.map((info) => (
 								<tr key={info.id}>
 									<td>
-										<span className="align-middle fw-bold">{info.full_name}</span>
+										<span className="align-middle fw-bold">{info.parcel_id}</span>
 									</td>
-									<td>{info.contact_no}</td>
-									<td>{info.email}</td>
+									<td>
+										<span className="align-middle fw-bold">{info.status}</span>
+									</td>
+									<td>
+										<span className="align-middle fw-bold">{info.created_at}</span>
+									</td>
+									<td>
+										<span className="align-middle fw-bold">{info.delivary_charge}</span>
+									</td>
+									<td>
+										<span className="align-middle fw-bold">{info.cash_on_delivery_charge}</span>
+									</td>
+									<td>
+										<span className="align-middle fw-bold">{info.amount_to_be_collected}</span>
+									</td>
+									<td>
+										<span className="align-middle fw-bold">{info.accumulated}</span>
+									</td>
+									<td>
+										<span className="align-middle fw-bold">{info.total_amount}</span>
+									</td>
 								</tr>
 							))}
 					</tbody>

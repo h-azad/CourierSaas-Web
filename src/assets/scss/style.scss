@@ -1,5 +1,13 @@
 
-
+.ant-btn{
+	font-size: 14px;
+    height: 32px;
+    padding: 4px 15px;
+    border-radius: 6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 .invoice-title-card{
 	display: flex;
 	align-items: center;
@@ -61,3 +69,4 @@ font-size: 12px;
 	}
 
 }
+
