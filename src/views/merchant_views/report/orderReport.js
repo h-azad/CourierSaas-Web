@@ -4,12 +4,12 @@ import {Search} from "react-feather"
 import { Table, Button, CardText } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, MARCHANT_ORDER_REPORT, MARCHANT_ORDER_FILTER_BY_DATE_RANGE_REPORT, MARCHANT_ORDER_FILTER_BY_DATE_RANGE_REPORT_PDF } from "../../../constants/apiUrls"
+import { getApi, MARCHANT_ORDER_REPORT, MARCHANT_ORDER_FILTER_BY_DATE_RANGE_REPORT, MARCHANT_ORDER_FILTER_PDF } from "../../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import { number } from "prop-types"
 import React from 'react'
 // import { renderToString } from 'react-dom/server'
-import html2pdf from "html2pdf.js"
+// import html2pdf from "html2pdf.js"
 
 
 const OrderReport = () => {
@@ -92,37 +92,39 @@ const OrderReport = () => {
 
 
 
-	const fetchSearchOrdersDataByDateRangeReportGenerate = searchTerm => {
+	const fetchSearchOrdersDataPDFGenerate = searchTerm => {
 		console.log('click pdf')
 		return useJwt
 			// .axiosGet(getApi(RIDER_SEARCH)+'?search='+ searchTerm) //after line
-			.axiosGet(getApi(MARCHANT_ORDER_FILTER_BY_DATE_RANGE_REPORT_PDF) + '?search=' + searchTerm)
+			.axiosGet(getApi(MARCHANT_ORDER_FILTER_PDF) + '?search=' + searchTerm)
 			.then((res) => {
 				return res.data
 			})
 			.catch((err) => console.log(err))
 	}
 
-	const handleSearchReportGenerate = debounce(e => {
+	const handleSearchReportGeneratePDF = debounce(e => {
 
 		console.log('change value', datesNumber)
 		let searchTerm
 		if (dates !== null) {
 			searchTerm = [dates[0], dates[1]]
-		} else {
+		} else if (datesNumber !== null){
 			searchTerm = datesNumber
+		}else{
+			searchTerm = ''
 		}
 		console.log('searchTerm', searchTerm)
 		if (searchTerm?.length > 0) {
-			fetchSearchOrdersDataByDateRangeReportGenerate(searchTerm)
-				.then(data => {
-					if (data?.length > 0) {
-						console.log('res', data)
-						setOrder(data)
-					} else {
-						console.log("No data")
-					}
-				})
+			fetchSearchOrdersDataPDFGenerate(searchTerm)
+				// .then(data => {
+				// 	if (data?.length > 0) {
+				// 		console.log('res', data)
+				// 		setOrder(data)
+				// 	} else {
+				// 		console.log("No data")
+				// 	}
+				// })
 		} else {
 			defaultFetchOrderData()
 		}
@@ -148,7 +150,7 @@ const OrderReport = () => {
 	return (
 		<>
 
-			<ReportHead setDates={setDates} fetchSearchOrdersDataByDateRange={handleSearch} setDatesNumber={setDatesNumber} handleSearchReportGenerate={handleSearchReportGenerate} />
+			<ReportHead setDates={setDates} fetchSearchOrdersDataByDateRange={handleSearch} setDatesNumber={setDatesNumber} handleSearchReportGeneratePDF={handleSearchReportGeneratePDF} />
 
 			<div id="my-table" class="table-responsive">
 				<Table bordered>

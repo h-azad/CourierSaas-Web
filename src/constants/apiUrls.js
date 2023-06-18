@@ -23,7 +23,7 @@ export const MARCHANT_PICKUP_ADDRESS = '/marchant_app/marchant-pickup-addreess/'
 
 export const MARCHANT_ORDER_REPORT= "/marchant_app/default-marchant-order-report"
 export const MARCHANT_ORDER_FILTER_BY_DATE_RANGE_REPORT = "/marchant_app/marchant-order-report/date-range/"
-export const MARCHANT_ORDER_FILTER_BY_DATE_RANGE_REPORT_PDF = "/marchant_app/marchant-order-report/pdf/date-range/"
+export const MARCHANT_ORDER_FILTER_PDF = "/marchant_app/marchant-order-report-pdf"
 
 
 

@@ -4,7 +4,7 @@ import { FilePptOutlined, FileExcelOutlined } from '@ant-design/icons'
 const { RangePicker } = DatePicker
 import { useForm } from "react-hook-form"
 
-const ReportHead = ({ setDates, fetchSearchOrdersDataByDateRange, setDatesNumber, handleSearchReportGenerate }) => {
+const ReportHead = ({ setDates, fetchSearchOrdersDataByDateRange, setDatesNumber, handleSearchReportGeneratePDF }) => {
 	const { watch } = useForm()
 
 	// const [dates, setDates] = useState(null)
@@ -97,7 +97,7 @@ const ReportHead = ({ setDates, fetchSearchOrdersDataByDateRange, setDatesNumber
 			</div>
 			<div className='row mt-3'>
 				<div className='d-flex justify-content-end align-items-center gap-1 mb-2'>
-					<div className=''><Button type="primary" onClick={handleSearchReportGenerate} icon={<FilePptOutlined />} size={20}>
+					<div className=''><Button type="primary" onClick={handleSearchReportGeneratePDF} icon={<FilePptOutlined />} size={20}>
 						Export To PDF
 					</Button></div>
 					<div className=''><Button type="primary" icon={<FileExcelOutlined />} size={20}>
