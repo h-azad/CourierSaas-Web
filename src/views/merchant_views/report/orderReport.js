@@ -37,7 +37,7 @@ const OrderReport = () => {
 
 
 	const defaultFetchOrderData = () => {
-		return useJwt.axiosGet(getApi(MARCHANT_ORDER_REPORT))
+		return useJwt.axiosGet(getApi(MARCHANT_ORDER_FILTER_BY_DATE_RANGE_REPORT))
 			.then((res) => {
 				console.log('response data',res.data)
 				setOrder(res.data)
@@ -98,11 +98,25 @@ const OrderReport = () => {
 			// .axiosGet(getApi(RIDER_SEARCH)+'?search='+ searchTerm) //after line
 			.axiosGet(getApi(MARCHANT_ORDER_FILTER_PDF) + '?search=' + searchTerm)
 			.then((res) => {
-				return res.data
+				// console.log('respose pdf file ', res)
+				return res
 			})
 			.catch((err) => console.log(err))
 	}
 
+
+	function downloadPDFFile(file, fileName) {
+		var blob = new Blob([file], { type: 'application/pdf' })
+		var url = URL.createObjectURL(blob)
+		var link = document.createElement('a')
+		link.href = url
+		link.download = fileName
+		document.body.appendChild(link)
+		link.click()
+		document.body.removeChild(link)
+		URL.revokeObjectURL(url)
+	}
+	
 	const handleSearchReportGeneratePDF = debounce(e => {
 
 		console.log('change value', datesNumber)
@@ -117,6 +131,13 @@ const OrderReport = () => {
 		console.log('searchTerm', searchTerm)
 		if (searchTerm?.length > 0) {
 			fetchSearchOrdersDataPDFGenerate(searchTerm)
+			.then(data =>{
+				console.log('response file',data.data)
+				var file = new Blob([data.data], { type: 'application/pdf' })
+				var fileName = 'orders_report.pdf'
+				downloadPDFFile(file, fileName)
+
+			})
 				// .then(data => {
 				// 	if (data?.length > 0) {
 				// 		console.log('res', data)

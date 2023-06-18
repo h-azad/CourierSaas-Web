@@ -97,9 +97,13 @@ const ReportHead = ({ setDates, fetchSearchOrdersDataByDateRange, setDatesNumber
 			</div>
 			<div className='row mt-3'>
 				<div className='d-flex justify-content-end align-items-center gap-1 mb-2'>
-					<div className=''><Button type="primary" onClick={handleSearchReportGeneratePDF} icon={<FilePptOutlined />} size={20}>
+					 <div className=''><Button type="primary" onClick={handleSearchReportGeneratePDF} icon={<FilePptOutlined />} size={20}>
 						Export To PDF
-					</Button></div>
+					</Button></div> 
+					{/* <div className=''>
+						<a type="primary" href='' icon={<FilePptOutlined />} size={20}>
+						Export To PDF
+					</a></div> */}
 					<div className=''><Button type="primary" icon={<FileExcelOutlined />} size={20}>
 						Export To Excel
 					</Button></div>
