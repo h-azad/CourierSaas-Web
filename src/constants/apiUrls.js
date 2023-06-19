@@ -21,6 +21,10 @@ export const MARCHANT_SEARCH_FILTER = '/marchant_app/search-filter/'
 export const MARCHANT_SEARCH_CREATE_ORDER_FILTER = '/marchant_app/marchant-serach-order-filter/'
 export const MARCHANT_PICKUP_ADDRESS = '/marchant_app/marchant-pickup-addreess/'
 
+export const MARCHANT_GET_ORDER_REPORT = "/marchant_app/get-orders-report/"
+export const MARCHANT_GET_ORDER_REPORT_PDF = "/marchant_app/get-orders-report-pdf/"
+export const MARCHANT_GET_TRANSICTION_REPORT = "/marchant_app/marchant-transection/"
+
 export const MARCHANT_ORDER_REPORT= "/marchant_app/default-marchant-order-report"
 export const MARCHANT_ORDER_FILTER_BY_DATE_RANGE_REPORT = "/marchant_app/marchant-order-report/date-range/"
 export const MARCHANT_ORDER_FILTER_PDF = "/marchant_app/marchant-order-report-pdf"

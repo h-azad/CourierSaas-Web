@@ -1,43 +1,19 @@
 
 
-import {Search} from "react-feather"
-import { Table, Button, CardText } from "reactstrap"
+import { Table} from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, MARCHANT_ORDER_REPORT, MARCHANT_ORDER_FILTER_BY_DATE_RANGE_REPORT, MARCHANT_ORDER_FILTER_PDF } from "../../../constants/apiUrls"
+import { getApi, MARCHANT_GET_ORDER_REPORT, MARCHANT_GET_ORDER_REPORT_PDF } from "../../../constants/apiUrls"
 import ReportHead from "./ReportHead"
-import { number } from "prop-types"
 import React from 'react'
-// import { renderToString } from 'react-dom/server'
-// import html2pdf from "html2pdf.js"
+
 
 
 const OrderReport = () => {
 	const [order, setOrder] = useState([])
-	const [dates, setDates] = useState(null)
-	const [datesNumber, setDatesNumber] = useState(null)
-	console.log('datesNumber', datesNumber)
-	console.log('date is ', dates)
-
-	// const generatePDF = () => {
-	// 	const table = document.getElementById('my-table') // Replace 'my-table' with the ID of your table element
-	// 	const tableHTML = table.outerHTML
-
-	// 	html2pdf()
-	// 		.set({
-	// 			filename: 'table_data.pdf',
-	// 			// margin: [15, 15, 15, 15], // Optional: Set the PDF margins
-	// 			image: { type: 'jpeg', quality: 0.98 }, // Optional: Set the image quality
-	// 			html2canvas: { dpi: 192, letterRendering: true },
-	// 			jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' },
-	// 		})
-	// 		.from(tableHTML)
-	// 		.save()
-	// }
-
 
 	const defaultFetchOrderData = () => {
-		return useJwt.axiosGet(getApi(MARCHANT_ORDER_FILTER_BY_DATE_RANGE_REPORT))
+		return useJwt.axiosGet(getApi(MARCHANT_GET_ORDER_REPORT))
 			.then((res) => {
 				console.log('response data',res.data)
 				setOrder(res.data)
@@ -51,55 +27,16 @@ const OrderReport = () => {
 	}, [])
 
 
-
-
-	const fetchSearchOrdersDataByDateRange = searchTerm => {
-		console.log('click')
+	const handleSearchQuery = searchTerm => {
 		return useJwt
-			// .axiosGet(getApi(RIDER_SEARCH)+'?search='+ searchTerm) //after line
-			.axiosGet(getApi(MARCHANT_ORDER_FILTER_BY_DATE_RANGE_REPORT) + '?search=' + searchTerm)
+			.axiosGet(getApi(MARCHANT_GET_ORDER_REPORT) + '?' + searchTerm)
 			.then((res) => {
+				if (res.data?.length > 0) {
+					setOrder(res.data)
+				} else {
+					setOrder('')
+				}
 				return res.data
-			})
-			.catch((err) => console.log(err))
-	}
-
-	const handleSearch = debounce(e => {
-	
-		console.log('change value', datesNumber)
-		let searchTerm
-		if(dates !== null){
-		 searchTerm = [dates[0], dates[1]]
-		}else{
-		 searchTerm = datesNumber
-		}
-		console.log('searchTerm', searchTerm)
-		if (searchTerm?.length > 0) {
-			fetchSearchOrdersDataByDateRange(searchTerm)
-				.then(data => {
-					if (data?.length > 0) {
-						console.log('res', data)
-						setOrder(data)
-					} else {
-						console.log("No data")
-					}
-				})
-		} else {
-			defaultFetchOrderData()
-		}
-
-	}, 300)
-
-
-
-	const fetchSearchOrdersDataPDFGenerate = searchTerm => {
-		console.log('click pdf')
-		return useJwt
-			// .axiosGet(getApi(RIDER_SEARCH)+'?search='+ searchTerm) //after line
-			.axiosGet(getApi(MARCHANT_ORDER_FILTER_PDF) + '?search=' + searchTerm)
-			.then((res) => {
-				// console.log('respose pdf file ', res)
-				return res
 			})
 			.catch((err) => console.log(err))
 	}
@@ -116,62 +53,47 @@ const OrderReport = () => {
 		document.body.removeChild(link)
 		URL.revokeObjectURL(url)
 	}
-	
-	const handleSearchReportGeneratePDF = debounce(e => {
 
-		console.log('change value', datesNumber)
-		let searchTerm
-		if (dates !== null) {
-			searchTerm = [dates[0], dates[1]]
-		} else if (datesNumber !== null){
-			searchTerm = datesNumber
-		}else{
-			searchTerm = ''
-		}
-		console.log('searchTerm', searchTerm)
-		if (searchTerm?.length > 0) {
-			fetchSearchOrdersDataPDFGenerate(searchTerm)
-			.then(data =>{
-				console.log('response file',data.data)
-				var file = new Blob([data.data], { type: 'application/pdf' })
-				var fileName = 'orders_report.pdf'
-				downloadPDFFile(file, fileName)
+	const handlePDFQuery = (searchTerm) => {
 
+		return useJwt
+			.axiosGet(getApi((MARCHANT_GET_ORDER_REPORT_PDF) + '?' + searchTerm))
+			.then((res) => {
+				if (res.data?.length > 0) {
+					// setOrder(res.data)
+					console.log('response file', res.data)
+					var file = new Blob([res.data], { type: 'application/pdf' })
+					var fileName = 'orders_report.pdf'
+					downloadPDFFile(file, fileName)
+				} else {
+					// setOrder('')
+				}
+				return res.data
 			})
-				// .then(data => {
-				// 	if (data?.length > 0) {
-				// 		console.log('res', data)
-				// 		setOrder(data)
-				// 	} else {
-				// 		console.log("No data")
-				// 	}
-				// })
-		} else {
-			defaultFetchOrderData()
-		}
-
-	}, 300)
-
-
-
-	function debounce(fn, time) {
-		let timeoutId
-		return wrapper
-		function wrapper(...args) {
-			if (timeoutId) {
-				clearTimeout(timeoutId)
-			}
-			timeoutId = setTimeout(() => {
-				timeoutId = null
-				fn(...args)
-			}, time)
-		}
+			.catch((err) => console.log(err))
+		
 	}
+
+	const statusOptions = [
+		{ value: "pending", label: "Pending" },
+		{ value: "accepted", label: "Accepted" },
+		{ value: "pickedup", label: "Picked Up" },
+		{ value: "in_warehouse", label: "In Warehouse" },
+		{ value: "shipped", label: "Shipped" },
+		{ value: "delivered", label: "Delivered" },
+		{ value: "hold", label: "Hold" },
+		{ value: "returned", label: "Returned" },
+		{ value: "cancelled", label: "Cancelled" },
+		{ value: "completed", label: "Completed" },
+	]
+
 
 	return (
 		<>
 
-			<ReportHead setDates={setDates} fetchSearchOrdersDataByDateRange={handleSearch} setDatesNumber={setDatesNumber} handleSearchReportGeneratePDF={handleSearchReportGeneratePDF} />
+			<ReportHead 
+				handleSearchQuery={handleSearchQuery} handlePDFQuery={handlePDFQuery} defaultFetchOrderData={defaultFetchOrderData} statusOptions={statusOptions} selectOptionKey="status"
+			/>
 
 			<div id="my-table" class="table-responsive">
 				<Table bordered>
