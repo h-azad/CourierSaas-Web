@@ -24,6 +24,9 @@ export const MARCHANT_PICKUP_ADDRESS = '/marchant_app/marchant-pickup-addreess/'
 export const MARCHANT_GET_ORDER_REPORT = "/marchant_app/get-orders-report/"
 export const MARCHANT_GET_ORDER_REPORT_PDF = "/marchant_app/get-orders-report-pdf/"
 export const MARCHANT_GET_TRANSICTION_REPORT = "/marchant_app/marchant-transection/"
+export const MARCHANT_GET_TRANSICTION_REPORT_PDF = "/marchant_app/marchant-transection-pdf/"
+export const MARCHANT_GET_WITHDRAW_REQUEST_REPORT = "/marchant_app/get-marchant-withdraw-request/"
+export const MARCHANT_GET_WITHDRAW_REQUEST_REPORT_PDF = "/marchant_app/get-marchant-withdraw-request-pdf/"
 
 export const MARCHANT_ORDER_REPORT= "/marchant_app/default-marchant-order-report"
 export const MARCHANT_ORDER_FILTER_BY_DATE_RANGE_REPORT = "/marchant_app/marchant-order-report/date-range/"
@@ -64,6 +67,14 @@ export const DELIVERY_ASSIGNMENT = '/rider_app/delivery-assignment'
 export const UNDELIVERY_ORDER_LIST = '/rider_app/undelivery-order-list'
 export const DELIVERY_RIDER_TASK = '/rider_app/delivery-rider-task'
 export const DELIVERY_RIDER_TASK_SEARCH_FILTER = '/rider_app/delivery-rider-task-search-filter/'
+
+
+export const RIDER_GET_PICKUP_REPORT = "/rider_app/get-pickup-report/"
+export const RIDER_GET_PICKUP_REPORT_PDF = "/rider_app/get-pickup-report-pdf/"
+
+export const RIDER_GET_DELIVERY_REPORT = "/rider_app/get-delivery-report/"
+export const RIDER_GET_DELIVERY_REPORT_PDF = "/rider_app/get-delivery-report-pdf/"
+export const RIDER_GET_DELIVERY_COLLECTION_REPORT = "/rider_app/get-delivery-collection-report/"
 
 
 //AGENT API's

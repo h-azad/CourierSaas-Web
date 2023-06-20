@@ -3,7 +3,7 @@
 import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, MARCHANT_GET_TRANSICTION_REPORT, MARCHANT_GET_ORDER_REPORT_PDF } from "../../../constants/apiUrls"
+import { getApi, MARCHANT_GET_TRANSICTION_REPORT, MARCHANT_GET_TRANSICTION_REPORT_PDF } from "../../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
 
@@ -57,13 +57,13 @@ const OrderReport = () => {
 	const handlePDFQuery = (searchTerm) => {
 
 		return useJwt
-			.axiosGet(getApi((MARCHANT_GET_ORDER_REPORT_PDF) + '?' + searchTerm))
+			.axiosGet(getApi((MARCHANT_GET_TRANSICTION_REPORT_PDF) + '?' + searchTerm))
 			.then((res) => {
 				if (res.data?.length > 0) {
 					// setTransections(res.data)
 					console.log('response file', res.data)
 					var file = new Blob([res.data], { type: 'application/pdf' })
-					var fileName = 'orders_report.pdf'
+					var fileName = 'transection_report.pdf'
 					downloadPDFFile(file, fileName)
 				} else {
 					// setTransections('')
@@ -84,7 +84,7 @@ const OrderReport = () => {
 		<>
 
 			<ReportHead
-				handleSearchQuery={handleSearchQuery} handlePDFQuery={handlePDFQuery} defaultFetchOrderData={defaultFetchOrderData} statusOptions={statusOptions} selectOptionKey="type"
+				handleSearchQuery={handleSearchQuery} handlePDFQuery={handlePDFQuery} defaultFetchOrderData={defaultFetchOrderData} statusOptions={statusOptions} selectOptionKey="type" reportTitle='Transections Report'
 			/>
 
 			<div class="table-responsive">

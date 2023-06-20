@@ -1,21 +1,21 @@
 
 
-import { Table} from "reactstrap"
+import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, MARCHANT_GET_ORDER_REPORT, MARCHANT_GET_ORDER_REPORT_PDF } from "../../../constants/apiUrls"
-import ReportHead from "./ReportHead"
+import { getApi, RIDER_GET_DELIVERY_REPORT, RIDER_GET_DELIVERY_REPORT_PDF } from "../../../constants/apiUrls"
+import ReportHead from "./RiderReportHead"
 import React from 'react'
 
 
 
-const OrderReport = () => {
+const DeliveryReport = () => {
 	const [order, setOrder] = useState([])
 
 	const defaultFetchOrderData = () => {
-		return useJwt.axiosGet(getApi(MARCHANT_GET_ORDER_REPORT))
+		return useJwt.axiosGet(getApi(RIDER_GET_DELIVERY_REPORT))
 			.then((res) => {
-				console.log('response data',res.data)
+				console.log('response data', res.data)
 				setOrder(res.data)
 			}).catch((err) => {
 				console.log(err)
@@ -29,7 +29,7 @@ const OrderReport = () => {
 
 	const handleSearchQuery = searchTerm => {
 		return useJwt
-			.axiosGet(getApi(MARCHANT_GET_ORDER_REPORT) + '?' + searchTerm)
+			.axiosGet(getApi(RIDER_GET_DELIVERY_REPORT) + '?' + searchTerm)
 			.then((res) => {
 				if (res.data?.length > 0) {
 					setOrder(res.data)
@@ -57,7 +57,7 @@ const OrderReport = () => {
 	const handlePDFQuery = (searchTerm) => {
 
 		return useJwt
-			.axiosGet(getApi((MARCHANT_GET_ORDER_REPORT_PDF) + '?' + searchTerm))
+			.axiosGet(getApi((RIDER_GET_DELIVERY_REPORT_PDF) + '?' + searchTerm))
 			.then((res) => {
 				if (res.data?.length > 0) {
 					// setOrder(res.data)
@@ -71,28 +71,20 @@ const OrderReport = () => {
 				return res.data
 			})
 			.catch((err) => console.log(err))
-		
+
 	}
 
 	const statusOptions = [
-		{ value: "pending", label: "Pending" },
-		{ value: "accepted", label: "Accepted" },
-		{ value: "pickedup", label: "Picked Up" },
-		{ value: "in_warehouse", label: "In Warehouse" },
-		{ value: "shipped", label: "Shipped" },
-		{ value: "delivered", label: "Delivered" },
-		{ value: "hold", label: "Hold" },
-		{ value: "returned", label: "Returned" },
-		{ value: "cancelled", label: "Cancelled" },
-		{ value: "completed", label: "Completed" },
+		{ value: true, label: "Delivered" },
+		{ value: 'false', label: "UnDelivered" },
 	]
 
 
 	return (
 		<>
 
-			<ReportHead 
-				handleSearchQuery={handleSearchQuery} handlePDFQuery={handlePDFQuery} defaultFetchOrderData={defaultFetchOrderData} statusOptions={statusOptions} selectOptionKey="status" reportTitle='Orders Report'
+			<ReportHead
+				handleSearchQuery={handleSearchQuery} handlePDFQuery={handlePDFQuery} defaultFetchOrderData={defaultFetchOrderData} statusOptions={statusOptions} selectOptionKey="delivery_status" reportTitle='Delivery Report'
 			/>
 
 			<div id="my-table" class="table-responsive">
@@ -101,12 +93,10 @@ const OrderReport = () => {
 						<tr>
 							<th>Order ID</th>
 							<th>Status</th>
+							<th>Delivery Status</th>
+							<th>Phone</th>
+							<th>Address</th>
 							<th>Date</th>
-							<th>Delivery Charge</th>
-							<th>COD Charge</th>
-							<th>COD Amount</th>
-							<th>Accumutated Amount</th>
-							<th>Total Amount</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -120,22 +110,16 @@ const OrderReport = () => {
 										<span className="align-middle fw-bold">{info.status}</span>
 									</td>
 									<td>
+										<span className="align-middle fw-bold">{info.delivery_status}</span>
+									</td>
+									<td>
+										<span className="align-middle fw-bold">{info.phone_number}</span>
+									</td>
+									<td>
+										<span className="align-middle fw-bold">{info.delivary_address}</span>
+									</td>
+									<td>
 										<span className="align-middle fw-bold">{info.created_at}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.delivary_charge}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.cash_on_delivery_charge}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.amount_to_be_collected}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.accumulated}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.total_amount}</span>
 									</td>
 								</tr>
 							))}
@@ -146,5 +130,5 @@ const OrderReport = () => {
 	)
 }
 
-export default OrderReport
+export default DeliveryReport
 

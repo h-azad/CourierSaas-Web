@@ -5,6 +5,9 @@ import PickupView from "../../components/rider_view/task/pickup/TaskVIew"
 import DelivaryView from "../../components/rider_view/task/delivary/DelivaryView"
 import OrderStatusTable from "../../components/rider_view/task/order_status/OrderStatus"
 import TaskView from "../../components/rider_view/taskView"
+import RiderPickupReport from "../../views/rider/report/pickupReport"
+import DeliveryReport from "../../views/rider/report/deliveryReport"
+import MarchantCollectionReport from "../../views/rider/report/collectionReport"
 
 const RiderRoutes = [
     {
@@ -31,6 +34,18 @@ const RiderRoutes = [
     {
         path: "/rider-orders/task-view/:id",
         element: <TaskView/>
+    },
+    {
+        path: "/rider-pickup-report",
+        element: <RiderPickupReport/>
+    },
+    {
+        path: "/rider-delivery-report",
+        element: <DeliveryReport/>
+    },
+    {
+        path: "/rider-delivery-collection-report",
+        element: <MarchantCollectionReport/>
     },
    
    

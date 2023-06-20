@@ -289,6 +289,14 @@ const marchantMenu = [
     resource: 'MARCHANT',
     navLink: "/transection-report"
   },
+  {
+    id: "withdraw_balance_report",
+    title: "Withdraw Balance",
+    icon: <ShoppingCart size={20} />,
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+    navLink: "/withdraw-balance-report"
+  },
 
   // {
   //   id: "withdraw",
@@ -372,6 +380,37 @@ const riderMenu = [
     action: 'rider-pages',
     resource: 'RIDER',
     navLink: "/rider-orders/status"
+  },
+
+
+  {
+    header: 'Report',
+    action: 'rider-pages',
+    resource: 'RIDER',
+  },
+  {
+    id: "pickup-report",
+    title: "Pickup Report",
+    icon: <CreditCard size={20} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/rider-pickup-report"
+  },
+  {
+    id: "delivery-report",
+    title: "Delivery Report",
+    icon: <CreditCard size={20} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/rider-delivery-report"
+  },
+  {
+    id: "delivery-collection-report",
+    title: "Collection Report",
+    icon: <CreditCard size={20} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/rider-delivery-collection-report"
   },
  
   // {
