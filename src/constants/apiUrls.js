@@ -67,6 +67,7 @@ export const DELIVERY_ASSIGNMENT = '/rider_app/delivery-assignment'
 export const UNDELIVERY_ORDER_LIST = '/rider_app/undelivery-order-list'
 export const DELIVERY_RIDER_TASK = '/rider_app/delivery-rider-task'
 export const DELIVERY_RIDER_TASK_SEARCH_FILTER = '/rider_app/delivery-rider-task-search-filter/'
+export const RIDER_TASK_SEARCH_FILTER = '/rider_app/rider-task-serach-filter/'
 
 
 export const RIDER_GET_PICKUP_REPORT = "/rider_app/get-pickup-report/"
@@ -75,6 +76,7 @@ export const RIDER_GET_PICKUP_REPORT_PDF = "/rider_app/get-pickup-report-pdf/"
 export const RIDER_GET_DELIVERY_REPORT = "/rider_app/get-delivery-report/"
 export const RIDER_GET_DELIVERY_REPORT_PDF = "/rider_app/get-delivery-report-pdf/"
 export const RIDER_GET_DELIVERY_COLLECTION_REPORT = "/rider_app/get-delivery-collection-report/"
+export const RIDER_GET_DELIVERY_COLLECTION_REPORT_PDF = "/rider_app/get-delivery-collection-report-pdf/"
 
 
 //AGENT API's

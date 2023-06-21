@@ -136,9 +136,9 @@ const ReportHead = ({ handleSearchQuery, handlePDFQuery, defaultFetchOrderData, 
 						<div className=''><Button type="primary" onClick={submitPDFFilter} icon={<FilePptOutlined />} size={20}>
 							Export To PDF
 						</Button></div>
-						<div className=''><Button type="primary" icon={<FileExcelOutlined />} size={20}>
+						{/* <div className=''><Button type="primary" icon={<FileExcelOutlined />} size={20}>
 							Export To Excel
-						</Button></div>
+						</Button></div> */}
 					</div>
 				</div>
 

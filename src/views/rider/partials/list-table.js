@@ -116,6 +116,7 @@ const ListTable = () => {
       })
       .catch((err) => console.log(err))
   }
+  
 
   const handleSearch = debounce(e => {
     console.log(e.target.value)

@@ -63,7 +63,7 @@ const DeliveryReport = () => {
 					// setOrder(res.data)
 					console.log('response file', res.data)
 					var file = new Blob([res.data], { type: 'application/pdf' })
-					var fileName = 'orders_report.pdf'
+					var fileName = 'delivery_report.pdf'
 					downloadPDFFile(file, fileName)
 				} else {
 					// setOrder('')
@@ -91,18 +91,21 @@ const DeliveryReport = () => {
 				<Table bordered>
 					<thead>
 						<tr>
+							<th>Delivery Date</th>
 							<th>Order ID</th>
 							<th>Status</th>
 							<th>Delivery Status</th>
 							<th>Phone</th>
 							<th>Address</th>
-							<th>Date</th>
 						</tr>
 					</thead>
 					<tbody>
 						{order &&
 							order.map((info) => (
 								<tr key={info.id}>
+									<td>
+										<span className="align-middle fw-bold">{info.delivery_date}</span>
+									</td>
 									<td>
 										<span className="align-middle fw-bold">{info.parcel_id}</span>
 									</td>
@@ -117,9 +120,6 @@ const DeliveryReport = () => {
 									</td>
 									<td>
 										<span className="align-middle fw-bold">{info.delivary_address}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.created_at}</span>
 									</td>
 								</tr>
 							))}

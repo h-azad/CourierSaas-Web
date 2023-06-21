@@ -26,9 +26,15 @@ const TaskFilter = ({ setCurrentTask, fetchCurrentTaskData }) => {
 	const [selectedValue, setSelectedValue] = useState('')
 
 
+
+
 	const statusOptions = [
-		{ value: "pickedup_assign", label: "Picked Up" },
-		{ value: "deliverey_assign", label: "Delivered" },
+		{ value: "pending", label: "Pending" },
+		{ value: "accepted", label: "Accepted" },
+		{ value: "pickedup", label: "Picked Up" },
+		{ value: "in_warehouse", label: "In Warehouse" },
+		{ value: "shipped", label: "Shipped" },
+		{ value: "delivered", label: "Delivered" },
 		{ value: "hold", label: "Hold" },
 		{ value: "returned", label: "Returned" },
 		{ value: "cancelled", label: "Cancelled" },

@@ -1,6 +1,6 @@
 
 
-import { Table} from "reactstrap"
+import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
 import { getApi, RIDER_GET_PICKUP_REPORT, RIDER_GET_PICKUP_REPORT_PDF } from "../../../constants/apiUrls"
@@ -15,7 +15,7 @@ const RiderPickupReport = () => {
 	const defaultFetchOrderData = () => {
 		return useJwt.axiosGet(getApi(RIDER_GET_PICKUP_REPORT))
 			.then((res) => {
-				console.log('response data',res.data)
+				console.log('response data', res.data)
 				setOrder(res.data)
 			}).catch((err) => {
 				console.log(err)
@@ -63,7 +63,7 @@ const RiderPickupReport = () => {
 					// setOrder(res.data)
 					console.log('response file', res.data)
 					var file = new Blob([res.data], { type: 'application/pdf' })
-					var fileName = 'orders_report.pdf'
+					var fileName = 'pickup_report.pdf'
 					downloadPDFFile(file, fileName)
 				} else {
 					// setOrder('')
@@ -71,7 +71,7 @@ const RiderPickupReport = () => {
 				return res.data
 			})
 			.catch((err) => console.log(err))
-		
+
 	}
 
 	const statusOptions = [
@@ -83,7 +83,7 @@ const RiderPickupReport = () => {
 	return (
 		<>
 
-			<ReportHead 
+			<ReportHead
 				handleSearchQuery={handleSearchQuery} handlePDFQuery={handlePDFQuery} defaultFetchOrderData={defaultFetchOrderData} statusOptions={statusOptions} selectOptionKey="pickup_status" reportTitle='Pickup Report'
 			/>
 
@@ -91,18 +91,21 @@ const RiderPickupReport = () => {
 				<Table bordered>
 					<thead>
 						<tr>
+							<th>Pickup Date</th>
 							<th>Order ID</th>
 							<th>Status</th>
 							<th>Pickup</th>
 							<th>Phone</th>
 							<th>Address</th>
-							<th>Date</th>
 						</tr>
 					</thead>
 					<tbody>
 						{order &&
 							order.map((info) => (
 								<tr key={info.id}>
+									<td>
+										<span className="align-middle fw-bold">{info.pickup_date}</span>
+									</td>
 									<td>
 										<span className="align-middle fw-bold">{info.parcel_id}</span>
 									</td>
@@ -117,9 +120,6 @@ const RiderPickupReport = () => {
 									</td>
 									<td>
 										<span className="align-middle fw-bold">{info.pickup_address}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.created_at}</span>
 									</td>
 								</tr>
 							))}
