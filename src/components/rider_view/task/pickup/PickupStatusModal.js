@@ -3,12 +3,15 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import Select from "react-select"
 import classnames from 'classnames'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, RIDER_PICKUP_STATUS_UPDATE } from "@src/constants/apiUrls"
+import { getApi, RIDER_ASSIGNMENT } from "@src/constants/apiUrls"
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import { Input } from 'antd'
+const { TextArea } = Input
 
-function PickupStatusModal({ statusModalState, setStatusModalState, orderInfo, fetchPickupData }) {
+function PickupStatusModal({ statusModalState, setStatusModalState, taskInfo, fetchPickupData }) {
     const [selectedOption, setSelectedOption] = useState()
+    const [reason, setReason] = useState()
 
     let statusOptions = [
         { value: "False", label: "No" },
@@ -17,19 +20,20 @@ function PickupStatusModal({ statusModalState, setStatusModalState, orderInfo, f
 
     const updateStatusAction = (e) => {
         e.preventDefault()
+        console.log("reason", reason)
         const formData = {
-            'status': selectedOption
+            'return_to_pickup_reason': reason,
         }
 
         useJwt
-            .axiosPatch(getApi(RIDER_PICKUP_STATUS_UPDATE) + `${orderInfo.id}/`, formData)
+            .axiosPost(getApi(RIDER_ASSIGNMENT) + `/${taskInfo?.id}/return_to_pickup/`, formData)
             .then((res) => {
-                toast.success('Order Status Updated Successfully!')
+                toast.success('Delivary Status Updated Successfully!')
                 setStatusModalState(false)
-                fetchPickupData()
+                fetchCurrentTaskData()
             })
             .catch(err => {
-                toast.success('Order Status Updated Failed!')
+                toast.success('Delivary Status Updated Failed!')
                 setStatusModalState(false)
             })
         return false
@@ -42,19 +46,12 @@ function PickupStatusModal({ statusModalState, setStatusModalState, orderInfo, f
 
     return (
         <Modal isOpen={statusModalState} toggle={() => setStatusModalState(!statusModalState)} className='modal-dialog-centered'>
-            <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Update Order Status</ModalHeader>
+            <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Reason</ModalHeader>
             <ModalBody>
-                <Select
-                    id="status"
-                    name="status"
-                    onChange={changeOrderStatusAction}
-                    className={classnames('react-select')}
-                    classNamePrefix='select'
-                    options={statusOptions}
-                />
+                <TextArea onChange={(e) => { setReason(e.target.value) }} rows={4} placeholder="Please Return Reason" />
             </ModalBody>
             <ModalFooter>
-                <Button color='primary' onClick={updateStatusAction}>Update</Button>
+                <Button color='primary' onClick={updateStatusAction}>Submit</Button>
             </ModalFooter>
         </Modal>
     )

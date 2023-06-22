@@ -29,11 +29,16 @@ import toast from "react-hot-toast"
 import { DownOutlined, EyeOutlined } from "@ant-design/icons"
 import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
 import ChangeStatusModalRider from "../delivary/DelivaryStatusModal"
+import RiderCancleReasonModal from "./RiderCancleReasonModal"
 const PickupView = ({ orderInfo }) => {
   const [pickupData, setPickupData] = useState([])
   const [statusModalState, setStatusModalState] = useState(false)
+  const [cancleModalState, setCancleModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
   const [selectedInfo, setSelectedInfo] = useState(null)
+
+  const [modalState, setModalState] = useState(false)
+
 
   const fetchPickupData = () => {
     return useJwt
@@ -52,18 +57,20 @@ const PickupView = ({ orderInfo }) => {
   }, [])
 
   useEffect(() => {
-    if (!statusModalState) {
+    if (!statusModalState && !cancleModalState) {
       clearData()
     }
     fetchPickupData()
-  }, [statusModalState])
+  }, [statusModalState, cancleModalState])
 
-  const updateStatusAction = (e) => {
+  const pickupReturnAction = (e, info) => {
     e.preventDefault()
-    console.log("selectedInfo", selectedInfo)
-    console.log("selectedStatus", selectedStatus)
-    return false
+    setStatusModalState(true)
+    setSelectedStatus(info.status)
+    setSelectedInfo(info)
   }
+
+
 
   const clearData = () => {
     setSelectedInfo(null)
@@ -112,6 +119,34 @@ const PickupView = ({ orderInfo }) => {
       })
       .catch((err) => console.log(err))
   }
+
+  const cancelByRiderAction = (e, info) => {
+    e.preventDefault()
+    useJwt
+      .axiosPost(getApi(`${RIDER_ASSIGNMENT}/${info.id}/cancel_by_pickup/`))
+      .then((res) => {
+        toast.success(res.data)
+        fetchPickupData()
+      })
+      .catch((err) => console.log(err))
+  }
+
+
+
+  // const pickupCancleByRider = (e, info) => {
+  //   e.preventDefault()
+  //   setModalState(true)
+  //   // setSelectedStatus(info.status)
+  //   setSelectedInfo(info)
+  // }
+
+  const pickupCancleByRider = (e, info) => {
+    e.preventDefault()
+    setCancleModalState(true)
+    setSelectedStatus(info.status)
+    setSelectedInfo(info)
+  }
+
 
   return (
     <>
@@ -211,6 +246,32 @@ const PickupView = ({ orderInfo }) => {
                               </span>
                             </DropdownItem>
                           )}
+                        {info.pickup_status == false &&
+                          !info.warehouse_status && (
+                            <DropdownItem
+                              href="/"
+                            onClick={(e) => pickupCancleByRider(e, info)}
+                            >
+                              <Edit3 className="me-50" size={15} />{" "}
+                              <span className="align-middle">
+                                Cencelled Picked Up
+                              </span>
+                            </DropdownItem>
+                          )}
+                        {info.pickup_status == false &&
+                          !info.warehouse_status && (
+                            <DropdownItem
+                              href="/"
+                            onClick={(e) => pickupReturnAction(e, info)}
+                            >
+                              <Edit3 className="me-50" size={15} />{" "}
+                              <span className="align-middle">
+                                Return
+                              </span>
+                            </DropdownItem>
+                          )}
+
+                        
                       </DropdownMenu>
                     </UncontrolledDropdown>
                   </div>
@@ -269,9 +330,15 @@ const PickupView = ({ orderInfo }) => {
                 </Col>
               </Row>
             </CardBody>
-            <ChangeStatusModalRider
+            <PickupStatusModal
               statusModalState={statusModalState}
               setStatusModalState={setStatusModalState}
+              taskInfo={selectedInfo}
+              fetchPickupData={fetchPickupData}
+            />
+            <RiderCancleReasonModal 
+              cancleModalState={cancleModalState}
+              setCancleModalState={setCancleModalState}
               taskInfo={selectedInfo}
               fetchPickupData={fetchPickupData}
             />

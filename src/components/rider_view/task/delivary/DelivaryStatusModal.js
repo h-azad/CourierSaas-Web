@@ -3,12 +3,16 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import Select from "react-select"
 import classnames from 'classnames'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, RIDER_DELIVARY_STATUS_UPDATE } from "@src/constants/apiUrls"
+import { getApi, DELIVERY_ASSIGNMENT } from "@src/constants/apiUrls"
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import { Input } from 'antd'
+const { TextArea } = Input
 
 function ChangeStatusModalRider({ statusModalState, setStatusModalState, taskInfo, fetchCurrentTaskData, }) {
     const [selectedOption, setSelectedOption] = useState()
+    const [reason, setReason] = useState()
+    
     // console.log("taskInfo", taskInfo)
     let statusOptions = [
         { value: "pending", label: "Pending" },
@@ -24,13 +28,13 @@ function ChangeStatusModalRider({ statusModalState, setStatusModalState, taskInf
 
     const updateStatusAction = (e) => {
         e.preventDefault()
-        console.log("selectedInfo", selectedOption)
+        console.log("reason", reason)
         const formData = {
-            'status': selectedOption
+            'return_to_delivery_reason': reason,
         }
 
         useJwt
-            .axiosPatch(getApi(RIDER_DELIVARY_STATUS_UPDATE) + `${taskInfo?.id}/`, formData)
+            .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${taskInfo?.id}/return_to_delivery/`, formData)
             .then((res) => {
                 toast.success('Delivary Status Updated Successfully!')
                 setStatusModalState(false)
@@ -50,18 +54,12 @@ function ChangeStatusModalRider({ statusModalState, setStatusModalState, taskInf
 
     return (
         <Modal isOpen={statusModalState} toggle={() => setStatusModalState(!statusModalState)} className='modal-dialog-centered'>
-            <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Update task Status</ModalHeader>
+            <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Reason</ModalHeader>
             <ModalBody>
-                <Select
-                    name="status"
-                    onChange={changeStatusAction}
-                    className={classnames('react-select')}
-                    classNamePrefix='select'
-                    options={statusOptions}
-                />
+                <TextArea onChange={(e)=>{setReason(e.target.value)}} rows={4} placeholder="Please Return Reason" />
             </ModalBody>
             <ModalFooter>
-                <Button color='primary' onClick={updateStatusAction}>Update</Button>
+                <Button color='primary' onClick={updateStatusAction}>Submit</Button>
             </ModalFooter>
         </Modal>
     )

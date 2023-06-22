@@ -11,7 +11,7 @@ import {
   RIDER_DELIVERY_CREATE_ORDER_FILTER,
   DELIVERY_ASSIGNMENT,
 } from "@src/constants/apiUrls"
-import { Dropdown, Typography, Select, Button, Space, Menu } from "antd"
+import { Dropdown, Typography, Select, Button, Space, Menu, Modal } from "antd"
 import PickupStatusModal from "../../../rider_view/task/pickup/PickupStatusModal"
 import { string } from "yup"
 import toast from "react-hot-toast"
@@ -31,12 +31,16 @@ import {
 import { DownOutlined, EyeOutlined } from "@ant-design/icons"
 import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
 import ChangeStatusModalRider from "../delivary/DelivaryStatusModal"
+import RiderCancleReasonModal from "./RiderCancleReasonModal"
 
 const DelivaryView = ({}) => {
   const [delivaryData, setDelivaryData] = useState([])
   const [statusModalState, setStatusModalState] = useState(false)
+  const [cancelModalState, setCancelModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
   const [selectedInfo, setSelectedInfo] = useState(null)
+
+
 
   const fetchDelivaryData = () => {
     return useJwt
@@ -55,11 +59,14 @@ const DelivaryView = ({}) => {
   }, [])
 
   useEffect(() => {
-    if (!statusModalState) {
+    if (!statusModalState && !cancelModalState) {
       clearData()
     }
+    // if (!cancelModalState){
+    //   clearData()
+    // }
     fetchDelivaryData()
-  }, [statusModalState])
+  }, [statusModalState, cancelModalState])
 
   const updateStatusAction = (e) => {
     e.preventDefault()
@@ -73,6 +80,25 @@ const DelivaryView = ({}) => {
     useJwt
       .axiosPost(
         getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/confirm_delivery/`),
+        { details: info }
+      )
+      .then((res) => {
+        toast.success(res.data)
+        fetchDelivaryData()
+      })
+      .catch((err) => console.log(err))
+  }
+
+  
+
+
+
+
+  const returnDeliveryActionByRider = (e, info) => {
+    e.preventDefault()
+    useJwt
+      .axiosPost(
+        getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/return_to_delivery/`),
         { details: info }
       )
       .then((res) => {
@@ -112,9 +138,42 @@ const DelivaryView = ({}) => {
 
   const changeStatusAction = (e, info) => {
     e.preventDefault()
-    console.log(`selected xxx ${value}`)
+    setStatusModalState(true)
+    setSelectedStatus(info.status)
+    setSelectedInfo(info)
+  }
+
+
+  const cancelByRider = (e, info) => {
+    e.preventDefault()
+    console.log(`selected xxx ${info}`)
 
     setStatusModalState(true)
+    setSelectedStatus(info.status)
+    setSelectedInfo(info)
+  }
+
+
+
+  const CancleDeliveryByRiderReason = (e, info) => {
+    e.preventDefault()
+    useJwt
+      .axiosPost(
+        getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/cancel_by_rider/`),
+        { details: info }
+      )
+      .then((res) => {
+        toast.success(res.data)
+        fetchDelivaryData()
+      })
+      .catch((err) => console.log(err))
+  }
+
+
+  const deliveryCancleByRider = (e, info) => {
+    console.log('info hh', info)
+    e.preventDefault()
+    setCancelModalState(true)
     setSelectedStatus(info.status)
     setSelectedInfo(info)
   }
@@ -208,6 +267,7 @@ const DelivaryView = ({}) => {
                         {info.pickup_status &&
                           info.warehouse_status &&
                           !info.delivery_status && (
+                            <>
                             <DropdownItem
                               href="/"
                               onClick={(e) =>
@@ -219,6 +279,27 @@ const DelivaryView = ({}) => {
                                 Confirm Delivery
                               </span>
                             </DropdownItem>
+                            <DropdownItem
+                              href="/"
+                              onClick={(e) =>
+                                deliveryCancleByRider(e, info)
+                              }
+                            >
+                              <Edit3 className="me-50" size={15} />{" "}
+                              <span className="align-middle">
+                                Cancel Delivery
+                              </span>
+                            </DropdownItem>
+                            <DropdownItem
+                              href="/"
+                              onClick={(e) => changeStatusAction(e, info)}
+                            >
+                              <Edit3 className="me-50" size={15} />{" "}
+                              <span className="align-middle">
+                                Order Return
+                              </span>
+                            </DropdownItem>
+                          </>
                           )}
                       </DropdownMenu>
                     </UncontrolledDropdown>
@@ -284,6 +365,13 @@ const DelivaryView = ({}) => {
               taskInfo={selectedInfo}
               fetchDelivaryData={fetchDelivaryData}
             />
+            <RiderCancleReasonModal
+              cancelModalState={cancelModalState}
+              setCancelModalState={setCancelModalState}
+              taskInfo={selectedInfo}
+              fetchDelivaryData={fetchDelivaryData}
+            />
+
           </Card>
         ))}
     </>
