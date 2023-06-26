@@ -3,17 +3,17 @@
 import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, RIDER_GET_DELIVERY_REPORT, RIDER_GET_DELIVERY_REPORT_PDF } from "../../../constants/apiUrls"
+import { getApi, RIDER_GET_PICKUP_REPORT, RIDER_GET_PICKUP_REPORT_PDF } from "../../../constants/apiUrls"
 import ReportHead from "./RiderReportHead"
 import React from 'react'
 
 
 
-const DeliveryReport = () => {
+const RiderPickupReport = () => {
 	const [order, setOrder] = useState([])
 
 	const defaultFetchOrderData = () => {
-		return useJwt.axiosGet(getApi(RIDER_GET_DELIVERY_REPORT))
+		return useJwt.axiosGet(getApi(RIDER_GET_PICKUP_REPORT))
 			.then((res) => {
 				console.log('response data', res.data)
 				setOrder(res.data)
@@ -29,7 +29,7 @@ const DeliveryReport = () => {
 
 	const handleSearchQuery = searchTerm => {
 		return useJwt
-			.axiosGet(getApi(RIDER_GET_DELIVERY_REPORT) + '?' + searchTerm)
+			.axiosGet(getApi(RIDER_GET_PICKUP_REPORT) + '?' + searchTerm)
 			.then((res) => {
 				if (res.data?.length > 0) {
 					setOrder(res.data)
@@ -57,13 +57,13 @@ const DeliveryReport = () => {
 	const handlePDFQuery = (searchTerm) => {
 
 		return useJwt
-			.axiosGet(getApi((RIDER_GET_DELIVERY_REPORT_PDF) + '?' + searchTerm))
+			.axiosGet(getApi((RIDER_GET_PICKUP_REPORT_PDF) + '?' + searchTerm))
 			.then((res) => {
 				if (res.data?.length > 0) {
 					// setOrder(res.data)
 					console.log('response file', res.data)
 					var file = new Blob([res.data], { type: 'application/pdf' })
-					var fileName = 'delivery_report.pdf'
+					var fileName = 'pickup_report.pdf'
 					downloadPDFFile(file, fileName)
 				} else {
 					// setOrder('')
@@ -75,9 +75,8 @@ const DeliveryReport = () => {
 	}
 
 	const statusOptions = [
-		{ value: true, label: "Delivered" },
-		{ value: 'false', label: "UnDelivered" },
-		{ value: 'failed_delivery', label: "Delivery Failed" },
+		{ value: true, label: "Picked" },
+		{ value: 'false', label: "Unpicked" },
 	]
 
 
@@ -85,17 +84,17 @@ const DeliveryReport = () => {
 		<>
 
 			<ReportHead
-				handleSearchQuery={handleSearchQuery} handlePDFQuery={handlePDFQuery} defaultFetchOrderData={defaultFetchOrderData} statusOptions={statusOptions} selectOptionKey="delivery_status" reportTitle='Delivery Report'
+				handleSearchQuery={handleSearchQuery} handlePDFQuery={handlePDFQuery} defaultFetchOrderData={defaultFetchOrderData} statusOptions={statusOptions} selectOptionKey="pickup_status" reportTitle='Pickup Report'
 			/>
 
 			<div id="my-table" class="table-responsive">
 				<Table bordered>
 					<thead>
 						<tr>
-							<th>Delivery Date</th>
+							<th>Pickup Date</th>
 							<th>Order ID</th>
 							<th>Status</th>
-							<th>Delivery Status</th>
+							<th>Pickup</th>
 							<th>Phone</th>
 							<th>Address</th>
 						</tr>
@@ -105,7 +104,7 @@ const DeliveryReport = () => {
 							order.map((info) => (
 								<tr key={info.id}>
 									<td>
-										<span className="align-middle fw-bold">{info.delivery_date}</span>
+										<span className="align-middle fw-bold">{info.pickup_date}</span>
 									</td>
 									<td>
 										<span className="align-middle fw-bold">{info.parcel_id}</span>
@@ -114,13 +113,13 @@ const DeliveryReport = () => {
 										<span className="align-middle fw-bold">{info.status}</span>
 									</td>
 									<td>
-										<span className="align-middle fw-bold">{info.delivery_status}</span>
+										<span className="align-middle fw-bold">{info.pickup_status}</span>
 									</td>
 									<td>
-										<span className="align-middle fw-bold">{info.phone_number}</span>
+										<span className="align-middle fw-bold">{info.phone}</span>
 									</td>
 									<td>
-										<span className="align-middle fw-bold">{info.delivary_address}</span>
+										<span className="align-middle fw-bold">{info.pickup_address}</span>
 									</td>
 								</tr>
 							))}
@@ -131,5 +130,5 @@ const DeliveryReport = () => {
 	)
 }
 
-export default DeliveryReport
+export default RiderPickupReport
 

@@ -73,6 +73,7 @@ import DeliveryRiderTask from '../../views/assignment/rider/deliveryRiderTask'
 import Transections from '../../views/transection/transections'
 import WalletAdjustment from '../../views/wallet_adjustment/partials/wallet_adjustment'
 import AddWalletAdjustment from '../../views/wallet_adjustment/add_wallet_adjustment'
+import AdminOrderReport from '../../views/reports/adminOrderReport'
 
 
 
@@ -83,6 +84,10 @@ const SecondPage = lazy(() => import("../../views/SecondPage"))
 const Error = lazy(() => import("../../views/Error"))
 
 const DashboardRoutes = [
+  {
+    path: "/order/report",
+    element: <AdminOrderReport />
+  },
   {
     path: "/assignment/delivery/:id",
     element: <DeliveryRiderTask />

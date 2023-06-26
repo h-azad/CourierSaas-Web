@@ -22,11 +22,11 @@ function PickupStatusModal({ statusModalState, setStatusModalState, taskInfo, fe
         e.preventDefault()
         console.log("reason", reason)
         const formData = {
-            'return_to_pickup_reason': reason,
+            'reverso_ride_reason': reason,
         }
 
         useJwt
-            .axiosPost(getApi(RIDER_ASSIGNMENT) + `/${taskInfo?.id}/return_to_pickup/`, formData)
+            .axiosPost(getApi(RIDER_ASSIGNMENT) + `/${taskInfo?.id}/return_to_reverso_ride/`, formData)
             .then((res) => {
                 toast.success('Delivary Status Updated Successfully!')
                 setStatusModalState(false)
@@ -48,7 +48,7 @@ function PickupStatusModal({ statusModalState, setStatusModalState, taskInfo, fe
         <Modal isOpen={statusModalState} toggle={() => setStatusModalState(!statusModalState)} className='modal-dialog-centered'>
             <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Reason</ModalHeader>
             <ModalBody>
-                <TextArea onChange={(e) => { setReason(e.target.value) }} rows={4} placeholder="Please Return Reason" />
+                <TextArea onChange={(e) => { setReason(e.target.value) }} rows={4} placeholder="Please Written Revers Reason" />
             </ModalBody>
             <ModalFooter>
                 <Button color='primary' onClick={updateStatusAction}>Submit</Button>

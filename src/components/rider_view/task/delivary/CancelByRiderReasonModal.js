@@ -7,9 +7,8 @@ import toast from 'react-hot-toast'
 import { Input } from 'antd'
 const { TextArea } = Input
 
-function RiderCancleReasonModal({ cancelModalState, setCancelModalState, taskInfo }) {
+function CancelByRiderReasonModal({ cancelModalState, setCancelModalState, taskInfo }) {
     const [reason, setReason] = useState()
-    console.log('taskInfo', taskInfo)
     const cancelByRiderAction = (e) => {
         e.preventDefault()
         const formData = {
@@ -17,10 +16,6 @@ function RiderCancleReasonModal({ cancelModalState, setCancelModalState, taskInf
         }
         useJwt
             .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${taskInfo?.id}/cancel_by_rider/`, formData)
-            // .axiosPost(
-            //     getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/cancel_by_rider/`),
-            //     { details: info }
-            // )
             .then((res) => {
                 toast.success(res.data)
                 
@@ -36,9 +31,9 @@ function RiderCancleReasonModal({ cancelModalState, setCancelModalState, taskInf
 
     return (
         <Modal isOpen={cancelModalState} toggle={() => setCancelModalState(!cancelModalState)} className='modal-dialog-centered'>
-            <ModalHeader toggle={() => setCancelModalState(!cancelModalState)}>Reason xxx </ModalHeader>
+            <ModalHeader toggle={() => setCancelModalState(!cancelModalState)}>Reason</ModalHeader>
             <ModalBody>
-                <TextArea onChange={(e) => { setReason(e.target.value) }} rows={4} placeholder="Please Return Reason" />
+                <TextArea onChange={(e) => { setReason(e.target.value) }} rows={4} placeholder="Please Written Reason" />
             </ModalBody>
             <ModalFooter>
                 <Button color='primary' onClick={cancelByRiderAction}>Submit</Button>
@@ -47,4 +42,4 @@ function RiderCancleReasonModal({ cancelModalState, setCancelModalState, taskInf
     )
 }
 
-export default RiderCancleReasonModal
+export default CancelByRiderReasonModal

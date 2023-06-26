@@ -198,6 +198,27 @@ const adminMenu = [
     resource: 'ADMIN',
     navLink: "/payment_method"
   },
+  {
+    header: 'Reports',
+    action: 'admin-pages',
+    resource: 'ADMIN', 
+    },
+  {
+    id: "order-reports",
+    title: "Orders",
+    icon: <Map size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN', 
+    navLink: "/order/report"
+  },
+  // {
+  //   id: "areas",
+  //   title: "Areas",
+  //   icon: <MapPin size={20} />,
+  //   action: 'admin-pages',
+  //   resource: 'ADMIN',
+  //   navLink: "/areas"
+  // },
 
 
     

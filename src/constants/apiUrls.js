@@ -214,6 +214,10 @@ export const TRANSECTIONS = "/api/transection/"
 
 
 
+export const ADMIN_GET_ORDER_REPORT_APIVIEW = "/api/admin/order-report"
+
+
+
 
 export const TRANSECTIONS_FILTER = "/api/default-marchant-order-report"
 
