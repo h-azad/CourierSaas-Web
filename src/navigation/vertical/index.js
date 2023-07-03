@@ -211,6 +211,14 @@ const adminMenu = [
     resource: 'ADMIN', 
     navLink: "/order/report"
   },
+  {
+    id: "admin_transections_reports",
+    title: "Transection",
+    icon: <Map size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN', 
+    navLink: "/transections/report"
+  },
   // {
   //   id: "areas",
   //   title: "Areas",

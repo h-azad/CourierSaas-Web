@@ -215,6 +215,9 @@ export const TRANSECTIONS = "/api/transection/"
 
 
 export const ADMIN_GET_ORDER_REPORT_APIVIEW = "/api/admin/order-report"
+export const ADMIN_GET_ORDER_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/order-report-generate-pdf"
+export const ADMIN_GET_TRANSECTION_REPORT_APIVIEW = "/api/admin/transection-report"
+export const ADMIN_GET_TRANSECTION_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/transection-report-generate-pdf"
 
 
 

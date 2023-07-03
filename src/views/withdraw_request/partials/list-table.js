@@ -182,7 +182,7 @@ const ListTable = () => {
             withdrawRequest.map((wallet) => (
               <tr key={wallet.id}>
                 <td>
-                  <span className="align-middle fw-bold">{wallet?.account_wallet?.marchant?.full_name}</span>
+                  <span className="align-middle fw-bold">{wallet?.account_wallet?.account_name}</span>
                 </td>
                 <td>
                   <span className="align-middle fw-bold">{wallet.balance}</span>

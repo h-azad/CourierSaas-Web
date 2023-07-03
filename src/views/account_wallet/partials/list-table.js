@@ -180,10 +180,10 @@ const ListTable = () => {
             accountWallet.map((wallet) => (
               <tr key={wallet.id}>
                 <td>
-                  <span className="align-middle fw-bold">{wallet?.user?.name}</span>
+                  <span className="align-middle fw-bold">{wallet?.account_name}</span>
                 </td>
                 <td>
-                  <span className="align-middle fw-bold">{wallet?.user?.role}</span>
+                  <span className="align-middle fw-bold">{wallet?.account_role}</span>
                 </td>
                 <td>
                   <span className="align-middle fw-bold">{wallet?.balance}</span>

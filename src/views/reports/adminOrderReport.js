@@ -3,8 +3,8 @@
 import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, ADMIN_GET_ORDER_REPORT_APIVIEW, RIDER_GET_DELIVERY_REPORT_PDF } from "../../constants/apiUrls"
-import ReportHead from "./RiderReportHead"
+import { getApi, ADMIN_GET_ORDER_REPORT_APIVIEW, MARCHANT_LIST, RIDER_LIST, ADMIN_GET_ORDER_REPORT_GENERATE_PDF_APIVIEW } from "../../constants/apiUrls"
+import ReportHead from "./ReportHead"
 import React from 'react'
 
 
@@ -13,7 +13,9 @@ import React from 'react'
 const AdminOrderReport = () => {
 	const [order, setOrder] = useState([])
 	const [selectboxMarchant, setSelectboxMarchant] = useState([])
-	const defaultFetchOrderData = () => {
+	const [selectboxRider, setSelectboxRider] = useState([])
+
+	const defaultFetchData = () => {
 		return useJwt.axiosGet(getApi(ADMIN_GET_ORDER_REPORT_APIVIEW))
 			.then((res) => {
 				console.log('response data',res.data)
@@ -40,12 +42,32 @@ const AdminOrderReport = () => {
 		  .catch((err) => console.log(err))
 	  }
 
+	  const fetchRiderData = () => {
+		return useJwt
+		  .axiosGet(getApi(RIDER_LIST))
+		  .then((res) => {
+			console.log('RIDER_LIST', res.data.data)
+			let riderData = []
+	
+			res.data.data.map((data) => {
+			  riderData.push({ value: data.id, label: data.full_name })
+			})
+	
+			setSelectboxRider(riderData)
+			return res.data
+		  })
+		  .catch((err) => console.log(err))
+	  }
+
 	useEffect(() => {
-		defaultFetchOrderData()
+		defaultFetchData()
+		fetchMarchantData()
+		fetchRiderData()
 	}, [])
 
 
 	const handleSearchQuery = searchTerm => {
+		console.log('yes i am workgin searchTerm', searchTerm)
 		return useJwt
 			.axiosGet(getApi(ADMIN_GET_ORDER_REPORT_APIVIEW) + '?' + searchTerm)
 			.then((res) => {
@@ -75,7 +97,7 @@ const AdminOrderReport = () => {
 	const handlePDFQuery = (searchTerm) => {
 
 		return useJwt
-			.axiosGet(getApi((MARCHANT_GET_ORDER_REPORT_PDF) + '?' + searchTerm))
+			.axiosGet(getApi((ADMIN_GET_ORDER_REPORT_GENERATE_PDF_APIVIEW) + '?' + searchTerm))
 			.then((res) => {
 				if (res.data?.length > 0) {
 					// setOrder(res.data)
@@ -105,19 +127,34 @@ const AdminOrderReport = () => {
 		{ value: "completed", label: "Completed" },
 	]
 
+	const propsData = {
+        handleSearchQuery: handleSearchQuery,
+        handlePDFQuery: handlePDFQuery,
+        defaultFetchData: defaultFetchData,
+
+        statusOptions: statusOptions,
+        selectboxData: selectboxMarchant,
+        selectboxRider: selectboxRider,
+
+        statusOptionPlaceholder: "Order Status",
+        selectOptionKey:"status",
+        reportTitle: 'Orders Report',
+        selectboxDataPlaceholder: 'Select Marchant',
+        filterTable: 'marchant',
+        
+    }
 
 	return (
 		<>
 
-			<ReportHead 
-				handleSearchQuery={handleSearchQuery} handlePDFQuery={handlePDFQuery} defaultFetchOrderData={defaultFetchOrderData} statusOptions={statusOptions} selectOptionKey="status" reportTitle='Orders Report' selectboxMarchant={selectboxMarchant}
-			/>
+			<ReportHead propsData={propsData} />
 
 			<div id="my-table" class="table-responsive">
 				<Table bordered>
 					<thead>
 						<tr>
-							<th>Order ID</th>
+							<th>Marchant</th>
+							<th>Delivery Rider</th>
 							<th>Order ID</th>
 							<th>Status</th>
 							<th>Date</th>
@@ -134,6 +171,9 @@ const AdminOrderReport = () => {
 								<tr key={info.id}>
 									<td>
 										<span className="align-middle fw-bold">{info.marchant.full_name}</span>
+									</td>
+									<td>
+										<span className="align-middle fw-bold">{info?.delivary_rider?.full_name}</span>
 									</td>
 									<td>
 										<span className="align-middle fw-bold">{info.parcel_id}</span>

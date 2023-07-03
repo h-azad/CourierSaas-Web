@@ -74,6 +74,7 @@ import Transections from '../../views/transection/transections'
 import WalletAdjustment from '../../views/wallet_adjustment/partials/wallet_adjustment'
 import AddWalletAdjustment from '../../views/wallet_adjustment/add_wallet_adjustment'
 import AdminOrderReport from '../../views/reports/adminOrderReport'
+import AdminGetTransectionReport from '../../views/reports/transectionReport'
 
 
 
@@ -87,6 +88,10 @@ const DashboardRoutes = [
   {
     path: "/order/report",
     element: <AdminOrderReport />
+  },
+  {
+    path: "/transections/report",
+    element: <AdminGetTransectionReport />
   },
   {
     path: "/assignment/delivery/:id",
