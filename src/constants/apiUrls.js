@@ -218,6 +218,14 @@ export const ADMIN_GET_ORDER_REPORT_APIVIEW = "/api/admin/order-report"
 export const ADMIN_GET_ORDER_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/order-report-generate-pdf"
 export const ADMIN_GET_TRANSECTION_REPORT_APIVIEW = "/api/admin/transection-report"
 export const ADMIN_GET_TRANSECTION_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/transection-report-generate-pdf"
+export const ADMIN_GET_WITHDRAW_REQUEST_REPORT_APIVIEW = "/api/admin/withdraw-request-report"
+export const ADMIN_GET_WITHDRAW_REQUEST_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/withdraw-request-report-generate-pdf"
+export const ADMIN_GET_PICKUP_REPORT_APIVIEW = "/api/admin/pickup-report"
+export const ADMIN_GET_PICKUP_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/pickup-report-generate-pdf"
+export const ADMIN_GET_DELIVERY_REPORT_APIVIEW = "/api/admin/delivery-report"
+export const ADMIN_GET_DELIVERY_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/delivery-report-generate-pdf"
+export const ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW = "/api/admin/delivery-collection-report"
+
 
 
 

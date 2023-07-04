@@ -1,18 +1,23 @@
 
+
 import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW, ADMIN_GET_DELIVERY_REPORT_GENERATE_PDF_APIVIEW, RIDER_LIST } from "../../constants/apiUrls"
+import { getApi, ADMIN_GET_DELIVERY_REPORT_APIVIEW, ADMIN_GET_DELIVERY_REPORT_GENERATE_PDF_APIVIEW, RIDER_LIST } from "../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
 
 
-const AdminGetCollectionReport = () => {
+
+
+const GetAdminDeliveryReport = () => {
     const [order, setOrder] = useState([])
     const [rider, setRider] = useState([])
+    console.log("rider", rider)
+    // const [selectboxRider, setSelectboxRider] = useState([])
 
     const defaultFetchData = () => {
-        return useJwt.axiosGet(getApi(ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW))
+        return useJwt.axiosGet(getApi(ADMIN_GET_DELIVERY_REPORT_APIVIEW))
             .then((res) => {
                 console.log('response data', res.data)
                 setOrder(res.data)
@@ -38,15 +43,11 @@ const AdminGetCollectionReport = () => {
             .catch((err) => console.log(err))
     }
 
-    useEffect(() => {
-        defaultFetchData()
-        fetchRiderData()
-    }, [])
 
 
     const handleSearchQuery = searchTerm => {
         return useJwt
-            .axiosGet(getApi(ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW) + '?' + searchTerm)
+            .axiosGet(getApi(ADMIN_GET_DELIVERY_REPORT_APIVIEW) + '?' + searchTerm)
             .then((res) => {
                 if (res.data?.length > 0) {
                     setOrder(res.data)
@@ -74,13 +75,13 @@ const AdminGetCollectionReport = () => {
     const handlePDFQuery = (searchTerm) => {
 
         return useJwt
-            .axiosGet(getApi((ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW_PDF) + '?' + searchTerm))
+            .axiosGet(getApi((ADMIN_GET_DELIVERY_REPORT_GENERATE_PDF_APIVIEW) + '?' + searchTerm))
             .then((res) => {
                 if (res.data?.length > 0) {
                     // setOrder(res.data)
                     console.log('response file', res.data)
                     var file = new Blob([res.data], { type: 'application/pdf' })
-                    var fileName = 'collection_report.pdf'
+                    var fileName = 'Delivery_report.pdf'
                     downloadPDFFile(file, fileName)
                 } else {
                     // setOrder('')
@@ -92,9 +93,10 @@ const AdminGetCollectionReport = () => {
     }
 
     const statusOptions = [
-        { value: 'pre-paid', label: "Pre-Paid" },
-        { value: 'COD', label: "COD" },
+        { value: true, label: "Delivered" },
+		{ value: 'false', label: "Pendding" },
     ]
+
 
     const propsData = {
         handleSearchQuery: handleSearchQuery,
@@ -106,62 +108,60 @@ const AdminGetCollectionReport = () => {
         // selectboxRider: selectboxRider,
 
         statusOptionPlaceholder: "Delivery Type",
-        selectOptionKey: "order_type",
+        selectOptionKey: "delivery_status",
         reportTitle: 'Delivery Report',
         selectboxDataPlaceholder: 'Select Rider',
         filterTable: 'delivary_rider',
-
     }
 
+    useEffect(() => {
+        defaultFetchData()
+        fetchRiderData()
+    }, [])
 
     return (
         <>
-
             <ReportHead propsData={propsData} />
 
             <div id="my-table" class="table-responsive">
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Total Delivery</th>
-                            <th>Total COD</th>
-                            <th>Total Pre-Paid</th>
-                            <th>Total Delivery Charge</th>
-                            {/* <th>Total COD Charge</th> */}
-                            <th>Total Collected Amount</th>
-                            <th>Total Amount</th>
+                            <th style={{ textAlign: "center" }}>Rider</th>
+                            <th style={{ textAlign: "center" }}>Delivery Date</th>
+                            <th style={{ textAlign: "center" }}>Order ID</th>
+                            <th style={{ textAlign: "center" }}>Status</th>
+                            <th style={{ textAlign: "center" }}>Delivery</th>
+                            <th style={{ textAlign: "center" }}>Phone</th>
+                            <th style={{ textAlign: "center" }}>Address</th>
                         </tr>
                     </thead>
                     <tbody>
                         {order &&
                             order.map((info) => (
                                 <tr key={info.id}>
-                                    <td>
-                                        <span className="align-middle fw-bold">{info.date}</span>
-                                    </td>
-                                    <td>
-                                        <span className="align-middle fw-bold">{info.total_delivery}</span>
-                                    </td>
-                                    <td>
-                                        <span className="align-middle fw-bold">{info.total_cod}</span>
-                                    </td>
-                                    <td>
-                                        <span className="align-middle fw-bold">{info.total_pre_paid}</span>
-                                    </td>
-                                    <td>
-                                        <span className="align-middle fw-bold">{info.total_delivery_charge}</span>
-                                    </td>
-                                    {/* <td>
-                                        <span className="align-middle fw-bold">{info.total_cash_on_delivery_charge}</span>
-                                    </td> */}
-                                    <td>
-                                        <span className="align-middle fw-bold">{info.total_collect_amount}</span>
-                                    </td>
-                                    <td>
-                                        <span className="align-middle fw-bold">{info.total}</span>
-                                    </td>
-                                </tr>
+									<td style={{ textAlign: "center" }}>
+										<span className="align-middle fw-bold">{info.delivery_rider}</span>
+									</td>
+									<td style={{ textAlign: "center" }}>
+										<span className="align-middle fw-bold">{info.delivery_date}</span>
+									</td>
+									<td style={{ textAlign: "center" }}>
+										<span className="align-middle fw-bold">{info.parcel_id}</span>
+									</td>
+									<td style={{ textAlign: "center" }}>
+										<span className="align-middle fw-bold">{info.status}</span>
+									</td>
+									<td style={{ textAlign: "center" }}>
+										<span className="align-middle fw-bold">{info.delivery_status}</span>
+									</td>
+									<td style={{ textAlign: "center" }}>
+										<span className="align-middle fw-bold">{info.phone_number}</span>
+									</td>
+									<td style={{ textAlign: "center" }}>
+										<span className="align-middle fw-bold">{info.delivary_address}</span>
+									</td>
+								</tr>
                             ))}
                     </tbody>
                 </Table>
@@ -170,5 +170,7 @@ const AdminGetCollectionReport = () => {
     )
 }
 
-export default AdminGetCollectionReport
+export default GetAdminDeliveryReport
+
+
 

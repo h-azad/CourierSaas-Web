@@ -212,12 +212,44 @@ const adminMenu = [
     navLink: "/order/report"
   },
   {
-    id: "admin_transections_reports",
+    id: "admin-get-transections-reports",
     title: "Transection",
     icon: <Map size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN', 
-    navLink: "/transections/report"
+    navLink: "/transections-report"
+  },
+  {
+    id: "admin-get-withdraw-request-reports",
+    title: "Withdraw Request",
+    icon: <Map size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN', 
+    navLink: "/withdraw-request-report"
+  },
+  {
+    id: "admin-get-pickup-reports",
+    title: "Pickup",
+    icon: <Map size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN', 
+    navLink: "/pickup-report"
+  },
+  {
+    id: "admin-get-delivery-reports",
+    title: "Delivery",
+    icon: <Map size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN', 
+    navLink: "/delivery-report"
+  },
+  {
+    id: "admin-get-delivery-collection-reports",
+    title: "Collection",
+    icon: <Map size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN', 
+    navLink: "/delivery-collection-report"
   },
   // {
   //   id: "areas",

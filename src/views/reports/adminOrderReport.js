@@ -141,6 +141,7 @@ const AdminOrderReport = () => {
         reportTitle: 'Orders Report',
         selectboxDataPlaceholder: 'Select Marchant',
         filterTable: 'marchant',
+		isOrderPageIsRider: true
         
     }
 

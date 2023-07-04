@@ -75,6 +75,10 @@ import WalletAdjustment from '../../views/wallet_adjustment/partials/wallet_adju
 import AddWalletAdjustment from '../../views/wallet_adjustment/add_wallet_adjustment'
 import AdminOrderReport from '../../views/reports/adminOrderReport'
 import AdminGetTransectionReport from '../../views/reports/transectionReport'
+import AdminGetWithdrawRequestReport from '../../views/reports/withdrawRequest'
+import GetAdminPickupReport from '../../views/reports/pickupReport'
+import GetAdminDeliveryReport from '../../views/reports/deliveryReport'
+import AdminGetCollectionReport from '../../views/reports/collectionReport'
 
 
 
@@ -90,9 +94,26 @@ const DashboardRoutes = [
     element: <AdminOrderReport />
   },
   {
-    path: "/transections/report",
+    path: "/transections-report",
     element: <AdminGetTransectionReport />
   },
+  {
+    path: "/withdraw-request-report",
+    element: <AdminGetWithdrawRequestReport />
+  },
+  {
+    path: "/pickup-report",
+    element: <GetAdminPickupReport />
+  },
+  {
+    path: "/delivery-report",
+    element: <GetAdminDeliveryReport />
+  },
+  {
+    path: "/delivery-collection-report",
+    element: <AdminGetCollectionReport />
+  },
+  
   {
     path: "/assignment/delivery/:id",
     element: <DeliveryRiderTask />
