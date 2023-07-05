@@ -123,12 +123,12 @@ const adminMenu = [
   },
 
   {
-    id: "transections",
-    title: "Transections",
+    id: "transactions",
+    title: "Transactions",
     icon: <Home size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN',
-    navLink: "/transections"
+    navLink: "/transactions"
   },
   {
     id: "wallet_adjustment",
@@ -212,12 +212,12 @@ const adminMenu = [
     navLink: "/order/report"
   },
   {
-    id: "admin-get-transections-reports",
-    title: "Transection",
+    id: "admin-get-transactions-reports",
+    title: "Transaction",
     icon: <Map size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN', 
-    navLink: "/transections-report"
+    navLink: "/transactions-report"
   },
   {
     id: "admin-get-withdraw-request-reports",
@@ -343,12 +343,12 @@ const marchantMenu = [
     navLink: "/order-report"
   },
   {
-    id: "transection_report",
-    title: "Transection Report",
+    id: "transaction_report",
+    title: "Transaction Report",
     icon: <ShoppingCart size={20} />,
     action: 'marchant-pages',
     resource: 'MARCHANT',
-    navLink: "/transection-report"
+    navLink: "/transaction-report"
   },
   {
     id: "withdraw_balance_report",

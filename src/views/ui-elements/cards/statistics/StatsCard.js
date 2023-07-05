@@ -1,6 +1,6 @@
 // ** Third Party Components
 import classnames from 'classnames'
-import { TrendingUp, User, Box, DollarSign } from 'react-feather'
+import { TrendingUp, User, Box, DollarSign, CheckCircle, Home, Truck, CornerDownLeft} from 'react-feather'
 
 // ** Custom Components
 import Avatar from '@components/avatar'
@@ -10,29 +10,44 @@ import { Card, CardHeader, CardTitle, CardBody, CardText, Row, Col } from 'react
 
 const StatsCard = ({ cols }) => {
   const data = [
-    {
-      title: '230k',
-      subtitle: 'Sales',
-      color: 'light-primary',
-      icon: <TrendingUp size={24} />
-    },
-    {
-      title: '8.549k',
-      subtitle: 'Customers',
-      color: 'light-info',
-      icon: <User size={24} />
-    },
+    // {
+    //   title: '230k',
+    //   subtitle: 'Compleate',
+    //   color: 'light-primary',
+    //   // icon: <TrendingUp size={24} />
+    //   icon: <CheckCircle size={24} />
+    // },
+    // {
+    //   title: '8.549k',
+    //   subtitle: 'Order',
+    //   color: 'light-info',
+    //   icon: <Box size={24} />
+    //   // icon: <User size={24} />
+      
+    // },
     {
       title: '1.423k',
-      subtitle: 'Products',
+      subtitle: 'Pending',
       color: 'light-danger',
       icon: <Box size={24} />
     },
     {
       title: '$9745',
-      subtitle: 'Revenue',
+      subtitle: 'WireHouse',
       color: 'light-success',
-      icon: <DollarSign size={24} />
+      icon: <Home size={24} />
+    },
+    {
+      title: '$9745',
+      subtitle: 'Shift',
+      color: 'light-success',
+      icon: <Truck size={24} />
+    },
+    {
+      title: '$9745',
+      subtitle: 'Return',
+      color: 'light-success',
+      icon: <CornerDownLeft size={24} />
     }
   ]
 

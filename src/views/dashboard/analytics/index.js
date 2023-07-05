@@ -1,6 +1,6 @@
 // ** React Imports
 import { useContext } from 'react'
-
+import { Users, Package, Truck, CheckCircle } from 'react-feather'
 // ** Icons Imports
 import { List } from 'react-feather'
 
@@ -8,6 +8,8 @@ import { List } from 'react-feather'
 import Avatar from '@components/avatar'
 import Timeline from '@components/timeline'
 import AvatarGroup from '@components/avatar-group'
+import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
+import { User, UserCheck, UserPlus, UserX } from "react-feather"
 
 // ** Utils
 import { kFormatter } from '@utils'
@@ -125,15 +127,65 @@ const AnalyticsDashboard = () => {
 
   return (
     <div id='dashboard-analytics'>
+
+      <Row>
+        <Col lg="3" sm="6">
+          <StatsHorizontal
+            color="primary"
+            statTitle="Complete Delivery"
+            icon={<Truck size={20} />}
+            renderStats={<h3 className="fw-bolder mb-75">21,459</h3>}
+          />
+        </Col>
+        <Col lg="3" sm="6">
+          <StatsHorizontal
+            color="danger"
+            statTitle="Pending Delivery"
+            icon={<Truck size={20} />}
+            renderStats={<h3 className="fw-bolder mb-75">4,567</h3>}
+          />
+        </Col>
+        <Col lg="3" sm="6">
+          <StatsHorizontal
+            color="success"
+            statTitle="Complete Pickup"
+            icon={<Truck size={20} />}
+            renderStats={<h3 className="fw-bolder mb-75">19,860</h3>}
+          />
+        </Col>
+        <Col lg="3" sm="6">
+          <StatsHorizontal
+            color="warning"
+            statTitle="Pending Pickup"
+            icon={<Truck size={20} />}
+            renderStats={<h3 className="fw-bolder mb-75">237</h3>}
+          />
+        </Col>
+      </Row>
+
       <Row className='match-height'>
         <Col lg='6' sm='12'>
           <CardCongratulations />
         </Col>
         <Col lg='3' sm='6'>
-          <SubscribersGained kFormatter={kFormatter} />
+          <SubscribersGained
+            icon={<CheckCircle size={21} />}
+            color='primary'
+            stats={kFormatter(92600)}
+            statTitle='Total Compleate Task'
+            series={[{ data: [28, 40, 36, 52, 100, 500], name: "Subscriber" }]}
+            type='area'
+          />
         </Col>
         <Col lg='3' sm='6'>
-          <OrdersReceived kFormatter={kFormatter} warning={colors.warning.main} />
+        <SubscribersGained
+            icon={<Package size={21} />}
+            color='warning'
+            stats={kFormatter(92600)}
+            statTitle='Total Pendding Task'
+            series={[{ data: [28, 40, 36, 52, 100, 500], name: "Subscriber" }]}
+            type='area'
+          />
         </Col>
       </Row>
       <Row className='match-height'>

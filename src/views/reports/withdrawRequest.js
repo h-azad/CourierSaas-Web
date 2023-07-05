@@ -95,9 +95,9 @@ const AdminGetWithdrawRequestReport = () => {
 
     const statusOptions = [
         { value: "Pending", label: "Pending" },
-		{ value: "Accept", label: "Accept" },
-		{ value: "Complete", label: "Complete" },
-		{ value: "Cancel", label: "Cancel" },
+        { value: "Accept", label: "Accept" },
+        { value: "Complete", label: "Complete" },
+        { value: "Cancel", label: "Cancel" },
     ]
 
     const propsData = {
@@ -109,7 +109,7 @@ const AdminGetWithdrawRequestReport = () => {
         selectboxData: selectAccountWallet,
         // selectboxRider: selectboxRider,
 
-        statusOptionPlaceholder: "Transection Type",
+        statusOptionPlaceholder: "Status",
         selectOptionKey: "withdraw_status",
         reportTitle: 'Withdraw Request Report',
         selectboxDataPlaceholder: 'Select Wallet Account',
@@ -130,24 +130,24 @@ const AdminGetWithdrawRequestReport = () => {
                 <Table bordered>
                     <thead>
                         <tr>
+                            <th style={{ textAlign: "center" }}>Date</th>
                             <th style={{ textAlign: "center" }}>Account</th>
                             <th style={{ textAlign: "center" }}>PREVIOUS BALANCE</th>
                             <th style={{ textAlign: "center" }}>WITHDRAW BALANCE</th>
                             <th style={{ textAlign: "center" }}>CURRENT BALANCE</th>
                             <th style={{ textAlign: "center" }}>STATUS</th>
-                            <th style={{ textAlign: "center" }}>Date</th>
                         </tr>
                     </thead>
                     <tbody>
                         {withdrawRequest &&
                             withdrawRequest.map((info) => (
                                 <tr key={info.id}>
+                                    <td style={{ textAlign: "center" }}>{info.created_at}</td>
                                     <td style={{ textAlign: "center" }}>{info.account_wallet}</td>
                                     <td style={{ textAlign: "center" }}>{info.balance}</td>
                                     <td style={{ textAlign: "center" }}>{info.withdraw_balance}</td>
                                     <td style={{ textAlign: "center" }}>{info.current_balance}</td>
                                     <td style={{ textAlign: "center" }}>{info.withdraw_status}</td>
-                                    <td style={{ textAlign: "center" }}>{info.created_at}</td>
                                 </tr>
                             ))}
                     </tbody>

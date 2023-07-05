@@ -94,7 +94,7 @@ const GetAdminDeliveryReport = () => {
 
     const statusOptions = [
         { value: true, label: "Delivered" },
-		{ value: 'false', label: "Pendding" },
+        { value: 'false', label: "Pendding" },
     ]
 
 
@@ -107,7 +107,7 @@ const GetAdminDeliveryReport = () => {
         selectboxData: rider,
         // selectboxRider: selectboxRider,
 
-        statusOptionPlaceholder: "Delivery Type",
+        statusOptionPlaceholder: "Status",
         selectOptionKey: "delivery_status",
         reportTitle: 'Delivery Report',
         selectboxDataPlaceholder: 'Select Rider',
@@ -127,11 +127,10 @@ const GetAdminDeliveryReport = () => {
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th style={{ textAlign: "center" }}>Rider</th>
                             <th style={{ textAlign: "center" }}>Delivery Date</th>
+                            <th style={{ textAlign: "center" }}>Rider</th>
                             <th style={{ textAlign: "center" }}>Order ID</th>
                             <th style={{ textAlign: "center" }}>Status</th>
-                            <th style={{ textAlign: "center" }}>Delivery</th>
                             <th style={{ textAlign: "center" }}>Phone</th>
                             <th style={{ textAlign: "center" }}>Address</th>
                         </tr>
@@ -140,28 +139,25 @@ const GetAdminDeliveryReport = () => {
                         {order &&
                             order.map((info) => (
                                 <tr key={info.id}>
-									<td style={{ textAlign: "center" }}>
-										<span className="align-middle fw-bold">{info.delivery_rider}</span>
-									</td>
-									<td style={{ textAlign: "center" }}>
-										<span className="align-middle fw-bold">{info.delivery_date}</span>
-									</td>
-									<td style={{ textAlign: "center" }}>
-										<span className="align-middle fw-bold">{info.parcel_id}</span>
-									</td>
-									<td style={{ textAlign: "center" }}>
-										<span className="align-middle fw-bold">{info.status}</span>
-									</td>
-									<td style={{ textAlign: "center" }}>
-										<span className="align-middle fw-bold">{info.delivery_status}</span>
-									</td>
-									<td style={{ textAlign: "center" }}>
-										<span className="align-middle fw-bold">{info.phone_number}</span>
-									</td>
-									<td style={{ textAlign: "center" }}>
-										<span className="align-middle fw-bold">{info.delivary_address}</span>
-									</td>
-								</tr>
+                                    <td style={{ textAlign: "center" }}>
+                                        <span className="align-middle fw-bold">{info.delivery_date}</span>
+                                    </td>
+                                    <td style={{ textAlign: "center" }}>
+                                        <span className="align-middle fw-bold">{info.delivery_rider}</span>
+                                    </td>
+                                    <td style={{ textAlign: "center" }}>
+                                        <span className="align-middle fw-bold">{info.parcel_id}</span>
+                                    </td>
+                                    <td style={{ textAlign: "center" }}>
+                                        <span className="align-middle fw-bold">{info.delivery_status}</span>
+                                    </td>
+                                    <td style={{ textAlign: "center" }}>
+                                        <span className="align-middle fw-bold">{info.phone_number}</span>
+                                    </td>
+                                    <td style={{ textAlign: "center" }}>
+                                        <span className="align-middle fw-bold">{info.delivary_address}</span>
+                                    </td>
+                                </tr>
                             ))}
                     </tbody>
                 </Table>

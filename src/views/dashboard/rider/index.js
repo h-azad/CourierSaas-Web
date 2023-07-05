@@ -124,7 +124,7 @@ const RiderDashboard = () => {
   ]
 
   return (
-    <div id='dashboard-analytics'>
+    <div >
       <Row className='match-height'>
         <Col lg='6' sm='12'>
           <CardCongratulations />

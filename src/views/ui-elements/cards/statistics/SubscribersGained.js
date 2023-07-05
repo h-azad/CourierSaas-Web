@@ -8,23 +8,25 @@ import { Users } from 'react-feather'
 // ** Custom Components
 import StatsWithAreaChart from '@components/widgets/stats/StatsWithAreaChart'
 
-const SubscribersGained = ({ kFormatter }) => {
+const SubscribersGained = ({ icon, color, stats, statTitle, series, type }) => {
   // ** State
   const [data, setData] = useState(null)
-
+console.log('data is series ', data?.series)
   useEffect(() => {
     axios.get('/card/card-statistics/subscribers').then(res => setData(res.data))
     return () => setData(null)
   }, [])
 
+
+
   return data !== null ? (
     <StatsWithAreaChart
-      icon={<Users size={21} />}
-      color='primary'
-      stats={kFormatter(data.analyticsData.subscribers)}
-      statTitle='Subscribers Gained'
-      series={data.series}
-      type='area'
+      icon={icon}
+      color={color}
+      stats={stats}
+      statTitle={statTitle}
+      series={series}
+      type={type}
     />
   ) : null
 }

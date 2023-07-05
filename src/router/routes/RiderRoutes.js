@@ -10,10 +10,10 @@ import DeliveryReport from "../../views/rider/report/deliveryReport"
 import MarchantCollectionReport from "../../views/rider/report/collectionReport"
 
 const RiderRoutes = [
-    {
-        path: "/rider-dashboard",
-        element: <RiderDashboard />
-    },
+    // {
+    //     path: "/rider-dashboard",
+    //     element: <RiderDashboard />
+    // },
     {
         path: "/rider-orders/current-task",
         element: <CurrentTaskList/>

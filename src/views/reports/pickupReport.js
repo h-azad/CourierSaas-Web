@@ -108,7 +108,7 @@ const GetAdminPickupReport = () => {
         selectboxData: rider,
         // selectboxRider: selectboxRider,
 
-        statusOptionPlaceholder: "Pickup Type",
+        statusOptionPlaceholder: "Status",
         selectOptionKey: "pickup_status",
         reportTitle: 'Pickup Report',
         selectboxDataPlaceholder: 'Select Rider',
@@ -129,11 +129,11 @@ const GetAdminPickupReport = () => {
                 <Table bordered>
                     <thead>
                         <tr>
+                        <th style={{ textAlign: "center" }}>Pickup Date</th>
                             <th style={{ textAlign: "center" }}>Rider</th>
-                            <th style={{ textAlign: "center" }}>Pickup Date</th>
                             <th style={{ textAlign: "center" }}>Order ID</th>
                             <th style={{ textAlign: "center" }}>Status</th>
-                            <th style={{ textAlign: "center" }}>Pickup</th>
+                            {/* <th style={{ textAlign: "center" }}>Pickup</th> */}
                             <th style={{ textAlign: "center" }}>Phone</th>
                             <th style={{ textAlign: "center" }}>Address</th>
                         </tr>
@@ -142,18 +142,19 @@ const GetAdminPickupReport = () => {
                         {pickup &&
                             pickup.map((info) => (
                                 <tr key={info.id}>
-									<td style={{ textAlign: "center" }}>
-										<span className="align-middle fw-bold">{info.pickup_rider}</span>
-									</td>
-									<td style={{ textAlign: "center" }}>
+                                    <td style={{ textAlign: "center" }}>
 										<span className="align-middle fw-bold">{info.pickup_date}</span>
 									</td>
 									<td style={{ textAlign: "center" }}>
+										<span className="align-middle fw-bold">{info.pickup_rider}</span>
+									</td>
+									
+									<td style={{ textAlign: "center" }}>
 										<span className="align-middle fw-bold">{info.parcel_id}</span>
 									</td>
-									<td style={{ textAlign: "center" }}>
+									{/* <td style={{ textAlign: "center" }}>
 										<span className="align-middle fw-bold">{info.status}</span>
-									</td>
+									</td> */}
 									<td style={{ textAlign: "center" }}>
 										<span className="align-middle fw-bold">{info.pickup_status}</span>
 									</td>

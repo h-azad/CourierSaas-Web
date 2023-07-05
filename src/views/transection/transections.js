@@ -117,7 +117,7 @@ const Transections = () => {
             <tr>
               <th>User Name</th>
               <th>Amount</th>
-              <th>Transections ID</th>
+              <th>Transactions ID</th>
               <th>Remark</th>
               <th>Type</th>
               <th>Date</th>

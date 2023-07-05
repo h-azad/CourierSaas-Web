@@ -94,7 +94,7 @@ const DashboardRoutes = [
     element: <AdminOrderReport />
   },
   {
-    path: "/transections-report",
+    path: "/transactions-report",
     element: <AdminGetTransectionReport />
   },
   {
@@ -153,7 +153,7 @@ const DashboardRoutes = [
   },
 
   {
-    path: "/transections",
+    path: "/transactions",
     element: <Transections />
   },
   {

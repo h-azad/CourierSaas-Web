@@ -3,7 +3,7 @@
 import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, ADMIN_GET_TRANSECTION_REPORT_APIVIEW, ADMIN_GET_TRANSECTION_REPORT_GENERATE_PDF_APIVIEW, ACCOUNT_WALLET_LIST} from "../../constants/apiUrls"
+import { getApi, ADMIN_GET_TRANSECTION_REPORT_APIVIEW, ADMIN_GET_TRANSECTION_REPORT_GENERATE_PDF_APIVIEW, ACCOUNT_WALLET_LIST } from "../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
 
@@ -13,7 +13,7 @@ import React from 'react'
 const AdminGetTransectionReport = () => {
     const [transections, setTransections] = useState([])
     const [selectBoxUser, setSelectBoxUser] = useState([])
-    console.log("selectBoxUser",selectBoxUser)
+    console.log("selectBoxUser", selectBoxUser)
     // const [selectboxRider, setSelectboxRider] = useState([])
 
     const defaultFetchData = () => {
@@ -82,7 +82,7 @@ const AdminGetTransectionReport = () => {
                     // setOrder(res.data)
                     console.log('response file', res.data)
                     var file = new Blob([res.data], { type: 'application/pdf' })
-                    var fileName = 'transections_report.pdf'
+                    var fileName = 'transactions_report.pdf'
                     downloadPDFFile(file, fileName)
                 } else {
                     // setOrder('')
@@ -94,9 +94,9 @@ const AdminGetTransectionReport = () => {
     }
 
     const statusOptions = [
-		{ value: "Cash-Out", label: "Cash-Out" },
-		{ value: "Cash-In", label: "Cash-In" },
-	]
+        { value: "Cash-Out", label: "Cash-Out" },
+        { value: "Cash-In", label: "Cash-In" },
+    ]
 
     const propsData = {
         handleSearchQuery: handleSearchQuery,
@@ -107,19 +107,19 @@ const AdminGetTransectionReport = () => {
         selectboxData: selectBoxUser,
         // selectboxRider: selectboxRider,
 
-        statusOptionPlaceholder: "Transection Type",
-        selectOptionKey:"type",
-        reportTitle: 'Transections Report',
+        statusOptionPlaceholder: "Transaction Type",
+        selectOptionKey: "type",
+        reportTitle: 'Transactions Report',
         selectboxDataPlaceholder: 'Select Wallet Account',
         filterTable: 'wallet',
-        
+
     }
 
     useEffect(() => {
         defaultFetchData()
         fetchUserData()
     }, [])
-    
+
     return (
         <>
             <ReportHead propsData={propsData} />
@@ -128,26 +128,26 @@ const AdminGetTransectionReport = () => {
                 <Table bordered>
                     <thead>
                         <tr>
-                            <th>User Name</th>
-                            <th>Amount</th>
-                            <th>Transections ID</th>
-                            <th>Remark</th>
-                            <th>Type</th>
                             <th>Date</th>
+                            <th>Account</th>
+                            <th>Transactions ID</th>
+                            <th>Amount</th>
+                            <th>Type</th>
+                            <th>Remark</th>
                         </tr>
                     </thead>
                     <tbody>
                         {transections &&
                             transections.map((info) => (
                                 <tr key={info.id}>
+                                    <td>{info.created_at}</td>
                                     <td>
                                         <span className="align-middle fw-bold">{info.user_name}</span>
                                     </td>
-                                    <td>{info.amount}</td>
                                     <td>{info.transection_id}</td>
-                                    <td>{info.remark}</td>
+                                    <td>{info.amount}</td>
                                     <td>{info.type}</td>
-                                    <td>{info.created_at}</td>
+                                    <td>{info.remark}</td>
                                 </tr>
                             ))}
                     </tbody>

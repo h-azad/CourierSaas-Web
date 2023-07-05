@@ -154,16 +154,16 @@ const AdminOrderReport = () => {
 				<Table bordered>
 					<thead>
 						<tr>
+							<th>Date</th>
+							<th>Order ID</th>
 							<th>Marchant</th>
 							<th>Delivery Rider</th>
-							<th>Order ID</th>
 							<th>Status</th>
-							<th>Date</th>
 							<th>Delivery Charge</th>
 							<th>COD Charge</th>
 							<th>COD Amount</th>
 							<th>Accumutated Amount</th>
-							<th>Total Amount</th>
+							<th>Deducted Amount</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -171,20 +171,22 @@ const AdminOrderReport = () => {
 							order.map((info) => (
 								<tr key={info.id}>
 									<td>
-										<span className="align-middle fw-bold">{info.marchant.full_name}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info?.delivary_rider?.full_name}</span>
+										<span className="align-middle fw-bold">{info.created_at}</span>
 									</td>
 									<td>
 										<span className="align-middle fw-bold">{info.parcel_id}</span>
 									</td>
 									<td>
-										<span className="align-middle fw-bold">{info.status}</span>
+										<span className="align-middle fw-bold">{info.marchant.full_name}</span>
 									</td>
 									<td>
-										<span className="align-middle fw-bold">{info.created_at}</span>
+										<span className="align-middle fw-bold">{info?.delivary_rider?.full_name}</span>
 									</td>
+									
+									<td>
+										<span className="align-middle fw-bold">{info.status}</span>
+									</td>
+									
 									<td>
 										<span className="align-middle fw-bold">{info.delivary_charge}</span>
 									</td>
@@ -198,7 +200,7 @@ const AdminOrderReport = () => {
 										<span className="align-middle fw-bold">{info.accumulated}</span>
 									</td>
 									<td>
-										<span className="align-middle fw-bold">{info.total_amount}</span>
+										<span className="align-middle fw-bold">{info.deducted_amount}</span>
 									</td>
 								</tr>
 							))}
