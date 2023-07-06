@@ -54,9 +54,14 @@ const ListTable = () => {
   }
 
   const updateStatusAction = (e) => {
+    // if(selectedStatus==='approved'){
+    //   const updateData = { status: selectedStatus, is_active: true }
+    // }else{
+    //   const updateData = { status: selectedStatus, is_active: true }
+    // }
     e.preventDefault()
     useJwt
-      .axiosPatch(getApi(MARCHANT_UPDATE_STATUS) + "/" + selectedInfo.id + '/', { status: selectedStatus })
+      .axiosPatch(getApi(MARCHANT_UPDATE_STATUS) + "/" + selectedInfo.id + '/', selectedStatus==='approved'?{ status: selectedStatus, get_user_id: selectedInfo.user_id }:{ status: selectedStatus })
       .then((res) => {
         console.log("res", res.data)
         setStatusModalState(false)
@@ -71,6 +76,8 @@ const ListTable = () => {
     setStatusModalState(true)
     setSelectedStatus(info.status)
     setSelectedInfo(info)
+    console.log(info)
+
   }
 
   useEffect(() => {

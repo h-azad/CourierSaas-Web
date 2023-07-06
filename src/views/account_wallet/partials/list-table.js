@@ -172,7 +172,7 @@ const ListTable = () => {
             <th>User Name</th>
             <th>User Role</th>
             <th>Balance</th>
-            <th>Actions</th>
+            {/* <th>Actions</th> */}
           </tr>
         </thead>
         <tbody>
@@ -188,7 +188,7 @@ const ListTable = () => {
                 <td>
                   <span className="align-middle fw-bold">{wallet?.balance}</span>
                 </td>
-                <td>
+                {/* <td>
                   <UncontrolledDropdown>
                     <DropdownToggle
                       className="icon-btn hide-arrow"
@@ -213,7 +213,7 @@ const ListTable = () => {
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
-                </td>
+                </td> */}
               </tr>
             ))}
         </tbody>

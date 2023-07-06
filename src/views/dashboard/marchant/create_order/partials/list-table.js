@@ -103,10 +103,10 @@ const changeStatusAction = (e, info) => {
   const handleSearch = debounce(e => {
     console.log(e.target.value)
     const searchTerm = e.target.value
-    if (searchTerm.length > 0) {
+    if (searchTerm?.length > 0) {
       fetchSearchCreateOrderData(searchTerm)
         .then(data => {
-          if (data.length > 0) {
+          if (data?.length > 0) {
             console.log('res', data)
             setCreateOrder(data)
           }else{

@@ -4,7 +4,7 @@ import Chart from 'react-apexcharts'
 // ** Reactstrap Imports
 import { Card, CardTitle, CardText, CardBody, Row, Col } from 'reactstrap'
 
-const Earnings = ({ success }) => {
+const Earnings = ({ success, data }) => {
   const options = {
     chart: {
       toolbar: {
@@ -16,7 +16,7 @@ const Earnings = ({ success }) => {
     },
     legend: { show: false },
     comparedResult: [2, -3, 8],
-    labels: ['App', 'Service', 'Product'],
+    labels: ['Current Month', 'Last Month', 'Last 2 Month'],
     stroke: { width: 0 },
     colors: ['#28c76f66', '#28c76f33', success],
     grid: {
@@ -26,33 +26,7 @@ const Earnings = ({ success }) => {
         left: -20
       }
     },
-    plotOptions: {
-      pie: {
-        startAngle: -10,
-        donut: {
-          labels: {
-            show: true,
-            name: {
-              offsetY: 15
-            },
-            value: {
-              offsetY: -15,
-              formatter(val) {
-                return `${parseInt(val)} %`
-              }
-            },
-            total: {
-              show: true,
-              offsetY: 15,
-              label: 'App',
-              formatter() {
-                return '53%'
-              }
-            }
-          }
-        }
-      }
-    },
+
     responsive: [
       {
         breakpoint: 1325,
@@ -94,16 +68,16 @@ const Earnings = ({ success }) => {
       <CardBody>
         <Row>
           <Col xs='6'>
-            <CardTitle className='mb-1'>Earnings</CardTitle>
+            <CardTitle className='mb-1'>Credited Amount</CardTitle>
             <div className='font-small-2'>This Month</div>
-            <h5 className='mb-1'>$4055.56</h5>
+            <h5 className='mb-1'>{data?.current_month}</h5>
             <CardText className='text-muted font-small-2'>
               <span className='fw-bolder'>68.2%</span>
               <span> more earnings than last month.</span>
             </CardText>
           </Col>
           <Col xs='6'>
-            <Chart options={options} series={[53, 16, 31]} type='donut' height={120} />
+            <Chart options={options} series={[data?.current_month, data?.last_month, data?.last2_month]} type='donut' height={120} />
           </Col>
         </Row>
       </CardBody>

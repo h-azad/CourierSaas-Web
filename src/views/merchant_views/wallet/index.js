@@ -27,7 +27,7 @@ const MarchantWallet = () => {
       .then((res) => {
         console.log("res", res.data)
         setBalance(res.data?.balance)
-        setName(res.data?.user?.name)
+        setName(res.data?.account_name)
         return res.data
       })
       .catch(err => console.log(err))

@@ -8,7 +8,7 @@ import Avatar from '@components/avatar'
 // ** Reactstrap Imports
 import { Card, CardHeader, CardTitle, CardBody, CardText, Row, Col } from 'reactstrap'
 
-const StatsCard = ({ cols }) => {
+const StatsCard = ({ cols, responseData }) => {
   const data = [
     // {
     //   title: '230k',
@@ -26,25 +26,25 @@ const StatsCard = ({ cols }) => {
       
     // },
     {
-      title: '1.423k',
+      title: responseData.pending_orders,
       subtitle: 'Pending',
       color: 'light-danger',
       icon: <Box size={24} />
     },
     {
-      title: '$9745',
+      title: responseData.in_warehouse_orders,
       subtitle: 'WireHouse',
       color: 'light-success',
       icon: <Home size={24} />
     },
     {
-      title: '$9745',
+      title: responseData.shipped_orders,
       subtitle: 'Shift',
       color: 'light-success',
       icon: <Truck size={24} />
     },
     {
-      title: '$9745',
+      title: responseData.return_orders,
       subtitle: 'Return',
       color: 'light-success',
       icon: <CornerDownLeft size={24} />
