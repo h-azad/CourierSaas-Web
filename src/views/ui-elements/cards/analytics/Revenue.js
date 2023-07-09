@@ -17,6 +17,8 @@ const Revenue = props => {
     axios.get('/card/card-analytics/revenue').then(res => setData(res.data))
   }, [])
 
+  
+
   const options = {
       chart: {
         toolbar: { show: false },

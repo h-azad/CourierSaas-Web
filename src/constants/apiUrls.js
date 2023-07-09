@@ -235,6 +235,7 @@ export const TRANSECTIONS_FILTER = "/api/default-marchant-order-report"
 
 
 export const COMPLETE_ORDER_LIST = "/admin-get-complete-order-list"
+export const ADMIN_FILTER_ORDER_OVERVIEW = "/admin-filter--order-overview"
 
 
 

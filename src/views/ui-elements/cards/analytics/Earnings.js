@@ -16,7 +16,7 @@ const Earnings = ({ success, data }) => {
     },
     legend: { show: false },
     comparedResult: [2, -3, 8],
-    labels: ['Current Month', 'Last Month', 'Last 2 Month'],
+    labels: data?.labels,
     stroke: { width: 0 },
     colors: ['#28c76f66', '#28c76f33', success],
     grid: {
@@ -27,40 +27,40 @@ const Earnings = ({ success, data }) => {
       }
     },
 
-    responsive: [
-      {
-        breakpoint: 1325,
-        options: {
-          chart: {
-            height: 100
-          }
-        }
-      },
-      {
-        breakpoint: 1200,
-        options: {
-          chart: {
-            height: 120
-          }
-        }
-      },
-      {
-        breakpoint: 1065,
-        options: {
-          chart: {
-            height: 100
-          }
-        }
-      },
-      {
-        breakpoint: 992,
-        options: {
-          chart: {
-            height: 120
-          }
-        }
-      }
-    ]
+    // responsive: [
+    //   {
+    //     breakpoint: 1325,
+    //     options: {
+    //       chart: {
+    //         height: 100
+    //       }
+    //     }
+    //   },
+    //   {
+    //     breakpoint: 1200,
+    //     options: {
+    //       chart: {
+    //         height: 120
+    //       }
+    //     }
+    //   },
+    //   {
+    //     breakpoint: 1065,
+    //     options: {
+    //       chart: {
+    //         height: 100
+    //       }
+    //     }
+    //   },
+    //   {
+    //     breakpoint: 992,
+    //     options: {
+    //       chart: {
+    //         height: 120
+    //       }
+    //     }
+    //   }
+    // ]
   }
 
   return (
@@ -68,16 +68,16 @@ const Earnings = ({ success, data }) => {
       <CardBody>
         <Row>
           <Col xs='6'>
-            <CardTitle className='mb-1'>Credited Amount</CardTitle>
+            <CardTitle className='mb-1'>Comparison earning</CardTitle>
             <div className='font-small-2'>This Month</div>
-            <h5 className='mb-1'>{data?.current_month}</h5>
-            <CardText className='text-muted font-small-2'>
+            <h5 className='mb-1'>{data?.currentMonth}</h5>
+            {/* <CardText className='text-muted font-small-2'>
               <span className='fw-bolder'>68.2%</span>
               <span> more earnings than last month.</span>
-            </CardText>
+            </CardText> */}
           </Col>
           <Col xs='6'>
-            <Chart options={options} series={[data?.current_month, data?.last_month, data?.last2_month]} type='donut' height={120} />
+            <Chart options={options} series={data?.comparisonEarningData} type='donut' height={120} />
           </Col>
         </Row>
       </CardBody>

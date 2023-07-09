@@ -39,7 +39,7 @@ const StatsCard = ({ cols, responseData }) => {
     },
     {
       title: responseData.shipped_orders,
-      subtitle: 'Shift',
+      subtitle: 'Shipped',
       color: 'light-success',
       icon: <Truck size={24} />
     },

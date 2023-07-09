@@ -10,11 +10,8 @@ import { ThemeColors } from '@src/utility/context/ThemeColors'
 
 // ** Demo Components
 import Earnings from '@src/views/ui-elements/cards/analytics/Earnings'
-import CardMedal from '@src/views/ui-elements/cards/advance/CardMedal'
 import StatsCard from '@src/views/ui-elements/cards/statistics/StatsCard'
 import RevenueReport from '@src/views/ui-elements/cards/analytics/RevenueReport'
-import OrdersBarChart from '@src/views/ui-elements/cards/statistics/OrdersBarChart'
-import ProfitLineChart from '@src/views/ui-elements/cards/statistics/ProfitLineChart'
 
 // ** Styles
 import '@styles/react/libs/charts/apex-charts.scss'
@@ -23,42 +20,65 @@ import '@styles/base/pages/dashboard-ecommerce.scss'
 import {
   getApi,
   COMPLETE_ORDER_LIST,
+  ADMIN_FILTER_ORDER_OVERVIEW,
 } from '../constants/apiUrls'
-
 
 import useJwt from "@src/auth/jwt/useJwt"
 
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  CardText,
-  CardLink
-} from "reactstrap"
 import { useEffect, useState } from "react"
 const Home = () => {
   const [responseData, setResponseData] = useState({})
+  const [comparisonEarningData, setComparisonEarningData] = useState({comparisonEarningData:[0, 0], currentMonth:0, labels: []})
+  const [orderOverView, setOrderOverView] = useState({currentYearOrders: {January: 0}, currentYearDelivery: {January: 0}, currentYearEarning:0 }, { walletBalance: 0 })
+  
   const { colors } = useContext(ThemeColors)
 
-  // ** vars
-  const trackBgColor = '#e9ecef'
+
+
 
  
   const fetchCompleteOrderList = () => {
     return useJwt.axiosGet(getApi(COMPLETE_ORDER_LIST))
       .then((res) => {
-        console.log('response is ', res.data)
         setResponseData(res.data)
+        setComparisonEarningData({
+          comparisonEarningData: [res.data.comparison_earning.current_month_earning, res.data.comparison_earning.privious_month_earning], 
+          currentMonth: res.data.comparison_earning.current_month_earning, 
+          labels: ['Current Month', ['Privious Month']]
+        })
+
+        setOrderOverView({
+          currentYearOrders: res.data.current_year_orders,
+          currentYearDelivery: res.data.current_year_delivery,
+          currentYearEarning:res.data.current_year_earning,
+          walletBalance: res.data.wallet_balance
+        })
         return true
       })
       .catch((err) => console.log(err))
   }
+
+
+  const fetchOrderOverViewFilterData = (year) => {
+    return useJwt
+      .axiosGet(getApi(ADMIN_FILTER_ORDER_OVERVIEW)+'/' + year + "/")
+      .then((res) => {
+        setOrderOverView({
+          currentYearOrders: res.data.get_year_orders,
+          currentYearDelivery: res.data.get_year_delivery,
+          currentYearEarning:res.data.get_year_earning,
+          walletBalance: res.data.wallet_balance
+        })
+      })
+      .catch((err) => console.log(err))
+  }
+
+
   useEffect(() => {
-    fetchCompleteOrderList()
+    fetchCompleteOrderList()        
   }, [])
 
-  // console.log(responseData?.last_3_month_credited_amount?.current_month)
+
 
   return (
     <div id='dashboard-ecommerce'>
@@ -107,15 +127,14 @@ const Home = () => {
           </Row>
           <Row className='match-height'>
             <Col lg='12' md='6' xs='12'>
-              {/* {responseData?.last_3_month_credited_amount} */}
-              <Earnings data = {responseData?.last_3_month_credited_amount} success={colors.success.main} />
+              <Earnings success={colors.success.main} data= {comparisonEarningData} />
             </Col>
           </Row>
 
         </Col>
 
         <Col lg='8' md='12'>
-          <RevenueReport primary={colors.primary.main} warning={colors.warning.main} />
+          <RevenueReport fetchOrderOverViewFilterData={fetchOrderOverViewFilterData} orderOverViewSeriesData={orderOverView} primary={colors.primary.main} warning={colors.warning.main} />
         </Col>
       </Row>
     </div>
