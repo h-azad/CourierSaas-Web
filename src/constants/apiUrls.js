@@ -225,6 +225,8 @@ export const ADMIN_GET_PICKUP_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/pickup-r
 export const ADMIN_GET_DELIVERY_REPORT_APIVIEW = "/api/admin/delivery-report"
 export const ADMIN_GET_DELIVERY_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/delivery-report-generate-pdf"
 export const ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW = "/api/admin/delivery-collection-report"
+export const ADMIN_GET_ORDER_REVENUE_REPORT_APIVIEW = "/api/admin/order-revenue-report"
+export const ADMIN_GET_ORDER_REVENUE_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/order-revenue-report-generate-pdf"
 
 
 
@@ -233,9 +235,11 @@ export const ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW = "/api/admin/delivery
 export const TRANSECTIONS_FILTER = "/api/default-marchant-order-report"
 
 
-
 export const COMPLETE_ORDER_LIST = "/admin-get-complete-order-list"
 export const ADMIN_FILTER_ORDER_OVERVIEW = "/admin-filter--order-overview"
+
+export const RIDER_DASHBOARD = "/rider_app/rider-dashboard"
+export const RIDER_FILTER_TRANSACTION_OVERVIEW = "/rider_app/rider-filter-transection-overview"
 
 
 

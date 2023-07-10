@@ -79,6 +79,7 @@ import AdminGetWithdrawRequestReport from '../../views/reports/withdrawRequest'
 import GetAdminPickupReport from '../../views/reports/pickupReport'
 import GetAdminDeliveryReport from '../../views/reports/deliveryReport'
 import AdminGetCollectionReport from '../../views/reports/collectionReport'
+import AdminOrderRevenueReport from '../../views/reports/revenueOrderReport'
 
 
 
@@ -92,6 +93,10 @@ const DashboardRoutes = [
   {
     path: "/order/report",
     element: <AdminOrderReport />
+  },
+  {
+    path: "/revenue-report",
+    element: <AdminOrderRevenueReport />
   },
   {
     path: "/transactions-report",

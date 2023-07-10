@@ -251,6 +251,16 @@ const adminMenu = [
     resource: 'ADMIN', 
     navLink: "/delivery-collection-report"
   },
+
+  {
+    id: "admin-get-revenue-report",
+    title: "Revenue",
+    icon: <Map size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN',
+    navLink: "/revenue-report"
+  },
+
   // {
   //   id: "areas",
   //   title: "Areas",
@@ -358,6 +368,8 @@ const marchantMenu = [
     resource: 'MARCHANT',
     navLink: "/withdraw-balance-report"
   },
+
+  
 
   // {
   //   id: "withdraw",

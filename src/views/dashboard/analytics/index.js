@@ -1,6 +1,6 @@
 // ** React Imports
 import { useContext } from 'react'
-import { Users, Package, Truck, CheckCircle } from 'react-feather'
+import { Users, Package, Truck, Home, Send } from 'react-feather'
 // ** Icons Imports
 import { List } from 'react-feather'
 
@@ -10,7 +10,7 @@ import Timeline from '@components/timeline'
 import AvatarGroup from '@components/avatar-group'
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
 import { User, UserCheck, UserPlus, UserX } from "react-feather"
-
+import Earnings from '@src/views/ui-elements/cards/analytics/Earnings'
 // ** Utils
 import { kFormatter } from '@utils'
 
@@ -29,17 +29,80 @@ import SupportTracker from '@src/views/ui-elements/cards/analytics/SupportTracke
 import OrdersReceived from '@src/views/ui-elements/cards/statistics/OrdersReceived'
 import SubscribersGained from '@src/views/ui-elements/cards/statistics/SubscribersGained'
 import CardCongratulations from '@src/views/ui-elements/cards/advance/CardCongratulations'
-
+import RiderRevenueReport from '@src/views/ui-elements/cards/analytics/RiderRevenueReport'
 // ** Images
 import jsonImg from '@src/assets/images/icons/json.png'
 import ceo from '@src/assets/images/portrait/small/avatar-s-9.jpg'
 
 // ** Styles
 import '@styles/react/libs/charts/apex-charts.scss'
+import useJwt from "@src/auth/jwt/useJwt"
+import {
+  getApi,
+  RIDER_DASHBOARD,
+  RIDER_FILTER_TRANSACTION_OVERVIEW,
+} from '../../../constants/apiUrls'
 
+import { useEffect, useState } from "react"
 const AnalyticsDashboard = () => {
   // ** Context
   const { colors } = useContext(ThemeColors)
+
+  const [responseData, setResponseData] = useState({})
+  const [completeDelivery, setCompleteDelivery] = useState([])
+  const [pendingDelivery, setPendingDelivery] = useState([])
+  const [completePickup, setCompletePickup] = useState([])
+  const [pendingPickup, setPendingPickup] = useState([])
+  const [walletBalance, setWalletBalance] = useState([])
+  const [totalTransaction, setTotalTransaction] = useState([])
+  const [thisYearTransaction, setThisYearTransaction] = useState([])
+
+
+  const [comparisonEarningData, setComparisonEarningData] = useState({ comparisonEarningData: [0, 0], currentMonth: 0, labels: [] })
+  const [transactionOverView, setTransactionOverView] = useState({ January: 0 })
+
+
+
+  const fetchTransactionOverViewFilterData = (year) => {
+    return useJwt
+      .axiosGet(getApi(RIDER_FILTER_TRANSACTION_OVERVIEW)+'/' + year + "/")
+      .then((res) => {
+        setTransactionOverView(res?.data?.year_wise_Transection)
+        setThisYearTransaction(res.data.this_year_transaction)
+      })
+      .catch((err) => console.log(err))
+  }
+
+
+  const fetchCompleteOrderList = () => {
+    return useJwt.axiosGet(getApi(RIDER_DASHBOARD))
+      .then((res) => {
+        console.log('data', res.data)
+        setCompletePickup(res.data.complete_pickup)
+        setPendingPickup(res.data.pending_pickup)
+
+        setCompleteDelivery(res.data.complete_delivery)
+        setPendingDelivery(res.data.pending_delivery)
+
+        setWalletBalance(res.data.wallet_balance)
+        setTotalTransaction(res.data.total_transaction)
+        setThisYearTransaction(res.data.total_transaction)
+
+        setComparisonEarningData({
+          comparisonEarningData: [res.data.current_month_transaction, res.data.privious_month_transaction], 
+          currentMonth: res.data.current_month_transaction, 
+          labels: ['Current Month', ['Privious Month']]
+        })
+
+        setTransactionOverView(res?.data?.current_year_Transection)
+        return true
+      })
+      .catch((err) => console.log(err))
+  }
+
+  useEffect(() => {
+    fetchCompleteOrderList()
+  }, [])
 
   // ** Vars
   const avatarGroupArr = [
@@ -134,7 +197,7 @@ const AnalyticsDashboard = () => {
             color="primary"
             statTitle="Complete Delivery"
             icon={<Truck size={20} />}
-            renderStats={<h3 className="fw-bolder mb-75">21,459</h3>}
+            renderStats={<h3 className="fw-bolder mb-75">{completeDelivery}</h3>}
           />
         </Col>
         <Col lg="3" sm="6">
@@ -142,7 +205,7 @@ const AnalyticsDashboard = () => {
             color="danger"
             statTitle="Pending Delivery"
             icon={<Truck size={20} />}
-            renderStats={<h3 className="fw-bolder mb-75">4,567</h3>}
+            renderStats={<h3 className="fw-bolder mb-75">{pendingDelivery}</h3>}
           />
         </Col>
         <Col lg="3" sm="6">
@@ -150,7 +213,7 @@ const AnalyticsDashboard = () => {
             color="success"
             statTitle="Complete Pickup"
             icon={<Truck size={20} />}
-            renderStats={<h3 className="fw-bolder mb-75">19,860</h3>}
+            renderStats={<h3 className="fw-bolder mb-75">{completePickup}</h3>}
           />
         </Col>
         <Col lg="3" sm="6">
@@ -158,70 +221,45 @@ const AnalyticsDashboard = () => {
             color="warning"
             statTitle="Pending Pickup"
             icon={<Truck size={20} />}
-            renderStats={<h3 className="fw-bolder mb-75">237</h3>}
+            renderStats={<h3 className="fw-bolder mb-75">{pendingPickup}</h3>}
           />
         </Col>
       </Row>
 
       <Row className='match-height'>
-        <Col lg='6' sm='12'>
-          <CardCongratulations />
+        <Col lg='5' md='12'>
+          <Row className='match-height'>
+            <Col lg='6' md='6' xs='12'>
+              {/* <CardMedal /> */}
+              <StatsHorizontal
+                color="primary"
+                statTitle="Wallet"
+                icon={<Home size={20} />}
+                renderStats={<h3 className="fw-bolder mb-75">{walletBalance}</h3>}
+              />
+            </Col>
+            <Col lg='6' md='6' xs='12'>
+              <StatsHorizontal
+                color="success"
+                statTitle="Transaction"
+                icon={<Send size={24} />}
+                renderStats={<h3 className="fw-bolder mb-75">{totalTransaction}</h3>}
+              />
+            </Col>
+          </Row>
+          <Row className='match-height'>
+            <Col lg='12' md='6' xs='12'>
+              <Earnings success={colors.success.main} data= {comparisonEarningData} />
+            </Col>
+          </Row>
+
         </Col>
-        <Col lg='3' sm='6'>
-          <SubscribersGained
-            icon={<CheckCircle size={21} />}
-            color='primary'
-            stats={kFormatter(92600)}
-            statTitle='Total Compleate Task'
-            series={[{ data: [28, 40, 36, 52, 100, 500], name: "Subscriber" }]}
-            type='area'
-          />
-        </Col>
-        <Col lg='3' sm='6'>
-        <SubscribersGained
-            icon={<Package size={21} />}
-            color='warning'
-            stats={kFormatter(92600)}
-            statTitle='Total Pendding Task'
-            series={[{ data: [28, 40, 36, 52, 100, 500], name: "Subscriber" }]}
-            type='area'
-          />
-        </Col>
-      </Row>
-      <Row className='match-height'>
-        <Col lg='6' xs='12'>
-          <AvgSessions primary={colors.primary.main} />
-        </Col>
-        <Col lg='6' xs='12'>
-          <SupportTracker primary={colors.primary.main} danger={colors.danger.main} />
-        </Col>
-      </Row>
-      <Row className='match-height'>
-        <Col lg='4' xs='12'>
-          <Card className='card-user-timeline'>
-            <CardHeader>
-              <div className='d-flex align-items-center'>
-                <List className='user-timeline-title-icon' />
-                <CardTitle tag='h4'>User Timeline</CardTitle>
-              </div>
-            </CardHeader>
-            <CardBody>
-              <Timeline className='ms-50 mb-0' data={data} />
-            </CardBody>
-          </Card>
-        </Col>
-        <Col lg='4' md='6' xs='12'>
-          <Sales primary={colors.primary.main} info={colors.info.main} />
-        </Col>
-        <Col lg='4' md='6' xs='12'>
-          <CardAppDesign />
+
+        <Col lg='7' md='12'>
+          <RiderRevenueReport thisYearTransaction={thisYearTransaction} fetchTransactionOverViewFilterData={fetchTransactionOverViewFilterData} transactionOverViewSeriesData={transactionOverView} primary={colors.primary.main} warning={colors.warning.main} />
         </Col>
       </Row>
-      <Row className='match-height'>
-        <Col xs='12'>
-          {/* <InvoiceList /> */}
-        </Col>
-      </Row>
+
     </div>
   )
 }
