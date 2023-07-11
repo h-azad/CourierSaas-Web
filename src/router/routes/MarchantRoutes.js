@@ -64,7 +64,7 @@ const MarchantRoutes = [
         element: <MarchantPickupAddressList />
     },
     {
-        path: "/transection-report",
+        path: "/transaction-report",
         element: <TransectionReport />
     },
     {

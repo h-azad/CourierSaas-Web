@@ -80,6 +80,12 @@ export const RIDER_GET_DELIVERY_COLLECTION_REPORT_PDF = "/rider_app/get-delivery
 
 
 //AGENT API's
+
+export const AGENT_TYPE_ADD = '/api/user/agent-type/'
+export const AGENT_TYPE_EDIT = '/api/user/agent-type/'
+export const AGENT_TYPE_LIST = '/api/user/agent-type/'
+export const AGENT_TYPE_DELETE = '/api/user/agent-type/'
+
 export const AGENT_ADD = '/manage-user/create-agent'
 export const AGENT_EDIT = '/manage-user/agent/'
 export const AGENT_LIST = '/manage-user/agent '
@@ -235,11 +241,13 @@ export const ADMIN_GET_ORDER_REVENUE_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/o
 export const TRANSECTIONS_FILTER = "/api/default-marchant-order-report"
 
 
-export const COMPLETE_ORDER_LIST = "/admin-get-complete-order-list"
-export const ADMIN_FILTER_ORDER_OVERVIEW = "/admin-filter--order-overview"
+export const ADMIN_DASHBOARD = "/api/user/admin-dashboard"
+
+export const ADMIN_FILTER_ORDER_OVERVIEW = "/api/user/admin-filter--order-overview"
 
 export const RIDER_DASHBOARD = "/rider_app/rider-dashboard"
-export const RIDER_FILTER_TRANSACTION_OVERVIEW = "/rider_app/rider-filter-transection-overview"
+export const FILTER_BY_YEAR_TRANSACTION_OVERVIEW = "/rider_app/rider-filter-transection-overview"
+export const MARCHANT_DASHBOARD = '/marchant_app/marchant-dashboard'
 
 
 

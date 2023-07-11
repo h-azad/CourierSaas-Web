@@ -19,7 +19,7 @@ import '@styles/base/pages/dashboard-ecommerce.scss'
 
 import {
   getApi,
-  COMPLETE_ORDER_LIST,
+  ADMIN_DASHBOARD,
   ADMIN_FILTER_ORDER_OVERVIEW,
 } from '../constants/apiUrls'
 
@@ -38,7 +38,7 @@ const Home = () => {
 
  
   const fetchCompleteOrderList = () => {
-    return useJwt.axiosGet(getApi(COMPLETE_ORDER_LIST))
+    return useJwt.axiosGet(getApi(ADMIN_DASHBOARD))
       .then((res) => {
         setResponseData(res.data)
         setComparisonEarningData({

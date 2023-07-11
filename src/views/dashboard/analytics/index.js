@@ -40,7 +40,7 @@ import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
   RIDER_DASHBOARD,
-  RIDER_FILTER_TRANSACTION_OVERVIEW,
+  FILTER_BY_YEAR_TRANSACTION_OVERVIEW,
 } from '../../../constants/apiUrls'
 
 import { useEffect, useState } from "react"
@@ -65,7 +65,7 @@ const AnalyticsDashboard = () => {
 
   const fetchTransactionOverViewFilterData = (year) => {
     return useJwt
-      .axiosGet(getApi(RIDER_FILTER_TRANSACTION_OVERVIEW)+'/' + year + "/")
+      .axiosGet(getApi(FILTER_BY_YEAR_TRANSACTION_OVERVIEW)+'/' + year + "/")
       .then((res) => {
         setTransactionOverView(res?.data?.year_wise_Transection)
         setThisYearTransaction(res.data.this_year_transaction)

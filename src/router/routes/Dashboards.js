@@ -80,6 +80,9 @@ import GetAdminPickupReport from '../../views/reports/pickupReport'
 import GetAdminDeliveryReport from '../../views/reports/deliveryReport'
 import AdminGetCollectionReport from '../../views/reports/collectionReport'
 import AdminOrderRevenueReport from '../../views/reports/revenueOrderReport'
+import AddAgentType from '../../views/agent/agentType/add'
+import AgentTypeList from '../../views/agent/agentType/partials/list-table'
+import AgentTypeEdit from '../../views/agent/agentType/edit'
 
 
 
@@ -242,6 +245,19 @@ const DashboardRoutes = [
   {
     path: "/agentlogin",
     element: <AgentLogin/>
+  },
+
+  {
+    path: "/agent-type",
+    element: <AgentTypeList />
+  },
+  {
+    path: "/agent-type/add",
+    element: <AddAgentType />
+  },
+  {
+    path: "/agent-type/edit/:id",
+    element: <AgentTypeEdit />
   },
 
   {

@@ -91,6 +91,16 @@ const adminMenu = [
     resource: 'ADMIN', 
     navLink: "/rider"
   },
+
+  {
+    id: "agent-type",
+    title: "Agent Type",
+    icon: <User size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN', 
+    navLink: "/agent-type"
+  },
+
   {
     id: "agent",
     title: "Agent",
