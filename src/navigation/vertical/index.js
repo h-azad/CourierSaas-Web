@@ -60,6 +60,15 @@ const adminMenu = [
     navLink: "/assignment"
   },
 
+  {
+    id: "agent-assignment",
+    title: "Agent Assignment",
+    icon: <CreditCard size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN',
+    navLink: "/agent-assignment"
+  },
+
 
   {
     header: 'Accounts',

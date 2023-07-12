@@ -18,7 +18,7 @@ import withReactContent from "sweetalert2-react-content"
 import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
-  AGENT_LIST, 
+  AGENT_LIST_VIEW, 
   AGENT_DELETE ,
   AGENT_SEARCH ,
   AGENT_UPDATE_STATUS
@@ -87,10 +87,10 @@ const ListTable = () => {
 
   const fetchAgentData = () => {
     return useJwt
-      .axiosGet(getApi(AGENT_LIST))
+      .axiosGet(getApi(AGENT_LIST_VIEW))
       .then((res) => {
         console.log(res.data)
-        setAgent(res.data.data)
+        setAgent(res.data)
         return res.data
       })
       .catch((err) => console.log(err))
@@ -176,6 +176,7 @@ const ListTable = () => {
         <thead>
           <tr>
             <th>Full Name</th>
+            <th>Type</th>
             <th>Contact Number 1*</th>
             <th>Email</th>
             {/* <th>City Name</th>
@@ -191,6 +192,7 @@ const ListTable = () => {
                 <td>
                   <span className="align-middle fw-bold">{info.full_name}</span>
                 </td>
+                <td>{info.types.name}</td>
                 <td>{info.contact_no}</td>
                 <td>{info.email}</td>
                 {/* <td>{info.city?.cities_name}</td>
@@ -295,7 +297,7 @@ export default ListTable
 // import useJwt from '@src/auth/jwt/useJwt'
 // import { 
 //   getApi, 
-//   AGENT_LIST, 
+//   AGENT_LIST_VIEW, 
 //   AGENT_DELETE ,
 //   AGENT_SEARCH ,
 // }from "../../../constants/apiUrls"
@@ -365,7 +367,7 @@ export default ListTable
 
 //   const fetchAgentData = () => {
 //     return useJwt
-//       .axiosGet(getApi(AGENT_LIST))
+//       .axiosGet(getApi(AGENT_LIST_VIEW))
 //       .then((res) => {
 //         setAgent(res.data)
 //         return res.data

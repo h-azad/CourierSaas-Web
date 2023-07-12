@@ -13,7 +13,7 @@ import Select from "react-select"
 import { useForm, Controller } from 'react-hook-form'
 import classnames from 'classnames'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, AGENT_ADD,PAYMENT_METHOD_LIST,CITIES_LIST,AREAS_LIST } from '@src/constants/apiUrls'
+import { getApi, AGENT_ADD,PAYMENT_METHOD_LIST,CITIES_LIST,AREAS_LIST, AGENT_TYPE_LIST } from '@src/constants/apiUrls'
 import SwalAlert from "../../components/SwalAlert"
 import { useEffect, useState } from "react"
 import {identity } from "../../constants/data/identity"
@@ -25,6 +25,7 @@ const AddAgent = () => {
   const [selectboxPaymentMethod, setSelectboxPaymentMethod] = useState([])
   const [selectboxCity, setSelectboxCity] = useState([])
   const [selectboxArea, setSelectboxArea] = useState([])
+  const [selectboxAgent, setSelectboxAgent] = useState([])
   const [data, setData] = useState(null)
 
 
@@ -62,6 +63,7 @@ const AddAgent = () => {
   useEffect(() => {
     fetchPaymentmethodData()
     fetchCityData()
+    fetchAgentTypeData()
   },[])
 
   const fetchPaymentmethodData = () => {
@@ -96,6 +98,22 @@ const AddAgent = () => {
       .catch(err => console.log(err))
   }
 
+  const fetchAgentTypeData = () => {
+    return useJwt
+      .axiosGet(getApi(AGENT_TYPE_LIST))
+      .then((res) => {
+        let agentType = []
+
+        res.data.map(data => {
+          agentType.push({value: data.id, label: data.name})
+        })
+
+        setSelectboxAgent(agentType)
+        return res.data
+      })
+      .catch(err => console.log(err))
+  }
+
   const fetchAreaData = (cityId) => {
 
     return useJwt
@@ -114,14 +132,18 @@ const AddAgent = () => {
   }
 
   const onSubmit = data => {
-    console.log("data", data)
-
+    
     let isFormValid = true
 
     if(!data.name) {
       setError('name', { type: 'required', message: 'Full Name is required' })
       isFormValid = false
     }
+    if(!data.types.value) {
+      setError('types', { type: 'required', message: 'Agent Type is required' })
+      isFormValid = false
+    }
+
     if(!data.contact_no) {
       setError('contact_no', { type: 'required', message: 'Contact No is required' })
       isFormValid = false
@@ -186,7 +208,7 @@ const AddAgent = () => {
 
 
     setData(data)
-    if (data.name !== null &&  data.contact_no !== null &&  data.contact_no_two !== null 
+    if (data.name !== null && data.types.value !== null && data.contact_no !== null &&  data.contact_no_two !== null 
       && data.identity !== null &&  data.identity_no !== null &&  data.email !== null
       && data.payment_method.value !== null &&  data.bank_name !== null &&  data.bank_account_name !== null 
       && data.bank_account_num !== null &&  data.city.value !== null &&  data.area.value!== null
@@ -196,6 +218,7 @@ const AddAgent = () => {
     // if (Object.values(data).every(field => field.length > 0)) {
       let formData = {
         name: data.name,
+        types: data.types?.value,
         contact_no: data.contact_no,
         contact_optional: data.contact_optional,
         identity: data.identity?.value,
@@ -210,7 +233,7 @@ const AddAgent = () => {
         address: data.address,
         password: data.password,
         confirm_password: data.confirm_password,
-        status: 'active'
+        status: 'pending'
       }
       console.log("formData", formData)
       // return false
@@ -241,6 +264,8 @@ const AddAgent = () => {
 
       <CardBody>
       <Form onSubmit={handleSubmit(onSubmit)}>
+      <div class="row">
+            <div class="col-lg-6">
           <div className='mb-1'>
             <Label className='form-label' for='name'>
               Full Name
@@ -254,6 +279,28 @@ const AddAgent = () => {
             />
             {errors && errors.name && <span className="invalid-feedback">{errors.name.message}</span>}
           </div>
+          </div>
+          <div class="col-lg-6">
+              <div className='mb-1'>
+                <Label className='form-label' for='agent_type'>
+                Agent Type *
+                </Label>
+                <Controller
+                   id='types'
+                   name='types'
+                  control={control}
+                  render={({ field }) => <Select 
+                    isClearable
+                    className={classnames('react-select', { 'is-invalid': errors.types && true })} 
+                    classNamePrefix='select'
+                    options={selectboxAgent} 
+                    {...field} 
+                  />}
+                />
+                {errors && errors.types && <span className="invalid-feedback">{errors.types.message}</span>}
+              </div>
+            </div>
+    </div>
           <div class="row">
             <div class="col-lg-6">
             <div className='mb-1'>

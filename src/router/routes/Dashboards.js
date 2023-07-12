@@ -83,6 +83,8 @@ import AdminOrderRevenueReport from '../../views/reports/revenueOrderReport'
 import AddAgentType from '../../views/agent/agentType/add'
 import AgentTypeList from '../../views/agent/agentType/partials/list-table'
 import AgentTypeEdit from '../../views/agent/agentType/edit'
+import AssignmentToAgent from '../../views/agent_assignment/delivery/assignmentToAgent'
+import DeliveryToAgentTask from '../../views/agent_assignment/delivery/deliveryToAgentTask'
 
 
 
@@ -126,6 +128,17 @@ const DashboardRoutes = [
     path: "/assignment/delivery/:id",
     element: <DeliveryRiderTask />
   },
+
+  {
+    path: "/agent-assignment/delivery/:id",
+    element: <DeliveryToAgentTask />
+  },
+
+  {
+    path: "/assignment/agent-delivery/:id",
+    element: <DeliveryRiderTask />
+  },
+
   {
     path: "/assignment/task/:id",
     element: <RiderTasks />
@@ -134,6 +147,12 @@ const DashboardRoutes = [
     path: "/assignment",
     element: <RiderAssignmentList />
   },
+
+  {
+    path: "/agent-assignment",
+    element: <AssignmentToAgent />
+  },
+
   {
     path: "/account-wallet",
     element: <AccountWallet />
