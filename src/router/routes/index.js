@@ -17,6 +17,7 @@ import AuthRoutes from "./AuthRoutes"
 import DashboardRoutes from "./Dashboards"
 import MarchantRoutes from "./MarchantRoutes"
 import RiderRoutes from "./RiderRoutes"
+import AgentRoutes from "./AgentRoutes"
 
 const getLayout = {
   blank: <BlankLayout />,
@@ -36,7 +37,8 @@ const Routes = [
   ...AuthRoutes,
   ...DashboardRoutes,
   ...MarchantRoutes,
-  ...RiderRoutes
+  ...RiderRoutes,
+  ...AgentRoutes
 ]
 
 const getRouteMeta = (route) => {

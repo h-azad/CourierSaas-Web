@@ -55,9 +55,7 @@ const ListTable = () => {
  const updateStatusAction = (e) => {
   e.preventDefault()
   useJwt
-    .axiosPatch(getApi(AGENT_UPDATE_STATUS) + "/" + selectedInfo.id + "/", {
-      status: selectedStatus,
-    })
+    .axiosPatch(getApi(AGENT_UPDATE_STATUS) + "/" + selectedInfo.id + "/", selectedStatus==='active'?{ status: selectedStatus, agent_id: selectedInfo.id }:{ status: selectedStatus })
     .then((res) => {
       console.log("res", res.data)
       setStatusModalState(false)

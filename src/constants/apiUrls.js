@@ -93,6 +93,9 @@ export const AGENT_LIST_VIEW = '/api/agent_app/agent-list/'
 export const UNDELIVERY_ORDER_BY_AGENT_LIST = '/api/agent_app/undelivery-order-list'
 export const DELIVERY_TO_AGENT_TASK_LIST = '/api/agent_app/delivery-to-agent-task'
 export const DELIVERY_ASSIGN_TO_AGENT = '/api/agent_app/delivery-assignment-to-agent'
+export const CREATE_ORDER_BY_AGENT = '/api/agent_app/agent-orders/'
+export const CREATE_ORDER_BY_AGENT_FILTER = '/api/agent_app/agent-order-filter'
+
 export const AGENT_DELETE = '/manage-user/agent/'
 export const AGENT_DETAILS = '/manage-user/agent/'
 export const AGENT_UPDATE_STATUS = "/manage-user/agent"

@@ -544,6 +544,19 @@ const agentMenu = [
     resource: 'AGENT',
     navLink: "/agent-dashboard"
   },
+  {
+    header: 'Orders',
+    action: 'agent-pages',
+    resource: 'AGENT',
+},
+  {
+    id: "agent-order",
+    title: "Order Manage",
+    icon: <CreditCard size={20} />,
+    action: 'agent-pages',
+    resource: 'AGENT',
+    navLink: "/agent/order"
+  },
 
 ]
 
