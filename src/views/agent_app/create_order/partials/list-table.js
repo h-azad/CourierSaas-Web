@@ -32,11 +32,6 @@ const CreateOrderList = () => {
   const [createOrder, setCreateOrder] = useState([])
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedInfo, setSelectedInfo] = useState(null)
-  const [value, setValue] = useState("")
-  const [orderStatus, setOrderStatus] = useState("")
-  const [orderID, setorderID] = useState("")
-  const [receipientName, setReceipientName] = useState("")
-  const [phoneNumber, setphoneNumber] = useState("")
   const [selectedDate, setSelectedDate] = useState(null)
   const datePickerRef = useRef(null)
   const [selectedValue, setSelectedValue] = useState('')
@@ -104,42 +99,16 @@ const CreateOrderList = () => {
     { value: "completed", label: "Completed" },
   ]
 
-  const filterHandle = (e, property) => {
-    setOrderStatus(e?.target?.value)
-    setValue(e?.target?.value)
- 
-    let searchTerm
-    if (property==='date'){
-      searchTerm=e
 
-    }
-    else if (e?.target?.value) {
-      searchTerm = e.target?.value
-    } else {
-      searchTerm = e?.value
-      
-    }
-    if (searchTerm?.length > 0) {
-      fetchSearchFilterAdmin(property, searchTerm).then((data) => {
-        if (data?.length > 0) {
-          setCreateOrder(data)
-        } else {
-          console.log("No data")
-        }
-      })
-    } else {
-      fetchCreateOrderData()
-    }
-  }
-
-  const fetchSearchFilterAdmin = (val, input) => {
+  const fetchOrderSearchFilterByAgent = (val, input) => {
     console.log('val', val, 'input', input)
     return useJwt
       .axiosGet(
         getApi(CREATE_ORDER_BY_AGENT_FILTER) +
-          `?${input}=${val.value}`
+          `?${input}=${val}`
       )
       .then((res) => {
+        setCreateOrder(res.data)
         console.log("response", res)
         return res.data
       })
@@ -147,14 +116,8 @@ const CreateOrderList = () => {
   }
   
   const clearFilter = () => {
-    setOrderStatus("")
-    setorderID('')
-    setReceipientName('')
-    setphoneNumber('')
-    setSelectedValue('')
-    fetchCreateOrderData()
     setSelectedDate(null)
-
+    fetchCreateOrderData()
   }
 
 
@@ -182,10 +145,10 @@ const CreateOrderList = () => {
                   //   filterHandle(e, "status")
                   // }}
                   onChange={(e) => {
-                    fetchSearchFilterAdmin(e, "status")
+                    fetchOrderSearchFilterByAgent(e.value, "status")
                   }}
                   options={statusOptions}
-                  value={orderStatus}
+                  // value={orderStatus}
                 />
               </div>
 
@@ -194,9 +157,8 @@ const CreateOrderList = () => {
                 <Search
                   placeholder="eg. ODR23031301d6"
                   onChange={(e) => {
-                    filterHandle(e, "order_id"), setorderID(e.target.value)
+                    fetchOrderSearchFilterByAgent(e.target.value, "parcel_id")
                   }}
-                  value={orderID}
                 />
               </div>
               <div className=" mt-2">
@@ -204,9 +166,8 @@ const CreateOrderList = () => {
                 <Search
                   placeholder="eg. Jhon Doe"
                   onChange={(e) => {
-                    filterHandle(e, "receipient_name"), setReceipientName(e.target.value)
+                    fetchOrderSearchFilterByAgent(e.target.value, "recipient_name")
                   }}
-                  value={receipientName}
                 />
               </div>
               <div className=" mt-2">
@@ -214,20 +175,19 @@ const CreateOrderList = () => {
                 <Search
                   placeholder="eg. 01793912259"
                   onChange={(e) => {
-                    filterHandle(e, "phone"), setphoneNumber(e.target.value)
+                    fetchOrderSearchFilterByAgent(e.target.value, "phone_number")
                   }}
-                  value={phoneNumber}
                 />
               </div>
               <div className=" mt-2">
                 <h6>Filter by Order Type</h6>
-                <Checkbox checked={selectedValue === 'pickup'} value="pickup" onChange={(e) => { filterHandle(e, "pickup"), setSelectedValue(e.target.value) }}>
+                <Checkbox checked={selectedValue === 'pickedup'} value="pickedup" onChange={(e) => { fetchOrderSearchFilterByAgent(e.target.value, "status"), setSelectedValue(e.target.value) }}>
                   Pickup
                 </Checkbox>
-                <Checkbox checked={selectedValue === 'warehouse'} value="warehouse" onChange={(e) => { filterHandle(e, "warehouse"), setSelectedValue(e.target.value) }}>
+                <Checkbox checked={selectedValue === 'in_warehouse'} value="in_warehouse" onChange={(e) => { fetchOrderSearchFilterByAgent(e.target.value, "status"), setSelectedValue(e.target.value) }}>
                   Warehouse
                 </Checkbox>
-                <Checkbox checked={selectedValue === 'delivery'} value="delivery" onChange={(e) => { filterHandle(e, "delivery"), setSelectedValue(e.target.value) }}>
+                <Checkbox checked={selectedValue === 'delivered'} value="delivered" onChange={(e) => { fetchOrderSearchFilterByAgent(e.target.value, "status"), setSelectedValue(e.target.value) }}>
                   Delivery
                 </Checkbox>
               </div>
@@ -240,7 +200,7 @@ const CreateOrderList = () => {
                     width: '100%',
                   }}
                   value={selectedDate}
-                  onChange={(date) => { setSelectedDate(date), filterHandle(date.format('YYYY-MM-DD'), 'date') }}
+                  onChange={(date) => { setSelectedDate(date), fetchOrderSearchFilterByAgent(date.format('YYYY-MM-DD'), "created_at") }}
                 />
               </div>
             </div>
@@ -298,7 +258,7 @@ const CreateOrderList = () => {
                             </DropdownToggle>
                             <DropdownMenu>
                               <DropdownItem
-                                href={"/create_order/edit/" + info.id}
+                                href={"/agent/create_order/edit/" + info.id}
                               >
                                 <Edit className="me-50" size={15} />{" "}
                                 <span className="align-middle">Edit</span>

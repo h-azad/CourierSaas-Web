@@ -16,8 +16,6 @@ import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
   CREATE_ORDER_EDIT,
-  MARCHANT_LIST,
-  RIDER_LIST,
   PRODUCT_TYPE_LIST,
   AREAS_LIST,
   CREATE_ORDER_DETAILS,
@@ -27,18 +25,15 @@ import {
   DELIVARY_CHARGE_BY_PERCEL_TYPE,
 } from "@src/constants/apiUrls"
 import { useEffect, useState } from "react"
-import SwalAlert from "../../components/SwalAlert"
+import SwalAlert from "../../../components/SwalAlert"
 
 const EditCreateOrder = () => {
-  const [selectboxMarchant, setSelectboxMarchant] = useState([])
-  const [selectboxRider, setSelectboxRider] = useState([])
   const [selectboxProduct, setSelectboxProduct] = useState([])
   const [selectPricingPolicybyProduct, setPricingPolicybyProduct] = useState([])
   const [selectboxPricingPolicy, setSelectboxPricingPolicy] = useState([])
   const [selectboxArea, setSelectboxArea] = useState([])
   const [selectboxShipmentType, setSelectboxShipmentType] = useState([])
   const [createOrderInfo, setCreateOrderInfo] = useState(null)
-  const [data, setData] = useState(null)
   const [selectboxDelivaryCharge, setSelectboxDelivaryCharge] = useState([])
   const [selectWareHouseStatus, setSelectWareHouseStatus] = useState([])
   const [delivaryCharge, setDelivaryCharge] = useState(0)
@@ -46,18 +41,13 @@ const EditCreateOrder = () => {
   const [CODCharge, setCODCharge] = useState(0)
   const [orderType, setOrderType] = useState()
 
-  // console.log('selectPricingPolicybyProduct', selectPricingPolicybyProduct)
-  console.log("createOrderInfo ======", createOrderInfo)
   let { id } = useParams()
 
   useEffect(() => {
-    // console.log(id)
     useJwt
       .axiosGet(getApi(CREATE_ORDER_DETAILS) + id + "/")
       .then((res) => {
-        // console.log("res", res.data)
         setCreateOrderInfo(res.data)
-        // console.log('selectbox delivary charge', res.data.delivary_charge)
         setDelivaryCharge(res.data.delivary_charge)
         setOrderType(res.data.order_type)
         setSelectboxDelivaryCharge([
@@ -69,8 +59,6 @@ const EditCreateOrder = () => {
             : [{ value: false, label: "No" }]
         )
         console.log("select ware house status", selectWareHouseStatus)
-
-        // console.log(identity.find(id => id.value == createOrderInfo.identity))
         return res.data
       })
       .catch((err) => console.log(err))
@@ -93,7 +81,6 @@ const EditCreateOrder = () => {
         })
 
         setSelectboxDelivaryCharge(delivaryChargeData)
-        // setDelivaryChargebyPercelType(res.data)
         return res.data
       })
       .catch((err) => console.log(err))
@@ -101,10 +88,8 @@ const EditCreateOrder = () => {
 
   const navigate = useNavigate()
   const {
-    reset,
     control,
     watch,
-    resetField,
     setError,
     setValue,
     handleSubmit,
@@ -117,46 +102,12 @@ const EditCreateOrder = () => {
   })
 
   useEffect(() => {
-    fetchMarchantData()
-    fetchRiderData()
     fetchProductData()
     fetchAreaData()
     fetchPricingPolicyData()
     fetchShipmentTypeData()
   }, [])
 
-  const fetchMarchantData = () => {
-    return useJwt
-      .axiosGet(getApi(MARCHANT_LIST))
-      .then((res) => {
-        // console.log(res)
-        let marchantData = []
-
-        res.data.data.map((data) => {
-          marchantData.push({ value: data.id, label: data.full_name })
-        })
-
-        setSelectboxMarchant(marchantData)
-        return res.data.full_name
-      })
-      .catch((err) => console.log(err))
-  }
-  const fetchRiderData = () => {
-    return useJwt
-      .axiosGet(getApi(RIDER_LIST))
-      .then((res) => {
-        // console.log(res)
-        let riderData = []
-        console.log("rider data res.data.data", res.data.data)
-        res.data.data.map((data) => {
-          riderData.push({ value: data.id, label: data.full_name })
-        })
-
-        setSelectboxRider(riderData)
-        return res.data.full_name
-      })
-      .catch((err) => console.log(err))
-  }
 
   const fetchShipmentTypeData = () => {
     return useJwt
@@ -209,11 +160,6 @@ const EditCreateOrder = () => {
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
-      // console.log(value, name, type)
-      // if (name == "product_type" && type == "change") {
-      //   setValue("delivary_charge", null)
-      //   fetchPricingPolicyData(value.product_type.value)
-      // }
 
       if (name == "product_type" && type == "change") {
         fetchPricingPolicyData(value.product_type.value)
@@ -257,8 +203,6 @@ const EditCreateOrder = () => {
     // console.log(policyID)
     if (policiesData && policyID) {
       const parcelInfo = policiesData.find((x) => x.id == policyID)
-      // console.log('policiesData', policiesData)
-      // console.log('parcelInfo', policyID, parcelInfo)
       parcelInfo
         ? setValue("delivary_charge", parcelInfo.delivary_charge)
         : null
@@ -284,13 +228,6 @@ const EditCreateOrder = () => {
 
     let isFormValid = true
 
-    if (!data.marchant && data.marchant.value) {
-      setError("marchant", {
-        type: "required",
-        message: "Marchant is required",
-      })
-      isFormValid = false
-    }
     if (!data.recipient_name) {
       setError("recipient_name", {
         type: "required",
@@ -356,35 +293,12 @@ const EditCreateOrder = () => {
       })
       isFormValid = false
     }
-    // if (!data.pickup_rider && data.pickup_rider.value) {
-    //   setError("pickup_rider", {
-    //     type: "required",
-    //     message: " Pickup Rider is required",
-    //   })
-    //   isFormValid = false
-    // }
-    // if (!data.delivary_rider && data.delivary_rider) {
-    //   setError("delivary_rider", {
-    //     type: "required",
-    //     message: " Pickup Rider is required",
-    //   })
-    //   isFormValid = false
-    // }
-    // if (!data.warehouse_status) {
-    //   setError("warehouse_status", {
-    //     type: "required",
-    //     message: "Warehouse Status is required",
-    //   })
-    //   isFormValid = false
-    // }
 
     if (!isFormValid) {
       return false
     }
 
-    setData(data)
     if (
-      data.marchant.value !== null &&
       data.recipient_name !== null &&
       data.phone_number !== null &&
       data.delivary_address !== null &&
@@ -397,7 +311,6 @@ const EditCreateOrder = () => {
 
     ) {
       let formData = {
-        marchant: data.marchant.value,
         recipient_name: data.recipient_name,
         phone_number: data.phone_number,
         delivary_address: data.delivary_address,
@@ -421,12 +334,10 @@ const EditCreateOrder = () => {
       }
 
       useJwt
-        // .axiosPost(getApi(CREATE_ORDER_EDIT), formData)
         .axiosPatch(getApi(CREATE_ORDER_EDIT) + id + "/", formData, headers)
         .then((res) => {
-          // console.log("res", res.data)
           SwalAlert("Order Edited Successfully")
-          navigate("/create_order")
+          navigate("/agent/order")
         })
         .catch((err) => console.log(err))
     }
@@ -441,40 +352,6 @@ const EditCreateOrder = () => {
       <CardBody>
         {createOrderInfo && (
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <div className="mb-1" >
-              <Label className="form-label" for="marchant">
-                Marchant*
-              </Label>
-              <Controller
-                id="marchant"
-                name="marchant"
-                defaultValue={{
-                  value: createOrderInfo.marchant.id,
-                  label: createOrderInfo.marchant.full_name,
-                }}
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    isClearable
-                    className={classnames("react-select", {
-                      "is-invalid": errors.marchant && errors.marchant && true,
-                    })}
-                    classNamePrefix="select"
-                    options={selectboxMarchant}
-                    {...field}
-                  />
-                )}
-              />
-
-              {
-                errors && errors.marchant && (
-                  <span className="invalid-feedback">
-                    {errors.marchant.message}
-                  </span>
-                )
-              }
-            </div>
-
             <div class="row">
               <div class="col-lg-6">
                 <div className="mb-1">
