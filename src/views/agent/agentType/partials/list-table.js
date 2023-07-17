@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Search, Trash } from "react-feather"
+import { Search, Trash, Edit } from "react-feather"
 import {
   Table,
   Button,
@@ -102,10 +102,12 @@ const AgentTypeList = () => {
                   <span className="align-middle fw-bold">{type?.name}</span>
                 </td>
                 <td>
-                    
-                    
-                  
+                
                     <Trash href="/" onClick={(e) => deleteAction(e, type.id)} className="me-50" size={15} />{" "}
+
+                        <Edit href={"/areas/edit/" + type.id} className="me-50" size={15} />{" "}
+
+
                 </td>
               </tr>
             ))}

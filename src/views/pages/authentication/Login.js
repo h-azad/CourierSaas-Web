@@ -1,6 +1,6 @@
 // ** React Imports
 //n
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 // import { useContext } from 'react'
 
@@ -61,6 +61,7 @@ const defaultValues = {
 
 const Login = () => {
   // ** Hooks
+  const [error, setErrors] = useState()
   const { skin } = useSkin()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -117,7 +118,7 @@ const Login = () => {
             <ToastContent t={t} role={data.role || 'admin'} name={data.name || 'John Doe'} />
           ))
         })
-        .catch(err => console.log(err))
+        .catch(err => setErrors(err.response.data.errors.non_field_errors))
     } else {
       for (const key in data) {
         if (data[key].length === 0) {
@@ -196,9 +197,12 @@ const Login = () => {
         </Col>
         <Col className='d-flex align-items-center auth-bg px-2 p-lg-5' lg='4' sm='12'>
           <Col className='px-xl-2 mx-auto' sm='8' md='6' lg='12'>
+            
             <CardTitle tag='h2' className='fw-bold mb-1'>
+            {error && <h4 style={{color: "red"}}>{error}</h4>}
               Welcome to Courier! 👋
             </CardTitle>
+            
             <CardText className='mb-2'>Please sign-in to your account and start the adventure</CardText>
            
             <Form className='auth-login-form mt-2' onSubmit={handleSubmit(onSubmit)}>
@@ -248,6 +252,7 @@ const Login = () => {
               <Button type='submit' color='primary' block>
                 Sign in
               </Button>
+              
             </Form>
             <p className='text-center mt-2'>
               <span className='me-25'>New on our platform?</span>

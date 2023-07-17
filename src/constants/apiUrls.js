@@ -262,6 +262,7 @@ export const MARCHANT_DASHBOARD = '/marchant_app/marchant-dashboard'
 
 //Create Organization
 export const CREATE_ORGANIZATION = "/api/user/create-tanent"
+export const COMPANY_SETTING = '/api/company-setting/'
 
 export const getApi = (api) => {
     return BASE_API + api
