@@ -28,6 +28,8 @@ import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
 import { EyeOutlined } from '@ant-design/icons'
 import { useParams } from "react-router-dom"
 
+import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
+
 const DeliveryRiderTask = () => {
   const [createOrder, setCreateOrder] = useState([])
   const MySwal = withReactContent(Swal)
@@ -35,6 +37,17 @@ const DeliveryRiderTask = () => {
   const [selectedStatus, setSelectedStatus] = useState(null)
   const [selectedInfo, setSelectedInfo] = useState(null)
   let { id } = useParams()
+
+  const [orderid, setOrderId] = useState(0)
+  const [open, setOpen] = useState(false)
+  const showOrderDetailsDrawer = () => {
+    setOpen(true)
+  }
+  const onCloseOrderDetailsDrawer = () => {
+    setOpen(false)
+  }
+
+
   const deleteAction = (e, id) => {
     e.preventDefault()
     return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
@@ -148,8 +161,9 @@ const DeliveryRiderTask = () => {
   }
 
   return (
-
     <>
+      <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
+
       <CardText>
         <div className="row justify-content-between">
           <div className="col-lg-5">
@@ -164,7 +178,7 @@ const DeliveryRiderTask = () => {
                 name="user_name"
                 type="text"
                 class="form-control"
-              onChange={handleSearch}
+                onChange={handleSearch}
               />
               <Button.Ripple className="btn-icon ms-1" outline color="primary">
                 <Search size={16} />
@@ -190,8 +204,9 @@ const DeliveryRiderTask = () => {
                 </Col>
                 <Col xl='3'>
                   <div className='button-wrapper'>
-                    <button className='action-view'>
-                      <EyeOutlined /><a href={"/create_order/view/" + info?.id}> View</a>
+                    <button className="action-view" type="primary" onClick={() => { setOrderId(info?.id), showOrderDetailsDrawer() }}>
+                      <EyeOutlined />
+                      View
                     </button>
                     <UncontrolledDropdown>
                       <DropdownToggle

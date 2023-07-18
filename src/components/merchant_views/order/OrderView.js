@@ -183,6 +183,8 @@ import {
   PaginationLink,
 } from "reactstrap"
 
+import OrderDetailsDrawer from "../../order/OrderDetailsDrawer"
+
 const { Paragraph } = Typography
 
 const OrderView = ({ activeOrderData, orders, fetchCreateOrderData }) => {
@@ -191,6 +193,15 @@ const OrderView = ({ activeOrderData, orders, fetchCreateOrderData }) => {
   const [selectedInfo, setSelectedInfo] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
+
+  const [orderid, setOrderId] = useState(0)
+  const [open, setOpen] = useState(false)
+  const showOrderDetailsDrawer = () => {
+    setOpen(true)
+  }
+  const onCloseOrderDetailsDrawer = () => {
+    setOpen(false)
+  }
 
   useEffect(() => {
     if (!statusModalState) {
@@ -235,6 +246,8 @@ const OrderView = ({ activeOrderData, orders, fetchCreateOrderData }) => {
 
   return (
     <>
+      <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
+
       <div className="invoice-title-card">
         <h3> Orders </h3>
         <Link to={"/marchant-orders/create"}>
@@ -268,9 +281,9 @@ const OrderView = ({ activeOrderData, orders, fetchCreateOrderData }) => {
                 </Col>
                 <Col xl="3">
                   <div className="button-wrapper">
-                    <button className="action-view">
+                    <button className="action-view" type="primary" onClick={() => { setOrderId(info?.id), showOrderDetailsDrawer() }}>
                       <EyeOutlined />
-                      <a href={"/marchant-orders/view/" + info?.id}> View</a>
+                      View
                     </button>
                     <UncontrolledDropdown>
                       <DropdownToggle
@@ -293,8 +306,8 @@ const OrderView = ({ activeOrderData, orders, fetchCreateOrderData }) => {
                           <Trash className="me-50" size={15} />{" "}
                           <span className="align-middle">Delete</span>
                         </DropdownItem>
-                      </DropdownMenu> }
-                      
+                      </DropdownMenu>}
+
                     </UncontrolledDropdown>
                   </div>
                 </Col>

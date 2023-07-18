@@ -171,36 +171,36 @@ const AdminOrderReport = () => {
 							order.map((info) => (
 								<tr key={info.id}>
 									<td>
-										<span className="align-middle fw-bold">{info.created_at}</span>
+										<span className="align-middle fw-bold">{info?.created_at}</span>
 									</td>
 									<td>
-										<span className="align-middle fw-bold">{info.parcel_id}</span>
+										<span className="align-middle fw-bold">{info?.parcel_id}</span>
 									</td>
 									<td>
-										<span className="align-middle fw-bold">{info.marchant.full_name}</span>
+										<span className="align-middle fw-bold">{info?.marchant?.full_name}</span>
 									</td>
 									<td>
 										<span className="align-middle fw-bold">{info?.delivary_rider?.full_name}</span>
 									</td>
 									
 									<td>
-										<span className="align-middle fw-bold">{info.status}</span>
+										<span className="align-middle fw-bold">{info?.status}</span>
 									</td>
 									
 									<td>
-										<span className="align-middle fw-bold">{info.delivary_charge}</span>
+										<span className="align-middle fw-bold">{info?.delivary_charge}</span>
 									</td>
 									<td>
-										<span className="align-middle fw-bold">{info.cash_on_delivery_charge}</span>
+										<span className="align-middle fw-bold">{info?.cash_on_delivery_charge}</span>
 									</td>
 									<td>
-										<span className="align-middle fw-bold">{info.amount_to_be_collected}</span>
+										<span className="align-middle fw-bold">{info?.amount_to_be_collected}</span>
 									</td>
 									<td>
-										<span className="align-middle fw-bold">{info.accumulated}</span>
+										<span className="align-middle fw-bold">{info?.accumulated}</span>
 									</td>
 									<td>
-										<span className="align-middle fw-bold">{info.deducted_amount}</span>
+										<span className="align-middle fw-bold">{info?.deducted_amount}</span>
 									</td>
 								</tr>
 							))}

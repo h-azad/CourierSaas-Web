@@ -4,18 +4,24 @@ import { Row, Col, Card, CardBody, CardText, Button } from "reactstrap"
 import { Link } from 'react-router-dom'
 import Breadcrumbs from "@components/breadcrumbs"
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
-import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
+import { Home, Box, Truck, CornerDownLeft } from 'react-feather'
 import useJwt from '@src/auth/jwt/useJwt'
 import ListTable from "./partials/list-table"
 import OrdersList from "../../../components/merchant_views/order/OrdersList"
 import OrderView from "../../../components/merchant_views/order/OrderView"
-import { getApi, MARCHANT_ORDER_LIST, SEARCH_MARCHANT_PARCEL } from "../../../constants/apiUrls"
+import { getApi, MARCHANT_ORDER_LIST, ORDER_STATISTICS } from "../../../constants/apiUrls"
 
 function MerchantOrdersList() {
 
   const [activeOrder, setActiveOrder] = useState()
   const [orders, setOrders] = useState([])
   const [activeOrderData, setActiveOrderData] = useState(null)
+  const [orderStatistics, setOrderStatistics] = useState({
+    pending_orders: 0,
+    in_warehouse_orders: 0,
+    shipped_orders: 0,
+    return_orders: 0
+  })
 
 
   const fetchCreateOrderData = () => {
@@ -39,15 +45,38 @@ function MerchantOrdersList() {
     if (orders && !activeOrder) {
       // console.log(orders[0])
       orders[0] ? setActiveOrder(orders[0]?.id) : null
-      
+
     }
   }, [orders])
 
   useEffect(() => {
-    
+
     const activeOrderFilter = orders.find((item) => item.id === activeOrder)
     setActiveOrderData(activeOrderFilter)
   }, [activeOrder])
+
+
+
+
+  const fetchOrderStatisticsData = () => {
+    return useJwt
+      .axiosGet(getApi(ORDER_STATISTICS))
+      .then((res) => {
+        setOrderStatistics(
+          {
+            pending_orders: res.data.pending_orders,
+            in_warehouse_orders: res.data.in_warehouse_orders,
+            shipped_orders: res.data.shipped_orders,
+            return_orders: res.data.return_orders,
+          })
+      })
+      .catch((err) => console.log(err))
+  }
+
+
+  useEffect(() => {
+    fetchOrderStatisticsData()
+  }, [])
 
 
   return (
@@ -55,34 +84,34 @@ function MerchantOrdersList() {
       <Row>
         <Col lg="3" sm="6">
           <StatsHorizontal
-            color="primary"
-            statTitle="Total Users"
-            icon={<User size={20} />}
-            renderStats={<h3 className="fw-bolder mb-75">21,459</h3>}
-          />
-        </Col>
-        <Col lg="3" sm="6">
-          <StatsHorizontal
             color="danger"
-            statTitle="Paid Users"
-            icon={<UserPlus size={20} />}
-            renderStats={<h3 className="fw-bolder mb-75">4,567</h3>}
+            statTitle="Pending"
+            icon={<Box size={20} />}
+            renderStats={<h3 className="fw-bolder mb-75">{orderStatistics?.pending_orders}</h3>}
           />
         </Col>
         <Col lg="3" sm="6">
           <StatsHorizontal
             color="success"
-            statTitle="Active Users"
-            icon={<UserCheck size={20} />}
-            renderStats={<h3 className="fw-bolder mb-75">19,860</h3>}
+            statTitle="WireHouse"
+            icon={<Home size={20} />}
+            renderStats={<h3 className="fw-bolder mb-75">{orderStatistics?.in_warehouse_orders}</h3>}
+          />
+        </Col>
+        <Col lg="3" sm="6">
+          <StatsHorizontal
+            color="primary"
+            statTitle="Shipped"
+            icon={<Truck size={20} />}
+            renderStats={<h3 className="fw-bolder mb-75">{orderStatistics?.shipped_orders}</h3>}
           />
         </Col>
         <Col lg="3" sm="6">
           <StatsHorizontal
             color="warning"
-            statTitle="Pending Users"
-            icon={<UserX size={20} />}
-            renderStats={<h3 className="fw-bolder mb-75">237</h3>}
+            statTitle="Return"
+            icon={<CornerDownLeft size={20} />}
+            renderStats={<h3 className="fw-bolder mb-75">{orderStatistics?.return_orders}</h3>}
           />
         </Col>
       </Row>
@@ -91,16 +120,16 @@ function MerchantOrdersList() {
         <Col sm="4">
           <Card title="Bordered">
             <CardBody>
-              <OrdersList setActiveOrderData={setActiveOrderData} orders={orders} setOrders={setOrders} activeOrder={activeOrder} setActiveOrder={setActiveOrder} fetchCreateOrderData={fetchCreateOrderData} />                          
+              <OrdersList setActiveOrderData={setActiveOrderData} orders={orders} setOrders={setOrders} activeOrder={activeOrder} setActiveOrder={setActiveOrder} fetchCreateOrderData={fetchCreateOrderData} />
               {/* <ListTable /> */}
             </CardBody>
           </Card>
         </Col>
         <Col sm="8">
           <Card title="Bordered">
-            <CardBody>                          
+            <CardBody>
               {/* <ListTable /> */}
-              <OrderView activeOrderData={activeOrderData} orders={orders} fetchCreateOrderData={fetchCreateOrderData}  />
+              <OrderView activeOrderData={activeOrderData} orders={orders} fetchCreateOrderData={fetchCreateOrderData} />
             </CardBody>
           </Card>
         </Col>

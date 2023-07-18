@@ -15,12 +15,23 @@ import {
   DropdownToggle,
 } from "reactstrap"
 
+import OrderDetailsDrawer from '../../order/OrderDetailsDrawer'
+
 
 const CurrentTaskView = ({ currentTask }) => {
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
   const [selectedInfo, setSelectedInfo] = useState(null)
   // const [currentTask, setCurrentTask] = useState([])
+
+  const [orderid, setOrderId] = useState(0)
+  const [open, setOpen] = useState(false)
+  const showOrderDetailsDrawer = () => {
+    setOpen(true)
+  }
+  const onCloseOrderDetailsDrawer = () => {
+    setOpen(false)
+  }
 
 
   useEffect(() => {
@@ -59,7 +70,7 @@ const CurrentTaskView = ({ currentTask }) => {
   const changeDeliveryStatusAction = (e, info) => {
     e.preventDefault()
     useJwt
-      .axiosPost(getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/confirm_delivery/`),{details:info})
+      .axiosPost(getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/confirm_delivery/`), { details: info })
       .then((res) => {
         toast.success(res.data)
         fetchCurrentTaskData()
@@ -76,6 +87,8 @@ const CurrentTaskView = ({ currentTask }) => {
       <h4> List Current Task </h4>
     </div>
     <hr></hr>
+    <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
+
     {currentTask &&
       currentTask.map((info) => (
         <Card className='invoice-preview-card'>
@@ -87,8 +100,9 @@ const CurrentTaskView = ({ currentTask }) => {
               </Col>
               <Col xl='3'>
                 <div className='button-wrapper'>
-                  <button className='action-view'>
-                    <EyeOutlined /><a href={"/rider-orders/task-view/" + info?.id}> View</a>
+                  <button className="action-view" type="primary" onClick={() => { setOrderId(info?.id), showOrderDetailsDrawer() }}>
+                    <EyeOutlined />
+                    View
                   </button>
                   <UncontrolledDropdown>
                     <DropdownToggle

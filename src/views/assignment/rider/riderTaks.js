@@ -27,6 +27,7 @@ import StatusModal from "../../../components/StatusModal"
 import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
 import { EyeOutlined } from '@ant-design/icons'
 import { useParams } from "react-router-dom"
+import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
 
 const ListTable = () => {
   const [createOrder, setCreateOrder] = useState([])
@@ -34,6 +35,19 @@ const ListTable = () => {
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
   const [selectedInfo, setSelectedInfo] = useState(null)
+
+  const [orderid, setOrderId] = useState(0)
+
+  const [open, setOpen] = useState(false)
+
+  const showOrderDetailsDrawer = () => {
+    setOpen(true)
+
+  }
+  const onCloseOrderDetailsDrawer = () => {
+    setOpen(false)
+  }
+
   let { id } = useParams()
   const deleteAction = (e, id) => {
     e.preventDefault()
@@ -57,7 +71,7 @@ const ListTable = () => {
     console.log("selectedInfo", selectedInfo)
     console.log("selectedStatus", selectedStatus)
     useJwt
-      .axiosPatch(getApi(CREATE_ORDER_EDIT + selectedInfo.id + '/'),{
+      .axiosPatch(getApi(CREATE_ORDER_EDIT + selectedInfo.id + '/'), {
         status: "in_warehouse",
         warehouse_status: true
       })
@@ -153,6 +167,9 @@ const ListTable = () => {
   return (
 
     <>
+
+      <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
+
       <CardText>
         <div className="row justify-content-between">
           <div className="col-lg-5">
@@ -193,8 +210,9 @@ const ListTable = () => {
                 </Col>
                 <Col xl='3'>
                   <div className='button-wrapper'>
-                    <button className='action-view'>
-                      <EyeOutlined /><a href={"/create_order/view/" + info?.id}> View</a>
+                    <button className="action-view" type="primary" onClick={() => { setOrderId(info?.id), showOrderDetailsDrawer() }}>
+                      <EyeOutlined />
+                      View
                     </button>
                     <UncontrolledDropdown>
                       <DropdownToggle
@@ -210,7 +228,7 @@ const ListTable = () => {
                           <Edit3 className="me-50" size={15} />{" "}
                           <span className="align-middle">Receive Confirm</span>
                         </DropdownItem>}
-                        
+
                       </DropdownMenu>
                     </UncontrolledDropdown>
                   </div>
@@ -221,7 +239,7 @@ const ListTable = () => {
                   <h6 className='mb-25'><b>Recipient Name :{info?.recipient_name}</b>  </h6>
                   <h6 className='mb-25'>Phone Number : {info?.phone_number}</h6>
                   <h6 className='mb-25'>Delivary Address : {info?.delivary_address}</h6>
-                  <h6 className='mb-25 '>Order Status : <span className='highlight-status'>{info.status === "in_warehouse"? "In Warehouse": info.status }</span></h6>
+                  <h6 className='mb-25 '>Order Status : <span className='highlight-status'>{info.status === "in_warehouse" ? "In Warehouse" : info.status}</span></h6>
                   <h6 className='mb-25'>Pickup Status :<span className='highlight-pickup-status'>{info.pickup_status == true ? 'True' : 'False'}</span></h6>
                 </Col>
                 <Col xl='5'>

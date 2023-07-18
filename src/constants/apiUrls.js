@@ -17,6 +17,8 @@ export const MARCHANT_EDIT_ORDER = '/marchant_app/orders/'
 export const MARCHANT_DELETE_ORDER = '/marchant_app/orders/'
 export const MARCHANT_ORDER_STATUS_UPDATE = '/marchant_app/orders/'
 export const MARCHANT_SEARCH_FILTER = '/marchant_app/search-filter/'
+export const MARCHANT_STATISTICS = "/api/user/marchant-statistics/"
+
 
 export const MARCHANT_SEARCH_CREATE_ORDER_FILTER = '/marchant_app/marchant-serach-order-filter/'
 export const MARCHANT_PICKUP_ADDRESS = '/marchant_app/marchant-pickup-addreess/'
@@ -51,6 +53,7 @@ export const RIDER_DELIVARY_STATUS_UPDATE = '/rider_app/delivary/'
 export const RIDER_ORDER_STATUS = '/rider_app/status/'
 export const RIDER_CURRENT_TASK_LIST = '/rider_app/current-task/'
 export const RIDER_SEARCH_FILTER = '/rider_app/search-filter/'
+export const RIDER_STATISTICS = "/api/user/rider-statistics/"
 
 export const RIDER_SEARCH_CREATE_ORDER_FILTER = '/rider_app/rider-serach-order-filter/'
 export const RIDER_PICKUP_CREATE_ORDER_FILTER = '/rider_app/rider-pickup-order-filter/'
@@ -96,9 +99,11 @@ export const DELIVERY_ASSIGN_TO_AGENT = '/api/agent_app/delivery-assignment-to-a
 export const CREATE_ORDER_BY_AGENT = '/api/agent_app/agent-orders/'
 export const CREATE_ORDER_BY_AGENT_FILTER = '/api/agent_app/agent-order-filter'
 
+
 export const AGENT_DELETE = '/manage-user/agent/'
 export const AGENT_DETAILS = '/manage-user/agent/'
 export const AGENT_UPDATE_STATUS = "/manage-user/agent"
+export const AGENT_STATISTICS = "/api/user/agent-statistics/"
 // export const AGENT_SEARCH = '/search-agent/'
 export const AGENT_SEARCH = "/api/agent_app/search-filter/"
 
@@ -113,7 +118,7 @@ export const CITIES_DELETE = '/city/'
 export const CITIES_DETAILS = '/city/'
 export const CITY_UPDATE_STATUS = "/city/"
 export const CITIES_SEARCH = '/search-city/'
-
+export const CITY_STATISTICS = "/city/statistics/"
 
 // Areas API's 
 export const AREAS_ADD = '/area/'
@@ -124,6 +129,7 @@ export const AREAS_DETAILS = '/area/'
 export const AREAS_UPDATE_STATUS = "/area/"
 export const AREAS_SEARCH = '/search-area/'
 export const AREAS_BY_CITY = '/get-area/'
+export const AREAS_STATISTICS = "/statistics/area/"
 
 
 // export const AREAS_FILTER_BY_CITY = '/filter-by-city/'
@@ -137,6 +143,7 @@ export const SHIPMENT_TYPE_DETAILS = '/shipment_type/'
 export const SHIPMENT_UPDATE_STATUS= '/shipment_type/'
 export const SEARCH_SHIPMENT = '/search_shipment/'
 export const SEARCH_SHIPMENT_TYPE = "/search-shipment-type/"
+export const SHIPMENT_TYPE_STATISTICS = "/shipment-type/statistics/"
 
 
 // Product Type API's 
@@ -149,6 +156,7 @@ export const PRODUCT_TYPE_DETAILS = '/product_type/'
 export const PRODUCT_UPDATE_STATUS = "/product_type/"
 export const SEARCH_PRODUCT = '/search_product/'
 export const SEARCH_PRODUCT_TYPE = "/search-product-type/"
+export const PRODUCT_TYPE_STATISTICS = "/product-type/statistics/"
 
 
 // Pricing Policy API's
@@ -161,6 +169,7 @@ export const PRICING_POLICY_DETAILS = '/pricing_policy/'
 export const PRICING_POLICY_UPDATE_STATUS = "/pricing_policy/"
 // export const SEARCH_PRICING_POLICY = '/search_pricing_policy/'
 export const SEARCH_PRICING_POLICY = "/search-pricing-policy/"
+export const PRICING_POLICY_STATISTICS = "/pricing-policy/statistics/"
 
 
 
@@ -177,6 +186,7 @@ export const DIMENTION_BY_PRODUCT = '/create_order/get-dimention/'
 export const PRICING_POLICY_BY_PRODUCT = '/get-price-policy/'
 export const DELIVARY_CHARGE_BY_PERCEL_TYPE = '/get-delivary-charge/'
 export const ORDER_STATUS_UPDATE = '/create_order/'
+export const ORDER_STATISTICS = "/api/user/order-statistics/"
 
 
 export const ADMIN_SEARCH_CREATE_ORDER_FILTER = '/admin-serach-order-filter/'
@@ -191,6 +201,7 @@ export const PAYMENT_METHOD_DELETE = '/payment_method/'
 export const PAYMENT_METHOD_DETAILS = '/payment_method/'
 export const PAYMENT_METHOD_UPDATE_STATUS = "/payment_method/"
 export const SEARCH_PAYMENT_METHOD = '/search_payment_method/'
+export const PAYMENT_METHOD_STATISTICS = "/payment-method/statistics/"
 
 //Account Wallet
 export const ACCOUNT_WALLET_ADD = "/api/account-wallet/"
@@ -249,6 +260,7 @@ export const TRANSECTIONS_FILTER = "/api/default-marchant-order-report"
 
 
 export const ADMIN_DASHBOARD = "/api/user/admin-dashboard"
+
 
 export const ADMIN_FILTER_ORDER_OVERVIEW = "/api/user/admin-filter--order-overview"
 

@@ -3,6 +3,7 @@ import Select from "react-select"
 import classNames from "classnames"
 import { MoreVertical, Edit, Trash, Edit3 } from "react-feather"
 import { Checkbox, DatePicker, Input, Typography } from "antd"
+import { EyeOutlined } from '@ant-design/icons'
 import {
   UncontrolledDropdown,
   DropdownMenu,
@@ -27,6 +28,8 @@ import SwalAlert from "../../../../components/SwalAlert"
 import SwalConfirm from "../../../../components/SwalConfirm"
 import ChangeStatusModal from "../../../create_order/partials/ChangeStatusModal"
 
+import OrderDetailsDrawer from "../../../../components/order/OrderDetailsDrawer"
+
 const CreateOrderList = () => {
   const { Search } = Input
   const [createOrder, setCreateOrder] = useState([])
@@ -35,6 +38,15 @@ const CreateOrderList = () => {
   const [selectedDate, setSelectedDate] = useState(null)
   const datePickerRef = useRef(null)
   const [selectedValue, setSelectedValue] = useState('')
+
+  const [orderid, setOrderId] = useState(0)
+  const [open, setOpen] = useState(false)
+  const showOrderDetailsDrawer = () => {
+    setOpen(true)
+  }
+  const onCloseOrderDetailsDrawer = () => {
+    setOpen(false)
+  }
 
   const deleteAction = (e, id) => {
     e.preventDefault()
@@ -122,7 +134,10 @@ const CreateOrderList = () => {
 
 
   return (
+    
     <Row>
+          <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
+
       <Col sm="4">
         <Card title="Bordered">
           <CardBody>
@@ -243,10 +258,10 @@ const CreateOrderList = () => {
                       </Col>
                       <Col xl="3">
                         <div className="button-wrapper">
-                          <button className="action-view">
-                            {/* <EyeOutlined /> */}
-                            <a href={"/create_order/view/" + info?.id}> View</a>
-                          </button>
+                        <button className="action-view" type="primary" onClick={() => { setOrderId(info?.id), showOrderDetailsDrawer() }}>
+                    <EyeOutlined />
+                    View
+                  </button>
                           <UncontrolledDropdown>
                             <DropdownToggle
                               className="icon-btn hide-arrow"

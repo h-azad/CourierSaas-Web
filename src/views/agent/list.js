@@ -4,43 +4,71 @@ import { Row, Col, Card, CardBody, CardText, Button } from "reactstrap"
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
 import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
 import ListTable from "./partials/list-table"
-import { getApi, AGENT_LIST } from "../../constants/apiUrls"
+import { getApi, AGENT_STATISTICS } from "@src/constants/apiUrls"
+import useJwt from '@src/auth/jwt/useJwt'
 
 function AgentList() {
+
+  const [agentStatistics, setAgentStatistics] = useState({
+    total: 0,
+    pending: 0,
+    active: 0,
+    inactive: 0,
+  })
+
+  const fetchAgentStatisticsData = () => {
+    return useJwt
+      .axiosGet(getApi(AGENT_STATISTICS))
+      .then((res) => {
+        setAgentStatistics(
+          {
+            total: res.data.total,
+            pending: res.data.pending,
+            active: res.data.active,
+            inactive: res.data.inactive,
+          })
+      })
+      .catch((err) => console.log(err))
+  }
+
+
+  useEffect(() => {
+    fetchAgentStatisticsData()
+  }, [])
+
 
   return (
     <Fragment>
       <Row>
         <Col lg="3" sm="6">
           <StatsHorizontal
-            color="primary"
-            statTitle="Total Users"
+            statTitle="Total Agent"
             icon={<User size={20} />}
-            renderStats={<h3 className="fw-bolder mb-75">21,459</h3>}
-          />
-        </Col>
-        <Col lg="3" sm="6">
-          <StatsHorizontal
-            color="danger"
-            statTitle="Paid Users"
-            icon={<UserPlus size={20} />}
-            renderStats={<h3 className="fw-bolder mb-75">4,567</h3>}
-          />
-        </Col>
-        <Col lg="3" sm="6">
-          <StatsHorizontal
-            color="success"
-            statTitle="Active Users"
-            icon={<UserCheck size={20} />}
-            renderStats={<h3 className="fw-bolder mb-75">19,860</h3>}
+            renderStats={<h3 className="fw-bolder mb-75">{agentStatistics?.total}</h3>}
           />
         </Col>
         <Col lg="3" sm="6">
           <StatsHorizontal
             color="warning"
-            statTitle="Pending Users"
+            statTitle="Pending"
+            icon={<User size={20} />}
+            renderStats={<h3 className="fw-bolder mb-75">{agentStatistics?.pending}</h3>}
+          />
+        </Col>
+        <Col lg="3" sm="6">
+          <StatsHorizontal
+            color="success"
+            statTitle="Active"
+            icon={<UserCheck size={20} />}
+            renderStats={<h3 className="fw-bolder mb-75">{agentStatistics?.active}</h3>}
+          />
+        </Col>
+        <Col lg="3" sm="6">
+          <StatsHorizontal
+            color="danger"
+            statTitle="Inactive"
             icon={<UserX size={20} />}
-            renderStats={<h3 className="fw-bolder mb-75">237</h3>}
+            renderStats={<h3 className="fw-bolder mb-75">{agentStatistics?.inactive}</h3>}
           />
         </Col>
       </Row>
@@ -48,7 +76,7 @@ function AgentList() {
       <Row>
         <Col sm="12">
           <Card title="Bordered">
-            <CardBody>                          
+            <CardBody>
               <ListTable />
             </CardBody>
           </Card>

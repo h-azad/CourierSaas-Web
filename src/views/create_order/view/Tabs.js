@@ -17,7 +17,7 @@ const UserTabs = ({ active, toggleTab, userInfo }) => {
   return (
     <Fragment>
       <Nav pills className='mb-2'>
-        <NavItem>
+        {/* <NavItem>
           <NavLink active={active === '1'} onClick={() => toggleTab('1')}>
             <User className='font-medium-3 me-50' />
             <span className='fw-bold'>Account</span>
@@ -28,7 +28,7 @@ const UserTabs = ({ active, toggleTab, userInfo }) => {
             <Lock className='font-medium-3 me-50' />
             <span className='fw-bold'>Security</span>
           </NavLink>
-        </NavItem>
+        </NavItem> */}
         {/* <NavItem>
           <NavLink active={active === '3'} onClick={() => toggleTab('3')}>
             <Bookmark className='font-medium-3 me-50' />

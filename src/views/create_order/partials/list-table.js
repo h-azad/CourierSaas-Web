@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import Select from "react-select"
 import classNames from "classnames"
 import { MoreVertical, Edit, Trash, Edit3 } from "react-feather"
-import { Checkbox, DatePicker, Input, Typography } from "antd"
+import { Checkbox, DatePicker, Input, Typography, Drawer } from "antd"
 import {
   UncontrolledDropdown,
   DropdownMenu,
@@ -21,10 +21,13 @@ import {
   CREATE_ORDER_LIST,
   CREATE_ORDER_DELETE,
   ADMIN_SEARCH_CREATE_ORDER_FILTER,
+  CREATE_ORDER_DETAILS,
 } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
+
+import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
 
 
 const CreateOrderList = () => {
@@ -40,6 +43,19 @@ const CreateOrderList = () => {
   const [selectedDate, setSelectedDate] = useState(null)
   const datePickerRef = useRef(null)
   const [selectedValue, setSelectedValue] = useState('')
+
+  const [orderid, setOrderId] = useState(0)
+
+  const [open, setOpen] = useState(false)
+
+  const showOrderDetailsDrawer = () => {
+    setOpen(true)
+
+  }
+  const onCloseOrderDetailsDrawer = () => {
+    setOpen(false)
+  }
+
 
   const deleteAction = (e, id) => {
     e.preventDefault()
@@ -107,17 +123,17 @@ const CreateOrderList = () => {
   const filterHandle = (e, property) => {
     setOrderStatus(e?.target?.value)
     setValue(e?.target?.value)
- 
+
     let searchTerm
-    if (property==='date'){
-      searchTerm=e
+    if (property === 'date') {
+      searchTerm = e
 
     }
     else if (e?.target?.value) {
       searchTerm = e.target?.value
     } else {
       searchTerm = e?.value
-      
+
     }
     if (searchTerm?.length > 0) {
       fetchSearchFilterAdmin(property, searchTerm).then((data) => {
@@ -136,7 +152,7 @@ const CreateOrderList = () => {
     return useJwt
       .axiosGet(
         getApi(ADMIN_SEARCH_CREATE_ORDER_FILTER) +
-          `?search_fields=${val}&search=${input}`
+        `?search_fields=${val}&search=${input}`
       )
       .then((res) => {
         console.log("response", res)
@@ -144,7 +160,7 @@ const CreateOrderList = () => {
       })
       .catch((err) => console.log(err))
   }
-  
+
   const clearFilter = () => {
     setOrderStatus("")
     setorderID('')
@@ -155,6 +171,8 @@ const CreateOrderList = () => {
     setSelectedDate(null)
 
   }
+
+
 
 
   return (
@@ -264,25 +282,29 @@ const CreateOrderList = () => {
                   <CardBody>
                     <Row>
                       <Col xl="9">
-                          <Typography.Title
-                            level={5}
-                            style={{
-                              margin: 0,
-                            }}
-                          >
-                            Order ID:{" "}
-                            <Typography.Text copyable>
-                              {info?.parcel_id}
-                            </Typography.Text>
-                          </Typography.Title>
+                        <Typography.Title
+                          level={5}
+                          style={{
+                            margin: 0,
+                          }}
+                        >
+                          Order ID:{" "}
+                          <Typography.Text copyable>
+                            {info?.parcel_id}
+                          </Typography.Text>
+                        </Typography.Title>
                         <h9 className="mb-25">Created: {info.created_at}</h9>
                       </Col>
                       <Col xl="3">
                         <div className="button-wrapper">
-                          <button className="action-view">
-                            {/* <EyeOutlined /> */}
-                            <a href={"/create_order/view/" + info?.id}> View</a>
+                          <button className="action-view" type="primary" onClick={() => { setOrderId(info?.id), showOrderDetailsDrawer() }}>
+                            {/* <button className="action-view" type="primary" onClick={showOrderDetailsDrawer}> */}
+
+                            View
+                            {/* <a href={"/create_order/view/" + info?.id}> View</a> */}
+
                           </button>
+
                           <UncontrolledDropdown>
                             <DropdownToggle
                               className="icon-btn hide-arrow"
@@ -386,6 +408,13 @@ const CreateOrderList = () => {
               orderInfo={selectedInfo}
               fetchCreateOrderData={fetchCreateOrderData}
             />
+
+
+
+            <>
+              <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
+            </>
+
           </CardBody>
         </Card>
       </Col>
