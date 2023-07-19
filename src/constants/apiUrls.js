@@ -228,9 +228,13 @@ export const ADMIN_LIST = "/api/user/admin-viewset/"
 export const ADMIN_EDIT = "/api/user/admin-viewset/"
 export const ADMIN_DELETE = "/api/user/admin-viewset/"
 export const ADMIN_DETAILS = "/api/user/admin-viewset/"
+export const CHANGE_PASSWORD = "/api/user/changepassword/"
+
 // export const ADMIN_ADD_SEARCH = "/api/withdraw-request-search/"
 
+export const GET_USER = "/api/user/get-user/"
 export const USER_LIST = "/api/user/user-viewset/"
+
 
 export const ADJUSTMENT_LIST = '/api/wallet-adjust/'
 

@@ -6,7 +6,11 @@ import { handleLogout } from "@store/authentication"
 
 // ** Custom Components
 import Avatar from "@components/avatar"
-
+import useJwt from '@src/auth/jwt/useJwt'
+import {
+  getApi,
+  GET_USER,
+} from "@src/constants/apiUrls"
 // ** Third Party Components
 import {
   User,
@@ -17,6 +21,7 @@ import {
   CreditCard,
   HelpCircle,
   Power,
+  Key
 } from "react-feather"
 
 // ** Reactstrap Imports
@@ -30,10 +35,17 @@ import {
 // ** Default Avatar Image
 import defaultAvatar from "@src/assets/images/portrait/small/avatar-s-11.jpg"
 import { useDispatch } from "react-redux"
+import { useState, useEffect } from "react"
 
 const UserDropdown = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [userInformation, setUserInformation] = useState({
+    name: null,
+    email: null,
+    role: null,
+    admin_role: null
+  })
 
   const submitLogout = async (e) => {
     if (e != undefined) {
@@ -43,10 +55,29 @@ const UserDropdown = () => {
       navigate('/login')
       return true
     }
-    
-
     return false
   }
+
+
+  const fetchUserData = () => {
+    return useJwt
+      .axiosGet(getApi(GET_USER))
+      .then((res) => {
+        console.log("user data", res.data)
+        setUserInformation({
+          name: res.data.name,
+          email: res.data.email,
+          role: res.data.role,
+          admin_role: res.data.admin_role
+        })
+        return res.data
+      })
+      .catch(err => console.log(err))
+  }
+
+  useEffect(() => {
+    fetchUserData()
+  }, [])
 
   return (
     <UncontrolledDropdown tag="li" className="dropdown-user nav-item">
@@ -57,8 +88,8 @@ const UserDropdown = () => {
         onClick={(e) => e.preventDefault()}
       >
         <div className="user-nav d-sm-flex d-none">
-          <span className="user-name fw-bold">John Doe</span>
-          <span className="user-status">Admin</span>
+          <span className="user-name fw-bold">{userInformation.name}</span>
+          <span className="user-status">{userInformation.role ? userInformation.role : userInformation.admin_role}</span>
         </div>
         <Avatar
           img={defaultAvatar}
@@ -68,11 +99,17 @@ const UserDropdown = () => {
         />
       </DropdownToggle>
       <DropdownMenu end>
-        <DropdownItem tag={Link} to="/" onClick={(e) => e.preventDefault()}>
-          <User size={14} className="me-75" />
-          <span className="align-middle">Profile</span>
+        <DropdownItem tag={Link} onClick={(e) => {
+          {
+            e.preventDefault(),
+              navigate('/setting/password')
+            return true
+          }
+        }}>
+          <Key size={14} className="me-75" />
+          <span className="align-middle">Change Password</span>
         </DropdownItem>
-        <DropdownItem tag={Link} to="/" onClick={(e) => e.preventDefault()}>
+        {/* <DropdownItem tag={Link} to="/" onClick={(e) => e.preventDefault()}>
           <Mail size={14} className="me-75" />
           <span className="align-middle">Inbox</span>
         </DropdownItem>
@@ -84,26 +121,26 @@ const UserDropdown = () => {
           <MessageSquare size={14} className="me-75" />
           <span className="align-middle">Chats</span>
         </DropdownItem>
-        <DropdownItem divider />
+        <DropdownItem divider /> */}
         <DropdownItem
-          tag={Link}
-          onClick={(e)=>{{
-            e.preventDefault()
-            navigate('/pages/setting')
-            return true
-          }}}
+        // tag={Link}
+        // onClick={(e)=>{{
+        //   e.preventDefault()
+        //   navigate('/pages/setting')
+        //   return true
+        // }}}
         >
           <Settings size={14} className="me-75" />
           <span className="align-middle">Settings</span>
         </DropdownItem>
-        <DropdownItem tag={Link} to="/" onClick={(e) => e.preventDefault()}>
+        {/* <DropdownItem tag={Link} to="/" onClick={(e) => e.preventDefault()}>
           <CreditCard size={14} className="me-75" />
           <span className="align-middle">Pricing</span>
         </DropdownItem>
         <DropdownItem tag={Link} to="/" onClick={(e) => e.preventDefault()}>
           <HelpCircle size={14} className="me-75" />
           <span className="align-middle">FAQ</span>
-        </DropdownItem>
+        </DropdownItem> */}
         <DropdownItem tag={Link} onClick={(e) => submitLogout(e)} to="/login">
           <Power size={14} className="me-75" />
           <span className="align-middle">Logout</span>

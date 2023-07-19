@@ -4,7 +4,7 @@ import { Row, Col, Card, CardBody, CardText, Button } from "reactstrap"
 import { Link } from 'react-router-dom'
 import Breadcrumbs from "@components/breadcrumbs"
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
-import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
+import { Filter } from "react-feather"
 import ListTable from "./partials/list-table"
 import { getApi, PRICING_POLICY_STATISTICS } from "@src/constants/apiUrls"
 import useJwt from '@src/auth/jwt/useJwt'
@@ -44,7 +44,7 @@ function PricingPolicyList() {
         <Col lg="3" sm="6">
           <StatsHorizontal
             statTitle="Total PricingPolicy"
-            icon={<User size={20} />}
+            icon={<Filter size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{pricingPolicyStatistics?.total}</h3>}
           />
         </Col>
@@ -52,7 +52,7 @@ function PricingPolicyList() {
           <StatsHorizontal
             color="warning"
             statTitle="Pending"
-            icon={<User size={20} />}
+            icon={<Filter size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{pricingPolicyStatistics?.pending}</h3>}
           />
         </Col>
@@ -60,7 +60,7 @@ function PricingPolicyList() {
           <StatsHorizontal
             color="success"
             statTitle="Active"
-            icon={<UserCheck size={20} />}
+            icon={<Filter size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{pricingPolicyStatistics?.active}</h3>}
           />
         </Col>
@@ -68,7 +68,7 @@ function PricingPolicyList() {
           <StatsHorizontal
             color="danger"
             statTitle="Inactive"
-            icon={<UserX size={20} />}
+            icon={<Filter size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{pricingPolicyStatistics?.inactive}</h3>}
           />
         </Col>

@@ -4,7 +4,7 @@ import { Row, Col, Card, CardBody, CardText, Button } from "reactstrap"
 import { Link } from 'react-router-dom'
 import Breadcrumbs from "@components/breadcrumbs"
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
-import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
+import { Send, User, UserCheck, UserPlus, UserX } from "react-feather"
 import ListTable from "./partials/list-table"
 import { getApi, PAYMENT_METHOD_STATISTICS } from "@src/constants/apiUrls"
 import useJwt from '@src/auth/jwt/useJwt'
@@ -44,7 +44,7 @@ function PaymentMethodList() {
         <Col lg="3" sm="6">
           <StatsHorizontal
             statTitle="Payment Methods"
-            icon={<User size={20} />}
+            icon={<Send size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{paymentMethodStatistics?.total}</h3>}
           />
         </Col>
@@ -52,7 +52,7 @@ function PaymentMethodList() {
           <StatsHorizontal
             color="warning"
             statTitle="Pending"
-            icon={<User size={20} />}
+            icon={<Send size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{paymentMethodStatistics?.pending}</h3>}
           />
         </Col>
@@ -60,7 +60,7 @@ function PaymentMethodList() {
           <StatsHorizontal
             color="success"
             statTitle="Active"
-            icon={<UserCheck size={20} />}
+            icon={<Send size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{paymentMethodStatistics?.active}</h3>}
           />
         </Col>
@@ -68,7 +68,7 @@ function PaymentMethodList() {
           <StatsHorizontal
             color="danger"
             statTitle="Inactive"
-            icon={<UserX size={20} />}
+            icon={<Send size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{paymentMethodStatistics?.inactive}</h3>}
           />
         </Col>

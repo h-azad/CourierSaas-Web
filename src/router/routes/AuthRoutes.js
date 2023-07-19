@@ -1,4 +1,5 @@
 import { lazy } from "react"
+import UserChangePassword from "../../views/user_setting/ChangePassword"
 
 const Login = lazy(() => import("../../views/Login"))
 const Register = lazy(() => import("../../views/Register"))
@@ -25,7 +26,9 @@ const AuthRoutes = [
     meta: {
       layout: "blank",
     },
+    
   },
+  
 ]
 
 export default AuthRoutes

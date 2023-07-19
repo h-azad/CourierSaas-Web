@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react"
 import { Row, Col, Card, CardBody, CardText, Button } from "reactstrap"
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
-import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
+import { ShoppingCart, User, UserCheck, UserPlus, UserX } from "react-feather"
 import ListTable from "./partials/list-table"
 import { getApi, PRODUCT_TYPE_STATISTICS } from "@src/constants/apiUrls"
 import useJwt from '@src/auth/jwt/useJwt'
@@ -41,7 +41,7 @@ function ProductTypeList() {
         <Col lg="3" sm="6">
           <StatsHorizontal
             statTitle="Total Product Type"
-            icon={<User size={20} />}
+            icon={<ShoppingCart size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{productTypeStatistics?.total}</h3>}
           />
         </Col>
@@ -49,7 +49,7 @@ function ProductTypeList() {
           <StatsHorizontal
             color="warning"
             statTitle="Pending"
-            icon={<User size={20} />}
+            icon={<ShoppingCart size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{productTypeStatistics?.pending}</h3>}
           />
         </Col>
@@ -57,7 +57,7 @@ function ProductTypeList() {
           <StatsHorizontal
             color="success"
             statTitle="Active"
-            icon={<UserCheck size={20} />}
+            icon={<ShoppingCart size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{productTypeStatistics?.active}</h3>}
           />
         </Col>
@@ -65,7 +65,7 @@ function ProductTypeList() {
           <StatsHorizontal
             color="danger"
             statTitle="Inactive"
-            icon={<UserX size={20} />}
+            icon={<ShoppingCart size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{productTypeStatistics?.inactive}</h3>}
           />
         </Col>

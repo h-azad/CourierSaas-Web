@@ -4,13 +4,12 @@ import { useEffect, useState } from 'react'
 // ** Third Party Components
 import axios from 'axios'
 import Chart from 'react-apexcharts'
-import { Select } from 'antd'
+import { Select, Statistic } from 'antd'
 
 // ** Reactstrap Imports
 import { Row, Col, Card, CardTitle, UncontrolledButtonDropdown } from 'reactstrap'
 
 const RiderRevenueReport = props => {
-console.log('props', props.transactionOverViewSeriesData)
   // ** State
   const [selectYear, setSelectYear] = useState([])
 
@@ -117,7 +116,7 @@ console.log('props', props.transactionOverViewSeriesData)
           <Chart id='revenue-report-chart' type='bar' height='200' options={revenueOptions} series={revenueSeries} />
         </Col>
         <Col className='budget-wrapper' md='3' xs='12'>
-          <UncontrolledButtonDropdown >
+          {/* <UncontrolledButtonDropdown >
             <Select
               labelInValue
               defaultValue={{
@@ -129,9 +128,27 @@ console.log('props', props.transactionOverViewSeriesData)
             />
           </UncontrolledButtonDropdown>
           <div className='d-flex justify-content-center'>
-            {/* <span>This Year:</span> */}
+            
             <span>{props?.thisYearTransaction}</span>
-          </div>
+          </div> */}
+
+
+          <Col span={12}>
+            <Select
+              labelInValue
+              defaultValue={{
+                value: currentYear,
+                label: currentYear,
+              }}
+              onChange={(e) => { props.fetchTransactionOverViewFilterData(e.value) }}
+              options={selectYear}
+            />
+          </Col>
+          <Col span={12}>
+            <Statistic title="This Year " style={{ paddingTop: 80 }} value={props?.thisYearTransaction} />
+          </Col>
+
+
         </Col>
       </Row>
     </Card>

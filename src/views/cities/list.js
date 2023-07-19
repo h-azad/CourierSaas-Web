@@ -4,7 +4,7 @@ import { Row, Col, Card, CardBody, CardText, Button } from "reactstrap"
 import { Link } from 'react-router-dom'
 import Breadcrumbs from "@components/breadcrumbs"
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
-import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
+import { Map } from "react-feather"
 import ListTable from "./partials/list-table"
 
 import { getApi, CITY_STATISTICS } from "@src/constants/apiUrls"
@@ -45,7 +45,7 @@ function CitiesList() {
         <Col lg="3" sm="6">
           <StatsHorizontal
             statTitle="Total City"
-            icon={<User size={20} />}
+            icon={<Map size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{cityStatistics?.total}</h3>}
           />
         </Col>
@@ -53,7 +53,7 @@ function CitiesList() {
           <StatsHorizontal
             color="warning"
             statTitle="Pending"
-            icon={<User size={20} />}
+            icon={<Map size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{cityStatistics?.pending}</h3>}
           />
         </Col>
@@ -61,7 +61,7 @@ function CitiesList() {
           <StatsHorizontal
             color="success"
             statTitle="Active"
-            icon={<UserCheck size={20} />}
+            icon={<Map size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{cityStatistics?.active}</h3>}
           />
         </Col>
@@ -69,7 +69,7 @@ function CitiesList() {
           <StatsHorizontal
             color="danger"
             statTitle="Inactive"
-            icon={<UserX size={20} />}
+            icon={<Map size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{cityStatistics?.inactive}</h3>}
           />
         </Col>

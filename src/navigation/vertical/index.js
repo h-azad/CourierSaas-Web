@@ -1,4 +1,4 @@
-import { Mail, Home, User, Truck, ShoppingBag, Filter, Gift, Map, MapPin, Users, Sidebar, ShoppingCart, Shield, Circle, CreditCard, Send, home } from "react-feather"
+import {Book,Type, CornerUpRight, Archive, Home, User, Truck, ShoppingBag, Filter, Gift, Map, MapPin, Users, Sidebar, ShoppingCart, Shield, Circle, CreditCard, Send, Meh, Plus, ArrowDownRight, TrendingDown } from "react-feather"
 
 
 const adminMenu = [
@@ -46,7 +46,7 @@ const adminMenu = [
   {
     id: "create_order",
     title: "Order Manage",
-    icon: <CreditCard size={20} />,
+    icon: <Gift size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN',
     navLink: "/create_order"
@@ -54,7 +54,7 @@ const adminMenu = [
   {
     id: "assignment",
     title: "Assignment",
-    icon: <CreditCard size={20} />,
+    icon: <CornerUpRight size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN',
     navLink: "/assignment"
@@ -63,7 +63,7 @@ const adminMenu = [
   {
     id: "agent-assignment",
     title: "Agent Assignment",
-    icon: <CreditCard size={20} />,
+    icon: <CornerUpRight size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN',
     navLink: "/agent-assignment"
@@ -104,7 +104,7 @@ const adminMenu = [
   {
     id: "agent-type",
     title: "Agent Type",
-    icon: <User size={20} />,
+    icon: <Type size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN', 
     navLink: "/agent-type"
@@ -127,7 +127,7 @@ const adminMenu = [
   {
     id: "account_wallet",
     title: "Account Wallet",
-    icon: <Home size={20} />,
+    icon: <Book size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN', 
     navLink: "/account-wallet"
@@ -135,7 +135,7 @@ const adminMenu = [
   {
     id: "withdraw_request",
     title: "Withdraw Request",
-    icon: <Home size={20} />,
+    icon: <Meh size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN', 
     navLink: "/withdraw-request"
@@ -144,7 +144,7 @@ const adminMenu = [
   {
     id: "transactions",
     title: "Transactions",
-    icon: <Home size={20} />,
+    icon: <Send size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN',
     navLink: "/transactions"
@@ -152,7 +152,7 @@ const adminMenu = [
   {
     id: "wallet_adjustment",
     title: "Wallet Adjustment",
-    icon: <Home size={20} />,
+    icon: <Plus size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN',
     navLink: "/wallet-adjustment"
@@ -183,6 +183,15 @@ const adminMenu = [
     header: 'Settings',
     action: 'admin-pages',
     resource: 'ADMIN',
+  },
+
+  {
+    id: "company-setting",
+    title: "Company Setting",
+    icon: <Archive size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN',
+    navLink: "/setting"
   },
 
   {
@@ -225,7 +234,7 @@ const adminMenu = [
   {
     id: "order-reports",
     title: "Orders",
-    icon: <Map size={20} />,
+    icon: <Gift size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN', 
     navLink: "/order/report"
@@ -233,7 +242,7 @@ const adminMenu = [
   {
     id: "admin-get-transactions-reports",
     title: "Transaction",
-    icon: <Map size={20} />,
+    icon: <Send size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN', 
     navLink: "/transactions-report"
@@ -241,7 +250,7 @@ const adminMenu = [
   {
     id: "admin-get-withdraw-request-reports",
     title: "Withdraw Request",
-    icon: <Map size={20} />,
+    icon: <Meh size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN', 
     navLink: "/withdraw-request-report"
@@ -249,7 +258,7 @@ const adminMenu = [
   {
     id: "admin-get-pickup-reports",
     title: "Pickup",
-    icon: <Map size={20} />,
+    icon: <Truck size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN', 
     navLink: "/pickup-report"
@@ -257,7 +266,7 @@ const adminMenu = [
   {
     id: "admin-get-delivery-reports",
     title: "Delivery",
-    icon: <Map size={20} />,
+    icon: <Truck size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN', 
     navLink: "/delivery-report"
@@ -265,7 +274,7 @@ const adminMenu = [
   {
     id: "admin-get-delivery-collection-reports",
     title: "Collection",
-    icon: <Map size={20} />,
+    icon: <ArrowDownRight size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN', 
     navLink: "/delivery-collection-report"
@@ -274,7 +283,7 @@ const adminMenu = [
   {
     id: "admin-get-revenue-report",
     title: "Revenue",
-    icon: <Map size={20} />,
+    icon: <TrendingDown size={20} />,
     action: 'admin-pages',
     resource: 'ADMIN',
     navLink: "/revenue-report"
@@ -312,7 +321,7 @@ const marchantMenu = [
   {
     id: "my_order",
     title: "My Orders",
-    icon: <ShoppingCart size={20} />,
+    icon: <Gift size={20} />,
     action: 'marchant-pages',
     resource: 'MARCHANT',
     navLink: "/marchant-orders"
@@ -327,7 +336,7 @@ const marchantMenu = [
   {
     id: "wallet",
     title: "My Wallet",
-    icon: <ShoppingCart size={20} />,
+    icon: <Book size={20} />,
     action: 'marchant-pages',
     resource: 'MARCHANT',
     navLink: "/marchant-wallet"
@@ -336,7 +345,7 @@ const marchantMenu = [
   {
     id: "withdraw",
     title: "Withdraw Balance",
-    icon: <ShoppingCart size={20} />,
+    icon: <TrendingDown size={20} />,
     action: 'marchant-pages',
     resource: 'MARCHANT',
     navLink: "/marchant-withdraw-request"
@@ -352,7 +361,7 @@ const marchantMenu = [
   {
     id: "pickup_address",
     title: "Add Pickup Address",
-    icon: <ShoppingCart size={20} />,
+    icon: <MapPin size={20} />,
     action: 'marchant-pages',
     resource: 'MARCHANT',
     navLink: "/marchant-pickup-address"
@@ -366,7 +375,7 @@ const marchantMenu = [
   {
     id: "order_report",
     title: "Order Report",
-    icon: <ShoppingCart size={20} />,
+    icon: <Gift size={20} />,
     action: 'marchant-pages',
     resource: 'MARCHANT',
     navLink: "/order-report"
@@ -374,7 +383,7 @@ const marchantMenu = [
   {
     id: "transaction_report",
     title: "Transaction Report",
-    icon: <ShoppingCart size={20} />,
+    icon: <Send size={20} />,
     action: 'marchant-pages',
     resource: 'MARCHANT',
     navLink: "/transaction-report"
@@ -382,7 +391,7 @@ const marchantMenu = [
   {
     id: "withdraw_balance_report",
     title: "Withdraw Balance",
-    icon: <ShoppingCart size={20} />,
+    icon: <TrendingDown size={20} />,
     action: 'marchant-pages',
     resource: 'MARCHANT',
     navLink: "/withdraw-balance-report"
@@ -432,7 +441,7 @@ const riderMenu = [
   {
     id: "pickup",
     title: "Pickup Tasks",
-    icon: <CreditCard size={20} />,
+    icon: <Truck size={20} />,
     action: 'rider-pages',
     resource: 'RIDER',
     navLink: "/rider-orders/pickup"
@@ -440,7 +449,7 @@ const riderMenu = [
   {
     id: "delivary",
     title: "Delivary",
-    icon: <ShoppingBag size={20} />,
+    icon: <Truck size={20} />,
     action: 'rider-pages',
     resource: 'RIDER',
     navLink: "/rider-orders/delivary"
@@ -468,7 +477,7 @@ const riderMenu = [
   {
     id: "order-status",
     title: "Order Status",
-    icon: <CreditCard size={20} />,
+    icon: <Gift size={20} />,
     action: 'rider-pages',
     resource: 'RIDER',
     navLink: "/rider-orders/status"
@@ -483,7 +492,7 @@ const riderMenu = [
   {
     id: "pickup-report",
     title: "Pickup Report",
-    icon: <CreditCard size={20} />,
+    icon: <Truck size={20} />,
     action: 'rider-pages',
     resource: 'RIDER',
     navLink: "/rider-pickup-report"
@@ -491,7 +500,7 @@ const riderMenu = [
   {
     id: "delivery-report",
     title: "Delivery Report",
-    icon: <CreditCard size={20} />,
+    icon: <Truck size={20} />,
     action: 'rider-pages',
     resource: 'RIDER',
     navLink: "/rider-delivery-report"
@@ -499,7 +508,7 @@ const riderMenu = [
   {
     id: "delivery-collection-report",
     title: "Collection Report",
-    icon: <CreditCard size={20} />,
+    icon: <Truck size={20} />,
     action: 'rider-pages',
     resource: 'RIDER',
     navLink: "/rider-delivery-collection-report"

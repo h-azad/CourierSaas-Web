@@ -8,6 +8,13 @@ import { Select } from 'antd'
 
 // ** Reactstrap Imports
 import { Row, Col, Card, CardTitle, UncontrolledButtonDropdown } from 'reactstrap'
+import { LikeOutlined } from '@ant-design/icons'
+
+import { Statistic } from 'antd'
+import React from 'react'
+import CountUp from 'react-countup'
+const formatter = (value) => <CountUp end={value} separator="," />
+
 
 const RevenueReport = props => {
 
@@ -137,7 +144,7 @@ const RevenueReport = props => {
           <Chart id='revenue-report-chart' type='bar' height='230' options={revenueOptions} series={revenueSeries} />
         </Col>
         <Col className='budget-wrapper' md='4' xs='12'>
-          <UncontrolledButtonDropdown >
+          {/* <UncontrolledButtonDropdown >
             <Select
               labelInValue
               defaultValue={{
@@ -152,7 +159,23 @@ const RevenueReport = props => {
           <div className='d-flex justify-content-center'>
             <span className='fw-bolder me-25'>This Year:</span>
             <span>{props?.orderOverViewSeriesData?.currentYearEarning}</span>
-          </div>
+          </div> */}
+
+          <Col span={12}>
+            <Select
+              labelInValue
+              defaultValue={{
+                value: currentYear,
+                label: currentYear,
+              }}
+              onChange={(e) => { props.fetchOrderOverViewFilterData(e.value) }}
+              options={selectYear}
+            />
+          </Col>
+          <Col span={12}>
+            <Statistic title="This Year " style={{paddingTop:80}} value={props?.orderOverViewSeriesData?.currentYearEarning} />
+          </Col>
+
         </Col>
       </Row>
     </Card>

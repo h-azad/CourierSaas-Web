@@ -86,6 +86,8 @@ import AgentTypeEdit from '../../views/agent/agentType/edit'
 import AssignmentToAgent from '../../views/agent_assignment/delivery/assignmentToAgent'
 import DeliveryToAgentTask from '../../views/agent_assignment/delivery/deliveryToAgentTask'
 
+import SettingComponent from "../../views/pages/setting/SettingComponent"
+import UserChangePassword from '../../views/user_setting/ChangePassword'
 
 
 
@@ -320,6 +322,15 @@ const DashboardRoutes = [
   {
     path: "/areas/edit/:id",
     element: <EditAreas />
+  },
+
+  {
+    path: "/setting",
+    element: <SettingComponent/>
+  },
+  {
+    path: "/setting/password",
+    element: <UserChangePassword/>
   },
 
   {
