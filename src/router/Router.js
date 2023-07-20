@@ -16,6 +16,8 @@ import { getUserData, getHomeRouteForLoggedInUser } from '../utility/Utils'
 // ** GetRoutes
 import { getRoutes } from './routes'
 import CreateOrganization from '../views/pages/authentication/CreateOrganization'
+import ResetPasswordBasic from '../views/pages/authentication/ResetPasswordBasic'
+import ForgotPasswordBasic from '../views/pages/authentication/ForgotPasswordBasic'
 
 // ** Components
 const Error = lazy(() => import('../views/pages/misc/Error'))
@@ -44,11 +46,31 @@ const Router = () => {
       index: true,
       element: <Navigate replace to={getHomeRoute()} />,
     },
+
+    {
+      path: "/forgot-password",
+      index: true,
+      element: < ForgotPasswordBasic/>,
+    },
+
+    {
+      path: "/reset-password/:uid/:token/",
+      index: true,
+      element: < ResetPasswordBasic/>,
+    },
+
     {
       path: "/login",
       element: <BlankLayout />,
       children: [{ path: "/login", element: <Login /> }],
     },
+
+    // {
+    //   path: "/registercopy",
+    //   element: <BlankLayout />,
+    //   children: [{ path: "/registercopy", element: <RegisterCopy /> }],
+    // },
+
     // {
     //   path: "/registercopy",
     //   element: <BlankLayout />,

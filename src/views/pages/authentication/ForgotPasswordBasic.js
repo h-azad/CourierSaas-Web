@@ -1,5 +1,8 @@
 // ** React Imports
 import { Link } from 'react-router-dom'
+// API URL
+import useJwt from '@src/auth/jwt/useJwt'
+import { getApi, FORGOT_PASSWORD } from '@src/constants/apiUrls'
 
 // ** Icons Imports
 import { ChevronLeft } from 'react-feather'
@@ -9,7 +12,24 @@ import { Card, CardBody, CardTitle, CardText, Form, Label, Input, Button } from 
 
 // ** Styles
 import '@styles/react/pages/page-authentication.scss'
+import { useState } from 'react'
 const ForgotPasswordBasic = () => {
+  const [email, setEmail] = useState(null)
+  const [responseSuccessMessage, setResponseSuccessMessage] = useState()
+  const [responseErrorMessage, setResponseErrorMessage] = useState()
+
+  const forgotPassword = () => {
+    if (email !== null) {
+      useJwt
+        .axiosPost(getApi(FORGOT_PASSWORD), {email: email})
+        .then((res) => {
+          setResponseSuccessMessage(res.data.msg)
+          setResponseErrorMessage()
+        })
+        .catch(err => setResponseErrorMessage("Sorry This Email Dose Not Exit"), setResponseSuccessMessage())
+    }
+  }
+
   return (
     <div className='auth-wrapper auth-basic px-2'>
       <div className='auth-inner my-2'>
@@ -67,24 +87,26 @@ const ForgotPasswordBasic = () => {
               <h2 className='brand-text text-primary ms-1'>Vuexy</h2>
             </Link>
             <CardTitle tag='h4' className='mb-1'>
+              {responseSuccessMessage && <h3 style={{ color: "#198754" }}>{responseSuccessMessage}</h3>}
+              {responseErrorMessage && <h3 style={{ color: "red" }}>{responseErrorMessage}</h3>}
               Forgot Password? 🔒
             </CardTitle>
             <CardText className='mb-2'>
               Enter your email and we'll send you instructions to reset your password
             </CardText>
-            <Form className='auth-forgot-password-form mt-2' onSubmit={e => e.preventDefault()}>
+            <Form className='auth-forgot-password-form mt-2' onSubmit={e => { e.preventDefault(), forgotPassword() }}>
               <div className='mb-1'>
                 <Label className='form-label' for='login-email'>
                   Email
                 </Label>
-                <Input type='email' id='login-email' placeholder='john@example.com' autoFocus />
+                <Input type='email' onChange={(e) => { setEmail(e.target.value) }} id='login-email' placeholder='john@example.com' autoFocus />
               </div>
-              <Button color='primary' block>
+              <Button disabled={email===null? true: false} color='primary' block>
                 Send reset link
               </Button>
             </Form>
             <p className='text-center mt-2'>
-              <Link to='/pages/login-basic'>
+              <Link to='/login'>
                 <ChevronLeft className='rotate-rtl me-25' size={14} />
                 <span className='align-middle'>Back to login</span>
               </Link>

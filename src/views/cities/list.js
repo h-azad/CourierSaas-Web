@@ -14,7 +14,7 @@ function CitiesList() {
 
   const [cityStatistics, setCityStatistics] = useState({
     total: 0,
-    pending: 0,
+    // pending: 0,
     active: 0,
     inactive: 0,
   })
@@ -26,7 +26,7 @@ function CitiesList() {
         setCityStatistics(
           {
             total: res.data.total,
-            pending: res.data.pending,
+            // pending: res.data.pending,
             active: res.data.active,
             inactive: res.data.inactive,
           })
@@ -42,22 +42,22 @@ function CitiesList() {
   return (
     <Fragment>
       <Row>
-        <Col lg="3" sm="6">
+        <Col lg="4" sm="6">
           <StatsHorizontal
             statTitle="Total City"
             icon={<Map size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{cityStatistics?.total}</h3>}
           />
         </Col>
-        <Col lg="3" sm="6">
+        {/* <Col lg="3" sm="6">
           <StatsHorizontal
             color="warning"
             statTitle="Pending"
             icon={<Map size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{cityStatistics?.pending}</h3>}
           />
-        </Col>
-        <Col lg="3" sm="6">
+        </Col> */}
+        <Col lg="4" sm="6">
           <StatsHorizontal
             color="success"
             statTitle="Active"
@@ -65,7 +65,7 @@ function CitiesList() {
             renderStats={<h3 className="fw-bolder mb-75">{cityStatistics?.active}</h3>}
           />
         </Col>
-        <Col lg="3" sm="6">
+        <Col lg="4" sm="6">
           <StatsHorizontal
             color="danger"
             statTitle="Inactive"

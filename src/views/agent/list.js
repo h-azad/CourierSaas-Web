@@ -11,7 +11,7 @@ function AgentList() {
 
   const [agentStatistics, setAgentStatistics] = useState({
     total: 0,
-    pending: 0,
+    // pending: 0,
     active: 0,
     inactive: 0,
   })
@@ -23,7 +23,7 @@ function AgentList() {
         setAgentStatistics(
           {
             total: res.data.total,
-            pending: res.data.pending,
+            // pending: res.data.pending,
             active: res.data.active,
             inactive: res.data.inactive,
           })
@@ -40,22 +40,22 @@ function AgentList() {
   return (
     <Fragment>
       <Row>
-        <Col lg="3" sm="6">
+        <Col lg="4" sm="6">
           <StatsHorizontal
             statTitle="Total Agent"
             icon={<User size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{agentStatistics?.total}</h3>}
           />
         </Col>
-        <Col lg="3" sm="6">
+        {/* <Col lg="3" sm="6">
           <StatsHorizontal
             color="warning"
             statTitle="Pending"
             icon={<User size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{agentStatistics?.pending}</h3>}
           />
-        </Col>
-        <Col lg="3" sm="6">
+        </Col> */}
+        <Col lg="4" sm="6">
           <StatsHorizontal
             color="success"
             statTitle="Active"
@@ -63,7 +63,7 @@ function AgentList() {
             renderStats={<h3 className="fw-bolder mb-75">{agentStatistics?.active}</h3>}
           />
         </Col>
-        <Col lg="3" sm="6">
+        <Col lg="4" sm="6">
           <StatsHorizontal
             color="danger"
             statTitle="Inactive"

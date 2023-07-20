@@ -228,7 +228,10 @@ export const ADMIN_LIST = "/api/user/admin-viewset/"
 export const ADMIN_EDIT = "/api/user/admin-viewset/"
 export const ADMIN_DELETE = "/api/user/admin-viewset/"
 export const ADMIN_DETAILS = "/api/user/admin-viewset/"
+
 export const CHANGE_PASSWORD = "/api/user/changepassword/"
+export const FORGOT_PASSWORD = "/api/user/forgot-password/"
+export const RESET_PASSWORD = "/api/user/reset-password/"
 
 // export const ADMIN_ADD_SEARCH = "/api/withdraw-request-search/"
 

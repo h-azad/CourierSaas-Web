@@ -31,7 +31,7 @@ const CreateOrderInfoList = ({ orderDetails }) => {
 
               <tr>
                 <th>Status</th>
-                <th>{orderDetails.status}</th>
+                <th>{orderDetails?.status}</th>
               </tr>
               <tr>
                 <th>Created At</th>
@@ -40,19 +40,19 @@ const CreateOrderInfoList = ({ orderDetails }) => {
 
               <tr>
                 <th>Product Type</th>
-                <th>{orderDetails.product_type?.product_type}</th>
+                <th>{orderDetails?.product_type?.product_type}</th>
               </tr>
               <tr>
                 <th>Delivary Area</th>
-                <th>{orderDetails.delivary_area?.area_name}</th>
+                <th>{orderDetails?.delivary_area?.area_name}</th>
               </tr>
               <tr>
                 <th>Product Type</th>
-                <th>{orderDetails.shipment_type?.shipment_type}</th>
+                <th>{orderDetails?.shipment_type?.shipment_type}</th>
               </tr>
               <tr>
                 <th>Shipment Type</th>
-                <th>{orderDetails.product_type?.product_type}</th>
+                <th>{orderDetails?.product_type?.product_type}</th>
               </tr>
 
               <tr>
@@ -74,7 +74,7 @@ const CreateOrderInfoList = ({ orderDetails }) => {
 
               <tr>
                 <th>Delivary Rider</th>
-                <th>{orderDetails?.delivary_rider}</th>
+                <th>{orderDetails?.delivary_rider?.full_name}</th>
               </tr>
               <tr>
                 <th>Delivary area</th>
@@ -86,20 +86,20 @@ const CreateOrderInfoList = ({ orderDetails }) => {
               </tr>
               <tr>
                 <th>Delivery Status</th>
-                <th>{orderDetails?.delivery_status}</th>
+                <th>{orderDetails?.status}</th>
               </tr>
 
               <tr>
                 <th>Delivary Charge</th>
-                <th>{orderDetails.delivary_charge}</th>
+                <th>{orderDetails?.delivary_charge}</th>
               </tr>
               <tr>
                 <th>Cash On Delivery Charge</th>
-                <th>{orderDetails.cash_on_delivery_charge}</th>
+                <th>{orderDetails?.cash_on_delivery_charge}</th>
               </tr>
               <tr>
                 <th>Collection Amount</th>
-                <th>{orderDetails.amount_to_be_collected}</th>
+                <th>{orderDetails?.amount_to_be_collected}</th>
               </tr>
               <tr>
                 <th>Total Amount</th>

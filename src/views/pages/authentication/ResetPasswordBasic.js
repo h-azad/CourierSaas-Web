@@ -1,5 +1,5 @@
 // ** React Imports
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 // ** Icons Imports
 import { ChevronLeft } from 'react-feather'
@@ -12,8 +12,37 @@ import { Card, CardBody, CardTitle, CardText, Form, Label, Button } from 'reacts
 
 // ** Styles
 import '@styles/react/pages/page-authentication.scss'
+import { useState } from 'react'
+
+import useJwt from '@src/auth/jwt/useJwt'
+import { getApi, RESET_PASSWORD } from '@src/constants/apiUrls'
 
 const ResetPasswordBasic = () => {
+  let { uid, token } = useParams()
+
+  const [password, setPassword] = useState(null)
+  const [password2, setPassword2] = useState(null)
+  const [responseSuccessMessage, setResponseSuccessMessage] = useState()
+  const [responseErrorMessage, setResponseErrorMessage] = useState()
+
+  const resetPassword = () => {
+    if (password === password2) {
+      if (password >= 6) {
+        useJwt
+          .axiosPost(getApi(RESET_PASSWORD + `${uid.slice(4)}/${token.slice(6)}/`), { password: password, password2: password2 })
+          .then((res) => {
+            setResponseSuccessMessage(res.data.msg)
+            setResponseErrorMessage()
+          })
+          .catch(err => setResponseErrorMessage("Sorry This Email Dose Not Exit"), setResponseSuccessMessage())
+      } else {
+        setResponseErrorMessage('Password less than 8 characters')
+      }
+    } else {
+      setResponseErrorMessage('Password and Confirm password Not Match')
+    }
+  }
+
   return (
     <div className='auth-wrapper auth-basic px-2'>
       <div className='auth-inner my-2'>
@@ -71,28 +100,31 @@ const ResetPasswordBasic = () => {
               <h2 className='brand-text text-primary ms-1'>Vuexy</h2>
             </Link>
             <CardTitle tag='h4' className='mb-1'>
+              {responseSuccessMessage && <h3 style={{ color: "#198754" }}>{responseSuccessMessage}</h3>}
+              {responseErrorMessage && <h3 style={{ color: "red" }}>{responseErrorMessage}</h3>}
               Reset Password 🔒
             </CardTitle>
             <CardText className='mb-2'>Your new password must be different from previously used passwords</CardText>
-            <Form className='auth-reset-password-form mt-2' onSubmit={e => e.preventDefault()}>
+
+            <Form className='auth-reset-password-form mt-2' onSubmit={e => {e.preventDefault(), resetPassword()}}>
               <div className='mb-1'>
                 <Label className='form-label' for='new-password'>
                   New Password
                 </Label>
-                <InputPassword className='input-group-merge' id='new-password' autoFocus />
+                <InputPassword onChange={(e) => { setPassword(e.target.value) }} className='input-group-merge' id='new-password' autoFocus />
               </div>
               <div className='mb-1'>
                 <Label className='form-label' for='confirm-password'>
                   Confirm Password
                 </Label>
-                <InputPassword className='input-group-merge' id='confirm-password' />
+                <InputPassword onChange={(e) => { setPassword2(e.target.value) }} className='input-group-merge' id='confirm-password' />
               </div>
               <Button color='primary' block>
                 Set New Password
               </Button>
             </Form>
             <p className='text-center mt-2'>
-              <Link to='/pages/login-basic'>
+              <Link to='/'>
                 <ChevronLeft className='rotate-rtl me-25' size={14} />
                 <span className='align-middle'>Back to login</span>
               </Link>

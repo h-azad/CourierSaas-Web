@@ -256,8 +256,8 @@ const Login = () => {
             </Form>
             <p className='text-center mt-2'>
               <span className='me-25'>New on our platform?</span>
-              <Link to='/register'>
-                <span>Create an account</span>
+              <Link to='/forgot-password'>
+                <span>Forgot an account</span>
               </Link>
             </p>
             <div className='divider my-2'>

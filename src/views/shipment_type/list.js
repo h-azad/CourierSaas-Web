@@ -13,7 +13,7 @@ function ShipmentTypeList() {
 
   const [shipmentTypeStatistics, setShipmentTypeStatistics] = useState({
     total: 0,
-    pending: 0,
+    // pending: 0,
     active: 0,
     inactive: 0,
   })
@@ -25,7 +25,7 @@ function ShipmentTypeList() {
         setShipmentTypeStatistics(
           {
             total: res.data.total,
-            pending: res.data.pending,
+            // pending: res.data.pending,
             active: res.data.active,
             inactive: res.data.inactive,
           })
@@ -41,22 +41,22 @@ function ShipmentTypeList() {
   return (
     <Fragment>
       <Row>
-        <Col lg="3" sm="6">
+        <Col lg="4" sm="6">
           <StatsHorizontal
             statTitle="Total Shipment Type"
             icon={<Truck size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{shipmentTypeStatistics?.total}</h3>}
           />
         </Col>
-        <Col lg="3" sm="6">
+        {/* <Col lg="3" sm="6">
           <StatsHorizontal
             color="warning"
             statTitle="Pending"
             icon={<Truck size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{shipmentTypeStatistics?.pending}</h3>}
           />
-        </Col>
-        <Col lg="3" sm="6">
+        </Col> */}
+        <Col lg="4" sm="6">
           <StatsHorizontal
             color="success"
             statTitle="Active"
@@ -64,7 +64,7 @@ function ShipmentTypeList() {
             renderStats={<h3 className="fw-bolder mb-75">{shipmentTypeStatistics?.active}</h3>}
           />
         </Col>
-        <Col lg="3" sm="6">
+        <Col lg="4" sm="6">
           <StatsHorizontal
             color="danger"
             statTitle="Inactive"

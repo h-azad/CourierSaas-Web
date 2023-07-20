@@ -210,7 +210,7 @@ const AddRiders = () => {
         address: data.address,
         password: data.password,
         confirm_password: data.confirm_password,
-        status: 'pending'
+        status: 'active'
       }
       console.log("formData", formData)
       // return false

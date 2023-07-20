@@ -10,7 +10,7 @@ function ProductTypeList() {
 
   const [productTypeStatistics, setProductTypeStatistics] = useState({
     total: 0,
-    pending: 0,
+    // pending: 0,
     active: 0,
     inactive: 0,
   })
@@ -22,7 +22,7 @@ function ProductTypeList() {
         setProductTypeStatistics(
           {
             total: res.data.total,
-            pending: res.data.pending,
+            // pending: res.data.pending,
             active: res.data.active,
             inactive: res.data.inactive,
           })
@@ -38,14 +38,14 @@ function ProductTypeList() {
   return (
     <Fragment>
       <Row>
-        <Col lg="3" sm="6">
+        <Col lg="4" sm="6">
           <StatsHorizontal
             statTitle="Total Product Type"
             icon={<ShoppingCart size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{productTypeStatistics?.total}</h3>}
           />
         </Col>
-        <Col lg="3" sm="6">
+        <Col lg="4" sm="6">
           <StatsHorizontal
             color="warning"
             statTitle="Pending"
@@ -53,15 +53,15 @@ function ProductTypeList() {
             renderStats={<h3 className="fw-bolder mb-75">{productTypeStatistics?.pending}</h3>}
           />
         </Col>
-        <Col lg="3" sm="6">
+        {/* <Col lg="3" sm="6">
           <StatsHorizontal
             color="success"
             statTitle="Active"
             icon={<ShoppingCart size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{productTypeStatistics?.active}</h3>}
           />
-        </Col>
-        <Col lg="3" sm="6">
+        </Col> */}
+        <Col lg="4" sm="6">
           <StatsHorizontal
             color="danger"
             statTitle="Inactive"

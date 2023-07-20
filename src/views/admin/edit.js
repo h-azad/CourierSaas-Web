@@ -40,8 +40,13 @@ const EditAdmin = () => {
       .then((res) => {
         console.log(res)
         setValue("name", res.data.name)
-        setValue('admin_role', res.data.admin_role)
-        setAdminInfo({ "name": res.data.name, "adminRole": res.data.admin_role })
+        if (res.data.admin_role=='Admin'){
+          setValue('admin_role', { value: 'Admin', label: 'Admin' })
+        }else if (res.data.admin_role=='Manager'){
+          setValue('admin_role', { value: 'Manager', label: 'Manager' })
+        }else{
+          setValue('admin_role', { value: 'Dispatcher', label: 'Dispatcher'})
+        }
         return res.data
       })
       .catch(err => console.log(err))

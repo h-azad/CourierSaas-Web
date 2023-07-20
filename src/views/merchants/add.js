@@ -219,7 +219,8 @@ const AddMerchants = () => {
         pickup_address: data.pickup_address,
         password: data.password,
         confirm_password: data.confirm_password,
-        status: 'pending'
+        status: 'approved',
+        is_active: true
       }
       console.log("formData", formData)
       // return false

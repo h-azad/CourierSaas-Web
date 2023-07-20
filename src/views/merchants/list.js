@@ -11,7 +11,7 @@ function MerchantList() {
 
   const [marchantStatistics, setMarchantStatistics] = useState({
     total: 0,
-    pending: 0,
+    // pending: 0,
     approved: 0,
     inactive: 0,
   })
@@ -23,7 +23,7 @@ function MerchantList() {
         setMarchantStatistics(
           {
             total: res.data.total,
-            pending: res.data.pending,
+            // pending: res.data.pending,
             approved: res.data.approved,
             inactive: res.data.inactive,
           })
@@ -39,22 +39,22 @@ function MerchantList() {
   return (
     <Fragment>
       <Row>
-        <Col lg="3" sm="6">
+        <Col lg="4" sm="6">
           <StatsHorizontal
             statTitle="Total Marchant"
             icon={<User size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{marchantStatistics?.total}</h3>}
           />
         </Col>
-        <Col lg="3" sm="6">
+        {/* <Col lg="3" sm="6">
           <StatsHorizontal
             color="warning"
             statTitle="Pending"
             icon={<User size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">{marchantStatistics?.pending}</h3>}
           />
-        </Col>
-        <Col lg="3" sm="6">
+        </Col> */}
+        <Col lg="4" sm="6">
           <StatsHorizontal
             color="success"
             statTitle="Approved"
@@ -62,7 +62,7 @@ function MerchantList() {
             renderStats={<h3 className="fw-bolder mb-75">{marchantStatistics?.approved}</h3>}
           />
         </Col>
-        <Col lg="3" sm="6">
+        <Col lg="4" sm="6">
           <StatsHorizontal
             color="danger"
             statTitle="Inactive"
