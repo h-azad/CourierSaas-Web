@@ -99,6 +99,18 @@ const UserDropdown = () => {
         />
       </DropdownToggle>
       <DropdownMenu end>
+
+      <DropdownItem tag={Link} onClick={(e) => {
+          {
+            e.preventDefault(),
+              navigate('/profile')
+            return true
+          }
+        }}>
+          <User size={14} className="me-75" />
+          <span className="align-middle">Profile</span>
+        </DropdownItem>
+
         <DropdownItem tag={Link} onClick={(e) => {
           {
             e.preventDefault(),
@@ -109,10 +121,8 @@ const UserDropdown = () => {
           <Key size={14} className="me-75" />
           <span className="align-middle">Change Password</span>
         </DropdownItem>
-        {/* <DropdownItem tag={Link} to="/" onClick={(e) => e.preventDefault()}>
-          <Mail size={14} className="me-75" />
-          <span className="align-middle">Inbox</span>
-        </DropdownItem>
+        
+        {/* 
         <DropdownItem tag={Link} to="/" onClick={(e) => e.preventDefault()}>
           <CheckSquare size={14} className="me-75" />
           <span className="align-middle">Tasks</span>

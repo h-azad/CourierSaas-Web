@@ -8,12 +8,18 @@ import TaskView from "../../components/rider_view/taskView"
 import RiderPickupReport from "../../views/rider/report/pickupReport"
 import DeliveryReport from "../../views/rider/report/deliveryReport"
 import MarchantCollectionReport from "../../views/rider/report/collectionReport"
+import MyWallet from "../../views/account_wallet/wallet/MyWallet"
 
 const RiderRoutes = [
     // {
     //     path: "/rider-dashboard",
     //     element: <RiderDashboard />
     // },
+    
+    {
+        path: "/rider-wallet",
+        element: <MyWallet/>
+    },
     {
         path: "/rider-orders/current-task",
         element: <CurrentTaskList/>

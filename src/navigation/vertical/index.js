@@ -467,6 +467,20 @@ const riderMenu = [
     resource: 'RIDER',
     navLink: "/rider-orders/current-task"
   },
+
+  {
+    header: 'Wallet',
+    action: 'rider-pages',
+    resource: 'RIDER',
+  },
+  {
+    id: "rider-wallet",
+    title: "My Wallet",
+    icon: <Gift size={20} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/rider-wallet"
+  },
   
 
   {

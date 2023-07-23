@@ -33,14 +33,24 @@ import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
 import ChangeStatusModalRider from "../delivary/DelivaryStatusModal"
 import CancelReasonModal from "./CancelReasonModal"
 import ReturnDeliveryReasonModal from "./ReturnDeliveryReasonModal"
+import OrderDetailsDrawer from "../../../order/OrderDetailsDrawer"
 
-const DelivaryView = ({}) => {
+const DelivaryView = ({ }) => {
   const [delivaryData, setDelivaryData] = useState([])
   const [statusModalState, setStatusModalState] = useState(false)
   const [cancelModalState, setCancelModalState] = useState(false)
   const [returnedDeliveryModalState, setReturnedDeliveryModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
   const [selectedInfo, setSelectedInfo] = useState(null)
+
+  const [orderid, setOrderId] = useState(0)
+  const [open, setOpen] = useState(false)
+  const showOrderDetailsDrawer = () => {
+    setOpen(true)
+  }
+  const onCloseOrderDetailsDrawer = () => {
+    setOpen(false)
+  }
 
 
 
@@ -76,10 +86,6 @@ const DelivaryView = ({}) => {
     console.log("selectedStatus", selectedStatus)
     return false
   }
-
-
-
-  
 
 
 
@@ -136,15 +142,15 @@ const DelivaryView = ({}) => {
       function (result) {
         if (result.value) {
           useJwt
-          .axiosPost(
-            getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/confirm_delivery/`),
-            { details: info }
-          )
-          .then((res) => {
-            toast.success(res.data)
-            fetchDelivaryData()
-          })
-          .catch((err) => console.log(err))
+            .axiosPost(
+              getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/confirm_delivery/`),
+              { details: info }
+            )
+            .then((res) => {
+              toast.success(res.data)
+              fetchDelivaryData()
+            })
+            .catch((err) => console.log(err))
         }
       }
     )
@@ -165,61 +171,9 @@ const DelivaryView = ({}) => {
         <h3> Delivary Task </h3>
       </div>
       <hr></hr>
+      <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
       {delivaryData &&
         delivaryData.map((info) => (
-          // <Card className='invoice-preview-card'>
-          //     <CardBody>
-          //         <Row >
-          //             <Col xl='9'>
-          //                 <h5 className='mb-25'><b>Parcel Id :{info?.parcel_id}  </b> </h5>
-          //                 <h9 className='mb-25'>Created:{info.created_at} </h9>
-          //             </Col>
-          //         </Row>
-          //         <Row className='mt-2' >
-          //             <Col xl='7'>
-          //                 <h6 className='mb-25'><b>Recipient Name :{info?.recipient_name}</b>  </h6>
-          //                 <h6 className='mb-25'>Phone Number :  {info?.phone_number}</h6>
-          //                 <h6 className='mb-25'>Delivary Address : {info?.delivary_address}</h6>
-          //                 <h6 className='mb-25 '> Delivary Status : <span className='highlight-status'>
-          //                     <Select
-          //                         defaultValue="No"
-          //                         style={{
-          //                             width: 120,
-          //                         }}
-          //                         bordered={false}
-          //                         onChange={(value) => handleChange(info.id, value)}
-          //                         options={[
-          //                             {
-          //                                 value: 'No',
-          //                                 label: 'No',
-
-          //                             },
-          //                             {
-          //                                 value: 'Yes',
-          //                                 label: 'Yes',
-          //                             },
-          //                         ]}
-          //                     /></span></h6>
-
-          //             </Col>
-          //             <Col xl='5'>
-          //                 <h6 className='mb-25'>Product type :{info.product_type.product_type} </h6>
-          //                 <h6 className='mb-25'>Shipment type :{info.shipment_type.shipment_type}</h6>
-          //                 <h6 className='mb-25'>Delivary Charge:{info?.delivary_charge} </h6>
-          //                 <h6 className='mb-25'>Total Amount :  {info?.amount_to_be_collected}</h6>
-          //             </Col>
-          //         </Row>
-
-          //     </CardBody>
-          //     <PickupStatusModal
-          //         statusModalState={statusModalState}
-          //         setStatusModalState={setStatusModalState}
-          //         Info={selectedInfo}
-          //         fetchDelivaryData={fetchDelivaryData}
-          //     />
-
-          // </Card >
-
           <Card className="invoice-preview-card">
             <CardBody>
               <Row>
@@ -231,9 +185,9 @@ const DelivaryView = ({}) => {
                 </Col>
                 <Col xl="3">
                   <div className="button-wrapper">
-                    <button className="action-view">
+                    <button className="action-view" type="primary" onClick={() => { setOrderId(info?.id), showOrderDetailsDrawer() }}>
                       <EyeOutlined />
-                      <a href={"/rider-orders/task-view/" + info?.id}> View</a>
+                      View
                     </button>
                     <UncontrolledDropdown>
                       <DropdownToggle
@@ -249,19 +203,19 @@ const DelivaryView = ({}) => {
                           info.warehouse_status &&
                           !info.delivery_status && (
                             <>
-                            
-                            <DropdownItem
-                              href="/"
-                              onClick={(e) =>
-                                deliveryCancelIssue(e, info)
-                              }
-                            >
-                              <Edit3 className="me-50" size={15} />{" "}
-                              <span className="align-middle">
-                                Cancel
-                              </span>
-                            </DropdownItem>
-                            {/* <DropdownItem
+
+                              <DropdownItem
+                                href="/"
+                                onClick={(e) =>
+                                  deliveryCancelIssue(e, info)
+                                }
+                              >
+                                <Edit3 className="me-50" size={15} />{" "}
+                                <span className="align-middle">
+                                  Cancel
+                                </span>
+                              </DropdownItem>
+                              {/* <DropdownItem
                               href="/"
                               onClick={(e) => returnedDelivery(e, info)}
                             >
@@ -270,7 +224,7 @@ const DelivaryView = ({}) => {
                               Return
                               </span>
                             </DropdownItem> */}
-                            {/* <DropdownItem
+                              {/* <DropdownItem
                               href="/"
                               onClick={(e) => changeStatusAction(e, info)}
                             >
@@ -279,18 +233,18 @@ const DelivaryView = ({}) => {
                               Cencell By Receiver
                               </span>
                             </DropdownItem> */}
-                            <DropdownItem
-                              href="/"
-                              onClick={(e) =>
-                                confirmDelivery(e, info)
-                              }
-                            >
-                              <Edit3 className="me-50" size={15} />{" "}
-                              <span className="align-middle">
-                                Confirm Delivery
-                              </span>
-                            </DropdownItem>
-                          </>
+                              <DropdownItem
+                                href="/"
+                                onClick={(e) =>
+                                  confirmDelivery(e, info)
+                                }
+                              >
+                                <Edit3 className="me-50" size={15} />{" "}
+                                <span className="align-middle">
+                                  Confirm Delivery
+                                </span>
+                              </DropdownItem>
+                            </>
                           )}
                       </DropdownMenu>
                     </UncontrolledDropdown>

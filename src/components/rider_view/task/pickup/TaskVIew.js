@@ -32,6 +32,9 @@ import ChangeStatusModalRider from "../delivary/DelivaryStatusModal"
 import CancelReasonModal from "./CancelReasonModal"
 import CancelByMarchantModal from "./CancelByMarchantModal"
 import SwalConfirm from "../../../SwalConfirm"
+
+import OrderDetailsDrawer from "../../../order/OrderDetailsDrawer"
+
 const PickupView = ({ orderInfo }) => {
   const [pickupData, setPickupData] = useState([])
   const [statusModalState, setStatusModalState] = useState(false)
@@ -41,6 +44,15 @@ const PickupView = ({ orderInfo }) => {
   const [selectedInfo, setSelectedInfo] = useState(null)
 
   const [modalState, setModalState] = useState(false)
+
+  const [orderid, setOrderId] = useState(0)
+  const [open, setOpen] = useState(false)
+  const showOrderDetailsDrawer = () => {
+    setOpen(true)
+  }
+  const onCloseOrderDetailsDrawer = () => {
+    setOpen(false)
+  }
 
 
   const fetchPickupData = () => {
@@ -124,7 +136,7 @@ const PickupView = ({ orderInfo }) => {
   // }
 
 
- 
+
 
   const cancelByRiderAction = (e, info) => {
     e.preventDefault()
@@ -147,19 +159,19 @@ const PickupView = ({ orderInfo }) => {
   // }
 
 
-  
+
   const confirmPickup = (e, info) => {
     e.preventDefault()
     return SwalConfirm(`Confirm Pickup`).then(
       function (result) {
         if (result.value) {
           useJwt
-          .axiosPost(getApi(`${RIDER_ASSIGNMENT}/${info.id}/confirm_pickup/`))
-          .then((res) => {
-            toast.success(res.data)
-            fetchPickupData()
-          })
-          .catch((err) => console.log(err))
+            .axiosPost(getApi(`${RIDER_ASSIGNMENT}/${info.id}/confirm_pickup/`))
+            .then((res) => {
+              toast.success(res.data)
+              fetchPickupData()
+            })
+            .catch((err) => console.log(err))
         }
       }
     )
@@ -184,61 +196,9 @@ const PickupView = ({ orderInfo }) => {
         <h3> Pickup Task </h3>
       </div>
       <hr></hr>
+      <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
       {pickupData &&
         pickupData.map((info) => (
-          // <Card className='invoice-preview-card'>
-          //     <CardBody>
-          //         <Row >
-          //             <Col xl='9'>
-          //                         <h5 className='mb-25'><b>Parcel Id :{info?.parcel_id}  </b> </h5>
-          //                         <h9 className='mb-25'>Created:{info.created_at} </h9>
-          //             </Col>
-          //         </Row>
-          //         <Row className='mt-2' >
-          //             <Col xl='7'>
-          //                         <h6 className='mb-25'><b>Recipient Name :{info?.recipient_name}</b>  </h6>
-          //                         <h6 className='mb-25'>Phone Number :  {info?.phone_number}</h6>
-          //                         <h6 className='mb-25'>Delivary Address : {info?.delivary_address}</h6>
-          //                 <h6 className='mb-25 '> Pickup Status : <span className='highlight-status'>
-          //                     <Select
-          //                         defaultValue="No"
-          //                         style={{
-          //                             width: 120,
-          //                         }}
-          //                         bordered={false}
-          //                                 onChange={(value) => handleChange(info.id, value)}
-          //                         options={[
-          //                             {
-          //                                 value: 'No',
-          //                                 label: 'No',
-
-          //                             },
-          //                             {
-          //                                 value: 'Yes',
-          //                                 label: 'Yes',
-          //                             },
-          //                         ]}
-          //                     /></span></h6>
-
-          //             </Col>
-          //             <Col xl='5'>
-          //                         <h6 className='mb-25'>Product type :{info.product_type.product_type} </h6>
-          //                         <h6 className='mb-25'>Shipment type :{info.shipment_type.shipment_type}</h6>
-          //                         <h6 className='mb-25'>Delivary Charge:{info?.delivary_charge} </h6>
-          //                         <h6 className='mb-25'>Total Amount :  {info?.amount_to_be_collected}</h6>
-          //             </Col>
-          //         </Row>
-
-          //     </CardBody>
-          //             <PickupStatusModal
-          //                 statusModalState={statusModalState}
-          //                 setStatusModalState={setStatusModalState}
-          //                 Info={selectedInfo}
-          //                 fetchPickupData={fetchPickupData}
-          //             />
-
-          // </Card >
-
           <Card className="invoice-preview-card">
             <CardBody>
               <Row>
@@ -250,10 +210,11 @@ const PickupView = ({ orderInfo }) => {
                 </Col>
                 <Col xl="3">
                   <div className="button-wrapper">
-                    <button className="action-view">
+                    <button className="action-view" type="primary" onClick={() => { setOrderId(info?.id), showOrderDetailsDrawer() }}>
                       <EyeOutlined />
-                      <a href={"/rider-orders/task-view/" + info?.id}> View</a>
+                      View
                     </button>
+
                     <UncontrolledDropdown>
                       <DropdownToggle
                         className="icon-btn hide-arrow"

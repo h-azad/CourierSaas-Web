@@ -88,7 +88,8 @@ import DeliveryToAgentTask from '../../views/agent_assignment/delivery/deliveryT
 
 import SettingComponent from "../../views/pages/setting/SettingComponent"
 import UserChangePassword from '../../views/user_setting/ChangePassword'
-
+import Profile from '../../views/pages/profile'
+import EditProfile from "../../views/pages/profile/EditProfile"
 
 
 
@@ -97,6 +98,17 @@ const SecondPage = lazy(() => import("../../views/SecondPage"))
 const Error = lazy(() => import("../../views/Error"))
 
 const DashboardRoutes = [
+
+  {
+    path: "/profile",
+    element: <Profile />
+  },
+  {
+    path: "/profile/edit",
+    element: <EditProfile />
+  },
+  
+
   {
     path: "/order/report",
     element: <AdminOrderReport />
