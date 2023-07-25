@@ -1,4 +1,4 @@
-import {Book,Type, CornerUpRight, Archive, Home, User, Truck, ShoppingBag, Filter, Gift, Map, MapPin, Users, Sidebar, ShoppingCart, Shield, Circle, CreditCard, Send, Meh, Plus, ArrowDownRight, TrendingDown } from "react-feather"
+import {Book,Type, CornerUpRight, Archive, Home, User, Truck, ShoppingBag, Filter, Gift, Map, MapPin, Users, Sidebar, ShoppingCart, Shield, Circle, CreditCard, Send, Meh, Plus, ArrowDownRight, TrendingDown, Unlock } from "react-feather"
 
 
 const adminMenu = [
@@ -226,6 +226,25 @@ const adminMenu = [
     resource: 'ADMIN',
     navLink: "/payment_method"
   },
+
+  {
+    id: "admin_role",
+    title: "Admin Role",
+    icon: <User size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN',
+    navLink: "/admin-role"
+  },
+
+  {
+    id: "permissions",
+    title: "Permission",
+    icon: <Unlock size={20} />,
+    action: 'admin-pages',
+    resource: 'ADMIN',
+    navLink: "/permission"
+  },
+
   {
     header: 'Reports',
     action: 'admin-pages',

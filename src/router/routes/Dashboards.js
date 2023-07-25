@@ -90,6 +90,10 @@ import SettingComponent from "../../views/pages/setting/SettingComponent"
 import UserChangePassword from '../../views/user_setting/ChangePassword'
 import Profile from '../../views/pages/profile'
 import EditProfile from "../../views/pages/profile/EditProfile"
+import PermissionList from '../../views/permission/PermissionList/PermissionList'
+import AdminRoleList from '../../views/admin/role/AddminRoleList'
+import AddAdminRole from '../../views/admin/role/AddAdminRole'
+import EditAdminRole from '../../views/admin/role/EditAdminRole'
 
 
 
@@ -106,6 +110,24 @@ const DashboardRoutes = [
   {
     path: "/profile/edit",
     element: <EditProfile />
+  },
+
+  {
+    path: "/admin-role",
+    element: <AdminRoleList />
+  },
+  {
+    path: "/admin-role/add",
+    element: <AddAdminRole />
+  },
+  {
+    path: "/admin-role/edit/:id",
+    element: <EditAdminRole />
+  },
+
+  {
+    path: "/permission",
+    element: <PermissionList />
   },
   
 

@@ -44,7 +44,8 @@ const UserDropdown = () => {
     name: null,
     email: null,
     role: null,
-    admin_role: null
+    admin_role: null,
+    profile_picture: null
   })
 
   const submitLogout = async (e) => {
@@ -63,13 +64,15 @@ const UserDropdown = () => {
     return useJwt
       .axiosGet(getApi(GET_USER))
       .then((res) => {
-        console.log("user data", res.data)
+        console.log("profile_picture", res.data.image[0].profile_picture)
         setUserInformation({
-          name: res.data.name,
-          email: res.data.email,
-          role: res.data.role,
-          admin_role: res.data.admin_role
+          name: res.data.data.name,
+          email: res.data.data.email,
+          role: res.data.data.role,
+          admin_role: res.data.data.admin_role,
+          profile_picture: res?.data?.image[0]?.profile_picture
         })
+        // console.log('res.data.profile_picture', res.data.profile_picture)
         return res.data
       })
       .catch(err => console.log(err))
@@ -92,7 +95,7 @@ const UserDropdown = () => {
           <span className="user-status">{userInformation.role ? userInformation.role : userInformation.admin_role}</span>
         </div>
         <Avatar
-          img={defaultAvatar}
+          img={userInformation.profile_picture ? "http://localhost:8000/media/"+userInformation.profile_picture : Avatar}
           imgHeight="40"
           imgWidth="40"
           status="online"

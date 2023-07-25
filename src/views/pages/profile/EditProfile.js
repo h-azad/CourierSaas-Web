@@ -33,7 +33,7 @@ const EditProfile = () => {
   // const [avatar, setAvatar] = useState(avatar)
 
   const [avatar, setAvatar] = useState()
-  console.log("avatar x",avatar)
+  console.log("avatar x", avatar)
 
   const onChange = e => {
     const reader = new FileReader(),
@@ -206,32 +206,34 @@ const EditProfile = () => {
       return false
     }
 
-
     if (data.full_name !== null && data.contact_no !== null && data.contact_no_two !== null
       && data.identity !== null && data.identity_no !== null && data.email !== null
       && data.payment_method.value !== null && data.bank_name !== null && data.bank_account_name !== null
       && data.bank_account_num !== null && data.city.value !== null && data.area.value !== null
       && data.business_name !== null && data.address !== null) {
 
-      let formData = {
-        full_name: data.full_name,
-        contact_no: data.contact_no,
-        contact_no_two: data.contact_no_two,
-        identity: data.identity?.value,
-        identity_no: data.identity_no,
-        email: data.email,
-        payment_method: data.payment_method ? data.payment_method.value : userInFo.payment_method,
-        bank_name: data.bank_name,
-        bank_account_name: data.bank_account_name,
-        bank_account_num: data.bank_account_num,
-        city: data.city ? data.city.value : userInFo.city,
-        area_id: data.area ? data.area.value : userInFo.area,
-        business_name: data.business_name,
-        address: data.address,
-        profile_picture:avatar,
+      let formData = new FormData()
+      Object.keys(data).forEach((key) => {
+        if (key === "profile_picture") {
+          formData.append(key, data[key][0])
+        }
+        else if (key === "city") {
+          formData.append(key, data.city.value.id)
+        }
+        else if (key === "area") {
+          formData.append(key, data.area.value.id)
+        }
+        else if (key === "payment_method") {
+          formData.append(key, data.payment_method.value.id)
+        }
+        else if (key === "identity") {
+          formData.append(key, data.identity.value)
+        }
 
-      }
-    
+        else {
+          formData.append(key, data[key])
+        }
+      })
 
       console.log("formData", formData)
       const headers = {
@@ -268,13 +270,9 @@ const EditProfile = () => {
               </div>
               <div className='d-flex align-items-end mt-75 ms-1'>
                 <div>
-                  <Button tag={Label} className='mb-75 me-75' size='sm' color='primary'>
-                    Upload
-                    <Input type='file' onChange={onChange} hidden accept='image/*' />
-                  </Button>
-                  <Button className='mb-75' color='secondary' size='sm' outline onClick={handleImgReset}>
-                    Reset
-                  </Button>
+                  <div className='mb-1'>
+                    <input type="file" className="from-control" {...register('profile_picture')} />
+                  </div>
                   <p className='mb-0'>Allowed JPG, GIF or PNG. Max size of 800kB</p>
                 </div>
               </div>

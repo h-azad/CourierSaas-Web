@@ -18,7 +18,7 @@ const ProfileHeader = ({ data }) => {
       <div className='profile-header-nav'>
         <Navbar container={false} className='justify-content-end justify-content-md-between w-100' expand='md' light>
           <Collapse isOpen={isOpen} navbar>
-            <div className='profile-tabs d-flex justify-content-between flex-wrap mt-1 mt-md-0'>
+            {/* <div className='profile-tabs d-flex justify-content-between flex-wrap mt-1 mt-md-0'> */}
               <Button onClick={(e) => {
                   {
                     e.preventDefault(),
@@ -29,7 +29,7 @@ const ProfileHeader = ({ data }) => {
                 <Edit className='d-block d-md-none' size={14} />
                 <span className='fw-bold d-none d-md-block'>Edit</span>
               </Button>
-            </div>
+            {/* </div> */}
           </Collapse>
         </Navbar>
       </div>

@@ -35,14 +35,14 @@ const Profile = () => {
       {data !== null ? (
         <div id='user-profile'>
           <Row>
-            <Col sm='12'>
+            <Col  sm='12'>
               <ProfileHeader />
             </Col>
           </Row>
           <section id='profile-info'>
             <Row>
-              <Col lg={{ size: 8, order: 1 }} sm={{ size: 12 }} xs={{ order: 2 }}>
-                <ProfileAbout data={data} />
+              <Col sm='12'>
+              <ProfileAbout data={data} />
               </Col>
             </Row>
           </section>

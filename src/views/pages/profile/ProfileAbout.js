@@ -7,7 +7,7 @@ const ProfileAbout = ({ data }) => {
     <Card>
       <CardBody>
 
-      <Table responsive>
+        <Table responsive>
           <tbody>
             <tr>
               <th>Full Name</th>
@@ -47,14 +47,14 @@ const ProfileAbout = ({ data }) => {
             </tr>
             <tr>
               <th>Payment Method:</th>
-                <th>{data?.payment_method?.payment_method_name}</th>
+              <th>{data?.payment_method?.payment_method_name}</th>
             </tr>
             <tr>
               <th>City:</th>
-                <th>{data?.city?.city_name}</th>
+              <th>{data?.city?.city_name}</th>
             </tr><tr>
               <th>Area:</th>
-                <th>{data?.area?.area_name}</th>
+              <th>{data?.area?.area_name}</th>
             </tr>
             <tr>
               <th>Contact(Optional):</th>
