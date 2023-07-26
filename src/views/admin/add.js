@@ -14,13 +14,14 @@ import Select from "react-select"
 import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, ADMIN_ADD, ADMIN_LIST } from '@src/constants/apiUrls'
+import { getApi, ADMIN_ADD, ADMIN_ROLE } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
 
 const AddAdmin = () => {
   const [data, setData] = useState(null)
   const navigate = useNavigate()
+  const [adminRoleData, setAdminRoleData] = useState([])
   const {
     control,
     setError,
@@ -32,8 +33,23 @@ const AddAdmin = () => {
 
   })
 
+  const fetchAdminRoleData = () => {
+    return useJwt
+      .axiosGet(getApi(ADMIN_ROLE))
+      .then((res) => {
+        let roleData = []
+        res.data.map(data => {
+          roleData.push({ value: data.id, label: data.name })
+        })
+        setAdminRoleData(roleData)
 
+      })
+      .catch((err) => console.log(err))
+  }
 
+  useEffect(() => {
+    fetchAdminRoleData()
+  }, [])
 
   const onSubmit = data => {
     let isFormValid = true
@@ -122,7 +138,7 @@ const AddAdmin = () => {
                   isClearable
                   className={classnames('react-select', { 'is-invalid': errors.admin_role && errors.admin_role.value && true })}
                   classNamePrefix='select'
-                  options={[{ value: 'Admin', label: 'Admin' }, { value: 'Manager', label: 'Manager' }, { value: 'Dispatcher', label: 'Dispatcher' }]}
+                  options={adminRoleData}
                   {...field}
                 />}
               />

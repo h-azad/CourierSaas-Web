@@ -59,7 +59,7 @@ const AddAdminRole = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle tag="h4">Add Admin</CardTitle>
+        <CardTitle tag="h4">Add Admin Role</CardTitle>
       </CardHeader>
 
       <CardBody>
@@ -78,7 +78,7 @@ const AddAdminRole = () => {
                   render={({ field }) => (
                     <Input
                       type='text'
-                      placeholder='Admin...'
+                      placeholder='Manager...'
                       invalid={errors.name && true}
                       {...field}
                     />

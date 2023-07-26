@@ -1,23 +1,18 @@
 import React, { Fragment, useEffect, useState } from "react"
 // ** Reactstrap Imports
-import { Row, Col, Card, CardBody, CardText, Button, Table, Input, Label, Form } from "reactstrap"
+import { Row, Col, Card, CardBody, Button, Table, Input, Label, Form } from "reactstrap"
 import Select from "react-select"
 import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
-import { Link } from 'react-router-dom'
-import Breadcrumbs from "@components/breadcrumbs"
-import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
-import { Send, User, UserCheck, UserPlus, UserX } from "react-feather"
 import { getApi, PERMISSION_LIST, ADMIN_ROLE, ROLE_BASAED_PERMISSION } from "@src/constants/apiUrls"
 import useJwt from '@src/auth/jwt/useJwt'
+import SwalAlert from "../../../components/SwalAlert"
+import SwalConfirm from "../../../components/SwalConfirm"
 
-import { Tree } from 'antd'
 
 function PermissionList() {
   const [selectedPermissionid, setSelectedPermissionid] = useState([])
-
   const [permissionData, setPermissionData] = useState([])
-  const [roleBasedPermissionData, setRoleBasedPermissionData] = useState([])
   const [adminRoleData, setAdminRoleData] = useState([])
   const {
     control,
@@ -31,33 +26,11 @@ function PermissionList() {
   })
 
 
-  // const handleSelectedPermissionId = (e) => {
-  //   console.log('e', e)
-  //   const { value, checked } = e.target
-  //   if (checked) {
-  //     let prevFormValues = [...selectedPermissionid, value]
-  //     setSelectedPermissionid(prevFormValues)
-  //   } else {
-  //     let currentFromValues = selectedPermissionid.filter(item => item !== value)
-  //     setSelectedPermissionid(currentFromValues)
-  //   }
-
-  // }
-
-  const fetchRoleBasedPermissionData = () => {
-    return useJwt
-      .axiosGet(getApi(ROLE_BASAED_PERMISSION))
-      .then((res) => {
-        setRoleBasedPermissionData(res.data)
-      })
-      .catch((err) => console.log(err))
-  }
 
   const fetchPermissionData = () => {
     return useJwt
       .axiosGet(getApi(PERMISSION_LIST))
       .then((res) => {
-        console.log('res permission', res.data)
         setPermissionData(res.data)
       })
       .catch((err) => console.log(err))
@@ -79,17 +52,14 @@ function PermissionList() {
 
 
   const fetchAdminRolePermissionData = (adminRoleID) => {
-    console.log('adminRole ID', adminRoleID)
     return useJwt
       .axiosGet(getApi(ROLE_BASAED_PERMISSION) + adminRoleID + "/")
       .then((res) => {
-        console.log('admin', adminRoleID, "res", res.data)
         let roleData = []
         res.data.map(data => {
           roleData.push(data.permission)
 
         })
-        // setAdminRoleData(roleData)
         setSelectedPermissionid(roleData)
 
       })
@@ -100,10 +70,8 @@ function PermissionList() {
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
-      // console.log(value, name, type)
       if (name == "admin_role" && type == "change") {
         fetchAdminRolePermissionData(value?.admin_role?.value)
-        console.log('pricing_policy is fffffff', value)
       }
 
     })
@@ -117,6 +85,7 @@ function PermissionList() {
   }, [selectedPermissionid])
 
   const onSubmit = data => {
+
     let isFormValid = true
 
     if (!data.admin_role) {
@@ -145,13 +114,23 @@ function PermissionList() {
         role: data.admin_role.value,
         permissionsID: selectedPermissionid
       }
-      useJwt
-        .axiosPost(getApi(ROLE_BASAED_PERMISSION), formData)
-        .then((res) => {
-          SwalAlert("Permission Added Successfully")
-          navigate("/permission")
-        })
-        .catch(err => console.log(err))
+      const conformPermission = () => {
+        return SwalConfirm(`Sets Permission`, "Permission").then(
+          function (result) {
+            if (result.value) {
+              useJwt
+                .axiosPost(getApi(ROLE_BASAED_PERMISSION), formData)
+                .then((res) => {
+                  SwalAlert("Permission Added Successfully")
+                  navigate("/permission")
+                })
+                .catch(err => console.log(err))
+              // .finally(() => fetchMerchantsData())
+            }
+          }
+        )
+      }
+      conformPermission()
     }
   }
 
@@ -169,24 +148,25 @@ function PermissionList() {
 
   const groupedData = {}
   permissionData.forEach(item => {
-    const { title } = item
+    const { title, id } = item
     if (!groupedData[item.module_name]) {
-      groupedData[item.module_name] = [title]
+      groupedData[item.module_name] = { titles: [{ id, title }], id: id, name: item.module_name }
     } else {
-      groupedData[item.module_name].push(title)
+      groupedData[item.module_name].titles.push({ id, title })
     }
   })
-  const groupedDataArray = Object.entries(groupedData).map(([module, title]) => ({ module, title }))
-  console.log("groupedDataArray", groupedDataArray)
+
+  const groupedDataArray = Object.values(groupedData)
+
+
   return (
     <Fragment>
-
       <Row>
         <Col sm="12">
           <Card title="Bordered">
             <CardBody>
               <Form onSubmit={handleSubmit(onSubmit)}>
-                <div className='mb-1 col-md-6'>
+                <div className='mb-1 col-md-4'>
                   <Label className='form-label' for='admin_role'>
                     Admin Role
                   </Label>
@@ -209,40 +189,33 @@ function PermissionList() {
                     <tr>
                       <th>Module Name</th>
                       <th>Permission</th>
-                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {groupedDataArray &&
-                      groupedDataArray.map((permission) => (
-
-                        <tr key={1}>
+                      groupedDataArray.map((permission, index) => (
+                        <tr key={index}>
                           <td>
-                            <span className="align-middle fw-bold">{permission.module}</span>
+                            <span className="align-middle fw-bold">{permission.name}</span>
                           </td>
-
-
-                          {permission.title.map((data) => (
-                            <>
-                              <td>
-                                <span className="align-middle fw-bold">{data}</span>
-                              </td>
-                              <td>
-                                <Input type='checkbox'
-                                  checked={selectedPermissionid.includes(permission.id)}
-                                  value={permission.id} onClick={(e) => { handleSelectedPermissionId(permission.id) }} id='remember-me' />
-                              </td>
-
-                            </>
-                          ))}
-
-
-
+                          <ul style={{ listStyleType: 'none', padding: 10 }}>
+                            {permission.titles.map((data, index_) => (
+                              <>
+                                <li key={index_}>
+                                  <div className="d-flex gap-1">
+                                    <Input type='checkbox'
+                                      checked={selectedPermissionid.includes(data.id)}
+                                      value={data.id} onClick={(e) => { handleSelectedPermissionId(data.id) }} id='remember-me' />
+                                    <span className="align-middle fw-bold">{data.title}</span>
+                                  </div>
+                                </li>
+                              </>
+                            ))}
+                          </ul>
                         </tr>
                       ))}
                   </tbody>
                 </Table>
-
                 <div className='d-flex pt-2'>
                   <Button className='me-1' color='primary' type='submit'>
                     Submit

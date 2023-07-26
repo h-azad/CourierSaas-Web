@@ -105,7 +105,7 @@ const AdminList = () => {
               </div>
             </div>
             <div className="col-lg-5">
-              <div className="d-flex align-items-center ">
+              {/* <div className="d-flex align-items-center ">
                 <input
                   placeholder="Search Admin"
                   name="marchant_name"
@@ -116,7 +116,7 @@ const AdminList = () => {
                 <Button.Ripple className="btn-icon ms-1" outline color="primary">
                   <Search size={16} />
                 </Button.Ripple>
-              </div>
+              </div> */}
             </div>
           </div>
         </CardText>
@@ -140,7 +140,7 @@ const AdminList = () => {
                   <span className="align-middle fw-bold">{admin?.email}</span>
                 </td>
                 <td>
-                  <span className="align-middle fw-bold">{admin?.admin_role}</span>
+                  <span className="align-middle fw-bold">{admin?.admin_role?.name}</span>
                 </td>
                 <td>
                   <UncontrolledDropdown>
