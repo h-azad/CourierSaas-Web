@@ -41,16 +41,8 @@ const adminMenu = [
   {
     header: 'Orders',
     action: 'admin-pages',
-    resource: 'order-list',
+    resource: 'Order-read',
   },
-  // {
-  //   id: "create_order",
-  //   title: "Order Manage",
-  //   icon: <Gift size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'ADMIN',
-  //   navLink: "/create_order",
-  // },
 
   {
     id: "create_order",
@@ -63,7 +55,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'order-list',
+        resource: 'Order-read',
         navLink: "/create_order/",
       },
       {
@@ -71,7 +63,7 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'order-create',
+        resource: 'Order-write',
         navLink: "/create_order/add",
       }
     ]
@@ -82,7 +74,7 @@ const adminMenu = [
     title: "Assignment",
     icon: <CornerUpRight size={20} />,
     action: 'admin-pages',
-    resource: 'assignment-assign',
+    resource: 'Assignment-read',
     navLink: "/assignment"
   },
 
@@ -91,7 +83,7 @@ const adminMenu = [
     title: "Agent Assignment",
     icon: <CornerUpRight size={20} />,
     action: 'admin-pages',
-    resource: 'assignment-assign',
+    resource: 'Assignment-read',
     navLink: "/agent-assignment"
   },
 
@@ -99,18 +91,9 @@ const adminMenu = [
   {
     header: 'Accounts',
     action: 'admin-pages',
-    // resource: 'ADMIN',
-    resource: 'staff-list',
+    resource: 'Staff-read',
   },
 
-  // {
-  //   id: "admin",
-  //   title: "Staff Users",
-  //   icon: <Users size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'ADMIN',
-  //   navLink: "/admin"
-  // },
 
   {
     id: "admin",
@@ -123,7 +106,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'staff-list',
+        resource: 'Staff-read',
         navLink: "/admin/",
       },
       {
@@ -131,22 +114,11 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'staff-create',
+        resource: 'Staff-write',
         navLink: "/admin/add",
       }
     ]
   },
-
-
-  // {
-  //   id: "merchants",
-  //   title: "Merchants",
-  //   icon: <Users size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'ADMIN',
-  //   navLink: "/merchants"
-  // },
-
 
   {
     id: "merchants",
@@ -159,7 +131,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'marchant-list',
+        resource: 'Marchant-read',
         navLink: "/merchants/",
       },
       {
@@ -167,22 +139,11 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'marchant-create',
+        resource: 'Marchant-write',
         navLink: "/merchants/add",
       }
     ]
   },
-
-
-  // {
-  //   id: "rider",
-  //   title: "Rider",
-  //   icon: <User size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'ADMIN',
-  //   navLink: "/rider"
-  // },
-
 
   {
     id: "rider",
@@ -195,7 +156,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'rider-list',
+        resource: 'Rider-read',
         navLink: "/rider/",
       },
       {
@@ -203,22 +164,11 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'rider-create',
+        resource: 'Rider-write',
         navLink: "/rider/add",
       }
     ]
   },
-
-
-  // {
-  //   id: "agent-type",
-  //   title: "Agent Type",
-  //   icon: <Type size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'ADMIN',
-  //   navLink: "/agent-type"
-  // },
-
 
   {
     id: "agent-typ",
@@ -231,7 +181,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'agent-type-list',
+        resource: 'Agent Type-read',
         navLink: "/agent-type/",
       },
       {
@@ -239,22 +189,11 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'agent-type-create',
+        resource: 'Agent Type-read',
         navLink: "/agent-type/add",
       }
     ]
   },
-
-
-  // {
-  //   id: "agent",
-  //   title: "Agent",
-  //   icon: <User size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'ADMIN',
-  //   navLink: "/agent"
-  // },
-
 
   {
     id: "agent",
@@ -267,7 +206,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'agent-list',
+        resource: 'Agent-read',
         navLink: "/agent/",
       },
       {
@@ -275,7 +214,7 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'agent-create',
+        resource: 'Agent-write',
         navLink: "/agent/add",
       }
     ]
@@ -285,24 +224,16 @@ const adminMenu = [
   {
     header: 'Accounts Wallet',
     action: 'admin-pages',
-    resource: 'account-wallet-list',
+    resource: 'Account Wallet-read',
   },
   {
     id: "account_wallet",
     title: "Account Wallet",
     icon: <Book size={20} />,
     action: 'admin-pages',
-    resource: 'account-wallet-list',
+    resource: 'Account Wallet-read',
     navLink: "/account-wallet"
   },
-  // {
-  //   id: "withdraw_request",
-  //   title: "Withdraw Request",
-  //   icon: <Meh size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'ADMIN',
-  //   navLink: "/withdraw-request"
-  // },
 
   {
     id: "withdraw_request",
@@ -315,7 +246,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'withdraw-request-list',
+        resource: 'Withdraw Request-read',
         navLink: "/withdraw-request/",
       },
       {
@@ -323,7 +254,7 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'withdraw-request-create',
+        resource: 'Withdraw Request-write',
         navLink: "/withdraw-request/add",
       }
     ]
@@ -335,17 +266,9 @@ const adminMenu = [
     title: "Transactions",
     icon: <Send size={20} />,
     action: 'admin-pages',
-    resource: 'transactions-list',
+    resource: 'Transactions-read',
     navLink: "/transactions"
   },
-  // {
-  //   id: "wallet_adjustment",
-  //   title: "Wallet Adjustment",
-  //   icon: <Plus size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'ADMIN',
-  //   navLink: "/wallet-adjustment"
-  // },
 
   {
     id: "wallet_adjustment",
@@ -358,7 +281,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'wallet-adjustment-list',
+        resource: 'Wallet Adjustment-read',
         navLink: "/wallet-adjustment/",
       },
       {
@@ -366,7 +289,7 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'wallet-adjustment-create',
+        resource: 'Account Wallet-write',
         navLink: "/wallet-adjustment/add",
       }
     ]
@@ -375,18 +298,8 @@ const adminMenu = [
   {
     header: 'Locations',
     action: 'admin-pages',
-    resource: 'cities-list',
-    // resource: 'ADMIN',
+    resource: 'Cities-read',
   },
-  // {
-  //   id: "cities",
-  //   title: "Cities",
-  //   icon: <Map size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'ADMIN',
-  //   navLink: "/cities"
-  // },
-
 
   {
     id: "cities",
@@ -399,7 +312,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'cities-list',
+        resource: 'Cities-read',
         navLink: "/cities/",
       },
       {
@@ -407,20 +320,11 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'cities-create',
+        resource: 'Cities-write',
         navLink: "/cities/add",
       }
     ]
   },
-
-  // {
-  //   id: "areas",
-  //   title: "Areas",
-  //   icon: <MapPin size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'ADMIN',
-  //   navLink: "/areas"
-  // },
 
   {
     id: "areas",
@@ -433,7 +337,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'areas-list',
+        resource: 'Areas-read',
         navLink: "/areas/",
       },
       {
@@ -441,7 +345,7 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'areas-create',
+        resource: 'Areas-write',
         navLink: "/areas/add",
       }
     ]
@@ -450,8 +354,7 @@ const adminMenu = [
   {
     header: 'Settings',
     action: 'admin-pages',
-    // resource: 'ADMIN',
-    resource: 'shipment-type-list',
+    resource: 'setting',
   },
 
   {
@@ -459,20 +362,9 @@ const adminMenu = [
     title: "Company Setting",
     icon: <Archive size={20} />,
     action: 'admin-pages',
-    resource: 'ADMIN',
+    resource: 'company-setting',
     navLink: "/setting"
   },
-  
-
-  // {
-  //   id: "shipment_type",
-  //   title: "Shipment Type",
-  //   icon: <Truck size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'ADMIN',
-  //   navLink: "/shipment_type"
-  // },
-
 
   {
     id: "shipment_type",
@@ -485,7 +377,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'shipment-type-list',
+        resource: 'Shipment Type-read',
         navLink: "/shipment_type/",
       },
       {
@@ -493,21 +385,11 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'product-type-create',
+        resource: 'Shipment Type-write',
         navLink: "/shipment_type/add",
       }
     ]
   },
-
-
-  // {
-  //   id: "product_type",
-  //   title: "Product Type",
-  //   icon: <ShoppingCart size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'ADMIN',
-  //   navLink: "/product_type"
-  // },
 
   {
     id: "product-type",
@@ -520,7 +402,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'product-type-list',
+        resource: 'Product Type-read',
         navLink: "/product_type/",
       },
       {
@@ -528,20 +410,11 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'product-type-create',
+        resource: 'Product Type-write',
         navLink: "/product_type/add",
       }
     ]
   },
-
-  // {
-  //   id: "pricing_policy",
-  //   title: "Pricing Policy",
-  //   icon: <Filter size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'ADMIN',
-  //   navLink: "/pricing_policy"
-  // },
 
   {
     id: "pricing-policy",
@@ -554,7 +427,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'pricing-policy-list',
+        resource: 'Pricing Policy-read',
         navLink: "/pricing_policy/",
       },
       {
@@ -562,20 +435,11 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'pricing-policy-create',
+        resource: 'Pricing Policy-write',
         navLink: "/pricing_policy/add",
       }
     ]
   },
-
-  // {
-  //   id: "payment_method",
-  //   title: "Payment Method",
-  //   icon: <Send size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'ADMIN',
-  //   navLink: "/payment_method"
-  // },
 
   {
     id: "payment-method",
@@ -588,7 +452,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'payment-method-list',
+        resource: 'Payment Method-read',
         navLink: "/payment_method/",
       },
       {
@@ -596,20 +460,11 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'payment-method-create',
+        resource: 'Payment Method-write',
         navLink: "/payment_method/add",
       }
     ]
   },
-
-  // {
-  //   id: "admin_role",
-  //   title: "Admin Role",
-  //   icon: <User size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'ADMIN',
-  //   navLink: "/admin-role"
-  // },
 
   {
     id: "admin-role",
@@ -622,7 +477,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'admin-role-list',
+        resource: 'Admin Role-read',
         navLink: "/admin-role/",
       },
       {
@@ -630,7 +485,7 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'admin-role-create',
+        resource: 'Admin Role-write',
         navLink: "/admin-role/add",
       }
     ]
@@ -641,15 +496,14 @@ const adminMenu = [
     title: "Permission",
     icon: <Unlock size={20} />,
     action: 'admin-pages',
-    resource: 'permission-list',
+    resource: 'Permission-read',
     navLink: "/permission"
   },
 
   {
     header: 'Reports',
     action: 'admin-pages',
-    resource: 'order-report',
-    // resource: 'ADMIN',
+    resource: 'report',
   },
 
   {
@@ -663,7 +517,7 @@ const adminMenu = [
         title: "Orders",
         icon: <Gift size={20} />,
         action: 'admin-pages',
-        resource: 'order-report',
+        resource: 'Order Report-read',
         navLink: "/order/report"
       },
       {
@@ -671,7 +525,7 @@ const adminMenu = [
         title: "Transaction",
         icon: <Send size={20} />,
         action: 'admin-pages',
-        resource: 'transaction-report',
+        resource: 'Transaction Report-read',
         navLink: "/transactions-report"
       },
       {
@@ -679,7 +533,7 @@ const adminMenu = [
         title: "Withdraw Request",
         icon: <Meh size={20} />,
         action: 'admin-pages',
-        resource: 'withdraw-request-report',
+        resource: 'Withdraw Request Report-read',
         navLink: "/withdraw-request-report"
       },
       {
@@ -687,7 +541,7 @@ const adminMenu = [
         title: "Pickup",
         icon: <Truck size={20} />,
         action: 'admin-pages',
-        resource: 'pickup-report',
+        resource: 'Pickup Report-read',
         navLink: "/pickup-report"
       },
       {
@@ -695,7 +549,7 @@ const adminMenu = [
         title: "Delivery",
         icon: <Truck size={20} />,
         action: 'admin-pages',
-        resource: 'delivery-report',
+        resource: 'Delivery Report-read',
         navLink: "/delivery-report"
       },
       {
@@ -703,35 +557,20 @@ const adminMenu = [
         title: "Collection",
         icon: <ArrowDownRight size={20} />,
         action: 'admin-pages',
-        resource: 'collection-report',
+        resource: 'Collection Report-read',
         navLink: "/delivery-collection-report"
       },
-    
+
       {
         id: "admin-get-revenue-report",
         title: "Revenue",
         icon: <TrendingDown size={20} />,
         action: 'admin-pages',
-        resource: 'revenue-report',
+        resource: 'Revenue Report-read',
         navLink: "/revenue-report"
       },
     ]
   },
-
-  
-
-  // {
-  //   id: "areas",
-  //   title: "Areas",
-  //   icon: <MapPin size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'ADMIN',
-  //   navLink: "/areas"
-  // },
-
-
-
-
 ]
 
 
