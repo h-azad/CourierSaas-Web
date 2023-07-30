@@ -352,6 +352,31 @@ const adminMenu = [
   },
 
   {
+    id: "route",
+    title: "Route",
+    icon: <MapPin size={20} />,
+
+    children: [
+      {
+        id: 'route-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Route-read',
+        navLink: "/route/",
+      },
+      {
+        id: 'route-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Route-write',
+        navLink: "/route/add",
+      }
+    ]
+  },
+
+  {
     header: 'Settings',
     action: 'admin-pages',
     resource: 'setting',

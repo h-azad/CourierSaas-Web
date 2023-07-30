@@ -127,7 +127,7 @@ const EditCreateOrder = () => {
 
   const fetchMarchantData = () => {
     return useJwt
-      .axiosGet(getApi(MARCHANT_LIST))
+      .axiosGet(getApi(MARCHANT_LIST) + '?request-location=form')
       .then((res) => {
         // console.log(res)
         let marchantData = []
@@ -143,7 +143,7 @@ const EditCreateOrder = () => {
   }
   const fetchRiderData = () => {
     return useJwt
-      .axiosGet(getApi(RIDER_LIST))
+      .axiosGet(getApi(RIDER_LIST) + '?request-location=form')
       .then((res) => {
         // console.log(res)
         let riderData = []
@@ -160,7 +160,7 @@ const EditCreateOrder = () => {
 
   const fetchShipmentTypeData = () => {
     return useJwt
-      .axiosGet(getApi(SHIPMENT_TYPE_LIST))
+      .axiosGet(getApi(SHIPMENT_TYPE_LIST) + '?request-location=form')
       .then((res) => {
         let shipmenttypeData = []
 
@@ -176,7 +176,7 @@ const EditCreateOrder = () => {
 
   const fetchProductData = () => {
     return useJwt
-      .axiosGet(getApi(PRODUCT_TYPE_LIST))
+      .axiosGet(getApi(PRODUCT_TYPE_LIST) + '?request-location=form')
       .then((res) => {
         let productData = []
 
@@ -192,7 +192,7 @@ const EditCreateOrder = () => {
 
   const fetchPricingPolicyData = (productTypeId) => {
     return useJwt
-      .axiosGet(getApi(PRICING_POLICY_BY_PRODUCT) + productTypeId + "/")
+      .axiosGet(getApi(PRICING_POLICY_BY_PRODUCT) + productTypeId + "/" + '?request-location=form')
       .then((res) => {
         let pricingData = []
 
@@ -267,7 +267,7 @@ const EditCreateOrder = () => {
 
   const fetchAreaData = () => {
     return useJwt
-      .axiosGet(getApi(AREAS_LIST))
+      .axiosGet(getApi(AREAS_LIST) + '?request-location=form')
       .then((res) => {
         let areaData = []
         res.data.map((data) => {

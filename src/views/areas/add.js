@@ -47,7 +47,7 @@ const AddAreas = () => {
 
   const fetchCitiesData = () => {
     return useJwt
-      .axiosGet(getApi(CITIES_LIST))
+      .axiosGet(getApi(CITIES_LIST) + '?request-location=form')
       .then((res) => {
         // console.log("res", res.data)
         let cityData = []

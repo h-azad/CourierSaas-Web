@@ -79,7 +79,7 @@ const AddAreas = () => {
     console.log("getMerchantBalance", id)
 
     useJwt
-      .axiosGet(getApi(ACCOUNT_WALLET_LIST) + id + "/")
+      .axiosGet(getApi(ACCOUNT_WALLET_LIST) + id + "/" + '?request-location=form')
       .then((res) => {
         let responseData = res.data
         if (responseData.balance) {
@@ -99,7 +99,7 @@ const AddAreas = () => {
   const fetchWithdrawRequestData = () => {
     return useJwt
       // .axiosGet(getApi(WITHDRAW_REQUEST_LIST))
-      .axiosGet(getApi(ACCOUNT_WALLET_LIST))
+      .axiosGet(getApi(ACCOUNT_WALLET_LIST) + '?request-location=form')
     
       .then((res) => {
         console.log("res", res.data)
@@ -108,7 +108,7 @@ const AddAreas = () => {
           console.log('console data', data)
           withdrawRequest.push({
             value: data.id,
-            label: data.marchant.full_name,
+            label: data.account_name,
           })
         })
 

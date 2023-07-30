@@ -79,7 +79,7 @@ const EditMerchants = () => {
 
   const fetchPaymentmethodData = () => {
     return useJwt
-      .axiosGet(getApi(PAYMENT_METHOD_LIST))
+      .axiosGet(getApi(PAYMENT_METHOD_LIST) + '?request-location=form')
       .then((res) => {
         let paymentmethodData = []
 
@@ -95,7 +95,7 @@ const EditMerchants = () => {
 
   const fetchCityData = () => {
     return useJwt
-      .axiosGet(getApi(CITIES_LIST))
+      .axiosGet(getApi(CITIES_LIST) + '?request-location=form')
       .then((res) => {
         let cityData = []
 

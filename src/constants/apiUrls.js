@@ -248,6 +248,8 @@ export const ADJUSTMENT_LIST = '/api/wallet-adjust/'
 
 export const TRANSECTIONS = "/api/transection/"
 
+export const ROUTE = "/api/route/"
+
 
 // Report URL
 export const ADMIN_GET_ORDER_REPORT_APIVIEW = "/api/admin/order-report"

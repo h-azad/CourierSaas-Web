@@ -35,6 +35,8 @@ import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
 
+import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
+
 
 const RiderAssignmentList = () => {
   const [rider, setRider] = useState([])
@@ -47,7 +49,17 @@ const RiderAssignmentList = () => {
   const [selectedOrderIds, setselectedOrderid] = useState([])
   const [riderId, setRiderId] = useState()
   const [assignType, setAssignType] = useState()
-  console.log('select', selectedOrderIds)
+
+  const [orderid, setOrderId] = useState(0)
+  const [open, setOpen] = useState(false)
+
+  const showOrderDetailsDrawer = () => {
+    setOpen(true)
+
+  }
+  const onCloseOrderDetailsDrawer = () => {
+    setOpen(false)
+  }
 
   const deleteAction = (e, id) => {
     e.preventDefault()
@@ -68,10 +80,8 @@ const RiderAssignmentList = () => {
 
 
   const updateStatusAction = (e) => {
-    console.log("picup type")
-    console.log('rider id', riderId)
-    console.log('order id', selectedOrderIds)
-    
+
+
     e.preventDefault()
     useJwt
       .axiosPost(getApi(RIDER_ASSIGNMENT + "/"), {
@@ -90,7 +100,7 @@ const RiderAssignmentList = () => {
     console.log("delivery type ")
     console.log('rider id', riderId)
     console.log('order id', selectedOrderIds)
-    
+
     e.preventDefault()
     useJwt
       .axiosPost(getApi(DELIVERY_ASSIGNMENT + "/"), {
@@ -319,7 +329,7 @@ const RiderAssignmentList = () => {
       </div>
 
       <Modal isOpen={statusModalState} toggle={() => setStatusModalState(!statusModalState)} className='modal-dialog-centered'>
-        <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>{assignType==="pickup" ? 'Pickup Assign' : 'Delivery Assign'}</ModalHeader>
+        <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>{assignType === "pickup" ? 'Pickup Assign' : 'Delivery Assign'}</ModalHeader>
         <ModalBody>
           {/* <div className='demo-inline-spacing'> */}
 
@@ -340,7 +350,12 @@ const RiderAssignmentList = () => {
                         <td>
                           <span className="align-middle fw-bold">{info.delivary_address}</span>
                         </td>
-                        <td><a target="_blank" href={"/create_order/view/" + info.id}>{info.parcel_id}</a></td>
+                        {/* <td><a target="_blank" href={"/create_order/view/" + info.id}>{info.parcel_id}</a></td> */}
+                        <td>
+                          <span className="action-view" type="primary" onClick={() => { setOrderId(info?.id), showOrderDetailsDrawer() }}>
+                            {info.parcel_id}
+                          </span>
+                        </td>
                         <td>
                           <Input type='checkbox' value={info.id} onClick={(e) => { handleselectedOrderId(e) }} name="order_id" id='remember-me' />
                         </td>
@@ -356,6 +371,7 @@ const RiderAssignmentList = () => {
         <ModalFooter>
           <Button color='primary' onClick={assignType === "pickup" ? updateStatusAction : delivaryHandler}>Assign</Button>
         </ModalFooter>
+        <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
       </Modal>
     </>
   )

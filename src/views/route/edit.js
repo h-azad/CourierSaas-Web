@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react'
 import SwalAlert from "../../components/SwalAlert"
 
 
-const EditAreas = () => {
+const EditRoute = () => {
   const [selectboxOptions, setSelectboxOptions] = useState([])
   const [data, setData] = useState(null)
   const [areasInfo, setAreasInfo] = useState(null)
@@ -148,5 +148,5 @@ const EditAreas = () => {
       </Card>
     )
   }
-  export default EditAreas
+  export default EditRoute
         

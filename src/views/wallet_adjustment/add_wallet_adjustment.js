@@ -52,12 +52,12 @@ const AddWalletAdjustment = () => {
 
   const fetchCityData = () => {
     return useJwt
-      .axiosGet(getApi(ACCOUNT_WALLET_LIST))
+      .axiosGet(getApi(ACCOUNT_WALLET_LIST) + '?request-location=form')
       .then((res) => {
         let walletAccount = []
         // console.log('res.data', res)
         res.data.map((data) => {
-          walletAccount.push({ value: data.id, label: data.user.name })
+          walletAccount.push({ value: data.id, label: data.account_name })
         })
         setSelectboxWalletAccount(walletAccount)
         return res.data

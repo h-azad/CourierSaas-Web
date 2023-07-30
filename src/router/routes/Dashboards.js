@@ -94,6 +94,9 @@ import PermissionList from '../../views/permission/PermissionList/PermissionList
 import AdminRoleList from '../../views/admin/role/AddminRoleList'
 import AddAdminRole from '../../views/admin/role/AddAdminRole'
 import EditAdminRole from '../../views/admin/role/EditAdminRole'
+import RouteList from '../../views/route/list'
+import AddRoute from '../../views/route/add'
+import EditRoute from '../../views/route/edit'
 
 
 
@@ -356,6 +359,19 @@ const DashboardRoutes = [
   {
     path: "/areas/edit/:id",
     element: <EditAreas />
+  },
+
+  {
+    path: "/route",
+    element: <RouteList />
+  },
+  {
+    path: "/route/add",
+    element: <AddRoute />
+  },
+  {
+    path: "/route/edit/:id",
+    element: <EditRoute />
   },
 
   {

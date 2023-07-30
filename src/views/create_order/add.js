@@ -109,7 +109,7 @@ const AddCreateOrder = () => {
 
   const fetchShipmentTypeData = () => {
     return useJwt
-      .axiosGet(getApi(SHIPMENT_TYPE_LIST))
+      .axiosGet(getApi(SHIPMENT_TYPE_LIST) + '?request-location=form')
       .then((res) => {
         let shipmenttypeData = []
 
@@ -123,9 +123,10 @@ const AddCreateOrder = () => {
       .catch((err) => console.log(err))
   }
 
+  // ?search_fields=status&search=pending
   const fetchProductData = () => {
     return useJwt
-      .axiosGet(getApi(PRODUCT_TYPE_LIST))
+      .axiosGet(getApi(PRODUCT_TYPE_LIST) + '?request-location=form')
       .then((res) => {
         let productData = []
 
@@ -141,7 +142,7 @@ const AddCreateOrder = () => {
 
   const fetchPricingPolicyData = (productTypeId) => {
     return useJwt
-      .axiosGet(getApi(PRICING_POLICY_BY_PRODUCT) + productTypeId + "/")
+      .axiosGet(getApi(PRICING_POLICY_BY_PRODUCT) + productTypeId + "/" + '?request-location=form')
       .then((res) => {
         let pricingData = []
 
@@ -224,7 +225,7 @@ const AddCreateOrder = () => {
 
   const fetchAreaData = () => {
     return useJwt
-      .axiosGet(getApi(AREAS_LIST))
+      .axiosGet(getApi(AREAS_LIST) + '?request-location=form')
       .then((res) => {
         let areaData = []
         res.data.map((data) => {

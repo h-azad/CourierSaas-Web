@@ -42,7 +42,7 @@ const AddPricingPolicy = () => {
 
   const fetchProductData = () => {
     return useJwt
-      .axiosGet(getApi(PRODUCT_TYPE_LIST))
+      .axiosGet(getApi(PRODUCT_TYPE_LIST) + '?request-location=form')
       .then((res) => {
         let productData = []
 
