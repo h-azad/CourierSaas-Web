@@ -64,12 +64,7 @@ const ListTable = () => {
 
 
 
-  const changeStatusAction = (e, info) => {
-    e.preventDefault()
-    setStatusModalState(true)
-    setSelectedStatus(info.status)
-    setSelectedInfo(info)
-  }
+
 
   useEffect(() => {
     fetchAreasData()
@@ -174,17 +169,16 @@ const ListTable = () => {
           </tr> */}
         </thead>
         <tbody>
-          {/* {route &&
-            route.map((info) => ( */}
-              {/* <tr key={info.id}> */}
-              <tr>
+          {route &&
+            route.map((info) => (
+              <tr key={info.id}>
                 <td>
                   <Descriptions>
-                    <Descriptions.Item label="Title">Route 1</Descriptions.Item>
-                    <Descriptions.Item label="Start Time">10.00 AM</Descriptions.Item>
-                    <Descriptions.Item label="Start Location">Hangzhou, Zhejiang</Descriptions.Item>
+                    <Descriptions.Item label="Title">{info.title}</Descriptions.Item>
+                    <Descriptions.Item label="Start Time">{info.start_time}</Descriptions.Item>
+                    <Descriptions.Item label="Start Location">{info.start_location}</Descriptions.Item>
                     <Descriptions.Item label="Areas">
-                      No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
+                      {info.area}
                     </Descriptions.Item>
                   </Descriptions>
                 </td>
@@ -200,50 +194,21 @@ const ListTable = () => {
                       <MoreVertical size={15} />
                     </DropdownToggle>
                     <DropdownMenu>
-                      <DropdownItem href={"/route/edit/"}>
+                      <DropdownItem href={"/route/edit/" + info.id}>
                         <Edit className="me-50" size={15} />{" "}
                         <span className="align-middle">Edit</span>
                       </DropdownItem>
-                      <DropdownItem href="/" onClick={e => deleteAction()}>
+                      <DropdownItem href="/" onClick={e => deleteAction(e, info.id)}>
                         <Trash className="me-50" size={15} />{" "}
                         <span className="align-middle">Delete</span>
-                      </DropdownItem>
-                      <DropdownItem href="/" onClick={e => changeStatusAction()}>
-                        <Edit3 className="me-50" size={15} />{" "}
-                        <span className="align-middle">Change Status</span>
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
                 </td>
               </tr>
-
-
-              
-            {/* ))} */}
+            ))}
         </tbody>
       </Table>
-      <StatusModal
-        statusModalState={statusModalState}
-        setStatusModalState={setStatusModalState}
-        updateStatusAction={updateStatusAction}
-        title={"Change Area Status"}
-      >
-        <div className='demo-inline-spacing'>
-          <div className='form-check'>
-            <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "active" ? true : false} onChange={() => setSelectedStatus("active")} />
-            <Label className='form-check-label' for='ex1-active'>
-              Active
-            </Label>
-          </div>
-          <div className='form-check'>
-            <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "inactive" ? true : false} onChange={() => setSelectedStatus("inactive")} />
-            <Label className='form-check-label' for='ex1-inactive'>
-              Inactive
-            </Label>
-          </div>
-
-        </div>
-      </StatusModal>
     </>
   )
 }

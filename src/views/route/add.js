@@ -4,99 +4,97 @@ import {
   CardHeader,
   CardTitle,
   CardBody,
-  Row,
-  Col,
-  Input,
-  Form,
-  Label,
 } from "reactstrap"
-import { useNavigate } from "react-router-dom"
-import Select from "react-select"
-import toast from 'react-hot-toast'
-import classnames from 'classnames'
-import { useForm, Controller } from 'react-hook-form'
-import { selectThemeColors } from "@utils"
+
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, AREAS_ADD, CITIES_LIST } from '@src/constants/apiUrls'
-import ToastContent from "../../components/ToastContent"
+import { getApi, ROUTE } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
 
-import { Button, message, Steps, theme } from 'antd'
-const steps = [
-  {
-    title: 'First',
-    content: 'First-content',
-  },
-  {
-    title: 'Second',
-    content: 'Second-content',
-  },
-  {
-    title: 'Last',
-    content: 'Last-content',
-  },
-]
+import {Steps } from 'antd'
+import Form1 from "./form1"
+import Form2 from "./form2"
+import Form3 from "./form3"
+
 
 const AddRoute = () => {
-  const { token } = theme.useToken()
   const [current, setCurrent] = useState(0)
+  const [startTime, setStarTime] = useState()
+  const [title, setTitle] = useState()
+  const [startLocation, setStartLocation] = useState()
+
+  const [city, setCity] = useState()
+  const [areas, setAreas] = useState([])
+  const [routeFinishing, setRouteFinishing] = useState()
+  
+
+
   const next = () => {
     setCurrent(current + 1)
   }
   const prev = () => {
     setCurrent(current - 1)
   }
+
+  const formData = new FormData()
+  formData.append('start_time', startTime)
+  formData.append('title', title)
+  formData.append('start_location', startLocation)
+  formData.append('city', city)
+  formData.append('area', areas)
+  formData.append('finishing', routeFinishing)
+
+
+  const headers = {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }
+  const SubmitDataHandler = () => {
+    return useJwt
+      .axiosPost(getApi(ROUTE), formData, headers)
+      .then((res) => {
+        SwalAlert("Route Added Successfully")
+        navigate("/route")
+      })
+      .catch(err => console.log(err))
+  }
+
+  const steps = [
+    {
+      title: 'Route Information',
+      content: <Form1 setStarTime={setStarTime} setTitle={setTitle} setStartLocation={setStartLocation} next={next} />,
+    },
+    {
+      title: 'Route',
+      content: <Form2 setCity={setCity} setAreas={setAreas} next={next} prev={prev} />,
+    },
+    {
+      title: 'Finishing',
+      content: <Form3 setRouteFinishing={setRouteFinishing} SubmitDataHandler={SubmitDataHandler} />,
+    },
+  ]
+
+
   const items = steps.map((item) => ({
     key: item.title,
     title: item.title,
   }))
-  const contentStyle = {
-    lineHeight: '260px',
-    textAlign: 'center',
-    color: token.colorTextTertiary,
-    backgroundColor: token.colorFillAlter,
-    borderRadius: token.borderRadiusLG,
-    border: `1px dashed ${token.colorBorder}`,
-    marginTop: 16,
-  }
+
+  useEffect(() => {
+  }, [])
+
+
+
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle tag="h4">Add Areas</CardTitle>
+        <CardTitle tag="h4">Add Route</CardTitle>
       </CardHeader>
       <CardBody>
-        <Form>
-          <Steps current={current} items={items} />
-          <div style={contentStyle}>{steps[current].content}</div>
-          <div
-            style={{
-              marginTop: 24,
-            }}
-          >
-            {current < steps.length - 1 && (
-              <Button type="primary" onClick={() => next()}>
-                Next
-              </Button>
-            )}
-            {current === steps.length - 1 && (
-              <Button type="primary" onClick={() => message.success('Processing complete!')}>
-                Done
-              </Button>
-            )}
-            {current > 0 && (
-              <Button
-                style={{
-                  margin: '0 8px',
-                }}
-                onClick={() => prev()}
-              >
-                Previous
-              </Button>
-            )}
-          </div>
-        </Form>
+        <Steps current={current} items={items} />
+        <div >{steps[current].content}</div>
       </CardBody>
     </Card>
   )
