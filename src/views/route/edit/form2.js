@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect} from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { Label, Card, Form, CardBody, Button, } from "reactstrap"
 import classnames from 'classnames'
 import Select from "react-select"
-import { getApi, CITIES_LIST, AREAS_BY_CITY } from '@src/constants/apiUrls'
+import { getApi,CITIES_LIST,AREAS_LIST, AREAS_BY_CITY} from '@src/constants/apiUrls'
 import useJwt from '@src/auth/jwt/useJwt'
 
 
-export default function Form2({ setCity, setAreas, next, prev }) {
-  const { handleSubmit, control, watch, resetField, formState: { errors } } = useForm()
+export default function Form2({routeData, setCity, setAreas, next, prev}) {
+  const {setError, setValue, handleSubmit, control, watch, resetField, formState: { errors } } = useForm()
 
   const [selectboxCity, setSelectboxCity] = useState([])
   const [selectboxArea, setSelectboxArea] = useState([])
-
+  
   const onSubmit = data => {
+    console.log('data', data)
 
     let isFormValid = true
 
@@ -39,13 +40,14 @@ export default function Form2({ setCity, setAreas, next, prev }) {
   }
 
   useEffect(() => {
-    const subscription = watch((value, { name, type }) => {
-      if (name == 'city' && type == 'change') {
+    const subscription = watch((value, { name, type }) => { 
+      console.log(value, name, type)
+      if(name == 'city' && type=='change'){
         resetField('area')
         fetchAreaData(value.city.value)
       }
     })
-
+    
     return () => subscription.unsubscribe()
   }, [watch])
 
@@ -56,7 +58,7 @@ export default function Form2({ setCity, setAreas, next, prev }) {
         let cityData = []
 
         res.data.map(data => {
-          cityData.push({ value: data.id, label: data.city_name })
+          cityData.push({value: data.id, label: data.city_name})
         })
 
         setSelectboxCity(cityData)
@@ -73,7 +75,7 @@ export default function Form2({ setCity, setAreas, next, prev }) {
         let areaData = []
 
         res.data.map(data => {
-          areaData.push({ value: data.id, label: data.area_name })
+          areaData.push({value: data.id, label: data.area_name})
         })
 
         setSelectboxArea(areaData)
@@ -84,9 +86,17 @@ export default function Form2({ setCity, setAreas, next, prev }) {
 
   useEffect(() => {
     fetchCityData()
-  }, [])
+  },[])
 
 
+  useEffect(() => {
+    if (routeData) {
+      setValue('city', routeData? {value: routeData.city.id, label: routeData.city.city_name}: '')
+      setValue('area', routeData? JSON.parse(routeData?.area) : '')
+      // setValue('start_location', routeData?.start_location)
+    }
+  }, [routeData])
+  
 
 
   return (

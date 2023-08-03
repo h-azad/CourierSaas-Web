@@ -22,6 +22,7 @@ const AddRoute = () => {
   const [startTime, setStarTime] = useState()
   const [title, setTitle] = useState()
   const [startLocation, setStartLocation] = useState()
+  const [coordinate, setCoordinate] = useState()
 
   const [city, setCity] = useState()
   const [areas, setAreas] = useState([])
@@ -43,6 +44,7 @@ const AddRoute = () => {
   formData.append('city', city)
   formData.append('area', areas)
   formData.append('finishing', routeFinishing)
+  formData.append('coordinate', coordinate)
 
 
   const headers = {
@@ -63,7 +65,7 @@ const AddRoute = () => {
   const steps = [
     {
       title: 'Route Information',
-      content: <Form1 setStarTime={setStarTime} setTitle={setTitle} setStartLocation={setStartLocation} next={next} />,
+      content: <Form1 setCoordinate={setCoordinate} setStarTime={setStarTime} setTitle={setTitle} setStartLocation={setStartLocation} next={next} />,
     },
     {
       title: 'Route',

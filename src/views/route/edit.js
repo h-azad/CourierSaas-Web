@@ -1,152 +1,114 @@
-import { Card,
+
+import {
+  Card,
   CardHeader,
   CardTitle,
   CardBody,
-  Row,
-  Col,
-  Input,
-  Form,
-  Button,
-  Label,} from 'reactstrap'
-import { Router, useNavigate, useParams} from "react-router-dom"
-import Select from "react-select"
-import toast from 'react-hot-toast'
-import classnames from 'classnames'
-import { useForm, Controller } from 'react-hook-form'
-import { selectThemeColors } from "@utils"
+} from "reactstrap"
+
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, AREAS_EDIT, AREAS_DETAILS, CITIES_LIST } from '@src/constants/apiUrls'
-import ToastContent from "../../components/ToastContent"  
-import { useEffect, useState } from 'react'
+import { getApi, ROUTE } from '@src/constants/apiUrls'
+import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
+import { useNavigate, useParams } from "react-router-dom"
+
+import { Steps } from 'antd'
+import Form1 from "./edit/form1"
+import Form2 from "./edit/form2"
+import Form3 from "./edit/form3"
 
 
 const EditRoute = () => {
-  const [selectboxOptions, setSelectboxOptions] = useState([])
-  const [data, setData] = useState(null)
-  const [areasInfo, setAreasInfo] = useState(null)
+  const [routeData, setRouteData] = useState()
+  const [current, setCurrent] = useState(0)
+  const [startTime, setStarTime] = useState()
+  const [title, setTitle] = useState()
+  const [startLocation, setStartLocation] = useState()
+
+  const [city, setCity] = useState()
+  const [areas, setAreas] = useState([])
+  const [routeFinishing, setRouteFinishing] = useState()
 
   let { id } = useParams()
   const navigate = useNavigate()
 
-  useEffect(() => {
-    console.log(id)
-    useJwt
-      .axiosGet(getApi(AREAS_DETAILS) + id + "/")
-      .then((res) => {
-        console.log("res", res.data)
-        setAreasInfo({
-          city: res.data.city,
-          area_name: res.data.area_name
-        })
-        return res.data
-      })
-      .catch(err => console.log(err))
-      fetchCitiesData()
-  }, [])
 
-  const fetchCitiesData = () => {
-    return useJwt
-      .axiosGet(getApi(CITIES_LIST) + '?request-location=form')
-      .then((res) => {
-        // console.log("res", res.data)
-        let cityData = []
 
-        res.data.map(data => {
-          cityData.push({value: data.id, label: data.city_name})
-        })
-
-        setSelectboxOptions(cityData)
-        return res.data
-      })
-      .catch(err => console.log(err))
+  const next = () => {
+    setCurrent(current + 1)
+  }
+  const prev = () => {
+    setCurrent(current - 1)
   }
 
-  const {
-    reset,
-    control,
-    setValue,
-    setError,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    defaultValues: areasInfo
-  })
-  
-  const onSubmit = data => {
-    setData(data)
-    if (data.city_name !== null && data.city_name.value !== null && data.area_name !== null) {
-      
-      let formData = {
-        area_name: data.area_name,
-        city: data.city_name.value,
-        status: 'active'
-      }
-              
-      console.log('formData',formData)
-      useJwt
-        .axiosPut(getApi(AREAS_EDIT) + id + "/", formData)
-        .then((res) => {
-          console.log("res", res.data)
-          SwalAlert("Area Edited Successfully")
-          navigate("/areas")
-        })
-        .catch(err => console.log(err))
+  const formData = new FormData()
+  formData.append('start_time', startTime)
+  formData.append('title', title)
+  formData.append('start_location', startLocation)
+  formData.append('city', city)
+  formData.append('area', areas)
+  formData.append('finishing', routeFinishing)
 
+
+  const headers = {
+    headers: {
+      'Content-Type': 'multipart/form-data'
     }
   }
-
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle tag="h4">Edit Areas</CardTitle>
-        </CardHeader>
-  
-        <CardBody>
-          {areasInfo &&
-        <Form onSubmit={handleSubmit(onSubmit)}>
-            <div className='mb-1'>
-              <Label className='form-label' for='city_name'>
-                City Name
-              </Label>
-              <Controller
-                  id="city_name"
-                  defaultValue={{ label: areasInfo.city.city_name, value: areasInfo.city.id}}
-                  name="city_name"
-                  control={control}
-                  render={({ field }) => <Select 
-                    isClearable
-                    defaultValue={areasInfo.city_name}
-                    className={classnames('react-select', { 'is-invalid': data !== null && data.city_name === null })} 
-                    classNamePrefix='select'
-                    options={selectboxOptions} 
-                    {...field} 
-                  />}
-                />
-          </div>
-            <div className='mb-1'>
-              <Label className='form-label' for='firstNameBasic'>
-                Areas Name
-              </Label>
-              <Controller
-                defaultValue={areasInfo.area_name}
-                control={control}
-                id='area_name'
-                name='area_name'
-                render={({ field }) => <Input placeholder='Mirpur' invalid={errors.area_name && true} {...field} />}
-              />
-            </div>
-            
-            <div className='d-flex'>
-              <Button className='me-1' color='primary' type='submit'>
-                Submit
-              </Button>
-            </div>
-          </Form>
-          }
-        </CardBody>
-      </Card>
-    )
+  const SubmitDataHandler = () => {
+    return useJwt
+      .axiosPut(getApi(ROUTE) + id + "/", formData, headers)
+      .then((res) => {
+        SwalAlert("Route Edit Successfully")
+        navigate("/route")
+      })
+      .catch(err => console.log(err))
   }
-  export default EditRoute
-        
+
+  const steps = [
+    {
+      title: 'Route Information',
+      content: <Form1 routeData={routeData} setStarTime={setStarTime} setTitle={setTitle} setStartLocation={setStartLocation} next={next} />,
+    },
+    {
+      title: 'Route',
+      content: <Form2 routeData={routeData} setCity={setCity} setAreas={setAreas} next={next} prev={prev} />,
+    },
+    {
+      title: 'Finishing',
+      content: <Form3 routeData={routeData} setRouteFinishing={setRouteFinishing} SubmitDataHandler={SubmitDataHandler} />,
+    },
+  ]
+
+  const items = steps.map((item) => ({
+    key: item.title,
+    title: item.title,
+  }))
+
+  useEffect(() => {
+    useJwt
+      .axiosGet(getApi(ROUTE) + id + "/")
+      .then((res) => {
+        return setRouteData(res.data)
+      })
+      .catch(err => console.log(err))
+  }, [])
+
+
+
+
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle tag="h4">Add Route</CardTitle>
+      </CardHeader>
+      <CardBody>
+        <Steps current={current} items={items} />
+        <div >{steps[current].content}</div>
+      </CardBody>
+    </Card>
+  )
+}
+export default EditRoute
+

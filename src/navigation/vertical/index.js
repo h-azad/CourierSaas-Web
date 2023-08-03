@@ -540,7 +540,8 @@ const adminMenu = [
       {
         id: "order-reports",
         title: "Orders",
-        icon: <Gift size={20} />,
+        // icon: <Gift size={20} />,
+        icon: <Circle size={12} />,
         action: 'admin-pages',
         resource: 'Order Report-read',
         navLink: "/order/report"
@@ -548,7 +549,8 @@ const adminMenu = [
       {
         id: "admin-get-transactions-reports",
         title: "Transaction",
-        icon: <Send size={20} />,
+        // icon: <Send size={20} />,
+        icon: <Circle size={12} />,
         action: 'admin-pages',
         resource: 'Transaction Report-read',
         navLink: "/transactions-report"
@@ -556,7 +558,8 @@ const adminMenu = [
       {
         id: "admin-get-withdraw-request-reports",
         title: "Withdraw Request",
-        icon: <Meh size={20} />,
+        // icon: <Meh size={20} />,
+        icon: <Circle size={12} />,
         action: 'admin-pages',
         resource: 'Withdraw Request Report-read',
         navLink: "/withdraw-request-report"
@@ -564,7 +567,8 @@ const adminMenu = [
       {
         id: "admin-get-pickup-reports",
         title: "Pickup",
-        icon: <Truck size={20} />,
+        // icon: <Truck size={20} />,
+        icon: <Circle size={12} />,
         action: 'admin-pages',
         resource: 'Pickup Report-read',
         navLink: "/pickup-report"
@@ -572,7 +576,8 @@ const adminMenu = [
       {
         id: "admin-get-delivery-reports",
         title: "Delivery",
-        icon: <Truck size={20} />,
+        // icon: <Truck size={20} />,
+        icon: <Circle size={12} />,
         action: 'admin-pages',
         resource: 'Delivery Report-read',
         navLink: "/delivery-report"
@@ -580,7 +585,8 @@ const adminMenu = [
       {
         id: "admin-get-delivery-collection-reports",
         title: "Collection",
-        icon: <ArrowDownRight size={20} />,
+        // icon: <ArrowDownRight size={20} />,
+        icon: <Circle size={12} />,
         action: 'admin-pages',
         resource: 'Collection Report-read',
         navLink: "/delivery-collection-report"
@@ -589,7 +595,8 @@ const adminMenu = [
       {
         id: "admin-get-revenue-report",
         title: "Revenue",
-        icon: <TrendingDown size={20} />,
+        // icon: <TrendingDown size={20} />,
+        icon: <Circle size={12} />,
         action: 'admin-pages',
         resource: 'Revenue Report-read',
         navLink: "/revenue-report"

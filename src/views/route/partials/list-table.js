@@ -43,7 +43,7 @@ const ListTable = () => {
 
             // return res.data
           })
-          .finally(() => fetchAreasData())
+          .finally(() => fetchRouteData())
 
       }
     })
@@ -67,17 +67,17 @@ const ListTable = () => {
 
 
   useEffect(() => {
-    fetchAreasData()
+    fetchRouteData()
   }, [])
 
   useEffect(() => {
     if (!statusModalState) {
       clearData()
     }
-    fetchAreasData()
+    fetchRouteData()
   }, [statusModalState])
 
-  const fetchAreasData = () => {
+  const fetchRouteData = () => {
     return useJwt
       .axiosGet(getApi(ROUTE))
       .then((res) => {
@@ -111,7 +111,7 @@ const ListTable = () => {
           }
         })
     } else {
-      fetchAreasData()
+      fetchRouteData()
     }
 
   }, 300)
@@ -178,7 +178,11 @@ const ListTable = () => {
                     <Descriptions.Item label="Start Time">{info.start_time}</Descriptions.Item>
                     <Descriptions.Item label="Start Location">{info.start_location}</Descriptions.Item>
                     <Descriptions.Item label="Areas">
-                      {info.area}
+                      {JSON.parse(info.area).map((data)=>(
+                        <ul>
+                          <li> {data.label}</li>
+                        </ul>
+                      ))}
                     </Descriptions.Item>
                   </Descriptions>
                 </td>
