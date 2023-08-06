@@ -24,6 +24,7 @@ const EditRoute = () => {
   const [startTime, setStarTime] = useState()
   const [title, setTitle] = useState()
   const [startLocation, setStartLocation] = useState()
+  const [coordinate, setCoordinate] = useState()
 
   const [city, setCity] = useState()
   const [areas, setAreas] = useState([])
@@ -48,6 +49,7 @@ const EditRoute = () => {
   formData.append('city', city)
   formData.append('area', areas)
   formData.append('finishing', routeFinishing)
+  formData.append('coordinate', coordinate)
 
 
   const headers = {
@@ -68,7 +70,7 @@ const EditRoute = () => {
   const steps = [
     {
       title: 'Route Information',
-      content: <Form1 routeData={routeData} setStarTime={setStarTime} setTitle={setTitle} setStartLocation={setStartLocation} next={next} />,
+      content: <Form1 setCoordinate={setCoordinate} routeData={routeData} setStarTime={setStarTime} setTitle={setTitle} setStartLocation={setStartLocation} next={next} />,
     },
     {
       title: 'Route',
@@ -94,14 +96,10 @@ const EditRoute = () => {
       .catch(err => console.log(err))
   }, [])
 
-
-
-
-
   return (
     <Card>
       <CardHeader>
-        <CardTitle tag="h4">Add Route</CardTitle>
+        <CardTitle tag="h4">Edit Route</CardTitle>
       </CardHeader>
       <CardBody>
         <Steps current={current} items={items} />

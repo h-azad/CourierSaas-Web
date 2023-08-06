@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import Select from "react-select"
 import classNames from "classnames"
 import { MoreVertical, Edit, Trash, Edit3 } from "react-feather"
-import { Checkbox, DatePicker, Input, Typography, Drawer } from "antd"
+import { Checkbox, DatePicker, Input, Typography, Drawer, Pagination } from "antd"
 import {
   UncontrolledDropdown,
   DropdownMenu,
@@ -30,6 +30,7 @@ import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
 import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
 
 
+
 const CreateOrderList = () => {
   const { Search } = Input
   const [createOrder, setCreateOrder] = useState([])
@@ -43,6 +44,9 @@ const CreateOrderList = () => {
   const [selectedDate, setSelectedDate] = useState(null)
   const datePickerRef = useRef(null)
   const [selectedValue, setSelectedValue] = useState('')
+  const [orderCount, setOrderCount] = useState(0)
+
+  const [current, setCurrent] = useState(1)
 
   const [orderid, setOrderId] = useState(0)
 
@@ -84,13 +88,17 @@ const CreateOrderList = () => {
     fetchCreateOrderData()
   }, [])
 
-  const fetchCreateOrderData = () => {
+  const fetchCreateOrderData = (pageNumber) => {
+    if (pageNumber === undefined) {
+      pageNumber = 1
+    } else {
+      pageNumber = pageNumber
+    }
     return useJwt
-      .axiosGet(getApi(CREATE_ORDER_LIST))
+      .axiosGet(getApi(CREATE_ORDER_LIST) + `?page=${pageNumber}`)
       .then((res) => {
-        console.log("res", res.data)
-        setCreateOrder(res.data)
-        return res.data
+        setCreateOrder(res.data.results)
+        setOrderCount(res.data.count)
       })
       .catch((err) => console.log(err))
   }
@@ -138,7 +146,10 @@ const CreateOrderList = () => {
     if (searchTerm?.length > 0) {
       fetchSearchFilterAdmin(property, searchTerm).then((data) => {
         if (data?.length > 0) {
-          setCreateOrder(data)
+          console.log('data', data.results)
+          setCreateOrder(data.results)
+          // setCreateOrder(res.data)
+          setOrderCount(res.data.count)
         } else {
           console.log("No data")
         }
@@ -156,6 +167,8 @@ const CreateOrderList = () => {
       )
       .then((res) => {
         console.log("response", res)
+        setCreateOrder(res.data.results)
+        setOrderCount(res.data.count)
         return res.data
       })
       .catch((err) => console.log(err))
@@ -172,6 +185,11 @@ const CreateOrderList = () => {
 
   }
 
+  const onChange = (page) => {
+    setCurrent(page)
+    fetchCreateOrderData(page)
+    
+  }
 
 
 
@@ -180,7 +198,6 @@ const CreateOrderList = () => {
       <Col sm="4">
         <Card title="Bordered">
           <CardBody>
-
             <div>
               <div className="invoice-title-card">
                 <h3>Filter : </h3>
@@ -298,13 +315,8 @@ const CreateOrderList = () => {
                       <Col xl="3">
                         <div className="button-wrapper">
                           <button className="action-view" type="primary" onClick={() => { setOrderId(info?.id), showOrderDetailsDrawer() }}>
-                            {/* <button className="action-view" type="primary" onClick={showOrderDetailsDrawer}> */}
-
                             View
-                            {/* <a href={"/create_order/view/" + info?.id}> View</a> */}
-
                           </button>
-
                           <UncontrolledDropdown>
                             <DropdownToggle
                               className="icon-btn hide-arrow"
@@ -402,19 +414,16 @@ const CreateOrderList = () => {
                   </CardBody>
                 </Card>
               ))}
+            <Pagination current={current} onChange={onChange} total={orderCount} defaultPageSize={2} />
             <ChangeStatusModal
               statusModalState={statusModalState}
               setStatusModalState={setStatusModalState}
               orderInfo={selectedInfo}
               fetchCreateOrderData={fetchCreateOrderData}
             />
-
-
-
             <>
               <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
             </>
-
           </CardBody>
         </Card>
       </Col>

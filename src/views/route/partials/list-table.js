@@ -16,7 +16,7 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, ROUTE, AREAS_SEARCH } from "../../../constants/apiUrls"
+import { getApi, ROUTE, ROUTE_SEARCH } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
@@ -50,32 +50,10 @@ const ListTable = () => {
 
   }
 
-
-  const updateStatusAction = (e) => {
-    e.preventDefault()
-    useJwt
-      .axiosPatch(getApi(ROUTE) + selectedInfo.id + "/", {
-        status: selectedStatus,
-      })
-      .then((res) => {
-        setStatusModalState(false)
-      })
-  }
-
-
-
-
-
   useEffect(() => {
     fetchRouteData()
   }, [])
 
-  useEffect(() => {
-    if (!statusModalState) {
-      clearData()
-    }
-    fetchRouteData()
-  }, [statusModalState])
 
   const fetchRouteData = () => {
     return useJwt
@@ -90,7 +68,7 @@ const ListTable = () => {
 
   const fetchSearchAreaData = searchTerm => {
     return useJwt
-      .axiosGet(getApi(AREAS_SEARCH) + '?search=' + searchTerm)
+      .axiosGet(getApi(ROUTE_SEARCH) + '?search=' + searchTerm)
       .then((res) => {
         return res.data
       })
@@ -104,10 +82,9 @@ const ListTable = () => {
       fetchSearchAreaData(searchTerm)
         .then(data => {
           if (data?.length > 0) {
-            console.log('res', data)
             setRoute(data)
           } else {
-            console.log("No data")
+            setRoute([])
           }
         })
     } else {
@@ -116,10 +93,6 @@ const ListTable = () => {
 
   }, 300)
 
-  const clearData = () => {
-    setSelectedInfo(null)
-    setSelectedStatus(null)
-  }
 
   function debounce(fn, time) {
     let timeoutId

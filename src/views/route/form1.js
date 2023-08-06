@@ -99,14 +99,17 @@ export default function Form1({ setCoordinate, setStarTime, setTitle, setStartLo
           </div>
           <div class="row">
             <div className='col-md-6'>
+              <Label className='form-label' for='route_title'>
+                Start Location
+              </Label>
               <GooglePlacesAutocomplete
                 apiKey='AIzaSyA_bi6febAzWK5EPN8cWv986ATCRxhK-ac'
                 selectProps={{
                   value,
                   onChange: setValue,
                   isClearable: true,
+                  placeholder: "Mirpur DOHS, Dhaka, Bangladesh",
                 }}
-
               />
 
               <div className='d-flex mt-2'>

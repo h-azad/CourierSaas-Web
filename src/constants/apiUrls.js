@@ -132,6 +132,9 @@ export const AREAS_BY_CITY = '/get-area/'
 export const AREAS_STATISTICS = "/statistics/area/"
 
 
+export const ROUTE = "/api/route/"
+export const ROUTE_SEARCH = '/search-route/'
+
 // export const AREAS_FILTER_BY_CITY = '/filter-by-city/'
 
 // Shipment Type API's 
@@ -248,7 +251,7 @@ export const ADJUSTMENT_LIST = '/api/wallet-adjust/'
 
 export const TRANSECTIONS = "/api/transection/"
 
-export const ROUTE = "/api/route/"
+
 
 
 // Report URL

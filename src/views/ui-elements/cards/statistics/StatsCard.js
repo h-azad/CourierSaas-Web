@@ -10,26 +10,19 @@ import { Card, CardHeader, CardTitle, CardBody, CardText, Row, Col } from 'react
 
 const StatsCard = ({ cols, responseData }) => {
   const data = [
-    // {
-    //   title: '230k',
-    //   subtitle: 'Compleate',
-    //   color: 'light-primary',
-    //   // icon: <TrendingUp size={24} />
-    //   icon: <CheckCircle size={24} />
-    // },
-    // {
-    //   title: '8.549k',
-    //   subtitle: 'Order',
-    //   color: 'light-info',
-    //   icon: <Box size={24} />
-    //   // icon: <User size={24} />
-      
-    // },
+    
     {
       title: responseData.pending_orders,
       subtitle: 'Pending',
       color: 'light-danger',
       icon: <Box size={24} />
+    },
+    {
+      title: responseData.assign_pickup_orders,
+      subtitle: 'Assign Pickup',
+      color: 'light-primary',
+      // icon: <TrendingUp size={24} />
+      icon: <CheckCircle size={24} />
     },
     {
       title: responseData.in_warehouse_orders,
@@ -44,11 +37,34 @@ const StatsCard = ({ cols, responseData }) => {
       icon: <Truck size={24} />
     },
     {
-      title: responseData.return_orders,
-      subtitle: 'Return',
+      title: responseData.delivered_orders,
+      subtitle: 'Delivered',
+      color: 'light-primary',
+      // icon: <TrendingUp size={24} />
+      icon: <CheckCircle size={24} />
+    },
+    {
+      title: responseData.pickup_failed_orders,
+      subtitle: 'Failed Pickup',
+      color: 'light-primary',
+      // icon: <TrendingUp size={24} />
+      icon: <CheckCircle size={24} />
+    },
+    {
+      title: responseData.delivery_failed_orders,
+      subtitle: 'Failed Delivery',
       color: 'light-success',
       icon: <CornerDownLeft size={24} />
-    }
+    },
+    
+    {
+      title: '8.549k',
+      subtitle: 'Returned',
+      color: 'light-info',
+      icon: <Box size={24} />
+      // icon: <User size={24} />
+      
+    },
   ]
 
   const renderData = () => {
@@ -79,7 +95,7 @@ const StatsCard = ({ cols, responseData }) => {
     <Card className='card-statistics'>
       <CardHeader>
         <CardTitle tag='h4'>Statistics</CardTitle>
-        <CardText className='card-text font-small-2 me-25 mb-0'>Updated 1 month ago</CardText>
+        {/* <CardText className='card-text font-small-2 me-25 mb-0'>Updated 1 month ago</CardText> */}
       </CardHeader>
       <CardBody className='statistics-body'>
         <Row>{renderData()}</Row>
