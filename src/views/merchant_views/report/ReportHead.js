@@ -12,13 +12,11 @@ const ReportHead = ({ handleSearchQuery, handlePDFQuery, defaultFetchOrderData, 
 	const { watch } = useForm()
 	const { Search } = Input
 
-
 	useEffect(() => {
 		console.log(qs.stringify(filterQuery))
 	}, [filterQuery])
 
 	function onSelectDate(date, dateString) {
-
 		console.log(date, dateString)
 		if (dateString.find(x => x != '')){
 			updateFilterQUery('date', dateString.toString())
@@ -35,16 +33,10 @@ const ReportHead = ({ handleSearchQuery, handlePDFQuery, defaultFetchOrderData, 
 		}else{
 		 	filters.hasOwnProperty(term) && delete filters[term]
 		}
-
-		console.log(filters)
-
-
+		console.log('filter',filters)
 		setFilterQuery(filters)
 	}
 
-
-	
-	
 	function submitFilter(e){
 		e.preventDefault()
 		handleSearchQuery(qs.stringify(filterQuery))
@@ -75,14 +67,12 @@ const ReportHead = ({ handleSearchQuery, handlePDFQuery, defaultFetchOrderData, 
 		},
 	]
 
-
 	return (
 		<div className='report_head_wrapper mt-1'>
 
 			<div className='row'>
 				<div className='col-lg-3'>{ reportTitle }</div>
 				<div className='col-lg-9'>
-
 					<div className='row g-1'>
 						<div className='col-lg-4'>
 							<Search
@@ -94,7 +84,6 @@ const ReportHead = ({ handleSearchQuery, handlePDFQuery, defaultFetchOrderData, 
 								allowClear={true}
 							/>
 						</div>
-
 						<div className="col-lg-4">
 							<Select
 								style={{
@@ -114,7 +103,6 @@ const ReportHead = ({ handleSearchQuery, handlePDFQuery, defaultFetchOrderData, 
 								allowClear={true}
 							/>
 						</div>
-
 						<div className='col-lg-4'>
 							<RangePicker presets={rangePresets} onChange={onSelectDate} />
 						</div>
@@ -124,7 +112,6 @@ const ReportHead = ({ handleSearchQuery, handlePDFQuery, defaultFetchOrderData, 
 			<div className='row mt-3'>
 				<div className='row'>
 					<div className='col-6'>
-
 					</div>
 					<div className='d-flex justify-content-end align-items-center gap-1 mb-2 col-6'>
 						<div className=''><Button type="primary" onClick={submitFilter} size={20}>

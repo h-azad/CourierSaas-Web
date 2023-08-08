@@ -1,6 +1,6 @@
 
 
-import {Search } from "react-feather"
+import { Search } from "react-feather"
 import {
   Table,
   Button,
@@ -12,7 +12,7 @@ import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
-   TRANSECTIONS,
+  TRANSECTIONS,
   TRANSECTIONS_FILTER,
 } from "../../constants/apiUrls"
 
@@ -25,24 +25,24 @@ const Transections = () => {
 
 
   useEffect(() => {
-     fetchTransectionsData()
+    fetchTransectionsData()
   }, [])
 
 
 
-  const  fetchTransectionsData = () => {
+  const fetchTransectionsData = () => {
     return useJwt
-      .axiosGet(getApi( TRANSECTIONS))
+      .axiosGet(getApi(TRANSECTIONS))
       .then((res) => {
         setTransections(res.data)
-        console.log('res',res.data)
+        console.log('res', res.data)
         return res.data
       })
       .catch((err) => console.log(err))
   }
 
 
-  const  fetchSearchsetTransectionsData = searchTerm => {
+  const fetchSearchsetTransectionsData = searchTerm => {
     return useJwt
       // .axiosGet(getApi(RIDER_SEARCH)+'?search='+ searchTerm) //after line
       .axiosGet(getApi(TRANSECTIONS_FILTER) + '?search=' + searchTerm)
@@ -56,7 +56,7 @@ const Transections = () => {
     console.log(e.target.value)
     const searchTerm = e.target.value
     if (searchTerm.length > 0) {
-       fetchSearchsetTransectionsData(searchTerm)
+      fetchSearchsetTransectionsData(searchTerm)
         .then(data => {
           if (data.length > 0) {
             console.log('res', data)
@@ -66,7 +66,7 @@ const Transections = () => {
           }
         })
     } else {
-       fetchTransectionsData()
+      fetchTransectionsData()
     }
 
   }, 300)

@@ -22,40 +22,40 @@ const ReportHead = ({ propsData }) => {
   })
 
 
-  useEffect(() => {
-    console.log(qs.stringify(filterQuery))
-  }, [filterQuery])
+  // useEffect(() => {
+  //   console.log(qs.stringify(filterQuery))
+  // }, [filterQuery])
 
   function onSelectDate(date, dateString) {
 
     console.log(date, dateString)
     if (dateString.find(x => x != '')) {
-      updateFilterQUery('date', dateString.toString())
+      propsData.updateFilterQUery('date', dateString.toString())
     } else {
-      updateFilterQUery('date', '')
+      propsData.updateFilterQUery('date', '')
     }
   }
 
-  function updateFilterQUery(term, value) {
-    let filters = { ...filterQuery }
+  // function updateFilterQUery(term, value) {
+  //   let filters = { ...filterQuery }
 
-    if (value) {
-      filters[term] = value
-    } else {
-      filters.hasOwnProperty(term) && delete filters[term]
-    }
-    setFilterQuery(filters)
-  }
+  //   if (value) {
+  //     filters[term] = value
+  //   } else {
+  //     filters.hasOwnProperty(term) && delete filters[term]
+  //   }
+  //   setFilterQuery(filters)
+  // }
 
   function submitFilter(e) {
     e.preventDefault()
-    propsData.handleSearchQuery(qs.stringify(filterQuery))
+    propsData.handleSearchQuery(qs.stringify(propsData.filterQuery))
   }
 
   function submitPDFFilter(e) {
     e.preventDefault()
-    propsData.handleSearchQuery(qs.stringify(filterQuery))
-    propsData.handlePDFQuery(qs.stringify(filterQuery))
+    propsData.handleSearchQuery(qs.stringify(propsData.filterQuery))
+    propsData.handlePDFQuery(qs.stringify(propsData.filterQuery))
   }
 
   const rangePresets = [
@@ -90,7 +90,7 @@ const ReportHead = ({ propsData }) => {
                 <Search
                   placeholder="eg. ODR23031301d6"
                   onChange={(e) => {
-                    updateFilterQUery("search", e.target.value)
+                    propsData.updateFilterQUery("search", e.target.value)
 
                   }}
                   allowClear={true}
@@ -110,7 +110,7 @@ const ReportHead = ({ propsData }) => {
                   className={classNames("react-select")}
                   classNamePrefix="select"
                   onChange={(e) => {
-                    updateFilterQUery(propsData.selectOptionKey, e)
+                    propsData.updateFilterQUery(propsData.selectOptionKey, e)
                   }}
                   options={propsData?.statusOptions}
                   allowClear={true}
@@ -127,7 +127,7 @@ const ReportHead = ({ propsData }) => {
                   }
                   options={propsData?.selectboxData}
                   onChange={(e) => {
-                    updateFilterQUery(propsData.filterTable, e)
+                    propsData.updateFilterQUery(propsData.filterTable, e)
 
                   }}
                 />
@@ -152,14 +152,12 @@ const ReportHead = ({ propsData }) => {
                     }
                     options={propsData?.selectboxRider}
                     onChange={(e) => {
-                      updateFilterQUery("delivary_rider", e)
+                      propsData.updateFilterQUery("delivary_rider", e)
 
                     }}
                   />
                 </Form.Item>
               }
-
-
 
               <Space>
                 <Button type="primary" onClick={submitFilter} size={20}>

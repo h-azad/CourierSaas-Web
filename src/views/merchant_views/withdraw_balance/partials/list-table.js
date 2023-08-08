@@ -169,7 +169,6 @@ const MarchantBalanceWithrawRequestList = () => {
       <Table bordered>
         <thead>
           <tr>
-            <th>User Name</th>
             <th>Previous Balance</th>
             <th>Withdraw Balance</th>
             <th>Current Balance</th>
@@ -181,9 +180,6 @@ const MarchantBalanceWithrawRequestList = () => {
           {withdrawRequest &&
             withdrawRequest.map((wallet) => (
               <tr key={wallet.id}>
-                <td>
-                  <span className="align-middle fw-bold">{wallet?.account_wallet?.user?.name}</span>
-                </td>
                 <td>
                   <span className="align-middle fw-bold">{wallet.balance}</span>
                 </td>

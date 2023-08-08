@@ -7,20 +7,23 @@ import { getApi, ADMIN_GET_WITHDRAW_REQUEST_REPORT_APIVIEW, ADMIN_GET_WITHDRAW_R
 import ReportHead from "./ReportHead"
 import React from 'react'
 
-
-
+import { Pagination } from "antd"
+import * as qs from 'qs'
 
 const AdminGetWithdrawRequestReport = () => {
     const [withdrawRequest, setWithdrawRequest] = useState([])
     const [selectAccountWallet, setselectAccountWallet] = useState([])
-    console.log("selectAccountWallet", selectAccountWallet)
-    // const [selectboxRider, setSelectboxRider] = useState([])
+    const [withdrawRequestCount, setWithdrawRequestCount] = useState(0)
+    const [filterQuery, setFilterQuery] = useState({})
+    const [defaultPage, setDefalutPage] = useState(1)
 
     const defaultFetchData = () => {
         return useJwt.axiosGet(getApi(ADMIN_GET_WITHDRAW_REQUEST_REPORT_APIVIEW))
             .then((res) => {
-                console.log('response data', res.data)
-                setWithdrawRequest(res.data)
+                setWithdrawRequest(res?.data?.results)
+                setFilterQuery({})
+                setDefalutPage(1)
+                setWithdrawRequestCount(res?.data?.count)
             }).catch((err) => {
                 console.log(err)
             })
@@ -46,12 +49,12 @@ const AdminGetWithdrawRequestReport = () => {
 
 
     const handleSearchQuery = searchTerm => {
-        console.log('yes i am workgin searchTerm', searchTerm)
         return useJwt
             .axiosGet(getApi(ADMIN_GET_WITHDRAW_REQUEST_REPORT_APIVIEW) + '?' + searchTerm)
             .then((res) => {
-                if (res.data?.length > 0) {
-                    setWithdrawRequest(res.data)
+                if (res.data?.results?.length > 0) {
+                    setWithdrawRequest(res?.data?.results)
+                    setWithdrawRequestCount(res?.data?.count)
                 } else {
                     setWithdrawRequest('')
                 }
@@ -75,12 +78,15 @@ const AdminGetWithdrawRequestReport = () => {
 
     const handlePDFQuery = (searchTerm) => {
 
+        const regex = /&([^&]+)/g 
+        const pageRemoveToQuery = searchTerm.match(regex)
+        const filterPerameter = pageRemoveToQuery ? pageRemoveToQuery.join('') : ''
+		searchTerm = filterPerameter.startsWith("&") ? filterPerameter: filterPerameter.replace('$', '')
+        
         return useJwt
             .axiosGet(getApi((ADMIN_GET_WITHDRAW_REQUEST_REPORT_GENERATE_PDF_APIVIEW) + '?' + searchTerm))
             .then((res) => {
                 if (res.data?.length > 0) {
-                    // setOrder(res.data)
-                    console.log('response file', res.data)
                     var file = new Blob([res.data], { type: 'application/pdf' })
                     var fileName = 'withdrawRequest_report.pdf'
                     downloadPDFFile(file, fileName)
@@ -100,10 +106,35 @@ const AdminGetWithdrawRequestReport = () => {
         { value: "Cancel", label: "Cancel" },
     ]
 
+    function updateFilterQUery(term, value) {
+        let filters = { ...filterQuery }
+        if (term != 'page') {
+            filters['page'] = 1
+        }
+
+        if (value) {
+            filters[term] = value
+        } else {
+            filters.hasOwnProperty(term) && delete filters[term]
+        }
+        setFilterQuery(filters)
+    }
+
+    useEffect(() => {
+        handleSearchQuery(qs.stringify(filterQuery))
+    }, [filterQuery])
+
+    const paginationUpdate = (page) => {
+        updateFilterQUery("page", page)
+    }
+
     const propsData = {
         handleSearchQuery: handleSearchQuery,
         handlePDFQuery: handlePDFQuery,
         defaultFetchData: defaultFetchData,
+
+        updateFilterQUery: updateFilterQUery,
+        filterQuery: filterQuery,
 
         statusOptions: statusOptions,
         selectboxData: selectAccountWallet,
@@ -152,6 +183,7 @@ const AdminGetWithdrawRequestReport = () => {
                             ))}
                     </tbody>
                 </Table>
+                <Pagination onChange={paginationUpdate} defaultCurrent={defaultPage} total={withdrawRequestCount} defaultPageSize={50} />
             </div>
         </>
     )

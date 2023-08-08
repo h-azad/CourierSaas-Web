@@ -20,15 +20,13 @@ import {
   getApi,
   CREATE_ORDER_LIST,
   CREATE_ORDER_DELETE,
-  ADMIN_SEARCH_CREATE_ORDER_FILTER,
-  CREATE_ORDER_DETAILS,
 } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
 
 import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
-
+import * as qs from 'qs'
 
 
 const CreateOrderList = () => {
@@ -36,7 +34,6 @@ const CreateOrderList = () => {
   const [createOrder, setCreateOrder] = useState([])
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedInfo, setSelectedInfo] = useState(null)
-  const [value, setValue] = useState("")
   const [orderStatus, setOrderStatus] = useState("")
   const [orderID, setorderID] = useState("")
   const [receipientName, setReceipientName] = useState("")
@@ -45,11 +42,8 @@ const CreateOrderList = () => {
   const datePickerRef = useRef(null)
   const [selectedValue, setSelectedValue] = useState('')
   const [orderCount, setOrderCount] = useState(0)
-
-  const [current, setCurrent] = useState(1)
-
+  const [filterQuery, setFilterQuery] = useState({})
   const [orderid, setOrderId] = useState(0)
-
   const [open, setOpen] = useState(false)
 
   const showOrderDetailsDrawer = () => {
@@ -80,7 +74,6 @@ const CreateOrderList = () => {
   const changeStatusAction = (e, info) => {
     e.preventDefault()
     setStatusModalState(true)
-    // setSelectedStatus(info.status)
     setSelectedInfo(info)
   }
 
@@ -103,18 +96,6 @@ const CreateOrderList = () => {
       .catch((err) => console.log(err))
   }
 
-  useEffect(() => {
-    if (!statusModalState) {
-      clearData()
-    }
-    fetchCreateOrderData()
-  }, [statusModalState])
-
-  const clearData = () => {
-    setSelectedInfo(null)
-    // setSelectedStatus(null)
-  }
-
   const statusOptions = [
     { value: "pending", label: "Pending" },
     { value: "accepted", label: "Accepted" },
@@ -128,51 +109,6 @@ const CreateOrderList = () => {
     { value: "completed", label: "Completed" },
   ]
 
-  const filterHandle = (e, property) => {
-    setOrderStatus(e?.target?.value)
-    setValue(e?.target?.value)
-
-    let searchTerm
-    if (property === 'date') {
-      searchTerm = e
-
-    }
-    else if (e?.target?.value) {
-      searchTerm = e.target?.value
-    } else {
-      searchTerm = e?.value
-
-    }
-    if (searchTerm?.length > 0) {
-      fetchSearchFilterAdmin(property, searchTerm).then((data) => {
-        if (data?.length > 0) {
-          console.log('data', data.results)
-          setCreateOrder(data.results)
-          // setCreateOrder(res.data)
-          setOrderCount(res.data.count)
-        } else {
-          console.log("No data")
-        }
-      })
-    } else {
-      fetchCreateOrderData()
-    }
-  }
-
-  const fetchSearchFilterAdmin = (val, input) => {
-    return useJwt
-      .axiosGet(
-        getApi(ADMIN_SEARCH_CREATE_ORDER_FILTER) +
-        `?search_fields=${val}&search=${input}`
-      )
-      .then((res) => {
-        console.log("response", res)
-        setCreateOrder(res.data.results)
-        setOrderCount(res.data.count)
-        return res.data
-      })
-      .catch((err) => console.log(err))
-  }
 
   const clearFilter = () => {
     setOrderStatus("")
@@ -180,18 +116,46 @@ const CreateOrderList = () => {
     setReceipientName('')
     setphoneNumber('')
     setSelectedValue('')
-    fetchCreateOrderData()
+    fetchCreateOrderData(1)
     setSelectedDate(null)
-
   }
 
-  const onChange = (page) => {
-    setCurrent(page)
-    fetchCreateOrderData(page)
-    
+  const handleSearchQuery = searchTerm => {
+    return useJwt
+      .axiosGet(getApi(CREATE_ORDER_LIST) + '?' + searchTerm)
+      .then((res) => {
+        console.log(res.data)
+        if (res.data?.results) {
+          setCreateOrder(res.data.results)
+          setOrderCount(res.data.count)
+        }
+        return res.data
+      })
+      .catch((err) => console.log(err))
   }
 
+  function updateFilterQUery(term, value) {
+    let filters = { ...filterQuery }
+    if (term != 'page') {
+      filters['page'] = 1
+    }
 
+    if (value) {
+      filters[term] = value
+    } else {
+      filters.hasOwnProperty(term) && delete filters[term]
+    }
+    console.log('filter', filters)
+    setFilterQuery(filters)
+  }
+
+  useEffect(() => {
+    handleSearchQuery(qs.stringify(filterQuery))
+  }, [filterQuery])
+
+  const paginationUpdate = (page) => {
+    updateFilterQUery("page", page)
+  }
 
   return (
     <Row>
@@ -213,7 +177,9 @@ const CreateOrderList = () => {
                   className={classNames("react-select")}
                   classNamePrefix="select"
                   onChange={(e) => {
-                    filterHandle(e, "status")
+                    // filterHandle(e, "status")
+                    updateFilterQUery('status', e?.value)
+                    setOrderStatus(e)
                   }}
                   options={statusOptions}
                   value={orderStatus}
@@ -225,7 +191,9 @@ const CreateOrderList = () => {
                 <Search
                   placeholder="eg. ODR23031301d6"
                   onChange={(e) => {
-                    filterHandle(e, "order_id"), setorderID(e.target.value)
+                    // filterHandle(e, "order_id"), setorderID(e.target.value)
+                    updateFilterQUery("parcel_id", e.target.value)
+                    setorderID(e.target.value)
                   }}
                   value={orderID}
                 />
@@ -235,7 +203,9 @@ const CreateOrderList = () => {
                 <Search
                   placeholder="eg. Jhon Doe"
                   onChange={(e) => {
-                    filterHandle(e, "receipient_name"), setReceipientName(e.target.value)
+                    updateFilterQUery("recipient_name", e.target.value)
+                    setReceipientName(e.target.value)
+                    // filterHandle(e, "receipient_name"), setReceipientName(e.target.value)
                   }}
                   value={receipientName}
                 />
@@ -245,20 +215,22 @@ const CreateOrderList = () => {
                 <Search
                   placeholder="eg. 01793912259"
                   onChange={(e) => {
-                    filterHandle(e, "phone"), setphoneNumber(e.target.value)
+                    updateFilterQUery("phone_number", e.target.value)
+                    setphoneNumber(e.target.value)
+                    // filterHandle(e, "phone_number"), setphoneNumber(e.target.value)
                   }}
                   value={phoneNumber}
                 />
               </div>
               <div className=" mt-2">
                 <h6>Filter by Order Type</h6>
-                <Checkbox checked={selectedValue === 'pickup'} value="pickup" onChange={(e) => { filterHandle(e, "pickup"), setSelectedValue(e.target.value) }}>
+                <Checkbox checked={selectedValue === 'pickedup'} value="pickedup" onChange={(e) => { updateFilterQUery("status", e.target.value), setSelectedValue(e.target.value) }}>
                   Pickup
                 </Checkbox>
-                <Checkbox checked={selectedValue === 'warehouse'} value="warehouse" onChange={(e) => { filterHandle(e, "warehouse"), setSelectedValue(e.target.value) }}>
+                <Checkbox checked={selectedValue === 'in_warehouse'} value="in_warehouse" onChange={(e) => { updateFilterQUery("status", e.target.value), setSelectedValue(e.target.value) }}>
                   Warehouse
                 </Checkbox>
-                <Checkbox checked={selectedValue === 'delivery'} value="delivery" onChange={(e) => { filterHandle(e, "delivery"), setSelectedValue(e.target.value) }}>
+                <Checkbox checked={selectedValue === 'delivered'} value="delivered" onChange={(e) => { updateFilterQUery("status", e.target.value), setSelectedValue(e.target.value) }}>
                   Delivery
                 </Checkbox>
               </div>
@@ -271,7 +243,7 @@ const CreateOrderList = () => {
                     width: '100%',
                   }}
                   value={selectedDate}
-                  onChange={(date) => { setSelectedDate(date), filterHandle(date.format('YYYY-MM-DD'), 'date') }}
+                  onChange={(date) => { updateFilterQUery("date", date.format('YYYY-MM-DD')), setSelectedDate(date) }}
                 />
               </div>
             </div>
@@ -414,7 +386,7 @@ const CreateOrderList = () => {
                   </CardBody>
                 </Card>
               ))}
-            <Pagination current={current} onChange={onChange} total={orderCount} defaultPageSize={2} />
+            <Pagination onChange={paginationUpdate} total={orderCount} defaultPageSize={50} />
             <ChangeStatusModal
               statusModalState={statusModalState}
               setStatusModalState={setStatusModalState}

@@ -1,25 +1,28 @@
-
-
 import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
 import { getApi, ADMIN_GET_ORDER_REPORT_APIVIEW, MARCHANT_LIST, RIDER_LIST, ADMIN_GET_ORDER_REPORT_GENERATE_PDF_APIVIEW } from "../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
-
-
+import { Pagination } from "antd"
+import * as qs from 'qs'
 
 
 const AdminOrderReport = () => {
 	const [order, setOrder] = useState([])
 	const [selectboxMarchant, setSelectboxMarchant] = useState([])
 	const [selectboxRider, setSelectboxRider] = useState([])
+	const [orderCount, setOrderCount] = useState(0)
+	const [filterQuery, setFilterQuery] = useState({})
+	const [defaultPage, setDefalutPage] = useState(1)
 
 	const defaultFetchData = () => {
 		return useJwt.axiosGet(getApi(ADMIN_GET_ORDER_REPORT_APIVIEW))
 			.then((res) => {
-				console.log('response data',res.data)
-				setOrder(res.data)
+				setFilterQuery({})
+				setDefalutPage(1)
+				setOrder(res?.data?.results)
+				setOrderCount(res.data.count)
 			}).catch((err) => {
 				console.log(err)
 			})
@@ -27,37 +30,35 @@ const AdminOrderReport = () => {
 
 	const fetchMarchantData = () => {
 		return useJwt
-		  .axiosGet(getApi(MARCHANT_LIST))
-		  .then((res) => {
-			console.log(res)
-			let marchantData = []
-	
-			res.data.data.map((data) => {
-			  marchantData.push({ value: data.id, label: data.full_name })
-			})
-	
-			setSelectboxMarchant(marchantData)
-			return res.data.data
-		  })
-		  .catch((err) => console.log(err))
-	  }
+			.axiosGet(getApi(MARCHANT_LIST))
+			.then((res) => {
+				let marchantData = []
 
-	  const fetchRiderData = () => {
-		return useJwt
-		  .axiosGet(getApi(RIDER_LIST))
-		  .then((res) => {
-			console.log('RIDER_LIST', res.data.data)
-			let riderData = []
-	
-			res.data.data.map((data) => {
-			  riderData.push({ value: data.id, label: data.full_name })
+				res.data.data.map((data) => {
+					marchantData.push({ value: data.id, label: data.full_name })
+				})
+
+				setSelectboxMarchant(marchantData)
+				return res.data.data
 			})
-	
-			setSelectboxRider(riderData)
-			return res.data
-		  })
-		  .catch((err) => console.log(err))
-	  }
+			.catch((err) => console.log(err))
+	}
+
+	const fetchRiderData = () => {
+		return useJwt
+			.axiosGet(getApi(RIDER_LIST))
+			.then((res) => {
+				let riderData = []
+
+				res.data.data.map((data) => {
+					riderData.push({ value: data.id, label: data.full_name })
+				})
+
+				setSelectboxRider(riderData)
+				return res.data
+			})
+			.catch((err) => console.log(err))
+	}
 
 	useEffect(() => {
 		defaultFetchData()
@@ -67,12 +68,12 @@ const AdminOrderReport = () => {
 
 
 	const handleSearchQuery = searchTerm => {
-		console.log('yes i am workgin searchTerm', searchTerm)
 		return useJwt
 			.axiosGet(getApi(ADMIN_GET_ORDER_REPORT_APIVIEW) + '?' + searchTerm)
 			.then((res) => {
-				if (res.data?.length > 0) {
-					setOrder(res.data)
+				if (res.data?.results?.length > 0) {
+					setOrder(res?.data?.results)
+					setOrderCount(res.data?.count)
 				} else {
 					setOrder('')
 				}
@@ -95,13 +96,15 @@ const AdminOrderReport = () => {
 	}
 
 	const handlePDFQuery = (searchTerm) => {
+        const regex = /&([^&]+)/g 
+        const pageRemoveToQuery = searchTerm.match(regex)
+        const filterPerameter = pageRemoveToQuery ? pageRemoveToQuery.join('') : ''
+		searchTerm = filterPerameter.startsWith("&") ? filterPerameter: filterPerameter.replace('$', '')
 
 		return useJwt
 			.axiosGet(getApi((ADMIN_GET_ORDER_REPORT_GENERATE_PDF_APIVIEW) + '?' + searchTerm))
 			.then((res) => {
 				if (res.data?.length > 0) {
-					// setOrder(res.data)
-					console.log('response file', res.data)
 					var file = new Blob([res.data], { type: 'application/pdf' })
 					var fileName = 'orders_report.pdf'
 					downloadPDFFile(file, fileName)
@@ -111,7 +114,6 @@ const AdminOrderReport = () => {
 				return res.data
 			})
 			.catch((err) => console.log(err))
-		
 	}
 
 	const statusOptions = [
@@ -127,23 +129,49 @@ const AdminOrderReport = () => {
 		{ value: "completed", label: "Completed" },
 	]
 
+	function updateFilterQUery(term, value) {
+		let filters = { ...filterQuery }
+		if (term != 'page') {
+			filters['page'] = 1
+		}
+
+		if (value) {
+			filters[term] = value
+		} else {
+			filters.hasOwnProperty(term) && delete filters[term]
+		}
+		setFilterQuery(filters)
+	}
+
 	const propsData = {
-        handleSearchQuery: handleSearchQuery,
-        handlePDFQuery: handlePDFQuery,
-        defaultFetchData: defaultFetchData,
+		handleSearchQuery: handleSearchQuery,
+		handlePDFQuery: handlePDFQuery,
+		defaultFetchData: defaultFetchData,
 
-        statusOptions: statusOptions,
-        selectboxData: selectboxMarchant,
-        selectboxRider: selectboxRider,
+		updateFilterQUery: updateFilterQUery,
+		filterQuery: filterQuery,
 
-        statusOptionPlaceholder: "Order Status",
-        selectOptionKey:"status",
-        reportTitle: 'Orders Report',
-        selectboxDataPlaceholder: 'Select Marchant',
-        filterTable: 'marchant',
+		statusOptions: statusOptions,
+		selectboxData: selectboxMarchant,
+		selectboxRider: selectboxRider,
+
+		statusOptionPlaceholder: "Order Status",
+		selectOptionKey: "status",
+		reportTitle: 'Orders Report',
+		selectboxDataPlaceholder: 'Select Marchant',
+		filterTable: 'marchant',
 		isOrderPageIsRider: true
-        
-    }
+
+	}
+
+	useEffect(() => {
+		handleSearchQuery(qs.stringify(filterQuery))
+	}, [filterQuery])
+
+	const paginationUpdate = (page) => {
+		updateFilterQUery("page", page)
+	}
+
 
 	return (
 		<>
@@ -182,11 +210,11 @@ const AdminOrderReport = () => {
 									<td>
 										<span className="align-middle fw-bold">{info?.delivary_rider?.full_name}</span>
 									</td>
-									
+
 									<td>
 										<span className="align-middle fw-bold">{info?.status}</span>
 									</td>
-									
+
 									<td>
 										<span className="align-middle fw-bold">{info?.delivary_charge}</span>
 									</td>
@@ -205,7 +233,9 @@ const AdminOrderReport = () => {
 								</tr>
 							))}
 					</tbody>
+
 				</Table>
+				<Pagination onChange={paginationUpdate} defaultCurrent={defaultPage} total={orderCount} defaultPageSize={50} />
 			</div>
 		</>
 	)

@@ -6,21 +6,25 @@ import useJwt from "@src/auth/jwt/useJwt"
 import { getApi, ADMIN_GET_PICKUP_REPORT_APIVIEW, ADMIN_GET_PICKUP_REPORT_GENERATE_PDF_APIVIEW, RIDER_LIST } from "../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
-
+import { Pagination } from "antd"
+import * as qs from 'qs'
 
 
 
 const GetAdminPickupReport = () => {
     const [pickup, setPickup] = useState([])
     const [rider, setRider] = useState([])
-    console.log("rider", rider)
-    // const [selectboxRider, setSelectboxRider] = useState([])
+    const [pickupCount, setPickupCount] = useState(0)
+	const [filterQuery, setFilterQuery] = useState({})
+	const [defaultPage, setDefalutPage] = useState(1)
 
     const defaultFetchData = () => {
         return useJwt.axiosGet(getApi(ADMIN_GET_PICKUP_REPORT_APIVIEW))
             .then((res) => {
-                console.log('response data', res.data)
-                setPickup(res.data)
+                setPickup(res?.data?.results)
+                setFilterQuery({})
+				setDefalutPage(1)
+				setPickupCount(res?.data?.count)
             }).catch((err) => {
                 console.log(err)
             })
@@ -30,7 +34,6 @@ const GetAdminPickupReport = () => {
         return useJwt
             .axiosGet(getApi(RIDER_LIST))
             .then((res) => {
-                console.log('RIDER_LIST', res)
                 let riderData = []
 
                 res.data.data.map((data) => {
@@ -46,12 +49,12 @@ const GetAdminPickupReport = () => {
 
 
     const handleSearchQuery = searchTerm => {
-        console.log('yes i am workgin searchTerm', searchTerm)
         return useJwt
             .axiosGet(getApi(ADMIN_GET_PICKUP_REPORT_APIVIEW) + '?' + searchTerm)
             .then((res) => {
-                if (res.data?.length > 0) {
-                    setPickup(res.data)
+                if (res.data?.results?.length > 0) {
+                    setPickup(res?.data?.results)
+                    setPickupCount(res?.data?.count)
                 } else {
                     setPickup('')
                 }
@@ -74,6 +77,11 @@ const GetAdminPickupReport = () => {
     }
 
     const handlePDFQuery = (searchTerm) => {
+
+        const regex = /&([^&]+)/g 
+        const pageRemoveToQuery = searchTerm.match(regex)
+        const filterPerameter = pageRemoveToQuery ? pageRemoveToQuery.join('') : ''
+		searchTerm = filterPerameter.startsWith("&") ? filterPerameter: filterPerameter.replace('$', '')
 
         return useJwt
             .axiosGet(getApi((ADMIN_GET_PICKUP_REPORT_GENERATE_PDF_APIVIEW) + '?' + searchTerm))
@@ -98,11 +106,36 @@ const GetAdminPickupReport = () => {
 		{ value: 'false', label: "Pendding" },
     ]
 
+    function updateFilterQUery(term, value) {
+		let filters = { ...filterQuery }
+		if (term != 'page') {
+			filters['page'] = 1
+		}
+
+		if (value) {
+			filters[term] = value
+		} else {
+			filters.hasOwnProperty(term) && delete filters[term]
+		}
+		setFilterQuery(filters)
+	}
+
+    useEffect(() => {
+		handleSearchQuery(qs.stringify(filterQuery))
+	}, [filterQuery])
+
+	const paginationUpdate = (page) => {
+		updateFilterQUery("page", page)
+	}
+
 
     const propsData = {
         handleSearchQuery: handleSearchQuery,
         handlePDFQuery: handlePDFQuery,
         defaultFetchData: defaultFetchData,
+
+        updateFilterQUery: updateFilterQUery,
+		filterQuery: filterQuery,
 
         statusOptions: statusOptions,
         selectboxData: rider,
@@ -168,6 +201,7 @@ const GetAdminPickupReport = () => {
                             ))}
                     </tbody>
                 </Table>
+                <Pagination onChange={paginationUpdate} defaultCurrent={defaultPage} total={pickupCount} defaultPageSize={50} />
             </div>
         </>
     )
