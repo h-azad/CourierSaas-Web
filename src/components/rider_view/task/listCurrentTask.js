@@ -4,71 +4,57 @@ import { Row, Col, Card, CardBody, CardText, Button } from "reactstrap"
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
 import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, RIDER_CURRENT_TASK_LIST, RIDER_SEARCH_CREATE_ORDER_FILTER } from "../../../constants/apiUrls"
+import { getApi, RIDER_SEARCH_CREATE_ORDER_FILTER } from "../../../constants/apiUrls"
 import TaskFilter from "./TaskFilter"
 import CurrentTaskView from "./CurrentTaskView"
+import * as qs from 'qs'
 
 function CurrentTaskList() {
-  const [activeTask, setActiveTask] = useState()
-  const [task, setTask] = useState([])
-  const [activeTaskData, setActiveTaskData] = useState(null)
   const [currentTask, setCurrentTask] = useState([])
+  const [orderCount, setOrderCount] = useState(0)
+	const [filterQuery, setFilterQuery] = useState({})
 
+  const handleSearchQuery = searchTerm => {
+		return useJwt
+			.axiosGet(getApi(RIDER_SEARCH_CREATE_ORDER_FILTER) + '?' + searchTerm)
+			.then((res) => {
+				if (res.data?.results) {
+					setCurrentTask(res?.data?.results)
+					setOrderCount(res?.data?.count)
+				}
+				return res.data
+			})
+			.catch((err) => console.log(err))
+	}
+
+	function updateFilterQUery(term, value) {
+		let filters = { ...filterQuery }
+		if (term != 'page') {
+			filters['page'] = 1
+		}
+
+		if (value) {
+			filters[term] = value
+		} else {
+			filters.hasOwnProperty(term) && delete filters[term]
+		}
+		setFilterQuery(filters)
+	}
+
+	useEffect(() => {
+		handleSearchQuery(qs.stringify(filterQuery))
+	}, [filterQuery])
+
+	const paginationUpdate = (page) => {
+		updateFilterQUery("page", page)
+	}
+
+  const currentTaskData={
+    paginationUpdate: paginationUpdate,
+    orderCount: orderCount,
+    currentTask: currentTask,
+  }
   
-
-  const fetchRiderTaskData = () => {
-    return useJwt
-      .axiosGet(getApi(RIDER_CURRENT_TASK_LIST))
-      .then((res) => {
-        console.log("res", res.data)
-        setTask(res.data.data)
-        setActiveTaskData(res.data.data[0])
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
-
-  useEffect(() => {
-    fetchRiderTaskData()
-  }, [])
-
-
-
-
-
-
-
-
-  useEffect(() => {
-    console.log(activeTask)
-    if (task && !activeTask) {
-      // console.log(orders[0])
-      task[0] ? setActiveTask(task[0]?.id) : null
-    }
-  }, [task])
-
-  useEffect(() => {
-
-    const activeTaskFilter = task.find((item) => item.id === activeTask)
-    setActiveTaskData(activeTaskFilter)
-  }, [activeTask])
-
-  const fetchCurrentTaskData = () => {
-    return useJwt
-      .axiosGet(getApi(RIDER_SEARCH_CREATE_ORDER_FILTER))
-      .then((res) => {
-        console.log(res.data)
-        setCurrentTask(res.data)
-        return res.data
-      })
-      .catch((err) => console.log(err))
-  }
-
-
-  useEffect(() => {
-    fetchCurrentTaskData()
-  }, [])
-
   return (
     <Fragment>
       <Row>
@@ -110,14 +96,14 @@ function CurrentTaskList() {
         <Col sm="4">
           <Card title="Bordered">
             <CardBody>
-              <TaskFilter setCurrentTask={setCurrentTask} setActiveTaskData={setActiveTaskData} task={task} setTask={setTask} activeTask={activeTask} setActiveTask={setActiveTask} fetchCurrentTaskData={fetchCurrentTaskData } /> 
+              <TaskFilter setFilterQuery={setFilterQuery} handleSearchQuery={handleSearchQuery} updateFilterQUery={updateFilterQUery} /> 
             </CardBody>
           </Card>
         </Col>
         <Col sm="8">
           <Card title="Bordered">
             <CardBody>
-              <CurrentTaskView currentTask={currentTask} activeTaskData={activeTaskData} task={task} fetchRiderTaskData={fetchRiderTaskData} />
+              <CurrentTaskView currentTaskData={currentTaskData} />
             </CardBody>
           </Card>
         </Col>

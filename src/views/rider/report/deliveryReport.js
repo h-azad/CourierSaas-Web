@@ -6,19 +6,23 @@ import useJwt from "@src/auth/jwt/useJwt"
 import { getApi, RIDER_GET_DELIVERY_REPORT, RIDER_GET_DELIVERY_REPORT_PDF } from "../../../constants/apiUrls"
 import ReportHead from "./RiderReportHead"
 import React from 'react'
-
+import { Pagination } from "antd"
+import * as qs from 'qs'
 
 
 const DeliveryReport = () => {
 	const [order, setOrder] = useState([])
+	const [filterQuery, setFilterQuery] = useState({})
+	const [orderCount, setOrderCount] = useState(0)
 
 	const defaultFetchOrderData = () => {
 		return useJwt.axiosGet(getApi(RIDER_GET_DELIVERY_REPORT))
 			.then((res) => {
-				console.log('response data', res.data)
-				setOrder(res.data)
+				setOrder(res?.data?.results)
+				setOrderCount(res?.data?.count)
 			}).catch((err) => {
-				console.log(err)
+				setOrder([])
+				setOrderCount(1)
 			})
 	}
 
@@ -31,14 +35,18 @@ const DeliveryReport = () => {
 		return useJwt
 			.axiosGet(getApi(RIDER_GET_DELIVERY_REPORT) + '?' + searchTerm)
 			.then((res) => {
-				if (res.data?.length > 0) {
-					setOrder(res.data)
+				if (res.data?.results?.length > 0) {
+					setOrder(res?.data?.results)
+					setOrderCount(res?.data?.count)
 				} else {
-					setOrder('')
+					setOrder([])
+					setOrderCount(1)
 				}
-				return res.data
 			})
-			.catch((err) => console.log(err))
+			.catch((err) => {
+				setOrder([])
+				setOrderCount(1)
+			})
 	}
 
 
@@ -59,18 +67,19 @@ const DeliveryReport = () => {
 		return useJwt
 			.axiosGet(getApi((RIDER_GET_DELIVERY_REPORT_PDF) + '?' + searchTerm))
 			.then((res) => {
-				if (res.data?.length > 0) {
-					// setOrder(res.data)
-					console.log('response file', res.data)
+				if (res?.data) {
 					var file = new Blob([res.data], { type: 'application/pdf' })
 					var fileName = 'delivery_report.pdf'
 					downloadPDFFile(file, fileName)
 				} else {
-					// setOrder('')
+					setOrder([])
+					setOrderCount(1)
 				}
-				return res.data
 			})
-			.catch((err) => console.log(err))
+			.catch((err) => {
+				setOrder([])
+				setOrderCount(1)
+			})
 
 	}
 
@@ -80,13 +89,45 @@ const DeliveryReport = () => {
 		{ value: 'failed_delivery', label: "Delivery Failed" },
 	]
 
+	function updateFilterQUery(term, value) {
+		let filters = { ...filterQuery }
+		if (term != 'page') {
+			filters['page'] = 1
+		}
+
+		if (value) {
+			filters[term] = value
+		} else {
+			filters.hasOwnProperty(term) && delete filters[term]
+		}
+		setFilterQuery(filters)
+	}
+
+	useEffect(() => {
+		handleSearchQuery(qs.stringify(filterQuery))
+	}, [filterQuery])
+
+	const paginationUpdate = (page) => {
+		updateFilterQUery("page", page)
+	}
+
+	const propsData = {
+		handleSearchQuery: handleSearchQuery,
+		handlePDFQuery: handlePDFQuery,
+
+		updateFilterQUery: updateFilterQUery,
+		filterQuery: filterQuery,
+		statusOptions: statusOptions,
+		defaultFetchOrderData: defaultFetchOrderData,
+
+		selectOptionKey: "delivery_status",
+		reportTitle: 'Delivery Report'
+	}
 
 	return (
 		<>
 
-			<ReportHead
-				handleSearchQuery={handleSearchQuery} handlePDFQuery={handlePDFQuery} defaultFetchOrderData={defaultFetchOrderData} statusOptions={statusOptions} selectOptionKey="delivery_status" reportTitle='Delivery Report'
-			/>
+			<ReportHead propsData={propsData} />
 
 			<div id="my-table" class="table-responsive">
 				<Table bordered>
@@ -126,6 +167,7 @@ const DeliveryReport = () => {
 							))}
 					</tbody>
 				</Table>
+				<Pagination onChange={paginationUpdate} defaultCurrent={1} total={orderCount} defaultPageSize={50} />
 			</div>
 		</>
 	)

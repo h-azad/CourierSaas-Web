@@ -63,8 +63,8 @@ const OrderStatusTable = () => {
         return useJwt
             .axiosGet(getApi(CREATE_ORDER_LIST))
             .then((res) => {
-                console.log("res", res.data)
-                setCreateOrder(res.data)
+                console.log("res", res?.data?.results)
+                setCreateOrder( res?.data?.results)
                 return res.data
             })
             .catch(err => console.log(err))

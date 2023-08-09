@@ -1,29 +1,17 @@
 import React from 'react'
 import { Card, CardBody, Row, Col, } from 'reactstrap'
-import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
-import useJwt from '@src/auth/jwt/useJwt'
-import { DownOutlined, EyeOutlined } from '@ant-design/icons'
-import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
-import ChangeStatusModalRider from '../../rider_view/task/delivary/DelivaryStatusModal'
-import { getApi, RIDER_CURRENT_TASK_LIST, DELIVERY_ASSIGNMENT, RIDER_ASSIGNMENT } from "@src/constants/apiUrls"
+import { useState } from 'react'
+import { EyeOutlined } from '@ant-design/icons'
+import { MoreVertical} from "react-feather"
 import {
-  Badge,
   UncontrolledDropdown,
-  DropdownMenu,
-  DropdownItem,
   DropdownToggle,
 } from "reactstrap"
 
 import OrderDetailsDrawer from '../../order/OrderDetailsDrawer'
+import { Pagination } from 'antd'
 
-
-const CurrentTaskView = ({ currentTask }) => {
-  const [statusModalState, setStatusModalState] = useState(false)
-  const [selectedStatus, setSelectedStatus] = useState(null)
-  const [selectedInfo, setSelectedInfo] = useState(null)
-  // const [currentTask, setCurrentTask] = useState([])
-
+const CurrentTaskView = ({ currentTaskData }) => {
   const [orderid, setOrderId] = useState(0)
   const [open, setOpen] = useState(false)
   const showOrderDetailsDrawer = () => {
@@ -33,64 +21,16 @@ const CurrentTaskView = ({ currentTask }) => {
     setOpen(false)
   }
 
-
-  useEffect(() => {
-    if (!statusModalState) {
-      clearData()
-    }
-    fetchCurrentTaskData()
-  }, [statusModalState])
-
-  const fetchCurrentTaskData = () => {
-    return useJwt
-      .axiosGet(getApi(RIDER_CURRENT_TASK_LIST))
-      .then((res) => {
-        console.log(res.data)
-        setCurrentTask(res.data.data)
-        return res.data
-      })
-      .catch((err) => console.log(err))
-  }
-  const changePickupStatusAction = (e, info) => {
-    e.preventDefault()
-    // setStatusModalState(true)
-    // setSelectedStatus(info.status)
-    // setSelectedInfo(info)
-    useJwt
-      .axiosPost(getApi(`${RIDER_ASSIGNMENT}/${info.id}/confirm_pickup/`))
-      .then((res) => {
-        // console.log(res.data)
-        // setCurrentTask(res.data.data)
-        // return res.data
-        toast.success(res.data)
-        fetchCurrentTaskData()
-      })
-      .catch((err) => console.log(err))
-  }
-  const changeDeliveryStatusAction = (e, info) => {
-    e.preventDefault()
-    useJwt
-      .axiosPost(getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/confirm_delivery/`), { details: info })
-      .then((res) => {
-        toast.success(res.data)
-        fetchCurrentTaskData()
-      })
-      .catch((err) => console.log(err))
-  }
-  const clearData = () => {
-    setSelectedInfo(null)
-    setSelectedStatus(null)
-  }
-
-  return (<>
+  return (
+  <>
     <div className='invoice-title-card'>
       <h4> List Current Task </h4>
     </div>
     <hr></hr>
     <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
 
-    {currentTask &&
-      currentTask.map((info) => (
+    {currentTaskData.currentTask &&
+      currentTaskData.currentTask.map((info) => (
         <Card className='invoice-preview-card'>
           <CardBody>
             <Row >
@@ -113,26 +53,6 @@ const CurrentTaskView = ({ currentTask }) => {
                     >
                       <MoreVertical size={15} />
                     </DropdownToggle>
-                    <DropdownMenu>
-                      {
-                        info.pickup_status == false && !info.warehouse_status && (
-                          <DropdownItem href="/" onClick={e => changePickupStatusAction(e, info)}>
-                            <Edit3 className="me-50" size={15} />{" "}
-                            <span className="align-middle">Confirm Picked Up</span>
-                          </DropdownItem>
-                        )
-                      }
-
-                      {
-                        info.pickup_status && info.warehouse_status && !info.delivery_status && (
-                          <DropdownItem href="/" onClick={e => changeDeliveryStatusAction(e, info)}>
-                            <Edit3 className="me-50" size={15} />{" "}
-                            <span className="align-middle">Confirm Delivery</span>
-                          </DropdownItem>
-                        )
-                      }
-
-                    </DropdownMenu>
                   </UncontrolledDropdown>
                 </div>
               </Col>
@@ -156,14 +76,9 @@ const CurrentTaskView = ({ currentTask }) => {
               </Col>
             </Row>
           </CardBody>
-          <ChangeStatusModalRider
-            statusModalState={statusModalState}
-            setStatusModalState={setStatusModalState}
-            taskInfo={selectedInfo}
-            fetchCurrentTaskData={fetchCurrentTaskData}
-          />
         </Card >
       ))}
+    <Pagination onChange={currentTaskData.paginationUpdate} total={currentTaskData.orderCount} defaultPageSize={50} />
   </>
   )
 
