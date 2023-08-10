@@ -10,6 +10,7 @@ import useJwt from '@src/auth/jwt/useJwt'
 import {
   getApi,
   GET_USER,
+  PROFILE
 } from "@src/constants/apiUrls"
 // ** Third Party Components
 import {
@@ -40,7 +41,7 @@ import { useState, useEffect } from "react"
 const UserDropdown = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [userInformation, setUserInformation] = useState({
+  const [profileInformation, setProfileInformation] = useState({
     name: null,
     email: null,
     role: null,
@@ -60,23 +61,37 @@ const UserDropdown = () => {
   }
 
 
+  const fetchProfileData = () => {
+    return useJwt
+      .axiosGet(getApi(PROFILE))
+      .then((res) => {
+        setProfileInformation({
+          name: res?.data?.full_name,
+          email: res?.data?.email,
+          profile_picture: res?.data?.profile_picture
+        })
+      })
+      .catch(err => console.log(err))
+  }
+
   const fetchUserData = () => {
     return useJwt
       .axiosGet(getApi(GET_USER))
       .then((res) => {
-        console.log("profile_picture", res.data.image[0].profile_picture)
-        setUserInformation({
-          name: res.data.data.name,
-          email: res.data.data.email,
-          role: res.data.data.role,
-          admin_role: res.data.data.admin_role,
-          profile_picture: res?.data?.image[0]?.profile_picture
-        })
-        // console.log('res.data.profile_picture', res.data.profile_picture)
-        return res.data
+        if(res?.data?.role==null){
+          console.log('res?.data?', res?.data)
+          setProfileInformation({
+            name: res?.data?.name,
+            email: res?.data?.email,
+            profile_picture: res?.data?.profile_picture
+          })
+        }else{
+          fetchProfileData()
+        }
       })
       .catch(err => console.log(err))
   }
+
 
   useEffect(() => {
     fetchUserData()
@@ -91,11 +106,11 @@ const UserDropdown = () => {
         onClick={(e) => e.preventDefault()}
       >
         <div className="user-nav d-sm-flex d-none">
-          <span className="user-name fw-bold">{userInformation.name}</span>
-          <span className="user-status">{userInformation.role ? userInformation.role : userInformation.admin_role}</span>
+          <span className="user-name fw-bold">{profileInformation?.name}</span>
+          <span className="user-status">{profileInformation.role ? profileInformation.role : profileInformation.admin_role}</span>
         </div>
         <Avatar
-          img={userInformation.profile_picture ? "http://localhost:8000/media/"+userInformation.profile_picture : Avatar}
+          img={profileInformation.profile_picture ? "http://localhost:8000"+profileInformation.profile_picture : Avatar}
           imgHeight="40"
           imgWidth="40"
           status="online"

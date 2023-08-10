@@ -6,19 +6,24 @@ import useJwt from "@src/auth/jwt/useJwt"
 import { getApi, MARCHANT_GET_TRANSICTION_REPORT, MARCHANT_GET_TRANSICTION_REPORT_PDF } from "../../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
-
-
+import { Pagination } from "antd"
+import * as qs from 'qs'
 
 const OrderReport = () => {
 	const [transections, setTransections] = useState([])
+	const [filterQuery, setFilterQuery] = useState({})
+	const [orderCount, setOrderCount] = useState(0)
 
 	const defaultFetchOrderData = () => {
 		return useJwt.axiosGet(getApi(MARCHANT_GET_TRANSICTION_REPORT))
 			.then((res) => {
-				console.log('response data', res.data)
-				setTransections(res.data)
+				setTransections(res?.data?.results)
+				setOrderCount(res?.data?.count)
+				setFilterQuery({})
 			}).catch((err) => {
-				console.log(err)
+				setTransections([])
+				setOrderCount(0)
+				setFilterQuery({})
 			})
 	}
 
@@ -31,14 +36,18 @@ const OrderReport = () => {
 		return useJwt
 			.axiosGet(getApi(MARCHANT_GET_TRANSICTION_REPORT) + '?' + searchTerm)
 			.then((res) => {
-				if (res.data?.length > 0) {
-					setTransections(res.data)
+				if (res.data?.results?.length > 0) {
+					setTransections(res?.data?.results)
+					setOrderCount(res?.data?.count)
 				} else {
-					setTransections('')
+					setTransections([])
+					setOrderCount(0)
 				}
-				return res.data
 			})
-			.catch((err) => console.log(err))
+			.catch((err) => {
+				setTransections([])
+				setOrderCount(0)
+			})
 	}
 
 
@@ -79,13 +88,45 @@ const OrderReport = () => {
 		{ value: "Cash-In", label: "Cash-In" },
 	]
 
+	function updateFilterQUery(term, value) {
+		let filters = { ...filterQuery }
+		if (term != 'page') {
+			filters['page'] = 1
+		}
+
+		if (value) {
+			filters[term] = value
+		} else {
+			filters.hasOwnProperty(term) && delete filters[term]
+		}
+		setFilterQuery(filters)
+	}
+
+	useEffect(() => {
+		handleSearchQuery(qs.stringify(filterQuery))
+	}, [filterQuery])
+
+	const paginationUpdate = (page) => {
+		updateFilterQUery("page", page)
+	}
+
+	const propsData = {
+		handleSearchQuery: handleSearchQuery,
+		handlePDFQuery: handlePDFQuery,
+
+		updateFilterQUery: updateFilterQUery,
+		filterQuery: filterQuery,
+		statusOptions: statusOptions,
+		defaultFetchOrderData: defaultFetchOrderData,
+
+		selectOptionKey: "type",
+		reportTitle: 'Transections Report'
+	}
 
 	return (
 		<>
 
-			<ReportHead
-				handleSearchQuery={handleSearchQuery} handlePDFQuery={handlePDFQuery} defaultFetchOrderData={defaultFetchOrderData} statusOptions={statusOptions} selectOptionKey="type" reportTitle='Transections Report'
-			/>
+			<ReportHead propsData={propsData} />
 
 			<div class="table-responsive">
 				<Table bordered>
@@ -112,6 +153,7 @@ const OrderReport = () => {
 					</tbody>
 				</Table>
 			</div>
+			<Pagination onChange={paginationUpdate} total={orderCount} defaultPageSize={50} />
 		</>
 	)
 }

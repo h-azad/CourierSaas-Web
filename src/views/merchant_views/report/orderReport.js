@@ -6,19 +6,25 @@ import useJwt from "@src/auth/jwt/useJwt"
 import { getApi, MARCHANT_GET_ORDER_REPORT, MARCHANT_GET_ORDER_REPORT_PDF } from "../../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
-
+import * as qs from 'qs'
+import { Pagination } from "antd"
 
 
 const OrderReport = () => {
 	const [order, setOrder] = useState([])
+	const [filterQuery, setFilterQuery] = useState({})
+	const [orderCount, setOrderCount] = useState(0)
 
 	const defaultFetchOrderData = () => {
 		return useJwt.axiosGet(getApi(MARCHANT_GET_ORDER_REPORT))
 			.then((res) => {
-				console.log('response data',res.data)
-				setOrder(res.data)
+				setOrder(res?.data?.results)
+				setOrderCount(res?.data?.count)
+				setFilterQuery({})
 			}).catch((err) => {
-				console.log(err)
+				setOrder([])
+				setOrderCount(0)
+				setFilterQuery({})
 			})
 	}
 
@@ -31,14 +37,18 @@ const OrderReport = () => {
 		return useJwt
 			.axiosGet(getApi(MARCHANT_GET_ORDER_REPORT) + '?' + searchTerm)
 			.then((res) => {
-				if (res.data?.length > 0) {
-					setOrder(res.data)
+				if (res.data?.results?.length > 0) {
+					setOrder(res?.data?.results)
+					setOrderCount(res?.data?.count)
 				} else {
-					setOrder('')
+					setOrder([])
+					setOrderCount(0)
 				}
-				return res.data
 			})
-			.catch((err) => console.log(err))
+			.catch((err) => {
+				setOrder([])
+				setOrderCount(0)
+			})
 	}
 
 
@@ -88,12 +98,45 @@ const OrderReport = () => {
 	]
 
 
+	function updateFilterQUery(term, value) {
+		let filters = { ...filterQuery }
+		if (term != 'page') {
+			filters['page'] = 1
+		}
+
+		if (value) {
+			filters[term] = value
+		} else {
+			filters.hasOwnProperty(term) && delete filters[term]
+		}
+		setFilterQuery(filters)
+	}
+
+	useEffect(() => {
+		handleSearchQuery(qs.stringify(filterQuery))
+	}, [filterQuery])
+
+	const paginationUpdate = (page) => {
+		updateFilterQUery("page", page)
+	}
+
+	const propsData = {
+		handleSearchQuery: handleSearchQuery,
+		handlePDFQuery: handlePDFQuery,
+
+		updateFilterQUery: updateFilterQUery,
+		filterQuery: filterQuery,
+		statusOptions: statusOptions,
+		defaultFetchOrderData: defaultFetchOrderData,
+
+		selectOptionKey: "status",
+		reportTitle: 'Orders Report'
+	}
+
 	return (
 		<>
 
-			<ReportHead 
-				handleSearchQuery={handleSearchQuery} handlePDFQuery={handlePDFQuery} defaultFetchOrderData={defaultFetchOrderData} statusOptions={statusOptions} selectOptionKey="status" reportTitle='Orders Report'
-			/>
+			<ReportHead propsData={propsData} />
 
 			<div id="my-table" class="table-responsive">
 				<Table bordered>
@@ -141,7 +184,9 @@ const OrderReport = () => {
 							))}
 					</tbody>
 				</Table>
+				<Pagination onChange={paginationUpdate} total={orderCount} defaultPageSize={50} />
 			</div>
+			
 		</>
 	)
 }

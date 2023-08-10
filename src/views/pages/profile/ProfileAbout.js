@@ -1,67 +1,85 @@
 // ** Reactstrap Imports
 import { Card, CardBody, Table } from 'reactstrap'
 
-const ProfileAbout = ({ data }) => {
+const ProfileAbout = ({ data, userData }) => {
   console.log('data', data)
+  console.log('userData', userData)
+
   return (
     <Card>
       <CardBody>
+        {data &&
+          <Table responsive>
+            <tbody>
+              <tr>
+                <th>Full Name</th>
+                <th>{data.full_name}</th>
+              </tr>
+              <tr>
+                <th>Email</th>
+                <th>{data.email}</th>
+              </tr>
+              <tr>
+                <th>Status</th>
+                <th>{data.status}</th>
+              </tr>
+              <tr>
+                <th>Address</th>
+                <th>{data.address}</th>
+              </tr>
+              <tr>
+                <th>Identity</th>
+                <th>{data.identity}</th>
+              </tr>
+              <tr>
+                <th>Identity Number</th>
+                <th>{data.identity_no}</th>
+              </tr>
+              <tr>
+                <th>Bank Name:</th>
+                <th>{data.bank_name}</th>
+              </tr>
+              <tr>
+                <th>Bank A/C Name:</th>
+                <th>{data.bank_account_name}</th>
+              </tr>
+              <tr>
+                <th>Bank A/C Number:</th>
+                <th>{data.bank_account_num}</th>
+              </tr>
+              <tr>
+                <th>Payment Method:</th>
+                <th>{data?.payment_method?.payment_method_name}</th>
+              </tr>
+              <tr>
+                <th>City:</th>
+                <th>{data?.city?.city_name}</th>
+              </tr><tr>
+                <th>Area:</th>
+                <th>{data?.area?.area_name}</th>
+              </tr>
+              <tr>
+                <th>Contact(Optional):</th>
+                <th>{data.contact_no}</th>
+              </tr>
+            </tbody>
+          </Table>
+        }
 
-        <Table responsive>
-          <tbody>
-            <tr>
-              <th>Full Name</th>
-              <th>{data.full_name}</th>
-            </tr>
-            <tr>
-              <th>Email</th>
-              <th>{data.email}</th>
-            </tr>
-            <tr>
-              <th>Status</th>
-              <th>{data.status}</th>
-            </tr>
-            <tr>
-              <th>Address</th>
-              <th>{data.address}</th>
-            </tr>
-            <tr>
-              <th>Identity</th>
-              <th>{data.identity}</th>
-            </tr>
-            <tr>
-              <th>Identity Number</th>
-              <th>{data.identity_no}</th>
-            </tr>
-            <tr>
-              <th>Bank Name:</th>
-              <th>{data.bank_name}</th>
-            </tr>
-            <tr>
-              <th>Bank A/C Name:</th>
-              <th>{data.bank_account_name}</th>
-            </tr>
-            <tr>
-              <th>Bank A/C Number:</th>
-              <th>{data.bank_account_num}</th>
-            </tr>
-            <tr>
-              <th>Payment Method:</th>
-              <th>{data?.payment_method?.payment_method_name}</th>
-            </tr>
-            <tr>
-              <th>City:</th>
-              <th>{data?.city?.city_name}</th>
-            </tr><tr>
-              <th>Area:</th>
-              <th>{data?.area?.area_name}</th>
-            </tr>
-            <tr>
-              <th>Contact(Optional):</th>
-              <th>{data.contact_no}</th>
-            </tr>
-          </tbody>
-        </Table>
+        {userData &&
+          <Table responsive>
+            <tbody>
+              <tr>
+                <th>Full Name</th>
+                <th>{userData.name}</th>
+              </tr>
+              <tr>
+                <th>Email</th>
+                <th>{userData.email}</th>
+              </tr>
+            </tbody>
+          </Table>
+        }
 
         {/* <h5 className='mb-75'>Full Name</h5>
         <CardText>{data.full_name}</CardText>

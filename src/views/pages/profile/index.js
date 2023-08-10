@@ -12,11 +12,12 @@ import ProfileHeader from './ProfileHeader'
 import '@styles/react/pages/page-profile.scss'
 
 import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, PROFILE } from "@src/constants/apiUrls"
+import { getApi, PROFILE, GET_USER } from "@src/constants/apiUrls"
 
 const Profile = () => {
   // ** States
   const [data, setData] = useState(null)
+  const [userData, setUserData] = useState(null)
 
   const fetchProfileData = () => {
     return useJwt
@@ -27,12 +28,30 @@ const Profile = () => {
       .catch((err) => console.log(err))
   }
 
+  const fetchUserData = () => {
+    return useJwt
+      .axiosGet(getApi(GET_USER))
+      .then((res) => {
+        if(res?.data?.role==null){
+          setUserData(res.data)
+        }else{
+          fetchProfileData()
+        }
+      })
+      .catch(err => console.log(err))
+  }
+
   useEffect(() => {
-    fetchProfileData()
+    fetchUserData()
   }, [])
+
+
+  
+
+
   return (
     <Fragment>
-      {data !== null ? (
+
         <div id='user-profile'>
           <Row>
             <Col  sm='12'>
@@ -42,12 +61,12 @@ const Profile = () => {
           <section id='profile-info'>
             <Row>
               <Col sm='12'>
-              <ProfileAbout data={data} />
+              <ProfileAbout data={data} userData = {userData} />
               </Col>
             </Row>
           </section>
         </div>
-      ) : null}
+    
     </Fragment>
   )
 }

@@ -13,7 +13,7 @@ import Select from "react-select"
 import { useForm, Controller } from 'react-hook-form'
 import classnames from 'classnames'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, PROFILE, PAYMENT_METHOD_LIST, CITIES_LIST, AREAS_LIST } from '@src/constants/apiUrls'
+import { getApi, PROFILE, PAYMENT_METHOD_LIST, CITIES_LIST, AREAS_LIST, GET_USER, RIDER_PROFILE_UPDATE, MARCHANT_PROFILE_UPDATE, ADMIN_EDIT} from '@src/constants/apiUrls'
 import SwalAlert from "../../../components/SwalAlert"
 import { useEffect, useState } from "react"
 import { identity } from "../../../constants/data/identity"
@@ -30,7 +30,10 @@ const EditProfile = () => {
   const [selectboxCity, setSelectboxCity] = useState([])
   const [selectboxArea, setSelectboxArea] = useState([])
   const [userInFo, setuserInFo] = useState(null)
+  const [adminInFo, setAdminInFo] = useState(null)
+  const [userRole, setUserRole] = useState(null)
   // const [avatar, setAvatar] = useState(avatar)
+  console.log()
 
   const [avatar, setAvatar] = useState()
   console.log("avatar x", avatar)
@@ -50,16 +53,30 @@ const EditProfile = () => {
     return useJwt
       .axiosGet(getApi(PROFILE))
       .then((res) => {
-        console.log('response data', res.data)
         setuserInFo(res.data)
         setAvatar(res?.data?.profile_picture)
       })
       .catch((err) => console.log(err))
   }
 
+  const fetchUserData = () => {
+    return useJwt
+      .axiosGet(getApi(GET_USER))
+      .then((res) => {
+        if (res?.data?.role == null) {
+          setAdminInFo(res?.data)
+        } else {
+          fetchProfileData()
+        }
+      })
+      .catch((err) => console.log(err))
+  }
+
+
 
   useEffect(() => {
-    fetchProfileData()
+    // fetchProfileData()
+    fetchUserData()
   }, [])
 
 
@@ -145,7 +162,6 @@ const EditProfile = () => {
   }
 
   const onSubmit = data => {
-    console.log(" data", data)
 
     let isFormValid = true
 
@@ -241,9 +257,64 @@ const EditProfile = () => {
           'Content-Type': 'multipart/form-data'
         }
       }
+      if (userRole === 'MARCHANT') {
+        useJwt
+          .axiosPatch(getApi(MARCHANT_PROFILE_UPDATE) + userInFo.id + "/", formData, headers)
+          .then((res) => {
+            console.log("res", res.data)
+            SwalAlert("Profile Edited Successfully")
+            navigate("/profile")
+          })
+          .catch(err => console.log(err))
 
+      } else if (userRole === 'RIDER') {
+        useJwt
+          .axiosPatch(getApi(RIDER_PROFILE_UPDATE) + userInFo.id + "/", formData, headers)
+          .then((res) => {
+            console.log("res", res.data)
+            SwalAlert("Profile Edited Successfully")
+            navigate("/profile")
+          })
+          .catch(err => console.log(err))
+      }
+
+
+    }
+  }
+
+
+  const onSubmitAdminForm = data => {
+
+    let isFormValid = true
+
+    if (!data.name) {
+      setError('name', { type: 'required', message: 'Full Name is required' })
+      isFormValid = false
+    }
+
+    if (!isFormValid) {
+      return false
+    }
+
+    if (data.name !== null) {
+
+      let formData = new FormData()
+      Object.keys(data).forEach((key) => {
+        if (key === "profile_picture") {
+          formData.append(key, data[key][0])
+        }
+        else {
+          formData.append(key, data[key])
+        }
+      })
+      const headers = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+ 
       useJwt
-        .axiosPatch(getApi(PROFILE) + userInFo.id + "/", formData, headers)
+        .axiosPatch(getApi(ADMIN_EDIT) + adminInFo.id + "/", formData, headers)
         .then((res) => {
           console.log("res", res.data)
           SwalAlert("Profile Edited Successfully")
@@ -550,6 +621,44 @@ const EditProfile = () => {
 
             </div>
 
+            <div className='d-flex'>
+              <Button className='me-1' color='primary' type='submit'>
+                Submit
+              </Button>
+            </div>
+          </Form>
+        }
+
+        {adminInFo &&
+          <Form onSubmit={handleSubmit(onSubmitAdminForm)}>
+
+            <div className='d-flex'>
+              <div className='me-25'>
+                <img className='rounded me-50' src={avatar} alt='Generic placeholder image' height='100' width='100' />
+              </div>
+              <div className='d-flex align-items-end mt-75 ms-1'>
+                <div>
+                  <div className='mb-1'>
+                    <input type="file" className="from-control" {...register('profile_picture')} />
+                  </div>
+                  <p className='mb-0'>Allowed JPG, GIF or PNG. Max size of 800kB</p>
+                </div>
+              </div>
+            </div>
+
+            <div className='mb-1'>
+              <Label className='form-label' for='name'>
+                Full Name
+              </Label>
+              <Controller
+                defaultValue={adminInFo.name}
+                control={control}
+                id='name'
+                name='name'
+                render={({ field }) => <Input invalid={errors.name && true} {...field} />}
+              />
+              {errors && errors.name && <span className="invalid-feedback">{errors.name.message}</span>}
+            </div>
             <div className='d-flex'>
               <Button className='me-1' color='primary' type='submit'>
                 Submit

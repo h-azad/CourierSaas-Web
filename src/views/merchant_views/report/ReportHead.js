@@ -1,51 +1,31 @@
-import { React, useState, useEffect } from 'react'
+import { React } from 'react'
 import { DatePicker, Select, Button, Input } from 'antd'
-import { FilePptOutlined, FileExcelOutlined } from '@ant-design/icons'
+import { FilePptOutlined } from '@ant-design/icons'
 const { RangePicker } = DatePicker
-import { useForm } from "react-hook-form"
 import classNames from "classnames"
 import * as qs from 'qs'
 import dayjs from 'dayjs'
 
-const ReportHead = ({ handleSearchQuery, handlePDFQuery, defaultFetchOrderData, statusOptions, selectOptionKey, reportTitle }) => {
-	const [filterQuery, setFilterQuery] = useState({})
-	const { watch } = useForm()
+const ReportHead = ({ propsData }) => {
 	const { Search } = Input
 
-	useEffect(() => {
-		console.log(qs.stringify(filterQuery))
-	}, [filterQuery])
-
 	function onSelectDate(date, dateString) {
-		console.log(date, dateString)
 		if (dateString.find(x => x != '')){
-			updateFilterQUery('date', dateString.toString())
+			propsData.updateFilterQUery('date', dateString.toString())
 		}else{
-			updateFilterQUery('date', '')
+			propsData.updateFilterQUery('date', '')
 		}
 	}
-
-	function updateFilterQUery(term, value) {
-		let filters = { ...filterQuery }
-		
-		if (value){
-			filters[term] = value
-		}else{
-		 	filters.hasOwnProperty(term) && delete filters[term]
-		}
-		console.log('filter',filters)
-		setFilterQuery(filters)
-	}
-
+	
 	function submitFilter(e){
 		e.preventDefault()
-		handleSearchQuery(qs.stringify(filterQuery))
+		propsData.handleSearchQuery(qs.stringify(propsData.filterQuery))
 	}
 
 	function submitPDFFilter(e) {
 		e.preventDefault()
-		handleSearchQuery(qs.stringify(filterQuery))
-		handlePDFQuery(qs.stringify(filterQuery))
+		propsData.handleSearchQuery(qs.stringify(propsData.filterQuery))
+		propsData.handlePDFQuery(qs.stringify(propsData.filterQuery))
 	}
 
 	const rangePresets = [
@@ -71,14 +51,14 @@ const ReportHead = ({ handleSearchQuery, handlePDFQuery, defaultFetchOrderData, 
 		<div className='report_head_wrapper mt-1'>
 
 			<div className='row'>
-				<div className='col-lg-3'>{ reportTitle }</div>
+				<div className='col-lg-3'>{ propsData.reportTitle }</div>
 				<div className='col-lg-9'>
 					<div className='row g-1'>
 						<div className='col-lg-4'>
 							<Search
 								placeholder="eg. ODR23031301d6"
 								onChange={(e) => {
-									updateFilterQUery("search", e.target.value)
+									propsData.updateFilterQUery("parcel_id", e.target.value)
 
 								}}
 								allowClear={true}
@@ -97,9 +77,9 @@ const ReportHead = ({ handleSearchQuery, handlePDFQuery, defaultFetchOrderData, 
 								className={classNames("react-select")}
 								classNamePrefix="select"
 								onChange={(e) => {
-									updateFilterQUery(selectOptionKey, e)
+									propsData.updateFilterQUery(propsData.selectOptionKey, e)
 								}}
-								options={statusOptions}
+								options={propsData.statusOptions}
 								allowClear={true}
 							/>
 						</div>
@@ -117,7 +97,7 @@ const ReportHead = ({ handleSearchQuery, handlePDFQuery, defaultFetchOrderData, 
 						<div className=''><Button type="primary" onClick={submitFilter} size={20}>
 							Filter
 						</Button></div>
-						<div className=''><Button type="primary" onClick={defaultFetchOrderData} danger size={20}>
+						<div className=''><Button type="primary" onClick={propsData.defaultFetchOrderData} danger size={20}>
 							Reset
 						</Button></div>
 						<div className=''><Button type="primary" onClick={submitPDFFilter} icon={<FilePptOutlined />} size={20}>

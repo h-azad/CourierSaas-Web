@@ -6,20 +6,25 @@ import useJwt from "@src/auth/jwt/useJwt"
 import { getApi, MARCHANT_GET_WITHDRAW_REQUEST_REPORT, MARCHANT_GET_WITHDRAW_REQUEST_REPORT_PDF } from "../../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
-
-
+import { Pagination } from "antd"
+import * as qs from 'qs'
 
 const WithdrawBalanceReport = () => {
 	const [withdrawRequest, setWithdrawRequestBalance] = useState([])
+	const [filterQuery, setFilterQuery] = useState({})
+	const [orderCount, setOrderCount] = useState(0)
 
 	const defaultFetchOrderData = () => {
 		return useJwt.axiosGet(getApi(MARCHANT_GET_WITHDRAW_REQUEST_REPORT))
-			.then((res) => {
-				console.log('response data', res.data)
-				setWithdrawRequestBalance(res.data)
-			}).catch((err) => {
-				console.log(err)
-			})
+		.then((res) => {
+			setWithdrawRequestBalance(res?.data?.results)
+			setOrderCount(res?.data?.count)
+			setFilterQuery({})
+		}).catch((err) => {
+			setWithdrawRequestBalance([])
+			setOrderCount(0)
+			setFilterQuery({})
+		})
 	}
 
 	useEffect(() => {
@@ -31,14 +36,18 @@ const WithdrawBalanceReport = () => {
 		return useJwt
 			.axiosGet(getApi(MARCHANT_GET_WITHDRAW_REQUEST_REPORT) + '?' + searchTerm)
 			.then((res) => {
-				if (res.data?.length > 0) {
-					setWithdrawRequestBalance(res.data)
+				if (res.data?.results?.length > 0) {
+					setWithdrawRequestBalance(res?.data?.results)
+					setOrderCount(res?.data?.count)
 				} else {
-					setWithdrawRequestBalance('')
+					setWithdrawRequestBalance([])
+					setOrderCount(0)
 				}
-				return res.data
 			})
-			.catch((err) => console.log(err))
+			.catch((err) => {
+				setWithdrawRequestBalance([])
+				setOrderCount(0)
+			})
 	}
 
 
@@ -79,14 +88,44 @@ const WithdrawBalanceReport = () => {
 		{ value: "Cancel", label: "Cancel" },
 	]
 
+	function updateFilterQUery(term, value) {
+		let filters = { ...filterQuery }
+		if (term != 'page') {
+			filters['page'] = 1
+		}
+
+		if (value) {
+			filters[term] = value
+		} else {
+			filters.hasOwnProperty(term) && delete filters[term]
+		}
+		setFilterQuery(filters)
+	}
+
+	useEffect(() => {
+		handleSearchQuery(qs.stringify(filterQuery))
+	}, [filterQuery])
+
+	const paginationUpdate = (page) => {
+		updateFilterQUery("page", page)
+	}
+
+	const propsData = {
+		handleSearchQuery: handleSearchQuery,
+		handlePDFQuery: handlePDFQuery,
+
+		updateFilterQUery: updateFilterQUery,
+		filterQuery: filterQuery,
+		statusOptions: statusOptions,
+		defaultFetchOrderData: defaultFetchOrderData,
+
+		selectOptionKey: "withdraw_status",
+		reportTitle: 'Withdraw Request Report'
+	}
 
 	return (
 		<>
-
-			<ReportHead
-				handleSearchQuery={handleSearchQuery} handlePDFQuery={handlePDFQuery} defaultFetchOrderData={defaultFetchOrderData} statusOptions={statusOptions} selectOptionKey="withdraw_status" reportTitle = 'Withdraw Request Report'
-			/>
-
+			<ReportHead propsData={propsData} />
 			<div class="table-responsive">
 				<Table bordered>
 					<thead>
@@ -112,7 +151,9 @@ const WithdrawBalanceReport = () => {
 					</tbody>
 				</Table>
 			</div>
+			<Pagination onChange={paginationUpdate} total={orderCount} defaultPageSize={50} />
 		</>
+		
 	)
 }
 

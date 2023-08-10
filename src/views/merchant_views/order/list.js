@@ -1,60 +1,26 @@
 import React, { Fragment, useEffect, useState } from "react"
 // ** Reactstrap Imports
-import { Row, Col, Card, CardBody, CardText, Button } from "reactstrap"
-import { Link } from 'react-router-dom'
-import Breadcrumbs from "@components/breadcrumbs"
+import { Row, Col, Card, CardBody} from "reactstrap"
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
 import { Home, Box, Truck, CornerDownLeft } from 'react-feather'
 import useJwt from '@src/auth/jwt/useJwt'
-import ListTable from "./partials/list-table"
 import OrdersList from "../../../components/merchant_views/order/OrdersList"
 import OrderView from "../../../components/merchant_views/order/OrderView"
-import { getApi, MARCHANT_ORDER_LIST, ORDER_STATISTICS } from "../../../constants/apiUrls"
+import { getApi, MARCHANT_ORDER_LIST, ORDER_STATISTICS, MARCHANT_SEARCH_CREATE_ORDER_FILTER } from "../../../constants/apiUrls"
+import * as qs from 'qs'
 
 function MerchantOrdersList() {
 
-  const [activeOrder, setActiveOrder] = useState()
   const [orders, setOrders] = useState([])
-  const [activeOrderData, setActiveOrderData] = useState(null)
+  const [orderCount, setOrderCount] = useState(0)
+	const [filterQuery, setFilterQuery] = useState({})
+
   const [orderStatistics, setOrderStatistics] = useState({
     pending_orders: 0,
     in_warehouse_orders: 0,
     shipped_orders: 0,
     return_orders: 0
   })
-
-
-  const fetchCreateOrderData = () => {
-    return useJwt
-      .axiosGet(getApi(MARCHANT_ORDER_LIST))
-      .then((res) => {
-        console.log("res", res.data)
-        setOrders(res.data.data)
-        setActiveOrderData(res.data.data[0])
-        return res.data
-      })
-      .catch(err => console.log(err))
-  }
-
-  useEffect(() => {
-    fetchCreateOrderData()
-  }, [])
-
-  useEffect(() => {
-    console.log(activeOrder)
-    if (orders && !activeOrder) {
-      // console.log(orders[0])
-      orders[0] ? setActiveOrder(orders[0]?.id) : null
-
-    }
-  }, [orders])
-
-  useEffect(() => {
-
-    const activeOrderFilter = orders.find((item) => item.id === activeOrder)
-    setActiveOrderData(activeOrderFilter)
-  }, [activeOrder])
-
 
 
 
@@ -77,6 +43,48 @@ function MerchantOrdersList() {
   useEffect(() => {
     fetchOrderStatisticsData()
   }, [])
+
+
+  const handleSearchQuery = searchTerm => {
+		return useJwt
+			.axiosGet(getApi(MARCHANT_SEARCH_CREATE_ORDER_FILTER) + '?' + searchTerm)
+			.then((res) => {
+				if (res.data?.results) {
+					setOrders(res?.data?.results)
+					setOrderCount(res?.data?.count)
+				}
+			})
+			.catch((err) => console.log(err))
+	}
+
+	function updateFilterQUery(term, value) {
+		let filters = { ...filterQuery }
+		if (term != 'page') {
+			filters['page'] = 1
+		}
+
+		if (value) {
+			filters[term] = value
+		} else {
+			filters.hasOwnProperty(term) && delete filters[term]
+		}
+		setFilterQuery(filters)
+	}
+
+	useEffect(() => {
+		handleSearchQuery(qs.stringify(filterQuery))
+	}, [filterQuery])
+
+	const paginationUpdate = (page) => {
+		updateFilterQUery("page", page)
+	}
+
+  const currentOrderData={
+    paginationUpdate: paginationUpdate,
+    handleSearchQuery: handleSearchQuery,
+    orderCount: orderCount,
+    orders: orders,
+  }
 
 
   return (
@@ -120,7 +128,8 @@ function MerchantOrdersList() {
         <Col sm="4">
           <Card title="Bordered">
             <CardBody>
-              <OrdersList setActiveOrderData={setActiveOrderData} orders={orders} setOrders={setOrders} activeOrder={activeOrder} setActiveOrder={setActiveOrder} fetchCreateOrderData={fetchCreateOrderData} />
+              <OrdersList setFilterQuery={setFilterQuery} handleSearchQuery={handleSearchQuery} updateFilterQUery={updateFilterQUery} />
+              {/* <TaskFilter setFilterQuery={setFilterQuery} handleSearchQuery={handleSearchQuery} updateFilterQUery={updateFilterQUery} />  */}
               {/* <ListTable /> */}
             </CardBody>
           </Card>
@@ -129,7 +138,7 @@ function MerchantOrdersList() {
           <Card title="Bordered">
             <CardBody>
               {/* <ListTable /> */}
-              <OrderView activeOrderData={activeOrderData} orders={orders} fetchCreateOrderData={fetchCreateOrderData} />
+              <OrderView currentOrderData={currentOrderData} />
             </CardBody>
           </Card>
         </Col>
