@@ -2,8 +2,6 @@
 import { Card, CardBody, Table } from 'reactstrap'
 
 const ProfileAbout = ({ data, userData }) => {
-  console.log('data', data)
-  console.log('userData', userData)
 
   return (
     <Card>
@@ -13,39 +11,47 @@ const ProfileAbout = ({ data, userData }) => {
             <tbody>
               <tr>
                 <th>Full Name</th>
-                <th>{data.full_name}</th>
+                <th>{data?.full_name}</th>
               </tr>
               <tr>
                 <th>Email</th>
-                <th>{data.email}</th>
+                <th>{data?.email}</th>
               </tr>
               <tr>
                 <th>Status</th>
-                <th>{data.status}</th>
+                <th>{data?.status}</th>
               </tr>
               <tr>
                 <th>Address</th>
-                <th>{data.address}</th>
+                <th>{data?.address}</th>
+              </tr>
+              <tr>
+                <th>Phone:</th>
+                <th>{data?.contact_no}</th>
+              </tr>
+              <tr>
+                <th>Phone Optional:</th>
+                <th>{data?.contact_optional}</th>
               </tr>
               <tr>
                 <th>Identity</th>
-                <th>{data.identity}</th>
+                <th>{data?.identity}</th>
               </tr>
               <tr>
                 <th>Identity Number</th>
-                <th>{data.identity_no}</th>
+                <th>{data?.identity_no}</th>
               </tr>
               <tr>
                 <th>Bank Name:</th>
-                <th>{data.bank_name}</th>
+                <th>{data?.bank_name}</th>
               </tr>
               <tr>
                 <th>Bank A/C Name:</th>
-                <th>{data.bank_account_name}</th>
+                <th>{data?.bank_account_name}</th>
               </tr>
               <tr>
                 <th>Bank A/C Number:</th>
-                <th>{data.bank_account_num}</th>
+                <th>{data?.bank_account_num}</th>
               </tr>
               <tr>
                 <th>Payment Method:</th>
@@ -58,10 +64,7 @@ const ProfileAbout = ({ data, userData }) => {
                 <th>Area:</th>
                 <th>{data?.area?.area_name}</th>
               </tr>
-              <tr>
-                <th>Contact(Optional):</th>
-                <th>{data.contact_no}</th>
-              </tr>
+              
             </tbody>
           </Table>
         }

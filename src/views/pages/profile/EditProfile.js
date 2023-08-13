@@ -13,7 +13,7 @@ import Select from "react-select"
 import { useForm, Controller } from 'react-hook-form'
 import classnames from 'classnames'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, PROFILE, PAYMENT_METHOD_LIST, CITIES_LIST, AREAS_LIST, GET_USER, RIDER_PROFILE_UPDATE, MARCHANT_PROFILE_UPDATE, ADMIN_EDIT} from '@src/constants/apiUrls'
+import { getApi, PROFILE, PAYMENT_METHOD_LIST, CITIES_LIST, AREAS_LIST, GET_USER, RIDER_PROFILE_UPDATE, MARCHANT_PROFILE_UPDATE, ADMIN_EDIT } from '@src/constants/apiUrls'
 import SwalAlert from "../../../components/SwalAlert"
 import { useEffect, useState } from "react"
 import { identity } from "../../../constants/data/identity"
@@ -66,6 +66,7 @@ const EditProfile = () => {
         if (res?.data?.role == null) {
           setAdminInFo(res?.data)
         } else {
+          setUserRole(res?.data?.role)
           fetchProfileData()
         }
       })
@@ -162,7 +163,7 @@ const EditProfile = () => {
   }
 
   const onSubmit = data => {
-
+    
     let isFormValid = true
 
     if (!data.full_name) {
@@ -173,10 +174,7 @@ const EditProfile = () => {
       setError('contact_no', { type: 'required', message: 'Contact No is required' })
       isFormValid = false
     }
-    if (!data.contact_no_two) {
-      setError('contact_no_two', { type: 'required', message: 'Contact No 2 is required' })
-      isFormValid = false
-    }
+
     if (!data.identity) {
       setError('identity', { type: 'required', message: 'Identity is required' })
       isFormValid = false
@@ -217,21 +215,24 @@ const EditProfile = () => {
       setError('address', { type: 'required', message: ' Address is required' })
       isFormValid = false
     }
-
+    
     if (!isFormValid) {
       return false
     }
+    
 
-    if (data.full_name !== null && data.contact_no !== null && data.contact_no_two !== null
+    if (data.full_name !== null && data.contact_no !== null
       && data.identity !== null && data.identity_no !== null && data.email !== null
       && data.payment_method.value !== null && data.bank_name !== null && data.bank_account_name !== null
       && data.bank_account_num !== null && data.city.value !== null && data.area.value !== null
       && data.business_name !== null && data.address !== null) {
-
+      
       let formData = new FormData()
       Object.keys(data).forEach((key) => {
         if (key === "profile_picture") {
-          formData.append(key, data[key][0])
+          if (data.profile_picture.length !== 0) {
+            formData.append(key, data[key][0])
+          }
         }
         else if (key === "city") {
           formData.append(key, data.city.value.id)
@@ -250,14 +251,14 @@ const EditProfile = () => {
           formData.append(key, data[key])
         }
       })
-
-      console.log("formData", formData)
+      console.log('formData', formData)
       const headers = {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }
       if (userRole === 'MARCHANT') {
+        console.log('submit form', data)
         useJwt
           .axiosPatch(getApi(MARCHANT_PROFILE_UPDATE) + userInFo.id + "/", formData, headers)
           .then((res) => {
@@ -284,7 +285,6 @@ const EditProfile = () => {
 
 
   const onSubmitAdminForm = data => {
-
     let isFormValid = true
 
     if (!data.name) {
@@ -301,7 +301,9 @@ const EditProfile = () => {
       let formData = new FormData()
       Object.keys(data).forEach((key) => {
         if (key === "profile_picture") {
-          formData.append(key, data[key][0])
+          if (data.profile_picture.length !== 0) {
+            formData.append(key, data[key][0])
+          }
         }
         else {
           formData.append(key, data[key])
@@ -312,7 +314,9 @@ const EditProfile = () => {
           'Content-Type': 'multipart/form-data'
         }
       }
- 
+
+      console.log('form data', formData)
+
       useJwt
         .axiosPatch(getApi(ADMIN_EDIT) + adminInFo.id + "/", formData, headers)
         .then((res) => {
@@ -369,7 +373,7 @@ const EditProfile = () => {
                     Contact Number 1*
                   </Label>
                   <Controller
-                    defaultValue={userInFo && userInFo.contact_no}
+                    defaultValue={userInFo && userInFo?.contact_no}
                     control={control}
                     id='contact_no'
                     name='contact_no'
@@ -392,7 +396,7 @@ const EditProfile = () => {
                     Contact Number 2*
                   </Label>
                   <Controller
-                    defaultValue={userInFo.contact_optional}
+                    defaultValue={userInFo && userInFo?.contact_no_two}
                     control={control}
                     id='contact_no_two'
                     name='contact_no_two'
