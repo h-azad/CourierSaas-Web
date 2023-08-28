@@ -574,6 +574,16 @@ const adminMenu = [
         navLink: "/pickup-report"
       },
       {
+        id: "admin-get-pickup-reports",
+        title: "Cancel Issue",
+        // icon: <Truck size={20} />,
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Pickup Report-read',
+        navLink: "/cancel-issue/report"
+      },
+      
+      {
         id: "admin-get-delivery-reports",
         title: "Delivery",
         // icon: <Truck size={20} />,

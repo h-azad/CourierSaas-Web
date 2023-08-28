@@ -97,6 +97,7 @@ import EditAdminRole from '../../views/admin/role/EditAdminRole'
 import RouteList from '../../views/route/list'
 import AddRoute from '../../views/route/add'
 import EditRoute from '../../views/route/edit'
+import GetAdminCencelIssue from '../../views/reports/cancelIssue'
 
 
 
@@ -154,6 +155,11 @@ const DashboardRoutes = [
     path: "/pickup-report",
     element: <GetAdminPickupReport />
   },
+  {
+    path: "/cancel-issue/report",
+    element: <GetAdminCencelIssue />
+  },
+
   {
     path: "/delivery-report",
     element: <GetAdminDeliveryReport />

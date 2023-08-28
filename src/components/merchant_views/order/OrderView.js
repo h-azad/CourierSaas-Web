@@ -71,7 +71,7 @@ const OrderView = ({ currentOrderData }) => {
 
       <div className="invoice-title-card">
         <h3> Orders </h3>
-        <Link to={"/marchant-currentOrderData.orders/create"}>
+        <Link to={"/marchant-orders/create"}>
           <Button type="primary" color="primary">
             {" "}
             + Create Order

@@ -61,7 +61,7 @@ const AdminList = () => {
         return res.data
       })
       .catch(err => console.log(err))
-  }
+  }  
 
   // const fetchSearchadminData = searchTerm => {
   //   return useJwt

@@ -73,6 +73,8 @@ export const DELIVERY_RIDER_TASK_SEARCH_FILTER = '/rider_app/delivery-rider-task
 export const RIDER_TASK_SEARCH_FILTER = '/rider_app/rider-task-serach-filter/'
 
 
+
+
 export const RIDER_GET_PICKUP_REPORT = "/rider_app/get-pickup-report/"
 export const RIDER_GET_PICKUP_REPORT_PDF = "/rider_app/get-pickup-report-pdf/"
 
@@ -268,6 +270,10 @@ export const ADMIN_GET_PICKUP_REPORT_APIVIEW = "/api/admin/pickup-report"
 export const ADMIN_GET_PICKUP_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/pickup-report-generate-pdf"
 export const ADMIN_GET_DELIVERY_REPORT_APIVIEW = "/api/admin/delivery-report"
 export const ADMIN_GET_DELIVERY_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/delivery-report-generate-pdf"
+
+export const ADMIN_GET_CANCEL_ISSUE_REPORT_APIVIEW = "/api/admin/order-cancel-issue/report"
+export const ADMIN_GET_CANCEL_ISSUE_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/order-cancel-issue/report-generate-pdf"
+
 export const ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW = "/api/admin/delivery-collection-report"
 export const ADMIN_GET_ORDER_REVENUE_REPORT_APIVIEW = "/api/admin/order-revenue-report"
 export const ADMIN_GET_ORDER_REVENUE_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/order-revenue-report-generate-pdf"

@@ -163,7 +163,7 @@ const ReportHead = ({ propsData }) => {
                 <Button type="primary" onClick={submitFilter} size={20}>
                   Filter
                 </Button>
-                <Button type="primary" onClick={propsData?.defaultFetchData} danger size={20}>
+                <Button type="primary" onClick={(e)=>{propsData?.defaultFetchData()}} danger size={20}>
                   Reset
                 </Button>
               </Space>
