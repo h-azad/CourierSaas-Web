@@ -97,9 +97,6 @@ const RiderAssignmentList = () => {
 
 
   const delivaryHandler = (e) => {
-    console.log("delivery type ")
-    console.log('rider id', riderId)
-    console.log('order id', selectedOrderIds)
 
     e.preventDefault()
     useJwt

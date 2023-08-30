@@ -4,12 +4,16 @@ import { Row, Col, Card, CardBody, CardText, Button } from "reactstrap"
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
 import { Cpu, User, UserCheck, UserPlus, UserX } from "react-feather"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, RIDER_SEARCH_CREATE_ORDER_FILTER } from "../../../constants/apiUrls"
+import { getApi, RIDER_SEARCH_CREATE_ORDER_FILTER, ORDER_STATISTICS } from "../../../constants/apiUrls"
 import TaskFilter from "./TaskFilter"
 import CurrentTaskView from "./CurrentTaskView"
 import * as qs from 'qs'
 
 function CurrentTaskList() {
+  const [orderStatistics, setOrderStatistics] = useState({
+    pickup_orders: 0,
+    delivery_orders: 0,
+  })
   const [currentTask, setCurrentTask] = useState([])
   const [orderCount, setOrderCount] = useState(0)
 	const [filterQuery, setFilterQuery] = useState({})
@@ -54,6 +58,25 @@ function CurrentTaskList() {
     orderCount: orderCount,
     currentTask: currentTask,
   }
+
+
+  const fetchOrderStatisticsData = () => {
+    return useJwt
+      .axiosGet(getApi(ORDER_STATISTICS))
+      .then((res) => {
+        setOrderStatistics(
+          {
+            pickup_orders: res.data.pickup_orders,
+            delivery_orders: res.data.delivery_orders
+          })
+      })
+      .catch((err) => console.log(err))
+  }
+
+
+  useEffect(() => {
+    fetchOrderStatisticsData()
+  }, [])
   
   return (
     <Fragment>
@@ -61,20 +84,20 @@ function CurrentTaskList() {
         <Col lg="3" sm="6">
           <StatsHorizontal
             color="primary"
-            statTitle="Total Users"
+            statTitle="Total Pickup"
             icon={<User size={20} />}
-            renderStats={<h3 className="fw-bolder mb-75">21,459</h3>}
+            renderStats={<h3 className="fw-bolder mb-75">{orderStatistics?.pickup_orders}</h3>}
           />
         </Col>
         <Col lg="3" sm="6">
           <StatsHorizontal
             color="danger"
-            statTitle="Paid Users"
+            statTitle="Total Delivery"
             icon={<UserPlus size={20} />}
-            renderStats={<h3 className="fw-bolder mb-75">4,567</h3>}
+            renderStats={<h3 className="fw-bolder mb-75">{orderStatistics?.delivery_orders}</h3>}
           />
         </Col>
-        <Col lg="3" sm="6">
+        {/* <Col lg="3" sm="6">
           <StatsHorizontal
             color="success"
             statTitle="Active Users"
@@ -89,7 +112,7 @@ function CurrentTaskList() {
             icon={<UserX size={20} />}
             renderStats={<h3 className="fw-bolder mb-75">237</h3>}
           />
-        </Col>
+        </Col> */}
       </Row>
 
       <Row>

@@ -98,6 +98,7 @@ import RouteList from '../../views/route/list'
 import AddRoute from '../../views/route/add'
 import EditRoute from '../../views/route/edit'
 import GetAdminCencelIssue from '../../views/reports/cancelIssue'
+import ReturnOrderList from '../../views/return_order/list'
 
 
 
@@ -447,6 +448,11 @@ const DashboardRoutes = [
   {
     path: "/create_order/view/:id",
     element: <CreateOrderView />
+  },
+
+  {
+    path: "/return-order",
+    element: <ReturnOrderList />
   },
 
   {

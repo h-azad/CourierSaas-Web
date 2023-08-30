@@ -58,6 +58,7 @@ export const RIDER_STATISTICS = "/api/user/rider-statistics/"
 export const RIDER_SEARCH_CREATE_ORDER_FILTER = '/rider_app/rider-serach-order-filter/'
 export const RIDER_PICKUP_CREATE_ORDER_FILTER = '/rider_app/rider-pickup-order-filter/'
 export const RIDER_DELIVERY_CREATE_ORDER_FILTER = '/rider_app/rider-delivery-order-filter/'
+export const RIDER_RETURN_CREATE_ORDER_FILTER = '/rider_app/rider-return-order-filter/'
 
 
 export const RIDER_ASSIGNMENT = '/rider_app/rider-assignment'
@@ -192,6 +193,9 @@ export const PRICING_POLICY_BY_PRODUCT = '/get-price-policy/'
 export const DELIVARY_CHARGE_BY_PERCEL_TYPE = '/get-delivary-charge/'
 export const ORDER_STATUS_UPDATE = '/create_order/'
 export const ORDER_STATISTICS = "/api/user/order-statistics/"
+
+export const ORDER_RETURN = "/order-return/"
+
 
 
 export const ADMIN_SEARCH_CREATE_ORDER_FILTER = '/admin-serach-order-filter/'

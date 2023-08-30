@@ -140,7 +140,7 @@ const AdminList = () => {
                   <span className="align-middle fw-bold">{admin?.email}</span>
                 </td>
                 <td>
-                  <span className="align-middle fw-bold">{admin?.admin_role?.name}</span>
+                  <span className="align-middle fw-bold">{admin?.admin_role}</span>
                 </td>
                 <td>
                   <UncontrolledDropdown>

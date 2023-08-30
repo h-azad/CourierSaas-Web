@@ -22,7 +22,7 @@ function CancelReasonModal({ cancelModalState, setCancelModalState, taskInfo }) 
             'reason': reason
         }
         useJwt
-            .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${taskInfo?.id}/cancel_delivery/`, formData)
+            .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${taskInfo?.id}/return_order_cancel/`, formData)
             .then((res) => {
                 toast.success('Cancelled Successfully!')
                 setCancelModalState(false)

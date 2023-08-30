@@ -102,6 +102,8 @@ const GetAdminCencelIssue = () => {
   const statusOptions = [
     { value: 'Pickup', label: 'Pickup' },
     { value: 'Delivery', label: "Delivery" },
+    { value: 'Returned', label: "Returned" },
+    { value: 'Hold', label: "Hold" },
   ]
 
   function updateFilterQUery(term, value) {

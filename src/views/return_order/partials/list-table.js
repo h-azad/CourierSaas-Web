@@ -4,6 +4,7 @@ import classNames from "classnames"
 import { MoreVertical, Edit, Trash, Edit3 } from "react-feather"
 import { Checkbox, DatePicker, Input, Typography, Drawer, Pagination } from "antd"
 import {
+  Table,
   UncontrolledDropdown,
   DropdownMenu,
   DropdownItem,
@@ -13,13 +14,15 @@ import {
   CardBody,
   Row,
   Col,
+  Modal, ModalHeader, ModalBody, ModalFooter
 } from "reactstrap"
 import { useEffect, useState, useRef } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
-  CREATE_ORDER_LIST,
-  CREATE_ORDER_DELETE,
+  ORDER_RETURN,
+  RIDER_LIST,
+  DELIVERY_ASSIGNMENT,
 } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
@@ -46,6 +49,10 @@ const CreateOrderList = () => {
   const [orderid, setOrderId] = useState(0)
   const [open, setOpen] = useState(false)
 
+  const [riders, setRiders] = useState([])
+  const [selectedRiderIds, setSelectedRiderId] = useState([])
+  const [orderIdInFo, setOrderIdInFo] = useState()
+
   const showOrderDetailsDrawer = () => {
     setOpen(true)
 
@@ -55,27 +62,7 @@ const CreateOrderList = () => {
   }
 
 
-  const deleteAction = (e, id) => {
-    e.preventDefault()
-    return SwalConfirm(`You won't be able to revert this!`, "Delete").then(
-      function (result) {
-        if (result.value) {
-          useJwt
-            .axiosDelete(getApi(CREATE_ORDER_DELETE + id + "/"))
-            .then((res) => {
-              SwalAlert("Deleted Successfully")
-            })
-            .finally(() => fetchCreateOrderData())
-        }
-      }
-    )
-  }
 
-  const changeStatusAction = (e, info) => {
-    e.preventDefault()
-    setStatusModalState(true)
-    setSelectedInfo(info)
-  }
 
   useEffect(() => {
     fetchCreateOrderData()
@@ -88,7 +75,7 @@ const CreateOrderList = () => {
       pageNumber = pageNumber
     }
     return useJwt
-      .axiosGet(getApi(CREATE_ORDER_LIST) + `?page=${pageNumber}`)
+      .axiosGet(getApi(ORDER_RETURN) + `?page=${pageNumber}`)
       .then((res) => {
         setCreateOrder(res.data.results)
         setOrderCount(res.data.count)
@@ -118,12 +105,11 @@ const CreateOrderList = () => {
     setSelectedValue('')
     fetchCreateOrderData(1)
     setSelectedDate(null)
-    setFilterQuery({})
   }
 
   const handleSearchQuery = searchTerm => {
     return useJwt
-      .axiosGet(getApi(CREATE_ORDER_LIST) + '?' + searchTerm)
+      .axiosGet(getApi(ORDER_RETURN) + '?' + searchTerm)
       .then((res) => {
         console.log(res.data)
         if (res.data?.results) {
@@ -146,6 +132,7 @@ const CreateOrderList = () => {
     } else {
       filters.hasOwnProperty(term) && delete filters[term]
     }
+    console.log('filter', filters)
     setFilterQuery(filters)
   }
 
@@ -155,6 +142,52 @@ const CreateOrderList = () => {
 
   const paginationUpdate = (page) => {
     updateFilterQUery("page", page)
+  }
+
+
+  const riderAssign = (e, info) => {
+    e.preventDefault()
+    fetchRiderData()
+    setSelectedRiderId()
+    setOrderIdInFo(info.id)
+    setStatusModalState(true)
+    setSelectedInfo(info)
+  }
+
+  const assignHandler = (e) => {
+    console.log('e.target.value', e.target)
+    e.preventDefault()
+    useJwt
+    .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${selectedInfo.id}/return_order/`, {orderIdInFo: orderIdInFo, selectedRiderIds: selectedRiderIds})
+      // .axiosPost(getApi(DELIVERY_ASSIGNMENT + '/return_order/'), {
+      //   orderIdInFo: orderIdInFo,
+      //   selectedRiderIds: selectedRiderIds
+      // })
+      .then((res) => {
+        console.log("res", res.data)
+        setStatusModalState(false)
+      })
+    //   .finally(() => fetchRiderData())
+  }
+  const handleSelectedRiderId = (e) => {
+    const { value, checked } = e.target
+    if (checked) {
+      setSelectedRiderId(value)
+    } 
+    // else {
+    //   let currentFromValues = selectedRiderIds.filter(item => item !== value)
+    //   setSelectedRiderId(currentFromValues)
+    // }
+
+  }
+
+  const fetchRiderData = () => {
+    return useJwt.axiosGet(getApi(RIDER_LIST))
+      .then((res) => {
+        setRiders(res?.data?.data)
+      }).catch((err) => {
+        console.log(err)
+      })
   }
 
   return (
@@ -167,7 +200,7 @@ const CreateOrderList = () => {
                 <h3>Filter : </h3>
                 <Button type="primary" color="primary" onClick={clearFilter}>Clear</Button>
               </div>
-              <div className="mt-2">
+              {/* <div className="mt-2">
                 <h6>Filter by Order Status</h6>
                 <Select
                   id="status"
@@ -184,9 +217,9 @@ const CreateOrderList = () => {
                   options={statusOptions}
                   value={orderStatus}
                 />
-              </div>
+              </div> */}
 
-              <div className=" mt-2">
+              {/* <div className=" mt-2">
                 <h6>Search Order ID </h6>
                 <Search
                   placeholder="eg. ODR23031301d6"
@@ -197,8 +230,8 @@ const CreateOrderList = () => {
                   }}
                   value={orderID}
                 />
-              </div>
-              <div className=" mt-2">
+              </div> */}
+              {/* <div className=" mt-2">
                 <h6>Search Receipient Name</h6>
                 <Search
                   placeholder="eg. Jhon Doe"
@@ -209,8 +242,8 @@ const CreateOrderList = () => {
                   }}
                   value={receipientName}
                 />
-              </div>
-              <div className=" mt-2">
+              </div> */}
+              {/* <div className=" mt-2">
                 <h6>Phone Number </h6>
                 <Search
                   placeholder="eg. 01793912259"
@@ -221,8 +254,8 @@ const CreateOrderList = () => {
                   }}
                   value={phoneNumber}
                 />
-              </div>
-              <div className=" mt-2">
+              </div> */}
+              {/* <div className=" mt-2">
                 <h6>Filter by Order Type</h6>
                 <Checkbox checked={selectedValue === 'pickedup'} value="pickedup" onChange={(e) => { updateFilterQUery("status", e.target.value), setSelectedValue(e.target.value) }}>
                   Pickup
@@ -233,7 +266,7 @@ const CreateOrderList = () => {
                 <Checkbox checked={selectedValue === 'delivered'} value="delivered" onChange={(e) => { updateFilterQUery("status", e.target.value), setSelectedValue(e.target.value) }}>
                   Delivery
                 </Checkbox>
-              </div>
+              </div> */}
 
               <div className=" mt-2">
                 <h6>Search Order Date</h6>
@@ -243,7 +276,7 @@ const CreateOrderList = () => {
                     width: '100%',
                   }}
                   value={selectedDate}
-                  onChange={(date) => { updateFilterQUery("created_at", date.format('YYYY-MM-DD')), setSelectedDate(date) }}
+                  onChange={(date) => { updateFilterQUery("date", date.format('YYYY-MM-DD')), setSelectedDate(date) }}
                 />
               </div>
             </div>
@@ -299,28 +332,12 @@ const CreateOrderList = () => {
                               <MoreVertical size={15} />
                             </DropdownToggle>
                             <DropdownMenu>
-                              <DropdownItem
-                                href={"/create_order/edit/" + info.id}
-                              >
-                                <Edit className="me-50" size={15} />{" "}
-                                <span className="align-middle">Edit</span>
+
+                              <DropdownItem href="/" onClick={e => riderAssign(e, info)}>
+                                {/* <Edit3 className="me-50" size={15} />{" "} */}
+                                <span className="align-middle">Rider Assign</span>
                               </DropdownItem>
-                              <DropdownItem
-                                href="/"
-                                onClick={(e) => deleteAction(e, info.id)}
-                              >
-                                <Trash className="me-50" size={15} />{" "}
-                                <span className="align-middle">Delete</span>
-                              </DropdownItem>
-                              <DropdownItem
-                                href="/"
-                                onClick={(e) => changeStatusAction(e, info)}
-                              >
-                                <Edit3 className="me-50" size={15} />{" "}
-                                <span className="align-middle">
-                                  Change Status
-                                </span>
-                              </DropdownItem>
+
                             </DropdownMenu>
                           </UncontrolledDropdown>
                         </div>
@@ -393,6 +410,55 @@ const CreateOrderList = () => {
               orderInfo={selectedInfo}
               fetchCreateOrderData={fetchCreateOrderData}
             />
+
+
+
+            <Modal isOpen={statusModalState} toggle={() => setStatusModalState(!statusModalState)} className='modal-dialog-centered'>
+              <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Rider Assign</ModalHeader>
+              <ModalBody>
+                {/* <div className='demo-inline-spacing'> */}
+
+                <div class="table-responsive">
+                  <Table bordered>
+                    <thead>
+                      <tr>
+                        <th>Rider</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {riders &&
+                        riders.map((info, index) => {
+                          return (
+                            <tr key={index}>
+                              <td>
+                                <span className="align-middle fw-bold">{info.full_name}</span>
+                              </td>
+                              <td>
+                                <span className="action-view" type="primary">
+                                  {info.contact_no}
+                                </span>
+                              </td>
+                              <td>
+                                <Input type='checkbox' value={info.id} onClick={(e) => { handleSelectedRiderId(e) }} name="order_id" id='remember-me' />
+                              </td>
+                            </tr>
+                          )
+
+                        })}
+                    </tbody>
+                  </Table>
+                </div>
+                {/* </div> */}
+              </ModalBody>
+              <ModalFooter>
+                <Button color='primary' onClick={assignHandler}>Assign</Button>
+              </ModalFooter>
+            </Modal>
+
+
+
             <>
               <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
             </>

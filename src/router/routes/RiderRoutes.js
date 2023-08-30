@@ -9,6 +9,7 @@ import RiderPickupReport from "../../views/rider/report/pickupReport"
 import DeliveryReport from "../../views/rider/report/deliveryReport"
 import MarchantCollectionReport from "../../views/rider/report/collectionReport"
 import MyWallet from "../../views/account_wallet/wallet/MyWallet"
+import ReturnView from "../../components/rider_view/task/return/ReturnView"
 
 const RiderRoutes = [
     // {
@@ -33,6 +34,12 @@ const RiderRoutes = [
         path: "/rider-orders/delivary",
         element: <DelivaryView />
     },
+    {
+        path: "/rider-orders/return",
+        element: <ReturnView />
+    },
+
+    
     {
         path: "/rider-orders/status",
         element: <OrderStatusTable />

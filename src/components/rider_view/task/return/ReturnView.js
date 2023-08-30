@@ -1,50 +1,31 @@
 import React from "react"
 import { useEffect, useState } from "react"
-import { formatDate } from "@utils"
 import useJwt from "@src/auth/jwt/useJwt"
 import SwalConfirm from "../../../SwalConfirm"
 import {
   getApi,
-  CREATE_ORDER_LIST,
-  RIDER_DELIVARY_STATUS_UPDATE,
-  RIDER_DELIVARY,
-  RIDER_DELIVERY_CREATE_ORDER_FILTER,
+  RIDER_RETURN_CREATE_ORDER_FILTER,
   DELIVERY_ASSIGNMENT,
 } from "@src/constants/apiUrls"
-import { Dropdown, Typography, Select, Button, Space, Menu, Modal } from "antd"
-import PickupStatusModal from "../../../rider_view/task/pickup/PickupStatusModal"
-import { string } from "yup"
 import toast from "react-hot-toast"
 import {
   Card,
   CardBody,
-  CardText,
   Row,
   Col,
-  Table,
-  Tooltip,
   UncontrolledDropdown,
   DropdownMenu,
   DropdownItem,
   DropdownToggle,
 } from "reactstrap"
-import { DownOutlined, EyeOutlined } from "@ant-design/icons"
-import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
-import ChangeStatusModalRider from "../delivary/DelivaryStatusModal"
+import { EyeOutlined } from "@ant-design/icons"
+import { MoreVertical } from "react-feather"
 import CancelReasonModal from "./CancelReasonModal"
-import ReturnDeliveryReasonModal from "./ReturnDeliveryReasonModal"
 import OrderDetailsDrawer from "../../../order/OrderDetailsDrawer"
-import HoldReasonModal from "./HoldReasonModal"
-import ReturnReasonModal from "./ReturnReasonModal"
 
-const DelivaryView = ({ }) => {
+const ReturnView = ({ }) => {
   const [delivaryData, setDelivaryData] = useState([])
-  const [statusModalState, setStatusModalState] = useState(false)
   const [cancelModalState, setCancelModalState] = useState(false)
-  const [holdModalState, setHoldModalState] = useState(false)
-  const [returnModalState, setReturnModalState] = useState(false)
-  const [returnedDeliveryModalState, setReturnedDeliveryModalState] = useState(false)
-  const [selectedStatus, setSelectedStatus] = useState(null)
   const [selectedInfo, setSelectedInfo] = useState(null)
 
   const [orderid, setOrderId] = useState(0)
@@ -56,100 +37,51 @@ const DelivaryView = ({ }) => {
     setOpen(false)
   }
 
-
-
-  const fetchDelivaryData = () => {
+  const fetchReturnOrderData = () => {
     return useJwt
-      .axiosGet(getApi(RIDER_DELIVERY_CREATE_ORDER_FILTER))
+      .axiosGet(getApi(RIDER_RETURN_CREATE_ORDER_FILTER))
       .then((res) => {
-        console.log("res", res.data)
         setDelivaryData(res.data)
-
-        return res.data
       })
       .catch((err) => console.log(err))
   }
 
   useEffect(() => {
-    fetchDelivaryData()
+    fetchReturnOrderData()
   }, [])
 
   useEffect(() => {
     if (!cancelModalState) {
       clearData()
     }
-    if (!holdModalState) {
-      clearData()
-    }
-    if (!returnModalState) {
-      clearData()
-    }
-    fetchDelivaryData()
+    fetchReturnOrderData()
   }, [])
 
 
-
-
-
-  const returnDeliveryActionByRider = (e, info) => {
-    e.preventDefault()
-    useJwt
-      .axiosPost(
-        getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/return_to_delivery/`),
-        { details: info }
-      )
-      .then((res) => {
-        toast.success(res.data)
-        fetchDelivaryData()
-      })
-      .catch((err) => console.log(err))
-  }
-
   const clearData = () => {
     setSelectedInfo(null)
-    setSelectedStatus(null)
   }
 
-  const updateStatusActionx = (selectedValue, id) => {
-    const formData = {
-      status: selectedValue,
-    }
-    console.log("formData", formData)
-
-    useJwt
-      .axiosPatch(getApi(RIDER_DELIVARY_STATUS_UPDATE) + `${id}/`, formData)
-      .then((res) => {
-        toast.success("Delivary Status Updated Successfully!")
-        setStatusModalState(false)
-        fetchDelivaryData()
-      })
-      .catch((err) => {
-        toast.success("Delivary Status Updated Failed!")
-        setStatusModalState(false)
-      })
-  }
-  const handleChange = (id, selectedValue) => {
-    // console.log(`selected xxx ${value}`)
-    updateStatusActionx(selectedValue, id)
-  }
-
-
-
-
-
-  const confirmDelivery = (e, info) => {
+  const returnCancelIssue = (e, info) => {
     e.preventDefault()
-    return SwalConfirm(`Confirm Delivery`).then(
+    setCancelModalState(true)
+    setSelectedInfo(info)
+  }
+
+  const confirmReturn = (e, info) => {
+    console.log('info data', info)
+    e.preventDefault()
+    return SwalConfirm(`Confirm Return`).then(
       function (result) {
         if (result.value) {
           useJwt
-            .axiosPost(
-              getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/confirm_delivery/`),
-              { details: info }
+            .axiosGet(
+              getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/return_order_confirm/`),
+              // { details: info }
             )
             .then((res) => {
               toast.success(res.data)
-              fetchDelivaryData()
+              fetchReturnOrderData()
             })
             .catch((err) => console.log(err))
         }
@@ -158,30 +90,10 @@ const DelivaryView = ({ }) => {
   }
 
 
-  const deliveryCancelIssue = (e, info) => {
-    e.preventDefault()
-    setCancelModalState(true)
-    setSelectedInfo(info)
-  }
-
-  const deliveryHoldIssue = (e, info) => {
-    e.preventDefault()
-    setHoldModalState(true)
-    setSelectedInfo(info)
-  }
-
-  const deliveryReturnIssue = (e, info) => {
-    e.preventDefault()
-    setReturnModalState(true)
-    setSelectedInfo(info)
-  }
-
-
-
   return (
     <>
       <div className="invoice-title-card">
-        <h3> Delivary Task </h3>
+        <h3> Return Task </h3>
       </div>
       <hr></hr>
       <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
@@ -220,10 +132,10 @@ const DelivaryView = ({ }) => {
                               <DropdownItem
                                 href="/"
                                 onClick={(e) =>
-                                  deliveryCancelIssue(e, info)
+                                  returnCancelIssue(e, info)
                                 }
                               >
-                                <Edit3 className="me-50" size={15} />{" "}
+                                {/* <Edit3 className="me-50" size={15} />{" "} */}
                                 <span className="align-middle">
                                   Cancel
                                 </span>
@@ -233,41 +145,15 @@ const DelivaryView = ({ }) => {
                               <DropdownItem
                                 href="/"
                                 onClick={(e) =>
-                                  deliveryHoldIssue(e, info)
+                                  confirmReturn(e, info)
                                 }
                               >
-                                <Edit3 className="me-50" size={15} />{" "}
-                                <span className="align-middle">
-                                  Hold
-                                </span>
-                              </DropdownItem>
-
-
-                              <DropdownItem
-                                href="/"
-                                onClick={(e) =>
-                                  deliveryReturnIssue(e, info)
-                                }
-                              >
-                                <Edit3 className="me-50" size={15} />{" "}
+                                {/* <Edit3 className="me-50" size={15} />{" "} */}
                                 <span className="align-middle">
                                   Return
                                 </span>
                               </DropdownItem>
 
-                              
-  
-                              <DropdownItem
-                                href="/"
-                                onClick={(e) =>
-                                  confirmDelivery(e, info)
-                                }
-                              >
-                                <Edit3 className="me-50" size={15} />{" "}
-                                <span className="align-middle">
-                                  Confirm Delivery
-                                </span>
-                              </DropdownItem>
                             </>
                           )}
                       </DropdownMenu>
@@ -333,25 +219,12 @@ const DelivaryView = ({ }) => {
               cancelModalState={cancelModalState}
               setCancelModalState={setCancelModalState}
               taskInfo={selectedInfo}
-            // fetchDelivaryData={fetchDelivaryData}
+            // fetchReturnOrderData={fetchReturnOrderData}
             />
-
-            <HoldReasonModal
-              holdModalState={holdModalState}
-              setHoldModalState={setHoldModalState}
-              taskInfo={selectedInfo}
-            />
-
-            <ReturnReasonModal
-              returnModalState={returnModalState}
-              setReturnModalState={setReturnModalState}
-              taskInfo={selectedInfo}
-            />
-
           </Card>
         ))}
     </>
   )
 }
 
-export default DelivaryView
+export default ReturnView

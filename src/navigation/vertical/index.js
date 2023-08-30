@@ -65,7 +65,16 @@ const adminMenu = [
         action: 'admin-pages',
         resource: 'Order-write',
         navLink: "/create_order/add",
+      },
+      {
+        id: 'return-order',
+        title: 'Return Order',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Order-write',
+        navLink: "/return-order",
       }
+
     ]
   },
 
@@ -766,6 +775,16 @@ const riderMenu = [
     resource: 'RIDER',
     navLink: "/rider-orders/delivary"
   },
+
+  {
+    id: "return",
+    title: "Return",
+    icon: <Truck size={20} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/rider-orders/return"
+  },
+
   {
     header: 'Rider Tasks',
     action: 'rider-pages',

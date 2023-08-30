@@ -4,11 +4,13 @@ import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, DELIVERY_ASSIGNMENT } from "@src/constants/apiUrls"
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { Input, Radio, Select } from 'antd'
+import { Input, Radio, Select, DatePicker, Space, Tag } from 'antd'
 const { TextArea } = Input
 
-function CancelReasonModal({ cancelModalState, setCancelModalState, taskInfo }) {
+function HoldReasonModal({ holdModalState, setHoldModalState, taskInfo }) {
+    console.log('taskInfo', taskInfo)
     const [reason, setReason] = useState()
+    const [holdDate, setHoldDate] = useState()
     const [value, setChekedValue] = useState()
 
     const onChange = (e) => {
@@ -19,24 +21,35 @@ function CancelReasonModal({ cancelModalState, setCancelModalState, taskInfo }) 
     const cancelByRiderAction = (e) => {
         e.preventDefault()
         const formData = {
-            'reason': reason
+            'reason': reason,
+            'hold_date': holdDate
         }
         useJwt
-            .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${taskInfo?.id}/cancel_delivery/`, formData)
+            .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${taskInfo?.id}/hold_delivery/`, formData)
             .then((res) => {
                 toast.success('Cancelled Successfully!')
-                setCancelModalState(false)
+                setHoldModalState(false)
                 fetchCurrentTaskData()
             })
             .catch((err) => {
                 toast.error('Cancle Failed!')
-                setCancelModalState(false)
+                setHoldModalState(false)
             })
     }
 
+    const onChangeDate = (date, dateString) => {
+        console.log(date, dateString)
+        setHoldDate(dateString)
+    }
+
     return (
-        <Modal isOpen={cancelModalState} toggle={() => setCancelModalState(!cancelModalState)} className='modal-dialog-centered'>
-            <ModalHeader toggle={() => setCancelModalState(!cancelModalState)}>Reason</ModalHeader>
+        <Modal isOpen={holdModalState} toggle={() => setHoldModalState(!holdModalState)} className='modal-dialog-centered'>
+            <ModalHeader toggle={() => setHoldModalState(!holdModalState)}>Reason</ModalHeader>
+            <div className='container'>
+                <label for="html">Hold Date</label><br></br>
+                <DatePicker onChange={onChangeDate} rules={[{required: true}]} />
+            </div>
+
             <ModalBody>
                 <TextArea value={reason} onChange={(e) => { setReason(e.target.value) }} rows={4} placeholder="Please Written Reason" />
             </ModalBody>
@@ -49,30 +62,7 @@ function CancelReasonModal({ cancelModalState, setCancelModalState, taskInfo }) 
                 <Radio value={'Location Not Found'}>Location Not Found</Radio>
                 <Radio value={3}>C</Radio>
                 <Radio value={4}>D</Radio>
-                {/* <Select
-                    showSearch
-                    placeholder="Select a person"
-                    optionFilterProp="children"
-                    // onChange={onChange}
-                    // onSearch={onSearch}
-                    filterOption={(input, option) =>
-                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                    }
-                    options={[
-                        {
-                            value: 'Cancel',
-                            label: 'Cancel',
-                        },
-                        {
-                            value: 'Return',
-                            label: 'Return',
-                        },
-                        {
-                            value: 'Hold',
-                            label: 'Hold',
-                        },
-                    ]}
-                /> */}
+
             </Radio.Group>
 
             <ModalFooter>
@@ -82,4 +72,4 @@ function CancelReasonModal({ cancelModalState, setCancelModalState, taskInfo }) 
     )
 }
 
-export default CancelReasonModal
+export default HoldReasonModal

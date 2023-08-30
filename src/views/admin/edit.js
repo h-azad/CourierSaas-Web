@@ -13,7 +13,7 @@ import Select from "react-select"
 import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, ADMIN_EDIT, ADMIN_DETAILS } from '@src/constants/apiUrls'
+import { getApi, ADMIN_EDIT, ADMIN_DETAILS, ADMIN_ROLE } from '@src/constants/apiUrls'
 import { useEffect, useState } from 'react'
 import SwalAlert from "../../components/SwalAlert"
 
@@ -21,6 +21,7 @@ import SwalAlert from "../../components/SwalAlert"
 const EditAdmin = () => {
   const [adminInfo, setAdminInfo] = useState([])
   const [data, setData] = useState(null)
+  const [adminRoleData, setAdminRoleData] = useState([])
 
   const {
     control,
@@ -93,6 +94,24 @@ const EditAdmin = () => {
     }
   }
 
+  const fetchAdminRoleData = () => {
+    return useJwt
+      .axiosGet(getApi(ADMIN_ROLE))
+      .then((res) => {
+        let roleData = []
+        res.data.map(data => {
+          roleData.push({ value: data.id, label: data.name })
+        })
+        setAdminRoleData(roleData)
+
+      })
+      .catch((err) => console.log(err))
+  }
+
+  useEffect(() => {
+    fetchAdminRoleData()
+  }, [])
+
   return (
     <Card>
       <CardHeader>
@@ -106,7 +125,7 @@ const EditAdmin = () => {
                 Admin Role
               </Label>
               <Controller
-                // defaultValue={ adminInfo?.admin_role }
+                defaultValue={ adminInfo?.admin_role }
                 id="admin_role"
                 name="admin_role"
                 control={control}
@@ -114,7 +133,7 @@ const EditAdmin = () => {
                   isClearable
                   className={classnames('react-select', { 'is-invalid': errors.admin_role && errors.admin_role.value && true })}
                   classNamePrefix='select'
-                  options={[{ value: 'Admin', label: 'Admin' }, { value: 'Manager', label: 'Manager' }, { value: 'Dispatcher', label: 'Dispatcher' }]}
+                  options={adminRoleData}
                   {...field}
                 />}
               />
