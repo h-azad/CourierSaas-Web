@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom"
-import Select from "react-select"
-import classNames from "classnames"
-import { MoreVertical, Edit, Trash, Edit3 } from "react-feather"
-import { Checkbox, DatePicker, Input, Typography, Drawer, Pagination } from "antd"
+import { MoreVertical } from "react-feather"
+import { DatePicker, Input, Typography, Pagination } from "antd"
 import {
   Table,
   UncontrolledDropdown,
@@ -24,8 +22,6 @@ import {
   RIDER_LIST,
   DELIVERY_ASSIGNMENT,
 } from "../../../constants/apiUrls"
-import SwalAlert from "../../../components/SwalAlert"
-import SwalConfirm from "../../../components/SwalConfirm"
 import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
 
 import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
@@ -33,17 +29,11 @@ import * as qs from 'qs'
 
 
 const CreateOrderList = () => {
-  const { Search } = Input
   const [createOrder, setCreateOrder] = useState([])
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedInfo, setSelectedInfo] = useState(null)
-  const [orderStatus, setOrderStatus] = useState("")
-  const [orderID, setorderID] = useState("")
-  const [receipientName, setReceipientName] = useState("")
-  const [phoneNumber, setphoneNumber] = useState("")
   const [selectedDate, setSelectedDate] = useState(null)
   const datePickerRef = useRef(null)
-  const [selectedValue, setSelectedValue] = useState('')
   const [orderCount, setOrderCount] = useState(0)
   const [filterQuery, setFilterQuery] = useState({})
   const [orderid, setOrderId] = useState(0)
@@ -60,9 +50,6 @@ const CreateOrderList = () => {
   const onCloseOrderDetailsDrawer = () => {
     setOpen(false)
   }
-
-
-
 
   useEffect(() => {
     fetchCreateOrderData()
@@ -83,28 +70,11 @@ const CreateOrderList = () => {
       .catch((err) => console.log(err))
   }
 
-  const statusOptions = [
-    { value: "pending", label: "Pending" },
-    { value: "accepted", label: "Accepted" },
-    { value: "pickedup", label: "Picked Up" },
-    { value: "in_warehouse", label: "In Warehouse" },
-    { value: "shipped", label: "Shipped" },
-    { value: "delivered", label: "Delivered" },
-    { value: "hold", label: "Hold" },
-    { value: "returned", label: "Returned" },
-    { value: "cancelled", label: "Cancelled" },
-    { value: "completed", label: "Completed" },
-  ]
-
 
   const clearFilter = () => {
-    setOrderStatus("")
-    setorderID('')
-    setReceipientName('')
-    setphoneNumber('')
-    setSelectedValue('')
     fetchCreateOrderData(1)
     setSelectedDate(null)
+    setFilterQuery({})
   }
 
   const handleSearchQuery = searchTerm => {
@@ -159,10 +129,6 @@ const CreateOrderList = () => {
     e.preventDefault()
     useJwt
     .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${selectedInfo.id}/return_order/`, {orderIdInFo: orderIdInFo, selectedRiderIds: selectedRiderIds})
-      // .axiosPost(getApi(DELIVERY_ASSIGNMENT + '/return_order/'), {
-      //   orderIdInFo: orderIdInFo,
-      //   selectedRiderIds: selectedRiderIds
-      // })
       .then((res) => {
         console.log("res", res.data)
         setStatusModalState(false)
@@ -174,11 +140,6 @@ const CreateOrderList = () => {
     if (checked) {
       setSelectedRiderId(value)
     } 
-    // else {
-    //   let currentFromValues = selectedRiderIds.filter(item => item !== value)
-    //   setSelectedRiderId(currentFromValues)
-    // }
-
   }
 
   const fetchRiderData = () => {
@@ -200,83 +161,16 @@ const CreateOrderList = () => {
                 <h3>Filter : </h3>
                 <Button type="primary" color="primary" onClick={clearFilter}>Clear</Button>
               </div>
-              {/* <div className="mt-2">
-                <h6>Filter by Order Status</h6>
-                <Select
-                  id="status"
-                  name="status"
-                  placeholder="Select Order Status"
-                  isClearable={true}
-                  className={classNames("react-select")}
-                  classNamePrefix="select"
-                  onChange={(e) => {
-                    // filterHandle(e, "status")
-                    updateFilterQUery('status', e?.value)
-                    setOrderStatus(e)
-                  }}
-                  options={statusOptions}
-                  value={orderStatus}
-                />
-              </div> */}
-
-              {/* <div className=" mt-2">
-                <h6>Search Order ID </h6>
-                <Search
-                  placeholder="eg. ODR23031301d6"
-                  onChange={(e) => {
-                    // filterHandle(e, "order_id"), setorderID(e.target.value)
-                    updateFilterQUery("parcel_id", e.target.value)
-                    setorderID(e.target.value)
-                  }}
-                  value={orderID}
-                />
-              </div> */}
-              {/* <div className=" mt-2">
-                <h6>Search Receipient Name</h6>
-                <Search
-                  placeholder="eg. Jhon Doe"
-                  onChange={(e) => {
-                    updateFilterQUery("recipient_name", e.target.value)
-                    setReceipientName(e.target.value)
-                    // filterHandle(e, "receipient_name"), setReceipientName(e.target.value)
-                  }}
-                  value={receipientName}
-                />
-              </div> */}
-              {/* <div className=" mt-2">
-                <h6>Phone Number </h6>
-                <Search
-                  placeholder="eg. 01793912259"
-                  onChange={(e) => {
-                    updateFilterQUery("phone_number", e.target.value)
-                    setphoneNumber(e.target.value)
-                    // filterHandle(e, "phone_number"), setphoneNumber(e.target.value)
-                  }}
-                  value={phoneNumber}
-                />
-              </div> */}
-              {/* <div className=" mt-2">
-                <h6>Filter by Order Type</h6>
-                <Checkbox checked={selectedValue === 'pickedup'} value="pickedup" onChange={(e) => { updateFilterQUery("status", e.target.value), setSelectedValue(e.target.value) }}>
-                  Pickup
-                </Checkbox>
-                <Checkbox checked={selectedValue === 'in_warehouse'} value="in_warehouse" onChange={(e) => { updateFilterQUery("status", e.target.value), setSelectedValue(e.target.value) }}>
-                  Warehouse
-                </Checkbox>
-                <Checkbox checked={selectedValue === 'delivered'} value="delivered" onChange={(e) => { updateFilterQUery("status", e.target.value), setSelectedValue(e.target.value) }}>
-                  Delivery
-                </Checkbox>
-              </div> */}
 
               <div className=" mt-2">
-                <h6>Search Order Date</h6>
+                <h6>Search Return Date</h6>
                 <DatePicker
                   ref={datePickerRef}
                   style={{
                     width: '100%',
                   }}
                   value={selectedDate}
-                  onChange={(date) => { updateFilterQUery("date", date.format('YYYY-MM-DD')), setSelectedDate(date) }}
+                  onChange={(date) => { updateFilterQUery("return_date", date.format('YYYY-MM-DD')), setSelectedDate(date) }}
                 />
               </div>
             </div>
@@ -410,9 +304,7 @@ const CreateOrderList = () => {
               orderInfo={selectedInfo}
               fetchCreateOrderData={fetchCreateOrderData}
             />
-
-
-
+            
             <Modal isOpen={statusModalState} toggle={() => setStatusModalState(!statusModalState)} className='modal-dialog-centered'>
               <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Rider Assign</ModalHeader>
               <ModalBody>
@@ -456,8 +348,6 @@ const CreateOrderList = () => {
                 <Button color='primary' onClick={assignHandler}>Assign</Button>
               </ModalFooter>
             </Modal>
-
-
 
             <>
               <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />

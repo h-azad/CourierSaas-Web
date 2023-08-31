@@ -40,6 +40,7 @@ const Home = () => {
   const fetchCompleteOrderList = () => {
     return useJwt.axiosGet(getApi(ADMIN_DASHBOARD))
       .then((res) => {
+        console.log('res', res.data)
         setResponseData(res.data)
         setComparisonEarningData({
           comparisonEarningData: [res.data.comparison_earning.current_month_earning, res.data.comparison_earning.privious_month_earning],

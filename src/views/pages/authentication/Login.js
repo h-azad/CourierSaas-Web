@@ -36,6 +36,7 @@ import { Row, Col, Form, Input, Label, Alert, Button, CardText, CardTitle, Uncon
 
 // ** Styles
 import '@styles/react/pages/page-authentication.scss'
+import coverPhoto from '@src/assets/images/pages/register.jpg'
 
 const ToastContent = ({ t, name, role }) => {
   return (
@@ -192,7 +193,8 @@ const Login = () => {
         </Link>
         <Col className='d-none d-lg-flex align-items-center p-5' lg='8' sm='12'>
           <div className='w-100 d-lg-flex align-items-center justify-content-center px-5'>
-            <img className='img-fluid' src={source} alt='Login Cover' />
+            {/* <img className='img-fluid' src={source} alt='Login Cover' /> */}
+            <img className='img-fluid' src={coverPhoto} alt='Login Cover' />
           </div>
         </Col>
         <Col className='d-flex align-items-center auth-bg px-2 p-lg-5' lg='4' sm='12'>

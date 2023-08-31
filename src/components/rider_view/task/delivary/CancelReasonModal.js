@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 import { Input, Radio, Select } from 'antd'
 const { TextArea } = Input
 
-function CancelReasonModal({ cancelModalState, setCancelModalState, taskInfo }) {
+function CancelReasonModal({ cancelModalState, setCancelModalState, taskInfo, fetchDelivaryData }) {
     const [reason, setReason] = useState()
     const [value, setChekedValue] = useState()
 
@@ -26,7 +26,7 @@ function CancelReasonModal({ cancelModalState, setCancelModalState, taskInfo }) 
             .then((res) => {
                 toast.success('Cancelled Successfully!')
                 setCancelModalState(false)
-                fetchCurrentTaskData()
+                fetchDelivaryData()
             })
             .catch((err) => {
                 toast.error('Cancle Failed!')

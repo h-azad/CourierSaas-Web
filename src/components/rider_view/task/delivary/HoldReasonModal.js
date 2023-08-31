@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 import { Input, Radio, Select, DatePicker, Space, Tag } from 'antd'
 const { TextArea } = Input
 
-function HoldReasonModal({ holdModalState, setHoldModalState, taskInfo }) {
+function HoldReasonModal({ holdModalState, setHoldModalState, taskInfo, fetchDelivaryData }) {
     console.log('taskInfo', taskInfo)
     const [reason, setReason] = useState()
     const [holdDate, setHoldDate] = useState()
@@ -27,12 +27,12 @@ function HoldReasonModal({ holdModalState, setHoldModalState, taskInfo }) {
         useJwt
             .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${taskInfo?.id}/hold_delivery/`, formData)
             .then((res) => {
-                toast.success('Cancelled Successfully!')
+                toast.success('Hold Successfully!')
                 setHoldModalState(false)
-                fetchCurrentTaskData()
+                fetchDelivaryData()
             })
             .catch((err) => {
-                toast.error('Cancle Failed!')
+                toast.error('Hold Failed!')
                 setHoldModalState(false)
             })
     }

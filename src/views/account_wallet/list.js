@@ -13,7 +13,7 @@ function AreasList() {
 
   return (
     <Fragment>
-      <Row>
+      {/* <Row>
         <Col lg="3" sm="6">
           <StatsHorizontal
             color="primary"
@@ -46,7 +46,7 @@ function AreasList() {
             renderStats={<h3 className="fw-bolder mb-75">237</h3>}
           />
         </Col>
-      </Row>
+      </Row> */}
 
       <Row>
         <Col sm="12">

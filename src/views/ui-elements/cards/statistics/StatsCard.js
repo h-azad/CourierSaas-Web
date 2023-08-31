@@ -58,7 +58,7 @@ const StatsCard = ({ cols, responseData }) => {
     },
     
     {
-      title: '8.549k',
+      title: responseData.return_orders,
       subtitle: 'Returned',
       color: 'light-info',
       icon: <Box size={24} />

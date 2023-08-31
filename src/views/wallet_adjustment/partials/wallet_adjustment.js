@@ -94,6 +94,7 @@ const WalletAdjustment = () => {
         <Table bordered>
           <thead>
             <tr>
+              <th>Date</th>
               <th>Marchant</th>
               <th>Receiver Admin</th>
               <th>Adjust Amount</th>
@@ -105,13 +106,16 @@ const WalletAdjustment = () => {
               adjustmentData.map((info) => (
                 <tr key={info.id}>
                   <td>
+                    <span className="align-middle fw-bold">{info.created_at}</span>
+                  </td>
+                  <td>
                     <span className="align-middle fw-bold">{info.username}</span>
                   </td>
                   <td>
-                    <span className="align-middle fw-bold">{info.adjust_amount}</span>
+                    <span className="align-middle fw-bold">{info.receiver}</span>
                   </td>
                   <td>
-                    <span className="align-middle fw-bold">{info.receiver}</span>
+                    <span className="align-middle fw-bold">{info.adjust_amount}</span>
                   </td>                
                   <td>
                     {/* <UncontrolledDropdown>

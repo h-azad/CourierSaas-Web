@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 import { Input } from 'antd'
 const { TextArea } = Input
 
-function CancelByRiderReasonModal({ cancelModalState, setCancelModalState, taskInfo }) {
+function CancelByRiderReasonModal({ cancelModalState, setCancelModalState, taskInfo, fetchDelivaryData }) {
     const [reason, setReason] = useState()
     const cancelByRiderAction = (e) => {
         e.preventDefault()
@@ -21,7 +21,7 @@ function CancelByRiderReasonModal({ cancelModalState, setCancelModalState, taskI
                 
                 toast.success('Cancelled Successfully!')
                 setCancelModalState(false)
-                fetchCurrentTaskData()
+                fetchDelivaryData()
             })
             .catch((err) => {
                 toast.error('Cancle Failed!')

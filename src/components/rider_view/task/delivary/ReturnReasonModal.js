@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 import { Input, Radio, Select, DatePicker, Space  } from 'antd'
 const { TextArea } = Input
 
-function ReturnReasonModal({ returnModalState, setReturnModalState, taskInfo }) {
+function ReturnReasonModal({ returnModalState, setReturnModalState, taskInfo, fetchDelivaryData}) {
     const [reason, setReason] = useState()
     const [value, setChekedValue] = useState()
 
@@ -26,7 +26,7 @@ function ReturnReasonModal({ returnModalState, setReturnModalState, taskInfo }) 
             .then((res) => {
                 toast.success('Return Successfully!')
                 setReturnModalState(false)
-                fetchCurrentTaskData()
+                fetchDelivaryData()
             })
             .catch((err) => {
                 toast.error('Return Failed!')

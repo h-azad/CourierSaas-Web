@@ -148,7 +148,7 @@ const DelivaryView = ({ }) => {
               { details: info }
             )
             .then((res) => {
-              toast.success(res.data)
+              toast.success('Delivery Confirm')
               fetchDelivaryData()
             })
             .catch((err) => console.log(err))
@@ -255,8 +255,8 @@ const DelivaryView = ({ }) => {
                                 </span>
                               </DropdownItem>
 
-                              
-  
+
+
                               <DropdownItem
                                 href="/"
                                 onClick={(e) =>
@@ -333,19 +333,21 @@ const DelivaryView = ({ }) => {
               cancelModalState={cancelModalState}
               setCancelModalState={setCancelModalState}
               taskInfo={selectedInfo}
-            // fetchDelivaryData={fetchDelivaryData}
+              fetchDelivaryData={fetchDelivaryData}
             />
 
             <HoldReasonModal
               holdModalState={holdModalState}
               setHoldModalState={setHoldModalState}
               taskInfo={selectedInfo}
+              fetchDelivaryData={fetchDelivaryData}
             />
 
             <ReturnReasonModal
               returnModalState={returnModalState}
               setReturnModalState={setReturnModalState}
               taskInfo={selectedInfo}
+              fetchDelivaryData={fetchDelivaryData}
             />
 
           </Card>

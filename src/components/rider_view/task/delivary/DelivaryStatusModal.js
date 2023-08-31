@@ -9,7 +9,7 @@ import toast from 'react-hot-toast'
 import { Input } from 'antd'
 const { TextArea } = Input
 
-function ChangeStatusModalRider({ statusModalState, setStatusModalState, taskInfo, fetchCurrentTaskData, }) {
+function ChangeStatusModalRider({ statusModalState, setStatusModalState, taskInfo, fetchDelivaryData, }) {
     const [selectedOption, setSelectedOption] = useState()
     const [reason, setReason] = useState()
     
@@ -38,7 +38,7 @@ function ChangeStatusModalRider({ statusModalState, setStatusModalState, taskInf
             .then((res) => {
                 toast.success('Delivary Status Updated Successfully!')
                 setStatusModalState(false)
-                fetchCurrentTaskData()
+                fetchDelivaryData()
             })
             .catch(err => {
                 toast.success('Delivary Status Updated Failed!')

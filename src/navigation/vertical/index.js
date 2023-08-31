@@ -634,19 +634,39 @@ const marchantMenu = [
     resource: 'MARCHANT',
     navLink: "/marchant-dashboard"
   },
+
   {
     header: 'Orders',
     action: 'marchant-pages',
     resource: 'MARCHANT',
   },
+
   {
-    id: "my_order",
-    title: "My Orders",
+    id: "marchant_order",
+    title: "Order",
     icon: <Gift size={20} />,
-    action: 'marchant-pages',
-    resource: 'MARCHANT',
-    navLink: "/marchant-orders"
+
+    children: [
+      {
+        id: "my_order",
+        title: "My Orders",
+        icon: <Circle size={20} />,
+        action: 'marchant-pages',
+        resource: 'MARCHANT',
+        navLink: "/marchant-orders/"
+      },
+      {
+        id: "my_order_create",
+        title: "Add New Orders",
+        icon: <Circle size={20} />,
+        action: 'marchant-pages',
+        resource: 'MARCHANT',
+        navLink: "/marchant-orders/create"
+      },
+
+    ]
   },
+
 
   {
     header: 'Wallet',
@@ -663,14 +683,36 @@ const marchantMenu = [
     navLink: "/marchant-wallet"
   },
 
+
   {
-    id: "withdraw",
+    id: "marchant_withdraw",
     title: "Withdraw Balance",
     icon: <TrendingDown size={20} />,
-    action: 'marchant-pages',
-    resource: 'MARCHANT',
-    navLink: "/marchant-withdraw-request"
+
+    children: [
+      {
+        id: "withdraw_requests",
+        title: "Requests",
+        icon: <Circle size={20} />,
+        action: 'marchant-pages',
+        resource: 'MARCHANT',
+        navLink: "/marchant-withdraw-request/"
+      },
+
+      {
+        id: "withdraw_add",
+        title: "Add New Request",
+        icon: <Circle size={20} />,
+        action: 'marchant-pages',
+        resource: 'MARCHANT',
+        navLink: "/marchant-withdraw-request/add"
+      },
+
+    ]
   },
+
+
+  
 
 
   {
@@ -679,14 +721,35 @@ const marchantMenu = [
     resource: 'MARCHANT',
   },
 
+
   {
-    id: "pickup_address",
-    title: "Add Pickup Address",
+    id: "marchant_pickup_address",
+    title: "Pickup Address",
     icon: <MapPin size={20} />,
-    action: 'marchant-pages',
-    resource: 'MARCHANT',
-    navLink: "/marchant-pickup-address"
+
+    children: [
+      {
+        id: "pickup_address",
+        title: "Address",
+        icon: <Circle size={20} />,
+        action: 'marchant-pages',
+        resource: 'MARCHANT',
+        navLink: "/marchant-pickup-address/"
+      },
+
+      {
+        id: "pickup_address",
+        title: "Add New Address",
+        icon: <Circle size={20} />,
+        action: 'marchant-pages',
+        resource: 'MARCHANT',
+        navLink: "/marchant-pickup-address/add"
+      },
+
+    ]
   },
+
+  
   {
     header: 'Report',
     action: 'marchant-pages',
