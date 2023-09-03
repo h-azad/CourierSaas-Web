@@ -1,4 +1,4 @@
-import { Book, Type, CornerUpRight, Archive, Home, User, Truck, ShoppingBag, Filter, Gift, Map, MapPin, Users, Sidebar, ShoppingCart, Shield, Circle, CreditCard, Send, Meh, Plus, ArrowDownRight, TrendingDown, Unlock } from "react-feather"
+import { Book, Type, CornerUpRight, Archive, Home, User, Truck, DollarSign, Navigation, Filter, Gift, Map, MapPin, Users, Sidebar, ShoppingCart, Shield, Circle, CreditCard, Send, Meh, Plus, ArrowDownRight, TrendingDown, Unlock } from "react-feather"
 
 
 const adminMenu = [
@@ -238,7 +238,7 @@ const adminMenu = [
   {
     id: "account_wallet",
     title: "Account Wallet",
-    icon: <Book size={20} />,
+    icon: <CreditCard size={20} />,
     action: 'admin-pages',
     resource: 'Account Wallet-read',
     navLink: "/account-wallet"
@@ -247,7 +247,7 @@ const adminMenu = [
   {
     id: "withdraw_request",
     title: "Withdraw Request",
-    icon: <Meh size={20} />,
+    icon: <Navigation size={20} />,
 
     children: [
       {
@@ -591,7 +591,7 @@ const adminMenu = [
         resource: 'Pickup Report-read',
         navLink: "/cancel-issue/report"
       },
-      
+
       {
         id: "admin-get-delivery-reports",
         title: "Delivery",
@@ -677,7 +677,7 @@ const marchantMenu = [
   {
     id: "wallet",
     title: "My Wallet",
-    icon: <Book size={20} />,
+    icon: <CreditCard size={20} />,
     action: 'marchant-pages',
     resource: 'MARCHANT',
     navLink: "/marchant-wallet"
@@ -687,7 +687,7 @@ const marchantMenu = [
   {
     id: "marchant_withdraw",
     title: "Withdraw Balance",
-    icon: <TrendingDown size={20} />,
+    icon: <Navigation size={20} />,
 
     children: [
       {
@@ -712,7 +712,7 @@ const marchantMenu = [
   },
 
 
-  
+
 
 
   {
@@ -749,65 +749,49 @@ const marchantMenu = [
     ]
   },
 
-  
   {
     header: 'Report',
     action: 'marchant-pages',
     resource: 'MARCHANT',
   },
-
   {
-    id: "order_report",
-    title: "Order Report",
-    icon: <Gift size={20} />,
-    action: 'marchant-pages',
-    resource: 'MARCHANT',
-    navLink: "/order-report"
+    id: "marchant_reports",
+    title: "Reports",
+    icon: <Book size={20} />,
+
+    children: [
+      {
+        id: "order_report",
+        title: "Order",
+        icon: <Circle size={20} />,
+        action: 'marchant-pages',
+        resource: 'MARCHANT',
+        navLink: "/order-report/"
+      },
+
+      {
+        id: "transaction_report",
+        title: "Transaction",
+        icon: <Circle size={20} />,
+        action: 'marchant-pages',
+        resource: 'MARCHANT',
+        navLink: "/transaction-report"
+      },
+      {
+        id: "withdraw_balance_report",
+        title: "Withdraw Balance",
+        icon: <Circle size={20} />,
+        action: 'marchant-pages',
+        resource: 'MARCHANT',
+        navLink: "/withdraw-balance-report"
+      },
+
+    ]
   },
-  {
-    id: "transaction_report",
-    title: "Transaction Report",
-    icon: <Send size={20} />,
-    action: 'marchant-pages',
-    resource: 'MARCHANT',
-    navLink: "/transaction-report"
-  },
-  {
-    id: "withdraw_balance_report",
-    title: "Withdraw Balance",
-    icon: <TrendingDown size={20} />,
-    action: 'marchant-pages',
-    resource: 'MARCHANT',
-    navLink: "/withdraw-balance-report"
-  },
-
-
-
-  // {
-  //   id: "withdraw",
-  //   title: "Withdraw Balance",
-  //   icon: <ShoppingCart size={20} />,
-  //   action: 'marchant-pages',
-  //   resource: 'MARCHANT',
-  //   navLink: "/marchant-withdraw-request"
-  // },
-
-  // {
-  //   header: 'balance_withdraw',
-  //   action: 'marchant-pages',
-  //   resource: 'MARCHANT',
-  // },
-  // {
-  //   id: "balance_withdraw",
-  //   title: "Balance Withdraw",
-  //   icon: <ShoppingCart size={20} />,
-  //   action: 'marchant-pages',
-  //   resource: 'MARCHANT',
-  //   navLink: "/withdraw-request"
-  // },
-
 
 ]
+
+
 const riderMenu = [
   {
     id: "rider-dashboard",
@@ -817,36 +801,78 @@ const riderMenu = [
     resource: 'RIDER',
     navLink: "/rider-dashboard"
   },
+
+
   {
     header: 'Current Tasks',
     action: 'rider-pages',
     resource: 'RIDER',
   },
   {
-    id: "pickup",
-    title: "Pickup Tasks",
+    id: "rider_current_tasks",
+    title: "Current Tasks",
     icon: <Truck size={20} />,
-    action: 'rider-pages',
-    resource: 'RIDER',
-    navLink: "/rider-orders/pickup"
-  },
-  {
-    id: "delivary",
-    title: "Delivary",
-    icon: <Truck size={20} />,
-    action: 'rider-pages',
-    resource: 'RIDER',
-    navLink: "/rider-orders/delivary"
+
+    children: [
+      {
+        id: "pickup",
+        title: "Pickup",
+        icon: <Circle size={20} />,
+        action: 'rider-pages',
+        resource: 'RIDER',
+        navLink: "/rider-orders/pickup"
+      },
+      {
+        id: "delivary",
+        title: "Delivary",
+        icon: <Circle size={20} />,
+        action: 'rider-pages',
+        resource: 'RIDER',
+        navLink: "/rider-orders/delivary"
+      },
+    
+      {
+        id: "return",
+        title: "Return",
+        icon: <Circle size={20} />,
+        action: 'rider-pages',
+        resource: 'RIDER',
+        navLink: "/rider-orders/return"
+      },
+
+    ]
   },
 
-  {
-    id: "return",
-    title: "Return",
-    icon: <Truck size={20} />,
-    action: 'rider-pages',
-    resource: 'RIDER',
-    navLink: "/rider-orders/return"
-  },
+  // {
+  //   header: 'Current Tasks',
+  //   action: 'rider-pages',
+  //   resource: 'RIDER',
+  // },
+  // {
+  //   id: "pickup",
+  //   title: "Pickup Tasks",
+  //   icon: <Truck size={20} />,
+  //   action: 'rider-pages',
+  //   resource: 'RIDER',
+  //   navLink: "/rider-orders/pickup"
+  // },
+  // {
+  //   id: "delivary",
+  //   title: "Delivary",
+  //   icon: <Truck size={20} />,
+  //   action: 'rider-pages',
+  //   resource: 'RIDER',
+  //   navLink: "/rider-orders/delivary"
+  // },
+
+  // {
+  //   id: "return",
+  //   title: "Return",
+  //   icon: <Truck size={20} />,
+  //   action: 'rider-pages',
+  //   resource: 'RIDER',
+  //   navLink: "/rider-orders/return"
+  // },
 
   {
     header: 'Rider Tasks',
@@ -870,7 +896,7 @@ const riderMenu = [
   {
     id: "rider-wallet",
     title: "My Wallet",
-    icon: <Gift size={20} />,
+    icon: <CreditCard size={20} />,
     action: 'rider-pages',
     resource: 'RIDER',
     navLink: "/rider-wallet"
@@ -891,36 +917,75 @@ const riderMenu = [
     navLink: "/rider-orders/status"
   },
 
-
   {
     header: 'Report',
     action: 'rider-pages',
     resource: 'RIDER',
   },
   {
-    id: "pickup-report",
-    title: "Pickup Report",
+    id: "rider_reports",
+    title: "Reports",
     icon: <Truck size={20} />,
-    action: 'rider-pages',
-    resource: 'RIDER',
-    navLink: "/rider-pickup-report"
+
+    children: [
+      {
+        id: "pickup-report",
+        title: "Pickup",
+        icon: <Circle size={20} />,
+        action: 'rider-pages',
+        resource: 'RIDER',
+        navLink: "/rider-pickup-report"
+      },
+      {
+        id: "delivery-report",
+        title: "Delivery",
+        icon: <Circle size={20} />,
+        action: 'rider-pages',
+        resource: 'RIDER',
+        navLink: "/rider-delivery-report"
+      },
+      {
+        id: "delivery-collection-report",
+        title: "Collection",
+        icon: <Circle size={20} />,
+        action: 'rider-pages',
+        resource: 'RIDER',
+        navLink: "/rider-delivery-collection-report"
+      },
+
+    ]
   },
-  {
-    id: "delivery-report",
-    title: "Delivery Report",
-    icon: <Truck size={20} />,
-    action: 'rider-pages',
-    resource: 'RIDER',
-    navLink: "/rider-delivery-report"
-  },
-  {
-    id: "delivery-collection-report",
-    title: "Collection Report",
-    icon: <Truck size={20} />,
-    action: 'rider-pages',
-    resource: 'RIDER',
-    navLink: "/rider-delivery-collection-report"
-  },
+
+
+  // {
+  //   header: 'Report',
+  //   action: 'rider-pages',
+  //   resource: 'RIDER',
+  // },
+  // {
+  //   id: "pickup-report",
+  //   title: "Pickup Report",
+  //   icon: <Truck size={20} />,
+  //   action: 'rider-pages',
+  //   resource: 'RIDER',
+  //   navLink: "/rider-pickup-report"
+  // },
+  // {
+  //   id: "delivery-report",
+  //   title: "Delivery Report",
+  //   icon: <Truck size={20} />,
+  //   action: 'rider-pages',
+  //   resource: 'RIDER',
+  //   navLink: "/rider-delivery-report"
+  // },
+  // {
+  //   id: "delivery-collection-report",
+  //   title: "Collection Report",
+  //   icon: <Truck size={20} />,
+  //   action: 'rider-pages',
+  //   resource: 'RIDER',
+  //   navLink: "/rider-delivery-collection-report"
+  // },
 
   // {
   //   header: 'Assigned Pickup',

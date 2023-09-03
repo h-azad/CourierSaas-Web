@@ -55,13 +55,16 @@ const ToastContent = ({ t, name, role }) => {
   )
 }
 
-const defaultValues = {
-  password: '123456',
-  loginEmail: 'org2@gmail.com'
-}
+// const defaultValues = {
+//   password: '123456',
+//   loginEmail: 'org2@gmail.com'
+// }
 
 const Login = () => {
   // ** Hooks
+  const domainName = window.location.href.replace('3000/login','8000')
+  localStorage.setItem('domainName', domainName)
+
   const [error, setErrors] = useState()
   const { skin } = useSkin()
   const dispatch = useDispatch()
@@ -72,7 +75,7 @@ const Login = () => {
     setError,
     handleSubmit,
     formState: { errors }
-  } = useForm({ defaultValues })
+  } = useForm({})
   const illustration = skin === 'dark' ? 'login-v2-dark.svg' : 'login-v2.svg',
     source = require(`@src/assets/images/pages/${illustration}`).default
   const dummyAbility = [
@@ -87,13 +90,6 @@ const Login = () => {
   ]
   const onSubmit = data => {
     if (Object.values(data).every(field => field.length > 0)) {
-     //n 
-      // const formData = { email: data.loginEmail, password: data.password }
-      // const headers = {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data'
-      //   }
-      // }
       const formData = { email: data.loginEmail, password: data.password }
       const headers = {
         headers: {
@@ -102,18 +98,11 @@ const Login = () => {
       }
 
       useJwt
-        // .login({ email: data.loginEmail, password: data.password })
-        //n
         .login(formData, headers)
         .then((res) => {
-           console.log("res", res.data)
           const data = { ...res.data.info, accessToken: res.data.token.access, refreshToken: res.data.token.refresh }
-          console.log('data',data)
           dispatch(handleLogin(data))
-          console.log(res.data.info.ability)
           abilityCtx.update(res.data.info.ability)
-          // abilityCtx.update(dummyAbility)
-          console.log("role" , getHomeRouteForLoggedInUser(data.role))
           navigate(getHomeRouteForLoggedInUser(data.role))
           toast(t => (
             <ToastContent t={t} role={data.role || 'admin'} name={data.name || 'John Doe'} />
