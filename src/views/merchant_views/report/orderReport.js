@@ -1,13 +1,15 @@
 
 
-import { Table} from "reactstrap"
+// import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
 import { getApi, MARCHANT_GET_ORDER_REPORT, MARCHANT_GET_ORDER_REPORT_PDF } from "../../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
 import * as qs from 'qs'
-import { Pagination } from "antd"
+import { Pagination, Table, Responsive, Tag, Card } from "antd"
+import { Overlay } from "antd/es/popconfirm/PurePanel"
+// import { Table } from 'antd'
 
 
 const OrderReport = () => {
@@ -81,7 +83,7 @@ const OrderReport = () => {
 				return res.data
 			})
 			.catch((err) => console.log(err))
-		
+
 	}
 
 	const statusOptions = [
@@ -96,6 +98,48 @@ const OrderReport = () => {
 		{ value: "cancelled", label: "Cancelled" },
 		{ value: "completed", label: "Completed" },
 	]
+
+
+	function colorSwitch(status) {
+		switch (status) {
+			case 'pending':
+				return 'yellow'
+
+			case 'accepted':
+				return 'green'
+
+			case 'pickedup':
+				return 'blue'
+
+			case 'in_warehouse':
+				return 'orange'
+
+			case 'shipped':
+				return 'purple'
+
+			case 'delivered':
+				return 'green'
+
+			case 'hold':
+				return 'red'
+
+			case 'returned':
+				return 'orange'
+
+			case 'cancelled':
+				return 'red'
+
+			case 'completed':
+				return 'green'
+
+			case 'returned to warehouse':
+				return 'orange'
+
+			default:
+				console.log('This is something else.')
+		}
+	}
+
 
 
 	function updateFilterQUery(term, value) {
@@ -133,18 +177,121 @@ const OrderReport = () => {
 		reportTitle: 'Orders Report'
 	}
 
+	const fruit = 'apple'
+
+
+
+
+
+
+	const columns = [
+		{
+			title: 'Date',
+			dataIndex: 'created_at',
+
+			sorter: {
+				compare: (a, b) => a.created_at - b.created_at,
+				multiple: 2,
+			},
+		},
+		{
+			title: 'Order ID',
+			dataIndex: 'parcel_id',
+
+		},
+		{
+			title: 'Status',
+			dataIndex: 'status',
+			render: (text, record) => (
+				<Tag color={colorSwitch(record.status)}>{text}</Tag>
+				// <span style={{ color: colorSwitch(record.status) }}>
+				// <Card>
+
+				// </Card>
+				// </span>
+
+			),
+		},
+		{
+			title: 'Delivery Charge',
+			dataIndex: 'delivary_charge',
+		},
+		{
+			title: 'COD Charge',
+			dataIndex: 'cash_on_delivery_charge',
+		},
+		{
+			title: 'COD Amount',
+			dataIndex: 'amount_to_be_collected',
+		},
+		{
+			title: 'Accumutated Amount',
+			dataIndex: 'accumulated',
+		},
+		{
+			title: 'Total Amount',
+			dataIndex: 'total_amount',
+		},
+	]
+
+	const data = order
+	// const data = [
+	// 	{
+	// 		key: '1',
+	// 		name: 'John Brown',
+	// 		chinese: 98,
+	// 		math: 60,
+	// 		english: 70,
+	// 	},
+	// 	{
+	// 		key: '2',
+	// 		name: 'Jim Green',
+	// 		chinese: 98,
+	// 		math: 66,
+	// 		english: 89,
+	// 	},
+	// 	{
+	// 		key: '3',
+	// 		name: 'Joe Black',
+	// 		chinese: 98,
+	// 		math: 90,
+	// 		english: 70,
+	// 	},
+	// 	{
+	// 		key: '4',
+	// 		name: 'Jim Red',
+	// 		chinese: 88,
+	// 		math: 99,
+	// 		english: 89,
+	// 	},
+	// ]
+
+	const onChangeSorter = (pagination, filters, sorter, extra) => {
+		// console.log('params', pagination, filters, sorter, extra)
+		if (sorter.order === 'ascend') {
+			setFilterQuery({})
+			updateFilterQUery("ordering", sorter.field)
+		} else if (sorter.order === 'descend') {
+			setFilterQuery({})
+			updateFilterQUery("ordering", '-' + sorter.field)
+		}
+		else {
+			setFilterQuery({})
+		}
+	}
+
 	return (
 		<>
 
 			<ReportHead propsData={propsData} />
-
-			<div id="my-table" class="table-responsive">
+			<Table scroll={{ x: true }} columns={columns} dataSource={data} onChange={onChangeSorter} pagination={{ defaultPageSize: 5 }} />
+			{/* <div id="my-table" class="table-responsive">
 				<Table bordered>
 					<thead>
 						<tr>
+							<th>Date</th>
 							<th>Order ID</th>
 							<th>Status</th>
-							<th>Date</th>
 							<th>Delivery Charge</th>
 							<th>COD Charge</th>
 							<th>COD Amount</th>
@@ -157,13 +304,13 @@ const OrderReport = () => {
 							order.map((info) => (
 								<tr key={info.id}>
 									<td>
+										<span className="align-middle fw-bold">{info.created_at}</span>
+									</td>
+									<td>
 										<span className="align-middle fw-bold">{info.parcel_id}</span>
 									</td>
 									<td>
 										<span className="align-middle fw-bold">{info.status}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.created_at}</span>
 									</td>
 									<td>
 										<span className="align-middle fw-bold">{info.delivary_charge}</span>
@@ -185,8 +332,8 @@ const OrderReport = () => {
 					</tbody>
 				</Table>
 				<Pagination onChange={paginationUpdate} total={orderCount} defaultPageSize={50} />
-			</div>
-			
+			</div> */}
+
 		</>
 	)
 }

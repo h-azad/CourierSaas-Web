@@ -16,15 +16,15 @@ const WithdrawBalanceReport = () => {
 
 	const defaultFetchOrderData = () => {
 		return useJwt.axiosGet(getApi(MARCHANT_GET_WITHDRAW_REQUEST_REPORT))
-		.then((res) => {
-			setWithdrawRequestBalance(res?.data?.results)
-			setOrderCount(res?.data?.count)
-			setFilterQuery({})
-		}).catch((err) => {
-			setWithdrawRequestBalance([])
-			setOrderCount(0)
-			setFilterQuery({})
-		})
+			.then((res) => {
+				setWithdrawRequestBalance(res?.data?.results)
+				setOrderCount(res?.data?.count)
+				setFilterQuery({})
+			}).catch((err) => {
+				setWithdrawRequestBalance([])
+				setOrderCount(0)
+				setFilterQuery({})
+			})
 	}
 
 	useEffect(() => {
@@ -130,22 +130,22 @@ const WithdrawBalanceReport = () => {
 				<Table bordered>
 					<thead>
 						<tr>
+							<th style={{ textAlign: "center" }}>Date</th>
+							<th style={{ textAlign: "center" }}>STATUS</th>
 							<th style={{ textAlign: "center" }}>PREVIOUS BALANCE</th>
 							<th style={{ textAlign: "center" }}>WITHDRAW BALANCE</th>
 							<th style={{ textAlign: "center" }}>CURRENT BALANCE</th>
-							<th style={{ textAlign: "center" }}>STATUS</th>
-							<th style={{ textAlign: "center" }}>Date</th>
 						</tr>
 					</thead>
 					<tbody>
 						{withdrawRequest &&
 							withdrawRequest.map((info) => (
 								<tr key={info.id}>
-									<td style={{textAlign: "center"}}>{info.balance}</td>
+									<td style={{ textAlign: "center" }}>{info.created_at}</td>
+									<td style={{ textAlign: "center" }}>{info.withdraw_status}</td>
+									<td style={{ textAlign: "center" }}>{info.balance}</td>
 									<td style={{ textAlign: "center" }}>{info.withdraw_balance}</td>
 									<td style={{ textAlign: "center" }}>{info.current_balance}</td>
-									<td style={{ textAlign: "center" }}>{info.withdraw_status}</td>
-									<td style={{ textAlign: "center" }}>{info.created_at}</td>
 								</tr>
 							))}
 					</tbody>
@@ -153,7 +153,7 @@ const WithdrawBalanceReport = () => {
 			</div>
 			<Pagination onChange={paginationUpdate} total={orderCount} defaultPageSize={50} />
 		</>
-		
+
 	)
 }
 

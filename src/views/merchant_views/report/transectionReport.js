@@ -132,22 +132,22 @@ const OrderReport = () => {
 				<Table bordered>
 					<thead>
 						<tr>
-							<th>Amount</th>
-							<th>Transections ID</th>
-							<th>Remark</th>
-							<th>Type</th>
 							<th>Date</th>
+							<th>Transections ID</th>
+							<th>Amount</th>
+							<th>Type</th>
+							<th>Remark</th>
 						</tr>
 					</thead>
 					<tbody>
 						{transections &&
 							transections.map((info) => (
 								<tr key={info.id}>
-									<td>{info.amount}</td>
-									<td>{info.transection_id}</td>
-									<td>{info.remark}</td>
-									<td>{info.type}</td>
 									<td>{info.created_at}</td>
+									<td>{info.transection_id}</td>
+									<td>{info.amount}</td>
+									<td>{info.type}</td>
+									<td>{info.remark}</td>
 								</tr>
 							))}
 					</tbody>

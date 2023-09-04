@@ -5,14 +5,11 @@ import classnames from 'classnames'
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, ORDER_STATUS_UPDATE } from "@src/constants/apiUrls"
 import { useState } from 'react'
-import ToastContent from '../../../components/ToastContent'
 import toast from 'react-hot-toast'
-
 
 
 function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, fetchCreateOrderData }) {
   const [selectedOption, setSelectedOption] = useState()
-  const [details, setDetails] = useState()
   let statusOptions = [
     { value: "pending", label: "Pending" },
     { value: "accepted", label: "Accepted" },
@@ -28,18 +25,16 @@ function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, f
 
   const updateStatusAction = (e) => {
     e.preventDefault()
-    // console.log("selectedInfo", selectedOption)
     const formData = {
       'status': selectedOption,
-      'details': orderInfo
+      'previous_status': orderInfo.status
     }
-
     useJwt
       .axiosPatch(getApi(ORDER_STATUS_UPDATE) + `${orderInfo.id}/`, formData)
       .then((res) => {
         toast.success('Order Status Updated Successfully!')
         setStatusModalState(false)
-        
+        fetchCreateOrderData()
       })
       .catch(err => {
         toast.success('Order Status Updated Failed!')
@@ -51,8 +46,6 @@ function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, f
 
   const changeOrderStatusAction = (selected,) => {
     setSelectedOption(selected.value)
-    setDetails(selected)
-    console.log('data', selected)
   }
 
   return (

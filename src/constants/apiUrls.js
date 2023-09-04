@@ -191,7 +191,7 @@ export const SEARCH_CREATE_ORDER = '/search_create_order/'
 export const DIMENTION_BY_PRODUCT = '/create_order/get-dimention/'
 export const PRICING_POLICY_BY_PRODUCT = '/get-price-policy/'
 export const DELIVARY_CHARGE_BY_PERCEL_TYPE = '/get-delivary-charge/'
-export const ORDER_STATUS_UPDATE = '/create_order/'
+export const ORDER_STATUS_UPDATE = '/create-order/change-status/'
 export const ORDER_STATISTICS = "/api/user/order-statistics/"
 
 export const ORDER_RETURN = "/order-return/"
