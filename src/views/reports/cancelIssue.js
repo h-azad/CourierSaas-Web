@@ -1,13 +1,16 @@
 
 
-import { Table } from "reactstrap"
+// import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
 import { getApi, ADMIN_GET_CANCEL_ISSUE_REPORT_APIVIEW, ADMIN_GET_CANCEL_ISSUE_REPORT_GENERATE_PDF_APIVIEW, RIDER_LIST } from "../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
-import { Pagination } from "antd"
+import { Table, Tag } from "antd"
 import * as qs from 'qs'
+
+import { colorSwitch } from "../../components/orderRelatedData"
+import { handlePDFQuery, handleSearchQuery } from "../../components/reportRelatedData"
 
 
 
@@ -18,15 +21,26 @@ const GetAdminCencelIssue = () => {
   const [filterQuery, setFilterQuery] = useState({})
   const [defaultPage, setDefalutPage] = useState(1)
 
-  const defaultFetchData = () => {
+  // const fetchDefalutData = () => {
+  //   return useJwt.axiosGet(getApi(ADMIN_GET_CANCEL_ISSUE_REPORT_APIVIEW))
+  //     .then((res) => {
+  //       setCancelIssueData(res?.data?.results)
+  //       setFilterQuery({})
+  //       setDefalutPage(1)
+  //       setCancelOrderCount(res?.data?.count)
+  //     }).catch((err) => {
+  //       console.log(err)
+  //     })
+  // }
+
+  const fetchDefalutData = () => {
     return useJwt.axiosGet(getApi(ADMIN_GET_CANCEL_ISSUE_REPORT_APIVIEW))
       .then((res) => {
         setCancelIssueData(res?.data?.results)
         setFilterQuery({})
-        setDefalutPage(1)
-        setCancelOrderCount(res?.data?.count)
       }).catch((err) => {
-        console.log(err)
+        setCancelIssueData([])
+        setFilterQuery({})
       })
   }
 
@@ -46,65 +60,41 @@ const GetAdminCencelIssue = () => {
       .catch((err) => console.log(err))
   }
 
-
-
-  const handleSearchQuery = searchTerm => {
-    return useJwt
-      .axiosGet(getApi(ADMIN_GET_CANCEL_ISSUE_REPORT_APIVIEW) + '?' + searchTerm)
-      .then((res) => {
-        if (res.data?.results?.length > 0) {
-          setCancelIssueData(res?.data?.results)
-          setCancelOrderCount(res?.data?.count)
+  useEffect(() => {
+    handleSearchQuery(ADMIN_GET_CANCEL_ISSUE_REPORT_APIVIEW, qs.stringify(filterQuery))
+      .then(res => {
+        if (res?.results?.length > 0) {
+          setCancelIssueData(res?.results)
         } else {
-          setCancelIssueData('')
+          setCancelIssueData([])
         }
-        return res.data
       })
-      .catch((err) => console.log(err))
-  }
+  }, [filterQuery])
+
+  useEffect(() => {
+    fetchRiderData()
+  }, [])
 
 
-  function downloadPDFFile(file, fileName) {
-    var blob = new Blob([file], { type: 'application/pdf' })
-    var url = URL.createObjectURL(blob)
-    var link = document.createElement('a')
-    link.href = url
-    link.download = fileName
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    URL.revokeObjectURL(url)
-  }
-
-  const handlePDFQuery = (searchTerm) => {
-
-    const regex = /&([^&]+)/g
-    const pageRemoveToQuery = searchTerm.match(regex)
-    const filterPerameter = pageRemoveToQuery ? pageRemoveToQuery.join('') : ''
-    searchTerm = filterPerameter.startsWith("&") ? filterPerameter : filterPerameter.replace('$', '')
-
-    return useJwt
-      .axiosGet(getApi((ADMIN_GET_CANCEL_ISSUE_REPORT_GENERATE_PDF_APIVIEW) + '?' + searchTerm))
-      .then((res) => {
-        if (res.data?.length > 0) {
-          console.log('response file', res.data)
-          var file = new Blob([res.data], { type: 'application/pdf' })
-          var fileName = 'Cancel_Issue_report.pdf'
-          downloadPDFFile(file, fileName)
-        } else {
-          // setOrder('')
-        }
-        return res.data
-      })
-      .catch((err) => console.log(err))
-
-  }
   const statusOptions = [
     { value: 'Pickup', label: 'Pickup' },
     { value: 'Delivery', label: "Delivery" },
     { value: 'Returned', label: "Returned" },
     { value: 'Hold', label: "Hold" },
   ]
+
+  function statusOptionsColorSwitch(option) {
+		switch (option) {
+			case 'Returned':
+				return 'orange'
+	
+			case 'Hold':
+				return 'yellow'
+
+			default:
+				return 'red'
+		}
+	}
 
   function updateFilterQUery(term, value) {
     let filters = { ...filterQuery }
@@ -120,19 +110,29 @@ const GetAdminCencelIssue = () => {
     setFilterQuery(filters)
   }
 
-  useEffect(() => {
-    handleSearchQuery(qs.stringify(filterQuery))
-  }, [filterQuery])
 
   const paginationUpdate = (page) => {
     updateFilterQUery("page", page)
   }
 
+  const onChangeSorter = (pagination, filters, sorter, extra) => {
+		if (sorter.order === 'ascend') {
+			updateFilterQUery("ordering", sorter.field)
+		} else if (sorter.order === 'descend') {
+			updateFilterQUery("ordering", '-' + sorter.field)
+		}
+		else {
+			setFilterQuery({})
+		}
+	}
 
   const propsData = {
     handleSearchQuery: handleSearchQuery,
     handlePDFQuery: handlePDFQuery,
-    defaultFetchData: defaultFetchData,
+    fetchDefalutData: fetchDefalutData,
+
+    getDataApiUrl: ADMIN_GET_CANCEL_ISSUE_REPORT_APIVIEW, 
+		fetchReportPDF: ADMIN_GET_CANCEL_ISSUE_REPORT_GENERATE_PDF_APIVIEW,
 
     updateFilterQUery: updateFilterQUery,
     filterQuery: filterQuery,
@@ -143,20 +143,52 @@ const GetAdminCencelIssue = () => {
     statusOptionPlaceholder: "Status",
     selectOptionKey: "cancel_type",
     reportTitle: 'Cancel Issue Report',
+    reportFileName: 'Cancel Issue Report',
     selectboxDataPlaceholder: 'Select Rider',
     filterTable: 'rider',
 
   }
 
-  useEffect(() => {
-    fetchRiderData()
-  }, [])
+  const columns = [
+		{
+			title: 'Date',
+			dataIndex: 'created_at',
+
+			sorter: {
+				compare: (a, b) => a.created_at - b.created_at,
+				multiple: 2,
+			},
+		},
+    {
+			title: 'Order',
+			dataIndex: 'order',
+
+		},
+    {
+			title: 'Status',
+			dataIndex: 'cancel_type',
+			render: (text, record) => (
+				<Tag color={statusOptionsColorSwitch(record.cancel_type)}>{text.toUpperCase()}</Tag>
+			),
+		},
+    {
+			title: 'Rider',
+			dataIndex: 'rider',
+
+		},
+		{
+			title: 'Reason',
+			dataIndex: 'reason',
+		},
+
+	]
 
   return (
     <>
       <ReportHead propsData={propsData} />
+      <Table scroll={{ x: true }} columns={columns} dataSource={cancelIssueData} onChange={onChangeSorter} pagination={{ defaultPageSize: 50 }} />
 
-      <div id="my-table" class="table-responsive">
+      {/* <div id="my-table" class="table-responsive">
         <Table bordered>
           <thead>
             <tr>
@@ -191,7 +223,7 @@ const GetAdminCencelIssue = () => {
           </tbody>
         </Table>
         <Pagination onChange={paginationUpdate} defaultCurrent={defaultPage} total={cancelOrderCount} defaultPageSize={50} />
-      </div>
+      </div> */}
     </>
   )
 }

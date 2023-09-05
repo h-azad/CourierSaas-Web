@@ -47,16 +47,27 @@ const ReportHead = ({ propsData }) => {
   //   setFilterQuery(filters)
   // }
 
-  function submitFilter(e) {
-    e.preventDefault()
-    propsData.handleSearchQuery(qs.stringify(propsData.filterQuery))
-  }
+  // function submitFilter(e) {
+  //   e.preventDefault()
+  //   propsData.handleSearchQuery(qs.stringify(propsData.filterQuery))
+  // }
 
-  function submitPDFFilter(e) {
-    e.preventDefault()
-    propsData.handleSearchQuery(qs.stringify(propsData.filterQuery))
-    propsData.handlePDFQuery(qs.stringify(propsData.filterQuery))
-  }
+  // function submitPDFFilter(e) {
+  //   e.preventDefault()
+  //   propsData.handleSearchQuery(qs.stringify(propsData.filterQuery))
+  //   propsData.handlePDFQuery(qs.stringify(propsData.filterQuery))
+  // }
+
+  function submitFilter(e){
+		e.preventDefault()
+		propsData.handleSearchQuery(propsData.getDataApiUrl, qs.stringify(propsData.filterQuery))
+	}
+
+	function submitPDFFilter(e) {
+		e.preventDefault()
+		propsData.handleSearchQuery(propsData.getDataApiUrl, qs.stringify(propsData.filterQuery))
+		propsData.handlePDFQuery(propsData.fetchReportPDF, qs.stringify(propsData.filterQuery), propsData.reportFileName)
+	}
 
   const rangePresets = [
     {
@@ -163,7 +174,7 @@ const ReportHead = ({ propsData }) => {
                 <Button type="primary" onClick={submitFilter} size={20}>
                   Filter
                 </Button>
-                <Button type="primary" onClick={(e)=>{propsData?.defaultFetchData()}} danger size={20}>
+                <Button type="primary" onClick={(e)=>{propsData?.fetchDefalutData()}} danger size={20}>
                   Reset
                 </Button>
               </Space>

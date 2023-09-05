@@ -1,187 +1,210 @@
 
 
-import { Table } from "reactstrap"
+// import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
 import { getApi, ADMIN_GET_TRANSECTION_REPORT_APIVIEW, ADMIN_GET_TRANSECTION_REPORT_GENERATE_PDF_APIVIEW, ACCOUNT_WALLET_LIST } from "../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
-import { Pagination } from "antd"
+import { Table, Tag } from "antd"
 import * as qs from 'qs'
 
+import { handlePDFQuery, handleSearchQuery } from "../../components/reportRelatedData"
+
 const AdminGetTransectionReport = () => {
-    const [transections, setTransections] = useState([])
-    const [selectBoxUser, setSelectBoxUser] = useState([])
-    const [transactionCount, setTransactionCount] = useState(0)
-	const [filterQuery, setFilterQuery] = useState({})
-	const [defaultPage, setDefalutPage] = useState(1)
+  const [transections, setTransections] = useState([])
+  const [selectBoxUser, setSelectBoxUser] = useState([])
+  const [filterQuery, setFilterQuery] = useState({})
 
-    const defaultFetchData = () => {
-        return useJwt.axiosGet(getApi(ADMIN_GET_TRANSECTION_REPORT_APIVIEW))
-            .then((res) => {
-                setFilterQuery({})
-				setDefalutPage(1)
+
+  const fetchDefalutData = () => {
+		return useJwt.axiosGet(getApi(ADMIN_GET_TRANSECTION_REPORT_APIVIEW))
+			.then((res) => {
 				setTransections(res?.data?.results)
-				setTransactionCount(res?.data?.count)
-            }).catch((err) => {
-                setTransections([])
-            })
-    }
-
-    const fetchUserData = () => {
-        return useJwt
-            .axiosGet(getApi(ACCOUNT_WALLET_LIST))
-            .then((res) => {
-                let userData = []
-
-                res.data.map((data) => {
-                    userData.push({ value: data.id, label: data.account_name })
-                })
-
-                setSelectBoxUser(userData)
-                return res.data.data
-            })
-            .catch((err) => console.log(err))
-    }
-
-    useEffect(() => {
-		defaultFetchData()
-		fetchUserData()
-	}, [])
-
-
-    const handleSearchQuery = searchTerm => {
-        return useJwt
-            .axiosGet(getApi(ADMIN_GET_TRANSECTION_REPORT_APIVIEW) + '?' + searchTerm)
-            .then((res) => {
-                if (res.data.results?.length > 0) {
-                    setTransections(res?.data?.results)
-                    setTransactionCount(res?.data?.count)
-                } else {
-                    setTransections([])
-                }
-                return res.data
-            })
-            .catch((err) => console.log(err))
-    }
-
-
-    function downloadPDFFile(file, fileName) {
-        var blob = new Blob([file], { type: 'application/pdf' })
-        var url = URL.createObjectURL(blob)
-        var link = document.createElement('a')
-        link.href = url
-        link.download = fileName
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-        URL.revokeObjectURL(url)
-    }
-
-    const handlePDFQuery = (searchTerm) => {
-
-        const regex = /&([^&]+)/g 
-        const pageRemoveToQuery = searchTerm.match(regex)
-        const filterPerameter = pageRemoveToQuery ? pageRemoveToQuery.join('') : ''
-		searchTerm = filterPerameter.startsWith("&") ? filterPerameter: filterPerameter.replace('$', '')
-
-        return useJwt
-            .axiosGet(getApi((ADMIN_GET_TRANSECTION_REPORT_GENERATE_PDF_APIVIEW) + '?' + searchTerm))
-            .then((res) => {
-                if (res.data?.length > 0) {
-                    var file = new Blob([res.data], { type: 'application/pdf' })
-                    var fileName = 'transactions_report.pdf'
-                    downloadPDFFile(file, fileName)
-                } else {
-                }
-                return res.data
-            })
-            .catch((err) => console.log(err))
-    }
-
-    const statusOptions = [
-        { value: "Cash-Out", label: "Cash-Out" },
-        { value: "Cash-In", label: "Cash-In" },
-    ]
-
-    function updateFilterQUery(term, value) {
-		let filters = { ...filterQuery }
-		if (term != 'page') {
-			filters['page'] = 1
-		}
-
-		if (value) {
-			filters[term] = value
-		} else {
-			filters.hasOwnProperty(term) && delete filters[term]
-		}
-		setFilterQuery(filters)
+				setFilterQuery({})
+			}).catch((err) => {
+				setTransections([])
+				setFilterQuery({})
+			})
 	}
 
-    useEffect(() => {
-		handleSearchQuery(qs.stringify(filterQuery))
-	}, [filterQuery])
+  const fetchUserData = () => {
+    return useJwt
+      .axiosGet(getApi(ACCOUNT_WALLET_LIST))
+      .then((res) => {
+        let userData = []
 
-	const paginationUpdate = (page) => {
-		updateFilterQUery("page", page)
+        res.data.map((data) => {
+          userData.push({ value: data.id, label: data.account_name })
+        })
+
+        setSelectBoxUser(userData)
+        return res.data.data
+      })
+      .catch((err) => console.log(err))
+  }
+
+  useEffect(() => {
+    fetchUserData()
+  }, [])
+
+  useEffect(() => {
+    handleSearchQuery(ADMIN_GET_TRANSECTION_REPORT_APIVIEW, qs.stringify(filterQuery))
+			.then(res => {
+				if (res?.results?.length > 0) {
+					setTransections(res?.results)
+				} else {
+					setTransections([])
+				}
+			})
+  }, [filterQuery])
+
+  const statusOptions = [
+    { value: "Cash-Out", label: "Cash-Out" },
+    { value: "Cash-In", label: "Cash-In" },
+  ]
+
+  function colorSwitch(status) {
+		switch (status) {
+			case 'Cash-Out':
+				return 'yellow'
+	
+			case 'Cash-In':
+				return 'green'
+
+			default:
+				return 'orange'
+		}
 	}
 
-    const propsData = {
-        handleSearchQuery: handleSearchQuery,
-        handlePDFQuery: handlePDFQuery,
-        defaultFetchData: defaultFetchData,
 
-        updateFilterQUery: updateFilterQUery,
-		filterQuery: filterQuery,
-
-        statusOptions: statusOptions,
-        selectboxData: selectBoxUser,
-
-        statusOptionPlaceholder: "Transaction Type",
-        selectOptionKey: "type",
-        reportTitle: 'Transactions Report',
-        selectboxDataPlaceholder: 'Select Wallet Account',
-        filterTable: 'wallet',
-
+  function updateFilterQUery(term, value) {
+    let filters = { ...filterQuery }
+    if (term != 'page') {
+      filters['page'] = 1
     }
 
-    
-    return (
-        <>
-            <ReportHead propsData={propsData} />
+    if (value) {
+      filters[term] = value
+    } else {
+      filters.hasOwnProperty(term) && delete filters[term]
+    }
+    setFilterQuery(filters)
+  }
 
-            <div id="my-table" class="table-responsive">
-                <Table bordered>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Account</th>
-                            <th>Transactions ID</th>
-                            <th>Amount</th>
-                            <th>Type</th>
-                            <th>Remark</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {transections &&
-                            transections.map((info) => (
-                                <tr key={info.id}>
-                                    <td>{info?.created_at}</td>
-                                    <td>
-                                        <span className="align-middle fw-bold">{info?.user_name}</span>
-                                    </td>
-                                    <td>{info?.transection_id}</td>
-                                    <td>{info?.amount}</td>
-                                    <td>{info?.type}</td>
-                                    <td>{info?.remark}</td>
-                                </tr>
-                            ))}
-                    </tbody>
-                </Table>
-                <Pagination onChange={paginationUpdate} defaultCurrent={defaultPage} total={transactionCount} defaultPageSize={50} />
-            </div>
-        </>
-    )
+  
+
+  // const paginationUpdate = (page) => {
+  //   updateFilterQUery("page", page)
+  // }
+
+  const onChangeSorter = (pagination, filters, sorter, extra) => {
+		if (sorter.order === 'ascend') {
+			updateFilterQUery("ordering", sorter.field)
+		} else if (sorter.order === 'descend') {
+			updateFilterQUery("ordering", '-' + sorter.field)
+		}
+		else {
+			setFilterQuery({})
+		}
+	}
+
+  const propsData = {
+    handleSearchQuery: handleSearchQuery,
+    handlePDFQuery: handlePDFQuery,
+    fetchDefalutData: fetchDefalutData,
+
+    getDataApiUrl: ADMIN_GET_TRANSECTION_REPORT_APIVIEW,
+		fetchReportPDF: ADMIN_GET_TRANSECTION_REPORT_GENERATE_PDF_APIVIEW,
+
+    updateFilterQUery: updateFilterQUery,
+    filterQuery: filterQuery,
+
+    statusOptions: statusOptions,
+    selectboxData: selectBoxUser,
+
+    statusOptionPlaceholder: "Transaction Type",
+    selectOptionKey: "type",
+    reportTitle: 'Transactions Report',
+    reportFileName: 'Transactions Report',
+    selectboxDataPlaceholder: 'Select Wallet Account',
+    filterTable: 'wallet',
+
+  }
+
+  const columns = [
+		{
+			title: 'Date',
+			dataIndex: 'created_at',
+
+			sorter: {
+				compare: (a, b) => a.created_at - b.created_at,
+				multiple: 2,
+			},
+		},
+		{
+			title: 'Account',
+			dataIndex: 'user_name',
+
+		},
+		{
+			title: 'Transactions ID',
+			dataIndex: 'transection_id',
+		},
+		{
+			title: 'Amount',
+			dataIndex: 'amount',
+		},
+		{
+			title: 'Type',
+			dataIndex: 'type',
+			render: (text, record) => (
+				<Tag color={colorSwitch(record.type)}>{text.toUpperCase()}</Tag>
+			),
+		},
+		{
+			title: 'Remark',
+			dataIndex: 'remark',
+		},
+	]
+
+
+  return (
+    <>
+      <ReportHead propsData={propsData} />
+      <Table scroll={{ x: true }} columns={columns} dataSource={transections} onChange={onChangeSorter} pagination={{ defaultPageSize: 50 }} />
+      {/* <div id="my-table" class="table-responsive">
+        <Table bordered>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Account</th>
+              <th>Transactions ID</th>
+              <th>Amount</th>
+              <th>Type</th>
+              <th>Remark</th>
+            </tr>
+          </thead>
+          <tbody>
+            {transections &&
+              transections.map((info) => (
+                <tr key={info.id}>
+                  <td>{info?.created_at}</td>
+                  <td>
+                    <span className="align-middle fw-bold">{info?.user_name}</span>
+                  </td>
+                  <td>{info?.transection_id}</td>
+                  <td>{info?.amount}</td>
+                  <td>{info?.type}</td>
+                  <td>{info?.remark}</td>
+                </tr>
+              ))}
+          </tbody>
+        </Table>
+        <Pagination onChange={paginationUpdate} defaultCurrent={defaultPage} total={transactionCount} defaultPageSize={50} />
+      </div> */}
+    </>
+  )
 }
 
 export default AdminGetTransectionReport

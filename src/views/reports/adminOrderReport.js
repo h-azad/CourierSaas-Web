@@ -1,11 +1,14 @@
-import { Table } from "reactstrap"
+// import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
 import { getApi, ADMIN_GET_ORDER_REPORT_APIVIEW, MARCHANT_LIST, RIDER_LIST, ADMIN_GET_ORDER_REPORT_GENERATE_PDF_APIVIEW } from "../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
-import { Pagination } from "antd"
+import { Table, Tag } from "antd"
 import * as qs from 'qs'
+
+import { colorSwitch, OrderStatusOptions } from "../../components/orderRelatedData"
+import { handlePDFQuery, handleSearchQuery } from "../../components/reportRelatedData"
 
 
 const AdminOrderReport = () => {
@@ -16,15 +19,15 @@ const AdminOrderReport = () => {
 	const [filterQuery, setFilterQuery] = useState({})
 	const [defaultPage, setDefalutPage] = useState(1)
 
-	const defaultFetchData = () => {
+
+	const fetchDefalutData = () => {
 		return useJwt.axiosGet(getApi(ADMIN_GET_ORDER_REPORT_APIVIEW))
 			.then((res) => {
-				setFilterQuery({})
-				setDefalutPage(1)
 				setOrder(res?.data?.results)
-				setOrderCount(res.data.count)
+				setFilterQuery({})
 			}).catch((err) => {
-				console.log(err)
+				setOrder([])
+				setFilterQuery({})
 			})
 	}
 
@@ -61,73 +64,72 @@ const AdminOrderReport = () => {
 	}
 
 	useEffect(() => {
-		defaultFetchData()
 		fetchMarchantData()
 		fetchRiderData()
 	}, [])
 
 
-	const handleSearchQuery = searchTerm => {
-		return useJwt
-			.axiosGet(getApi(ADMIN_GET_ORDER_REPORT_APIVIEW) + '?' + searchTerm)
-			.then((res) => {
-				if (res.data?.results?.length > 0) {
-					setOrder(res?.data?.results)
-					setOrderCount(res.data?.count)
-				} else {
-					setOrder('')
-				}
-				return res.data
-			})
-			.catch((err) => console.log(err))
-	}
+	// const handleSearchQuery = searchTerm => {
+	// 	return useJwt
+	// 		.axiosGet(getApi(ADMIN_GET_ORDER_REPORT_APIVIEW) + '?' + searchTerm)
+	// 		.then((res) => {
+	// 			if (res.data?.results?.length > 0) {
+	// 				setOrder(res?.data?.results)
+	// 				setOrderCount(res.data?.count)
+	// 			} else {
+	// 				setOrder('')
+	// 			}
+	// 			return res.data
+	// 		})
+	// 		.catch((err) => console.log(err))
+	// }
 
 
-	function downloadPDFFile(file, fileName) {
-		var blob = new Blob([file], { type: 'application/pdf' })
-		var url = URL.createObjectURL(blob)
-		var link = document.createElement('a')
-		link.href = url
-		link.download = fileName
-		document.body.appendChild(link)
-		link.click()
-		document.body.removeChild(link)
-		URL.revokeObjectURL(url)
-	}
+	// function downloadPDFFile(file, fileName) {
+	// 	var blob = new Blob([file], { type: 'application/pdf' })
+	// 	var url = URL.createObjectURL(blob)
+	// 	var link = document.createElement('a')
+	// 	link.href = url
+	// 	link.download = fileName
+	// 	document.body.appendChild(link)
+	// 	link.click()
+	// 	document.body.removeChild(link)
+	// 	URL.revokeObjectURL(url)
+	// }
 
-	const handlePDFQuery = (searchTerm) => {
-        const regex = /&([^&]+)/g 
-        const pageRemoveToQuery = searchTerm.match(regex)
-        const filterPerameter = pageRemoveToQuery ? pageRemoveToQuery.join('') : ''
-		searchTerm = filterPerameter.startsWith("&") ? filterPerameter: filterPerameter.replace('$', '')
+	// const handlePDFQuery = (searchTerm) => {
+  //       const regex = /&([^&]+)/g 
+  //       const pageRemoveToQuery = searchTerm.match(regex)
+  //       const filterPerameter = pageRemoveToQuery ? pageRemoveToQuery.join('') : ''
+	// 	searchTerm = filterPerameter.startsWith("&") ? filterPerameter: filterPerameter.replace('$', '')
 
-		return useJwt
-			.axiosGet(getApi((ADMIN_GET_ORDER_REPORT_GENERATE_PDF_APIVIEW) + '?' + searchTerm))
-			.then((res) => {
-				if (res.data?.length > 0) {
-					var file = new Blob([res.data], { type: 'application/pdf' })
-					var fileName = 'orders_report.pdf'
-					downloadPDFFile(file, fileName)
-				} else {
-					// setOrder('')
-				}
-				return res.data
-			})
-			.catch((err) => console.log(err))
-	}
+	// 	return useJwt
+	// 		.axiosGet(getApi((ADMIN_GET_ORDER_REPORT_GENERATE_PDF_APIVIEW) + '?' + searchTerm))
+	// 		.then((res) => {
+	// 			if (res.data?.length > 0) {
+	// 				var file = new Blob([res.data], { type: 'application/pdf' })
+	// 				var fileName = 'orders_report.pdf'
+	// 				downloadPDFFile(file, fileName)
+	// 			} else {
+	// 				// setOrder('')
+	// 			}
+	// 			return res.data
+	// 		})
+	// 		.catch((err) => console.log(err))
+	// }
 
-	const statusOptions = [
-		{ value: "pending", label: "Pending" },
-		{ value: "accepted", label: "Accepted" },
-		{ value: "pickedup", label: "Picked Up" },
-		{ value: "in_warehouse", label: "In Warehouse" },
-		{ value: "shipped", label: "Shipped" },
-		{ value: "delivered", label: "Delivered" },
-		{ value: "hold", label: "Hold" },
-		{ value: "returned", label: "Returned" },
-		{ value: "cancelled", label: "Cancelled" },
-		{ value: "completed", label: "Completed" },
-	]
+	// const statusOptions = [
+	// 	{ value: "pending", label: "Pending" },
+	// 	{ value: "accepted", label: "Accepted" },
+	// 	{ value: "pickedup", label: "Picked Up" },
+	// 	{ value: "in_warehouse", label: "In Warehouse" },
+	// 	{ value: "shipped", label: "Shipped" },
+	// 	{ value: "delivered", label: "Delivered" },
+	// 	{ value: "hold", label: "Hold" },
+	// 	{ value: "returned", label: "Returned" },
+	// 	{ value: "cancelled", label: "Cancelled" },
+	// 	{ value: "completed", label: "Completed" },
+	// ]
 
 	function updateFilterQUery(term, value) {
 		let filters = { ...filterQuery }
@@ -146,18 +148,22 @@ const AdminOrderReport = () => {
 	const propsData = {
 		handleSearchQuery: handleSearchQuery,
 		handlePDFQuery: handlePDFQuery,
-		defaultFetchData: defaultFetchData,
+		fetchDefalutData: fetchDefalutData,
 
 		updateFilterQUery: updateFilterQUery,
 		filterQuery: filterQuery,
 
-		statusOptions: statusOptions,
+		getDataApiUrl: ADMIN_GET_ORDER_REPORT_APIVIEW,
+		fetchReportPDF: ADMIN_GET_ORDER_REPORT_GENERATE_PDF_APIVIEW,
+		
+		statusOptions: OrderStatusOptions,
 		selectboxData: selectboxMarchant,
 		selectboxRider: selectboxRider,
 
 		statusOptionPlaceholder: "Order Status",
 		selectOptionKey: "status",
 		reportTitle: 'Orders Report',
+		reportFileName: 'Order Report',
 		selectboxDataPlaceholder: 'Select Marchant',
 		filterTable: 'marchant',
 		isOrderPageIsRider: true
@@ -165,11 +171,81 @@ const AdminOrderReport = () => {
 	}
 
 	useEffect(() => {
-		handleSearchQuery(qs.stringify(filterQuery))
+		handleSearchQuery(ADMIN_GET_ORDER_REPORT_APIVIEW, qs.stringify(filterQuery))
+			.then(res => {
+				if (res?.results?.length > 0) {
+					setOrder(res?.results)
+				} else {
+					setOrder([])
+				}
+			})
 	}, [filterQuery])
 
 	const paginationUpdate = (page) => {
 		updateFilterQUery("page", page)
+	}
+
+	const columns = [
+		{
+			title: 'Date',
+			dataIndex: 'created_at',
+
+			sorter: {
+				compare: (a, b) => a.created_at - b.created_at,
+				multiple: 2,
+			},
+		},
+		{
+			title: 'Order ID',
+			dataIndex: 'parcel_id',
+
+		},
+		{
+			title: 'Marchant',
+			dataIndex: ['marchant', 'full_name'],
+		},
+		{
+			title: 'Delivery Rider',
+			dataIndex: ['delivary_rider', 'full_name'],
+		},
+		{
+			title: 'Status',
+			dataIndex: 'status',
+			render: (text, record) => (
+				<Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
+			),
+		},
+		{
+			title: 'Delivery Charge',
+			dataIndex: 'delivary_charge',
+		},
+		{
+			title: 'COD Charge',
+			dataIndex: 'cash_on_delivery_charge',
+		},
+		{
+			title: 'COD Amount',
+			dataIndex: 'amount_to_be_collected',
+		},
+		{
+			title: 'Accumutated Amount',
+			dataIndex: 'accumulated',
+		},
+		{
+			title: 'Deducted Amount',
+			dataIndex: 'deducted_amount',
+		},
+	]
+
+	const onChangeSorter = (pagination, filters, sorter, extra) => {
+		if (sorter.order === 'ascend') {
+			updateFilterQUery("ordering", sorter.field)
+		} else if (sorter.order === 'descend') {
+			updateFilterQUery("ordering", '-' + sorter.field)
+		}
+		else {
+			setFilterQuery({})
+		}
 	}
 
 
@@ -177,8 +253,8 @@ const AdminOrderReport = () => {
 		<>
 
 			<ReportHead propsData={propsData} />
-
-			<div id="my-table" class="table-responsive">
+			<Table scroll={{ x: true }} columns={columns} dataSource={order} onChange={onChangeSorter} pagination={{ defaultPageSize: 50 }} />
+			{/* <div id="my-table" class="table-responsive">
 				<Table bordered>
 					<thead>
 						<tr>
@@ -236,7 +312,7 @@ const AdminOrderReport = () => {
 
 				</Table>
 				<Pagination onChange={paginationUpdate} defaultCurrent={defaultPage} total={orderCount} defaultPageSize={50} />
-			</div>
+			</div> */}
 		</>
 	)
 }

@@ -1,145 +1,31 @@
 
 
-// import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
 import { getApi, MARCHANT_GET_ORDER_REPORT, MARCHANT_GET_ORDER_REPORT_PDF } from "../../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
 import * as qs from 'qs'
-import { Pagination, Table, Responsive, Tag, Card } from "antd"
-import { Overlay } from "antd/es/popconfirm/PurePanel"
-// import { Table } from 'antd'
+import { Table, Tag } from "antd"
+import { colorSwitch, OrderStatusOptions } from "../../../components/orderRelatedData"
+import { handlePDFQuery, handleSearchQuery } from "../../../components/reportRelatedData"
 
 
 const OrderReport = () => {
 	const [order, setOrder] = useState([])
 	const [filterQuery, setFilterQuery] = useState({})
-	const [orderCount, setOrderCount] = useState(0)
 
-	const defaultFetchOrderData = () => {
+
+	const fetchDefalutData = () => {
 		return useJwt.axiosGet(getApi(MARCHANT_GET_ORDER_REPORT))
 			.then((res) => {
 				setOrder(res?.data?.results)
-				setOrderCount(res?.data?.count)
 				setFilterQuery({})
 			}).catch((err) => {
 				setOrder([])
-				setOrderCount(0)
 				setFilterQuery({})
 			})
 	}
-
-	useEffect(() => {
-		defaultFetchOrderData()
-	}, [])
-
-
-	const handleSearchQuery = searchTerm => {
-		return useJwt
-			.axiosGet(getApi(MARCHANT_GET_ORDER_REPORT) + '?' + searchTerm)
-			.then((res) => {
-				if (res.data?.results?.length > 0) {
-					setOrder(res?.data?.results)
-					setOrderCount(res?.data?.count)
-				} else {
-					setOrder([])
-					setOrderCount(0)
-				}
-			})
-			.catch((err) => {
-				setOrder([])
-				setOrderCount(0)
-			})
-	}
-
-
-	function downloadPDFFile(file, fileName) {
-		var blob = new Blob([file], { type: 'application/pdf' })
-		var url = URL.createObjectURL(blob)
-		var link = document.createElement('a')
-		link.href = url
-		link.download = fileName
-		document.body.appendChild(link)
-		link.click()
-		document.body.removeChild(link)
-		URL.revokeObjectURL(url)
-	}
-
-	const handlePDFQuery = (searchTerm) => {
-
-		return useJwt
-			.axiosGet(getApi((MARCHANT_GET_ORDER_REPORT_PDF) + '?' + searchTerm))
-			.then((res) => {
-				if (res.data?.length > 0) {
-					// setOrder(res.data)
-					console.log('response file', res.data)
-					var file = new Blob([res.data], { type: 'application/pdf' })
-					var fileName = 'orders_report.pdf'
-					downloadPDFFile(file, fileName)
-				} else {
-					// setOrder('')
-				}
-				return res.data
-			})
-			.catch((err) => console.log(err))
-
-	}
-
-	const statusOptions = [
-		{ value: "pending", label: "Pending" },
-		{ value: "accepted", label: "Accepted" },
-		{ value: "pickedup", label: "Picked Up" },
-		{ value: "in_warehouse", label: "In Warehouse" },
-		{ value: "shipped", label: "Shipped" },
-		{ value: "delivered", label: "Delivered" },
-		{ value: "hold", label: "Hold" },
-		{ value: "returned", label: "Returned" },
-		{ value: "cancelled", label: "Cancelled" },
-		{ value: "completed", label: "Completed" },
-	]
-
-
-	function colorSwitch(status) {
-		switch (status) {
-			case 'pending':
-				return 'yellow'
-
-			case 'accepted':
-				return 'green'
-
-			case 'pickedup':
-				return 'blue'
-
-			case 'in_warehouse':
-				return 'orange'
-
-			case 'shipped':
-				return 'purple'
-
-			case 'delivered':
-				return 'green'
-
-			case 'hold':
-				return 'red'
-
-			case 'returned':
-				return 'orange'
-
-			case 'cancelled':
-				return 'red'
-
-			case 'completed':
-				return 'green'
-
-			case 'returned to warehouse':
-				return 'orange'
-
-			default:
-				console.log('This is something else.')
-		}
-	}
-
 
 
 	function updateFilterQUery(term, value) {
@@ -156,32 +42,48 @@ const OrderReport = () => {
 		setFilterQuery(filters)
 	}
 
+
 	useEffect(() => {
-		handleSearchQuery(qs.stringify(filterQuery))
+		handleSearchQuery(MARCHANT_GET_ORDER_REPORT, qs.stringify(filterQuery))
+			.then(res => {
+				if (res?.results?.length > 0) {
+					setOrder(res?.results)
+				} else {
+					setOrder([])
+				}
+			})
 	}, [filterQuery])
 
-	const paginationUpdate = (page) => {
-		updateFilterQUery("page", page)
+
+	const onChangeSorter = (pagination, filters, sorter, extra) => {
+		if (sorter.order === 'ascend') {
+			updateFilterQUery("ordering", sorter.field)
+		} else if (sorter.order === 'descend') {
+			updateFilterQUery("ordering", '-' + sorter.field)
+		}
+		else {
+			setFilterQuery({})
+		}
 	}
+
 
 	const propsData = {
 		handleSearchQuery: handleSearchQuery,
 		handlePDFQuery: handlePDFQuery,
 
+		reportApi: MARCHANT_GET_ORDER_REPORT_PDF,
+		getDataApiUrl: MARCHANT_GET_ORDER_REPORT,
+		
+
 		updateFilterQUery: updateFilterQUery,
 		filterQuery: filterQuery,
-		statusOptions: statusOptions,
-		defaultFetchOrderData: defaultFetchOrderData,
+		statusOptions: OrderStatusOptions,
+		fetchDefalutData: fetchDefalutData,
 
 		selectOptionKey: "status",
-		reportTitle: 'Orders Report'
+		reportTitle: 'Orders Report',
+		reportFileName: 'Order Report',
 	}
-
-	const fruit = 'apple'
-
-
-
-
 
 
 	const columns = [
@@ -203,13 +105,7 @@ const OrderReport = () => {
 			title: 'Status',
 			dataIndex: 'status',
 			render: (text, record) => (
-				<Tag color={colorSwitch(record.status)}>{text}</Tag>
-				// <span style={{ color: colorSwitch(record.status) }}>
-				// <Card>
-
-				// </Card>
-				// </span>
-
+				<Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
 			),
 		},
 		{
@@ -234,57 +130,14 @@ const OrderReport = () => {
 		},
 	]
 
-	const data = order
-	// const data = [
-	// 	{
-	// 		key: '1',
-	// 		name: 'John Brown',
-	// 		chinese: 98,
-	// 		math: 60,
-	// 		english: 70,
-	// 	},
-	// 	{
-	// 		key: '2',
-	// 		name: 'Jim Green',
-	// 		chinese: 98,
-	// 		math: 66,
-	// 		english: 89,
-	// 	},
-	// 	{
-	// 		key: '3',
-	// 		name: 'Joe Black',
-	// 		chinese: 98,
-	// 		math: 90,
-	// 		english: 70,
-	// 	},
-	// 	{
-	// 		key: '4',
-	// 		name: 'Jim Red',
-	// 		chinese: 88,
-	// 		math: 99,
-	// 		english: 89,
-	// 	},
-	// ]
 
-	const onChangeSorter = (pagination, filters, sorter, extra) => {
-		// console.log('params', pagination, filters, sorter, extra)
-		if (sorter.order === 'ascend') {
-			setFilterQuery({})
-			updateFilterQUery("ordering", sorter.field)
-		} else if (sorter.order === 'descend') {
-			setFilterQuery({})
-			updateFilterQUery("ordering", '-' + sorter.field)
-		}
-		else {
-			setFilterQuery({})
-		}
-	}
+
 
 	return (
 		<>
 
 			<ReportHead propsData={propsData} />
-			<Table scroll={{ x: true }} columns={columns} dataSource={data} onChange={onChangeSorter} pagination={{ defaultPageSize: 5 }} />
+			<Table scroll={{ x: true }} columns={columns} dataSource={order} onChange={onChangeSorter} pagination={{ defaultPageSize: 50 }} />
 			{/* <div id="my-table" class="table-responsive">
 				<Table bordered>
 					<thead>

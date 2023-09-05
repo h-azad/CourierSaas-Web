@@ -1,85 +1,30 @@
 
 
-import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
 import { getApi, MARCHANT_GET_WITHDRAW_REQUEST_REPORT, MARCHANT_GET_WITHDRAW_REQUEST_REPORT_PDF } from "../../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
-import { Pagination } from "antd"
+import { Table, Tag } from "antd"
 import * as qs from 'qs'
+import { handlePDFQuery, handleSearchQuery } from "../../../components/reportRelatedData"
 
 const WithdrawBalanceReport = () => {
 	const [withdrawRequest, setWithdrawRequestBalance] = useState([])
 	const [filterQuery, setFilterQuery] = useState({})
-	const [orderCount, setOrderCount] = useState(0)
 
-	const defaultFetchOrderData = () => {
+	const fetchDefalutData = () => {
 		return useJwt.axiosGet(getApi(MARCHANT_GET_WITHDRAW_REQUEST_REPORT))
 			.then((res) => {
 				setWithdrawRequestBalance(res?.data?.results)
-				setOrderCount(res?.data?.count)
 				setFilterQuery({})
 			}).catch((err) => {
 				setWithdrawRequestBalance([])
-				setOrderCount(0)
 				setFilterQuery({})
 			})
 	}
 
-	useEffect(() => {
-		defaultFetchOrderData()
-	}, [])
 
-
-	const handleSearchQuery = searchTerm => {
-		return useJwt
-			.axiosGet(getApi(MARCHANT_GET_WITHDRAW_REQUEST_REPORT) + '?' + searchTerm)
-			.then((res) => {
-				if (res.data?.results?.length > 0) {
-					setWithdrawRequestBalance(res?.data?.results)
-					setOrderCount(res?.data?.count)
-				} else {
-					setWithdrawRequestBalance([])
-					setOrderCount(0)
-				}
-			})
-			.catch((err) => {
-				setWithdrawRequestBalance([])
-				setOrderCount(0)
-			})
-	}
-
-
-	function downloadPDFFile(file, fileName) {
-		var blob = new Blob([file], { type: 'application/pdf' })
-		var url = URL.createObjectURL(blob)
-		var link = document.createElement('a')
-		link.href = url
-		link.download = fileName
-		document.body.appendChild(link)
-		link.click()
-		document.body.removeChild(link)
-		URL.revokeObjectURL(url)
-	}
-
-	const handlePDFQuery = (searchTerm) => {
-
-		return useJwt
-			.axiosGet(getApi((MARCHANT_GET_WITHDRAW_REQUEST_REPORT_PDF) + '?' + searchTerm))
-			.then((res) => {
-				if (res.data?.length > 0) {
-					var file = new Blob([res.data], { type: 'application/pdf' })
-					var fileName = 'Withdraw_Balance_report.pdf'
-					downloadPDFFile(file, fileName)
-				} else {
-					// setWithdrawRequestBalance('')
-				}
-				return res.data
-			})
-			.catch((err) => console.log(err))
-
-	}
 
 	const statusOptions = [
 		{ value: "Pending", label: "Pending" },
@@ -87,6 +32,25 @@ const WithdrawBalanceReport = () => {
 		{ value: "Complete", label: "Complete" },
 		{ value: "Cancel", label: "Cancel" },
 	]
+
+	function colorSwitch(status) {
+		switch (status) {
+			case 'Pending':
+				return 'yellow'
+
+			case 'Accept':
+				return 'green'
+
+			case 'Complete':
+				return 'green'
+
+			case 'Cancel':
+				return 'red'
+
+			default:
+				return 'orange'
+		}
+	}
 
 	function updateFilterQUery(term, value) {
 		let filters = { ...filterQuery }
@@ -103,34 +67,87 @@ const WithdrawBalanceReport = () => {
 	}
 
 	useEffect(() => {
-		handleSearchQuery(qs.stringify(filterQuery))
+		handleSearchQuery(MARCHANT_GET_WITHDRAW_REQUEST_REPORT, qs.stringify(filterQuery))
+			.then(res => {
+				if (res?.results?.length > 0) {
+					setWithdrawRequestBalance(res?.results)
+				} else {
+					setWithdrawRequestBalance([])
+				}
+			})
 	}, [filterQuery])
 
-	const paginationUpdate = (page) => {
-		updateFilterQUery("page", page)
+	const onChangeSorter = (pagination, filters, sorter, extra) => {
+		if (sorter.order === 'ascend') {
+			updateFilterQUery("ordering", sorter.field)
+		} else if (sorter.order === 'descend') {
+			updateFilterQUery("ordering", '-' + sorter.field)
+		}
+		else {
+			setFilterQuery({})
+		}
 	}
 
 	const propsData = {
 		handleSearchQuery: handleSearchQuery,
 		handlePDFQuery: handlePDFQuery,
 
+		reportApi: MARCHANT_GET_WITHDRAW_REQUEST_REPORT_PDF,
+		getDataApiUrl: MARCHANT_GET_WITHDRAW_REQUEST_REPORT,
+
 		updateFilterQUery: updateFilterQUery,
 		filterQuery: filterQuery,
 		statusOptions: statusOptions,
-		defaultFetchOrderData: defaultFetchOrderData,
+		fetchDefalutData: fetchDefalutData,
 
 		selectOptionKey: "withdraw_status",
-		reportTitle: 'Withdraw Request Report'
+		reportTitle: 'Withdraw Request Report',
+		reportFileName: 'Withdraw Request Report',
 	}
+
+	const columns = [
+		{
+			title: 'Date',
+			dataIndex: 'created_at',
+
+			sorter: {
+				compare: (a, b) => a.created_at - b.created_at,
+				multiple: 2,
+			},
+		},
+		{
+			title: 'Status',
+			dataIndex: 'withdraw_status',
+			render: (text, record) => (
+				<Tag color={colorSwitch(record.withdraw_status)}>{text.toUpperCase()}</Tag>
+			),
+		},
+		{
+			title: 'Previous Balance',
+			dataIndex: 'balance',
+		},
+
+
+		{
+			title: 'Withdraw Balance',
+			dataIndex: 'withdraw_balance',
+		},
+		{
+			title: 'Current Balance',
+			dataIndex: 'current_balance',
+		},
+	]
 
 	return (
 		<>
 			<ReportHead propsData={propsData} />
+			<Table scroll={{ x: true }} columns={columns} dataSource={withdrawRequest} onChange={onChangeSorter} pagination={{ defaultPageSize: 50 }} />
+			{/* <ReportHead propsData={propsData} />
 			<div class="table-responsive">
 				<Table bordered>
 					<thead>
 						<tr>
-							<th style={{ textAlign: "center" }}>Date</th>
+							<th style={{ textAlign: "center" }}>DATE</th>
 							<th style={{ textAlign: "center" }}>STATUS</th>
 							<th style={{ textAlign: "center" }}>PREVIOUS BALANCE</th>
 							<th style={{ textAlign: "center" }}>WITHDRAW BALANCE</th>
@@ -151,7 +168,7 @@ const WithdrawBalanceReport = () => {
 					</tbody>
 				</Table>
 			</div>
-			<Pagination onChange={paginationUpdate} total={orderCount} defaultPageSize={50} />
+			<Pagination onChange={paginationUpdate} total={orderCount} defaultPageSize={50} /> */}
 		</>
 
 	)

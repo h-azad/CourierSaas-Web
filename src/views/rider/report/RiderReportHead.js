@@ -20,13 +20,13 @@ const ReportHead = ({ propsData }) => {
 	
 	function submitFilter(e){
 		e.preventDefault()
-		propsData.handleSearchQuery(qs.stringify(propsData.filterQuery))
+		propsData.handleSearchQuery(propsData.getDataApiUrl, qs.stringify(propsData.filterQuery))
 	}
 
 	function submitPDFFilter(e) {
 		e.preventDefault()
-		propsData.handleSearchQuery(qs.stringify(propsData.filterQuery))
-		propsData.handlePDFQuery(qs.stringify(propsData.filterQuery))
+		propsData.handleSearchQuery(propsData.getDataApiUrl, qs.stringify(propsData.filterQuery))
+		propsData.handlePDFQuery(propsData.reportApi, qs.stringify(propsData.filterQuery), propsData.reportFileName)
 	}
 
 	const rangePresets = [
@@ -47,7 +47,6 @@ const ReportHead = ({ propsData }) => {
 			value: [dayjs().add(-90, 'd'), dayjs()],
 		},
 	]
-
 
 	return (
 		<div className='report_head_wrapper mt-1'>
@@ -103,7 +102,7 @@ const ReportHead = ({ propsData }) => {
 						<div className=''><Button type="primary" onClick={submitFilter} size={20}>
 							Filter
 						</Button></div>
-						<div className=''><Button type="primary" onClick={propsData.defaultFetchOrderData} danger size={20}>
+						<div className=''><Button type="primary" onClick={propsData.fetchDefalutData} danger size={20}>
 							Reset
 						</Button></div>
 						<div className=''><Button type="primary" onClick={submitPDFFilter} icon={<FilePptOutlined />} size={20}>

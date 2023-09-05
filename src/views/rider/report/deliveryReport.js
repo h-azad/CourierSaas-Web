@@ -1,93 +1,55 @@
 
 
-import { Table } from "reactstrap"
+// import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
 import { getApi, RIDER_GET_DELIVERY_REPORT, RIDER_GET_DELIVERY_REPORT_PDF } from "../../../constants/apiUrls"
 import ReportHead from "./RiderReportHead"
 import React from 'react'
-import { Pagination } from "antd"
+import { Table, Tag } from "antd"
 import * as qs from 'qs'
+import { colorSwitch } from "../../../components/orderRelatedData"
+import { handlePDFQuery, handleSearchQuery } from "../../../components/reportRelatedData"
 
 
 const DeliveryReport = () => {
 	const [order, setOrder] = useState([])
 	const [filterQuery, setFilterQuery] = useState({})
-	const [orderCount, setOrderCount] = useState(0)
 
-	const defaultFetchOrderData = () => {
+	const fetchDefalutData = () => {
 		return useJwt.axiosGet(getApi(RIDER_GET_DELIVERY_REPORT))
 			.then((res) => {
 				setOrder(res?.data?.results)
-				setOrderCount(res?.data?.count)
+				setFilterQuery({})
 			}).catch((err) => {
 				setOrder([])
-				setOrderCount(1)
+				setFilterQuery({})
 			})
 	}
 
-	useEffect(() => {
-		defaultFetchOrderData()
-	}, [])
-
-
-	const handleSearchQuery = searchTerm => {
-		return useJwt
-			.axiosGet(getApi(RIDER_GET_DELIVERY_REPORT) + '?' + searchTerm)
-			.then((res) => {
-				if (res.data?.results?.length > 0) {
-					setOrder(res?.data?.results)
-					setOrderCount(res?.data?.count)
-				} else {
-					setOrder([])
-					setOrderCount(1)
-				}
-			})
-			.catch((err) => {
-				setOrder([])
-				setOrderCount(1)
-			})
-	}
-
-
-	function downloadPDFFile(file, fileName) {
-		var blob = new Blob([file], { type: 'application/pdf' })
-		var url = URL.createObjectURL(blob)
-		var link = document.createElement('a')
-		link.href = url
-		link.download = fileName
-		document.body.appendChild(link)
-		link.click()
-		document.body.removeChild(link)
-		URL.revokeObjectURL(url)
-	}
-
-	const handlePDFQuery = (searchTerm) => {
-
-		return useJwt
-			.axiosGet(getApi((RIDER_GET_DELIVERY_REPORT_PDF) + '?' + searchTerm))
-			.then((res) => {
-				if (res?.data) {
-					var file = new Blob([res.data], { type: 'application/pdf' })
-					var fileName = 'delivery_report.pdf'
-					downloadPDFFile(file, fileName)
-				} else {
-					setOrder([])
-					setOrderCount(1)
-				}
-			})
-			.catch((err) => {
-				setOrder([])
-				setOrderCount(1)
-			})
-
-	}
 
 	const statusOptions = [
 		{ value: true, label: "Delivered" },
 		{ value: 'false', label: "UnDelivered" },
 		{ value: 'failed_delivery', label: "Delivery Failed" },
 	]
+
+	function statusOptionsColorSwitch(option) {
+		switch (option) {
+			case 'Delivered':
+				return 'green'
+	
+			case 'UnDelivered':
+				return 'yellow'
+			
+			case 'Delivery Failed':
+				return 'red'
+
+			default:
+				return 'orange'
+		}
+	}
+
 
 	function updateFilterQUery(term, value) {
 		let filters = { ...filterQuery }
@@ -104,32 +66,94 @@ const DeliveryReport = () => {
 	}
 
 	useEffect(() => {
-		handleSearchQuery(qs.stringify(filterQuery))
+		handleSearchQuery(RIDER_GET_DELIVERY_REPORT, qs.stringify(filterQuery))
+			.then(res => {
+				if (res?.results?.length > 0) {
+					setOrder(res?.results)
+				} else {
+					setOrder([])
+				}
+			})
 	}, [filterQuery])
 
-	const paginationUpdate = (page) => {
-		updateFilterQUery("page", page)
+
+
+	const onChangeSorter = (pagination, filters, sorter, extra) => {
+		if (sorter.order === 'ascend') {
+			updateFilterQUery("ordering", sorter.field)
+		} else if (sorter.order === 'descend') {
+			updateFilterQUery("ordering", '-' + sorter.field)
+		}
+		else {
+			setFilterQuery({})
+		}
 	}
 
 	const propsData = {
 		handleSearchQuery: handleSearchQuery,
 		handlePDFQuery: handlePDFQuery,
 
+		reportApi: RIDER_GET_DELIVERY_REPORT_PDF,
+		getDataApiUrl: RIDER_GET_DELIVERY_REPORT,
+
 		updateFilterQUery: updateFilterQUery,
 		filterQuery: filterQuery,
 		statusOptions: statusOptions,
-		defaultFetchOrderData: defaultFetchOrderData,
+		fetchDefalutData: fetchDefalutData,
 
 		selectOptionKey: "delivery_status",
-		reportTitle: 'Delivery Report'
+		reportTitle: 'Delivery Report',
+		reportFileName: 'Delivery Report',
 	}
+
+	const columns = [
+		{
+			title: 'Date',
+			dataIndex: 'delivery_date',
+
+			sorter: {
+				compare: (a, b) => a.created_at - b.created_at,
+				multiple: 2,
+			},
+		},
+		{
+			title: 'Order ID',
+			dataIndex: 'parcel_id',
+
+		},
+
+		{
+			title: 'Status',
+			dataIndex: 'status',
+			render: (text, record) => (
+				<Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
+			),
+		},
+		{
+			title: 'Delivery Status',
+			dataIndex: 'delivery_status',
+			render: (text, record) => (
+				<Tag color={statusOptionsColorSwitch(record.delivery_status)}>{text.toUpperCase()}</Tag>
+			),
+			
+		},
+		{
+			title: 'Phone',
+			dataIndex: 'phone_number',
+		},
+		{
+			title: 'Address',
+			dataIndex: 'delivary_address',
+		},
+	]
 
 	return (
 		<>
 
 			<ReportHead propsData={propsData} />
+			<Table scroll={{ x: true }} columns={columns} dataSource={order} onChange={onChangeSorter} pagination={{ defaultPageSize: 50 }} />
 
-			<div id="my-table" class="table-responsive">
+			{/* <div id="my-table" class="table-responsive">
 				<Table bordered>
 					<thead>
 						<tr>
@@ -168,7 +192,7 @@ const DeliveryReport = () => {
 					</tbody>
 				</Table>
 				<Pagination onChange={paginationUpdate} defaultCurrent={1} total={orderCount} defaultPageSize={50} />
-			</div>
+			</div> */}
 		</>
 	)
 }

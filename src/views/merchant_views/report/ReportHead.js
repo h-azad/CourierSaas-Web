@@ -10,22 +10,22 @@ const ReportHead = ({ propsData }) => {
 	const { Search } = Input
 
 	function onSelectDate(date, dateString) {
-		if (dateString.find(x => x != '')){
+		if (dateString.find(x => x != '')) {
 			propsData.updateFilterQUery('date', dateString.toString())
-		}else{
+		} else {
 			propsData.updateFilterQUery('date', '')
 		}
 	}
-	
-	function submitFilter(e){
+
+	function submitFilter(e) {
 		e.preventDefault()
-		propsData.handleSearchQuery(qs.stringify(propsData.filterQuery))
+		propsData.handleSearchQuery(propsData.getDataApiUrl, qs.stringify(propsData.filterQuery))
 	}
 
 	function submitPDFFilter(e) {
 		e.preventDefault()
-		propsData.handleSearchQuery(qs.stringify(propsData.filterQuery))
-		propsData.handlePDFQuery(qs.stringify(propsData.filterQuery))
+		propsData.handleSearchQuery(propsData.getDataApiUrl, qs.stringify(propsData.filterQuery))
+		propsData.handlePDFQuery(propsData.reportApi, qs.stringify(propsData.filterQuery), propsData.reportFileName)
 	}
 
 	const rangePresets = [
@@ -51,7 +51,7 @@ const ReportHead = ({ propsData }) => {
 		<div className='report_head_wrapper mt-1'>
 
 			<div className='row'>
-				<div className='col-lg-3'>{ propsData.reportTitle }</div>
+				<div className='col-lg-3'>{propsData.reportTitle}</div>
 				<div className='col-lg-9'>
 					<div className='row g-1'>
 						<div className='col-lg-4'>
@@ -69,7 +69,7 @@ const ReportHead = ({ propsData }) => {
 								style={{
 									width: '100%',
 								}}
-								
+
 								id="status"
 								name="status"
 								placeholder="Select Order Status"
@@ -97,15 +97,12 @@ const ReportHead = ({ propsData }) => {
 						<div className=''><Button type="primary" onClick={submitFilter} size={20}>
 							Filter
 						</Button></div>
-						<div className=''><Button type="primary" onClick={propsData.defaultFetchOrderData} danger size={20}>
+						<div className=''><Button type="primary" onClick={propsData.fetchDefalutData} danger size={20}>
 							Reset
 						</Button></div>
 						<div className=''><Button type="primary" onClick={submitPDFFilter} icon={<FilePptOutlined />} size={20}>
 							Export To PDF
 						</Button></div>
-						{/* <div className=''><Button type="primary" icon={<FileExcelOutlined />} size={20}>
-							Export To Excel
-						</Button></div> */}
 					</div>
 				</div>
 
