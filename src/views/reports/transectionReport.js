@@ -168,7 +168,6 @@ const AdminGetTransectionReport = () => {
 		},
 	]
 
-
   return (
     <>
       <ReportHead propsData={propsData} />

@@ -382,7 +382,7 @@ console.log('data.payment_method', data.payment_method)
                 Preferred Payment Method*
                 </Label>
                 <Controller
-                  defaultValue={{ value: marchantInfo.payment_method, label: marchantInfo.payment_info.payment_method_name }}
+                  defaultValue={{ value: marchantInfo.payment_method.id, label: marchantInfo.payment_method.payment_method_name }}
                   id="payment_method"
                   name="payment_method"
                   control={control}
@@ -455,7 +455,7 @@ console.log('data.payment_method', data.payment_method)
               City Name
             </Label>
             <Controller
-                  defaultValue={{value: marchantInfo.city, label: marchantInfo.city_info.city_name}}
+                  defaultValue={{value: marchantInfo.city.id, label: marchantInfo.city.city_name}}
                   id="city"
                   name="city"
                   control={control}
@@ -477,7 +477,7 @@ console.log('data.payment_method', data.payment_method)
                 Area Name
                 </Label>
                 <Controller
-                  defaultValue={{value: marchantInfo.area, label: marchantInfo.area_info.area_name}}
+                  defaultValue={{value: marchantInfo.area.id, label: marchantInfo.area.area_name}}
                   id="area"
                   name="area"
                   control={control}

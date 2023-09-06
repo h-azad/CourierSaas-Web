@@ -37,6 +37,7 @@ import {
 import defaultAvatar from "@src/assets/images/portrait/small/avatar-s-11.jpg"
 import { useDispatch } from "react-redux"
 import { useState, useEffect } from "react"
+import { apiBaseUrl } from "../../../../configs/apiConfig"
 
 const UserDropdown = () => {
   const dispatch = useDispatch()
@@ -110,7 +111,7 @@ const UserDropdown = () => {
           <span className="user-status">{profileInformation.role ? profileInformation.role : profileInformation.admin_role}</span>
         </div>
         <Avatar
-          img={profileInformation.profile_picture ? "http://localhost:8000"+profileInformation.profile_picture : Avatar}
+          img={profileInformation.profile_picture ? `${apiBaseUrl}`+profileInformation.profile_picture : Avatar}
           imgHeight="40"
           imgWidth="40"
           status="online"

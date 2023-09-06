@@ -169,12 +169,12 @@ const AddCreateOrder = () => {
         setAmountCollected(value.amount_to_be_collected)
         setCODCharge(CODCharge)
       }
-      if (name ==='order_type' && type==="change"){
-        if (value.order_type.value === "COD"){
+      if (name === 'order_type' && type === "change") {
+        if (value.order_type.value === "COD") {
           setOrderType(value.order_type.value)
           setCODCharge(CODCharge)
-          
-        }else{
+
+        } else {
           setOrderType(value.order_type.value)
           setCODCharge(0)
           setValue('amount_to_be_collected', 0.00)
@@ -550,7 +550,7 @@ const AddCreateOrder = () => {
                   render={({ field }) => (
                     <Input
                       type="number"
-                      readOnly={orderType ==='pre-paid'? true: false}
+                      readOnly={orderType === 'pre-paid' ? true : false}
                       value={amountCollected}
                       // onChange={(e) => setAmountCollected(e.target.value)}
                       placeholder=""
@@ -776,9 +776,9 @@ const AddCreateOrder = () => {
               <div class="col-lg-6">
                 {/* <h5> Delivary charge = {charge} </h5> */}
                 <h5> Delivary charge = {delivaryCharge} </h5>
-                <h5> Cash on delivary charge = {(Number(CODCharge) * Number(amountCollected))/100} </h5>
+                <h5> Cash on delivary charge = {(Number(CODCharge) * Number(amountCollected)) / 100} </h5>
                 <h5> Ammount to be collected = {amountCollected} </h5>
-                <h5> Total amount = {Number(amountCollected) + Number(delivaryCharge) + ((Number(CODCharge) * Number(amountCollected)/100))} </h5>
+                <h5> Total amount = {Number(amountCollected) + Number(delivaryCharge) + ((Number(CODCharge) * Number(amountCollected) / 100))} </h5>
                 <hr></hr>
                 {/* <h5> Subtotal = {Number(delivaryCharge) + Number(amountCollected)} </h5> */}
                 <hr></hr>

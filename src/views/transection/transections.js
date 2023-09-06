@@ -2,7 +2,6 @@
 
 import { Search } from "react-feather"
 import {
-  Table,
   Button,
   CardText,
 
@@ -16,12 +15,29 @@ import {
   TRANSECTIONS_FILTER,
 } from "../../constants/apiUrls"
 
-// import { TRANSECTIONS } from "../../constants/apiUrls"
+import { Table, Tag } from "antd"
+import * as qs from 'qs'
+
+import { GENERAL_ROW_SIZE } from "../../constants/tableConfig"
 
 
 
 const Transections = () => {
   const [transections, setTransections] = useState([])
+
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: GENERAL_ROW_SIZE,
+    },
+  })
+
+  const [filterQuery, setFilterQuery] = useState({
+    page: 1,
+    page_size: GENERAL_ROW_SIZE,
+    ordering: '-created_at'
+  })
+
 
 
   useEffect(() => {
@@ -31,16 +47,56 @@ const Transections = () => {
 
 
   const fetchTransectionsData = () => {
+    const _queries = {
+      page: tableParams.pagination.current,
+      page_size: tableParams.pagination.pageSize,
+    }
     return useJwt
-      .axiosGet(getApi(TRANSECTIONS))
+      .axiosGet(getApi(TRANSECTIONS) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
-        setTransections(res.data)
-        console.log('res', res.data)
+        setTransections(res?.data?.results)
+        updatePagination({
+          current: res?.data?.page_number,
+          pageSize: res?.data?.page_size,
+          total: res?.data?.count,
+        })
         return res.data
       })
       .catch((err) => console.log(err))
   }
 
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      sorter,
+    })
+
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([])
+    }
+  }
+
+  const updatePagination = (info) => {
+    const _tableParams = { ...tableParams }
+
+    _tableParams.pagination = info
+
+    setTableParams(_tableParams)
+  }
+
+  const updateFilterQUery = (key, value) => {
+    let filters = { ...filterQuery }
+    // if (term != 'page') {
+    //   filters['page'] = 1
+    // }
+    if (value) {
+      filters[key] = value
+    } else {
+      filters.hasOwnProperty(term) && delete filters[term]
+    }
+    setFilterQuery(filters)
+  }
 
   const fetchSearchsetTransectionsData = searchTerm => {
     return useJwt
@@ -55,10 +111,10 @@ const Transections = () => {
   const handleSearch = debounce(e => {
     console.log(e.target.value)
     const searchTerm = e.target.value
-    if (searchTerm.length > 0) {
+    if (searchTerm?.length > 0) {
       fetchSearchsetTransectionsData(searchTerm)
         .then(data => {
-          if (data.length > 0) {
+          if (data?.length > 0) {
             console.log('res', data)
             setTransections(data)
           } else {
@@ -86,6 +142,81 @@ const Transections = () => {
     }
   }
 
+  function colorSwitch(status) {
+    switch (status) {
+      case 'Cash-Out':
+        return 'geekblue'
+
+      case 'Cash-In':
+        return 'green'
+
+      default:
+        return 'geekblue'
+    }
+  }
+
+  const onChangeSorter = (pagination, filters, sorter, extra) => {
+    if (sorter.order === 'ascend') {
+      // updateFilterQUery("ordering", sorter.field)
+    } else if (sorter.order === 'descend') {
+      updateFilterQUery("ordering", '-' + sorter.field)
+    }
+    else {
+      // setFilterQuery({})
+    }
+  }
+
+  const columns = [
+    {
+      title: 'Date',
+      dataIndex: 'created_at',
+      sorter: true,
+      defaultSortOrder: 'descend'
+    },
+    {
+      title: 'Account',
+      dataIndex: 'user_name',
+
+    },
+    {
+      title: 'Transactions ID',
+      dataIndex: 'transection_id',
+    },
+    {
+      title: 'Amount',
+      dataIndex: 'amount',
+    },
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      render: (text, record) => (
+        <Tag color={colorSwitch(record.type)}>{text.toUpperCase()}</Tag>
+      ),
+    },
+    {
+      title: 'Remark',
+      dataIndex: 'remark',
+    },
+  ]
+
+  useEffect(() => {
+    const _tableParams = tableParams
+    const _filters = { ...filterQuery }
+
+    if (_tableParams) {
+      _filters['page'] = _tableParams.pagination?.current
+      _filters['page_size'] = _tableParams.pagination?.pageSize
+      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+    }
+
+    setFilterQuery(_filters)
+
+  }, [JSON.stringify(tableParams)])
+
+  useEffect(() => {
+    fetchTransectionsData()
+  }, [JSON.stringify(filterQuery)])
+
   return (
     <>
       <CardText>
@@ -102,7 +233,8 @@ const Transections = () => {
                 type="text"
                 class="form-control"
                 // value=""
-                onChange={handleSearch}
+                onChange={fetchTransectionsData}
+                // onChange={handleSearch}
               />
               <Button.Ripple className="btn-icon ms-1" outline color="primary">
                 <Search size={16} />
@@ -111,7 +243,8 @@ const Transections = () => {
           </div>
         </div>
       </CardText>
-      <div class="table-responsive">
+      <Table scroll={{ x: true }} columns={columns} dataSource={transections} onChange={handleTableChange} pagination={tableParams.pagination} />
+      {/* <div class="table-responsive">
         <Table bordered>
           <thead>
             <tr>
@@ -139,7 +272,7 @@ const Transections = () => {
               ))}
           </tbody>
         </Table>
-      </div>
+      </div> */}
     </>
   )
 }

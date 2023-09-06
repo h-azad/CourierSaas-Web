@@ -28,6 +28,8 @@ import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
 import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
 import * as qs from 'qs'
 
+import { OrderStatusOptions } from '../../../components/orderRelatedData'
+
 
 const CreateOrderList = () => {
   const { Search } = Input
@@ -95,20 +97,6 @@ const CreateOrderList = () => {
       })
       .catch((err) => console.log(err))
   }
-
-  const statusOptions = [
-    { value: "pending", label: "Pending" },
-    { value: "accepted", label: "Accepted" },
-    { value: "pickedup", label: "Picked Up" },
-    { value: "in_warehouse", label: "In Warehouse" },
-    { value: "shipped", label: "Shipped" },
-    { value: "delivered", label: "Delivered" },
-    { value: "hold", label: "Hold" },
-    { value: "returned", label: "Returned" },
-    { value: "cancelled", label: "Cancelled" },
-    { value: "completed", label: "Completed" },
-  ]
-
 
   const clearFilter = () => {
     setOrderStatus("")
@@ -181,7 +169,7 @@ const CreateOrderList = () => {
                     updateFilterQUery('status', e?.value)
                     setOrderStatus(e)
                   }}
-                  options={statusOptions}
+                  options={OrderStatusOptions}
                   value={orderStatus}
                 />
               </div>

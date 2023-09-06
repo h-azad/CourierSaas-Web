@@ -16,6 +16,7 @@ import {
   RIDER_UPDATE_STATUS,
 } from "../../../constants/apiUrls"
 
+import { apiBaseUrl } from '../../../configs/apiConfig'
 
 // ** Custom Components
 import Avatar from '@components/avatar'
@@ -67,6 +68,7 @@ const UserInfoCard = ({ selectedUser }) => {
     formState: { errors }
   } = useForm({
   })
+
 
   // ** render user img
   const renderUserImg = () => {
@@ -146,7 +148,14 @@ const UserInfoCard = ({ selectedUser }) => {
         <CardBody>
           <div className='user-avatar-section'>
             <div className='d-flex align-items-center flex-column'>
-              {renderUserImg()}
+              <img
+                height='110'
+                width='110'
+                alt='user-avatar'
+                src={selectedUser.profile_picture ? `${apiBaseUrl}` + selectedUser.profile_picture : Avatar}
+                className='img-fluid rounded mt-3 mb-2'
+              />
+              
               <div className='d-flex flex-column align-items-center text-center'>
                 <div className='user-info'>
                   <h4>{selectedUser?.full_name}</h4>

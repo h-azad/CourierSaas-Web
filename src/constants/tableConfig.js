@@ -1,0 +1,1 @@
+GENERAL_ROW_SIZE = 2

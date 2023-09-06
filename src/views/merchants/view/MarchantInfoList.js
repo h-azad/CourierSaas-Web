@@ -60,14 +60,14 @@ const MarchantInfoList = ({ userInfo, }) => {
             </tr>
             <tr>
               <th>Payment Method:</th>
-                <th>{userInfo?.payment_info?.payment_method_name}</th>
+                <th>{userInfo?.payment_method?.payment_method_name}</th>
             </tr>
             <tr>
               <th>City:</th>
-                <th>{userInfo?.city_info?.city_name}</th>
+                <th>{userInfo?.city?.city_name}</th>
             </tr><tr>
               <th>Area:</th>
-                <th>{userInfo?.area_info?.area_name}</th>
+                <th>{userInfo?.area?.area_name}</th>
             </tr>
             <tr>
               <th>Contact(Optional):</th>

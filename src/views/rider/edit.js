@@ -27,17 +27,13 @@ const EditRider = () => {
   const [selectboxArea, setSelectboxArea] = useState([])
   const [data, setData] = useState(null)
   const [riderInfo, setRiderInfo] = useState(null)
-  console.log('rider info', riderInfo)
   let { id } = useParams()
 
   useEffect(() => {
-    console.log(id)
     useJwt
       .axiosGet(getApi(RIDER_DETAILS) + id + "/")
       .then((res) => {
-        // console.log("res", res.data)
         setRiderInfo(res.data.data)
-        console.log(identity.find(id => id.value == riderInfo.identity))
         return res.data
       })
       .catch(err => console.log(err))
@@ -62,7 +58,6 @@ const EditRider = () => {
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) => { 
-      console.log(value, name, type)
       if(name == 'city' && type=='change'){
         setValue('area',null)
         fetchAreaData(value.city.value)
@@ -77,13 +72,17 @@ const EditRider = () => {
     fetchCityData()
   },[])
 
+  useEffect(()=>{
+    console.log('riderInfo', riderInfo)
+  }, [riderInfo])
+
   const fetchPaymentmethodData = () => {
     return useJwt
       .axiosGet(getApi(PAYMENT_METHOD_LIST) + '?request-location=form')
       .then((res) => {
         let paymentmethodData = []
-
-        res.data.map(data => {
+        
+        res?.data.map(data => {
           paymentmethodData.push({value: data.id, label: data.payment_method_name})
         })
 
@@ -127,7 +126,6 @@ const EditRider = () => {
   }
 
   const onSubmit = data => {
-    console.log("data", data)
 
     let isFormValid = true
 
@@ -216,7 +214,6 @@ const EditRider = () => {
  
         status: 'active'
       }
-      console.log("formData", formData)
       const headers = {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -226,7 +223,6 @@ const EditRider = () => {
       useJwt
         .axiosPut(getApi(RIDER_EDIT)  + id + "/", formData, headers)
         .then((res) => {
-          console.log("res", res.data)
           SwalAlert("Rider Edited Successfully")
           navigate("/rider")
         })
@@ -373,7 +369,7 @@ const EditRider = () => {
                     Preferred Payment Method*
                   </Label>
                   <Controller
-                    defaultValue={{ value: riderInfo.payment_method, label: riderInfo.payment_info.payment_method_name }}
+                    defaultValue={{ value: riderInfo.payment_method.id, label: riderInfo.payment_method.payment_method_name }}
                     id="payment_method"
                     name="payment_method"
                     control={control}
@@ -446,7 +442,7 @@ const EditRider = () => {
               City Name
             </Label>
             <Controller
-                  defaultValue={{value: riderInfo.city, label: riderInfo.city_info.city_name}}
+                  defaultValue={{value: riderInfo.city.id, label: riderInfo.city.city_name}}
                   id="city"
                   name="city"
                   control={control}
@@ -468,7 +464,7 @@ const EditRider = () => {
                 Area Name
                 </Label>
                 <Controller
-                  defaultValue={{value: riderInfo.area, label: riderInfo.area_info.area_name}}
+                  defaultValue={{value: riderInfo.area.id, label: riderInfo.area.area_name}}
                   id="area"
                   name="area"
                   control={control}

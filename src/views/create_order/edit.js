@@ -21,7 +21,6 @@ import {
   PRODUCT_TYPE_LIST,
   AREAS_LIST,
   CREATE_ORDER_DETAILS,
-  PRICING_POLICY_LIST,
   SHIPMENT_TYPE_LIST,
   PRICING_POLICY_BY_PRODUCT,
   DELIVARY_CHARGE_BY_PERCEL_TYPE,
@@ -31,46 +30,46 @@ import SwalAlert from "../../components/SwalAlert"
 
 const EditCreateOrder = () => {
   const [selectboxMarchant, setSelectboxMarchant] = useState([])
-  const [selectboxRider, setSelectboxRider] = useState([])
   const [selectboxProduct, setSelectboxProduct] = useState([])
-  const [selectPricingPolicybyProduct, setPricingPolicybyProduct] = useState([])
   const [selectboxPricingPolicy, setSelectboxPricingPolicy] = useState([])
   const [selectboxArea, setSelectboxArea] = useState([])
   const [selectboxShipmentType, setSelectboxShipmentType] = useState([])
   const [createOrderInfo, setCreateOrderInfo] = useState(null)
-  const [data, setData] = useState(null)
-  const [selectboxDelivaryCharge, setSelectboxDelivaryCharge] = useState([])
-  const [selectWareHouseStatus, setSelectWareHouseStatus] = useState([])
   const [delivaryCharge, setDelivaryCharge] = useState(0)
   const [amountCollected, setAmountCollected] = useState(0)
   const [CODCharge, setCODCharge] = useState(0)
   const [orderType, setOrderType] = useState()
 
-  // console.log('selectPricingPolicybyProduct', selectPricingPolicybyProduct)
-  console.log("createOrderInfo ======", createOrderInfo)
   let { id } = useParams()
 
+  const navigate = useNavigate()
+  const {
+    control,
+    watch,
+    setError,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ defaultValues: {}, })
+
   useEffect(() => {
-    // console.log(id)
+    fetchMarchantData()
+    fetchProductData()
+    fetchAreaData()
+    fetchPricingPolicyData()
+    fetchShipmentTypeData()
+  }, [])
+
+
+  useEffect(() => {
     useJwt
       .axiosGet(getApi(CREATE_ORDER_DETAILS) + id + "/")
       .then((res) => {
-        // console.log("res", res.data)
+        setAmountCollected(res?.data?.amount_to_be_collected)
+        setCODCharge(res?.data?.pricing_policy?.cod_charge)
         setCreateOrderInfo(res.data)
-        // console.log('selectbox delivary charge', res.data.delivary_charge)
         setDelivaryCharge(res.data.delivary_charge)
         setOrderType(res.data.order_type)
-        setSelectboxDelivaryCharge([
-          { value: res.data.delivary_charge, label: res.data.delivary_charge },
-        ])
-        setSelectWareHouseStatus(
-          res.data.warehouse_status === true
-            ? [{ value: true, label: "Yes" }]
-            : [{ value: false, label: "No" }]
-        )
-        console.log("select ware house status", selectWareHouseStatus)
-
-        // console.log(identity.find(id => id.value == createOrderInfo.identity))
         return res.data
       })
       .catch((err) => console.log(err))
@@ -83,6 +82,7 @@ const EditCreateOrder = () => {
         let delivaryChargeData = []
 
         res.data.map((data) => {
+          console.log('delivery charge', data)
           setDelivaryCharge(data.delivary_charge)
           setValue("delivary_charge", data.delivary_charge)
           setCODCharge(data.cod_charge)
@@ -92,44 +92,17 @@ const EditCreateOrder = () => {
           })
         })
 
-        setSelectboxDelivaryCharge(delivaryChargeData)
-        // setDelivaryChargebyPercelType(res.data)
         return res.data
       })
       .catch((err) => console.log(err))
   }
 
-  const navigate = useNavigate()
-  const {
-    reset,
-    control,
-    watch,
-    resetField,
-    setError,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      // product_type: {},
-      // marchant: {},
-    },
-  })
 
-  useEffect(() => {
-    fetchMarchantData()
-    fetchRiderData()
-    fetchProductData()
-    fetchAreaData()
-    fetchPricingPolicyData()
-    fetchShipmentTypeData()
-  }, [])
 
   const fetchMarchantData = () => {
     return useJwt
       .axiosGet(getApi(MARCHANT_LIST) + '?request-location=form')
       .then((res) => {
-        // console.log(res)
         let marchantData = []
 
         res.data.data.map((data) => {
@@ -141,22 +114,7 @@ const EditCreateOrder = () => {
       })
       .catch((err) => console.log(err))
   }
-  const fetchRiderData = () => {
-    return useJwt
-      .axiosGet(getApi(RIDER_LIST) + '?request-location=form')
-      .then((res) => {
-        // console.log(res)
-        let riderData = []
-        console.log("rider data res.data.data", res.data.data)
-        res.data.data.map((data) => {
-          riderData.push({ value: data.id, label: data.full_name })
-        })
 
-        setSelectboxRider(riderData)
-        return res.data.full_name
-      })
-      .catch((err) => console.log(err))
-  }
 
   const fetchShipmentTypeData = () => {
     return useJwt
@@ -201,7 +159,6 @@ const EditCreateOrder = () => {
         })
 
         setSelectboxPricingPolicy(pricingData)
-        setPricingPolicybyProduct(res.data)
         return res.data
       })
       .catch((err) => console.log(err))
@@ -209,31 +166,29 @@ const EditCreateOrder = () => {
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
-      // console.log(value, name, type)
-      // if (name == "product_type" && type == "change") {
-      //   setValue("delivary_charge", null)
-      //   fetchPricingPolicyData(value.product_type.value)
-      // }
 
       if (name == "product_type" && type == "change") {
         fetchPricingPolicyData(value.product_type.value)
       }
       if (name == "amount_to_be_collected" && type == "change") {
         fetchDelivaryChargeData(value?.pricing_policy?.value)
-        setAmountCollected(value.amount_to_be_collected)
-        setCODCharge(CODCharge)
+        setAmountCollected(value?.amount_to_be_collected)
       }
       if (name === 'order_type' && type === "change") {
         if (value.order_type.value === "COD") {
-          setOrderType(value.order_type.value)
+          setOrderType(value?.order_type?.value)
           setCODCharge(CODCharge)
 
         } else {
           setOrderType(value.order_type.value)
-          setCODCharge(0)
+          setCODCharge(0.00)
+          // setAmountCollected(0.00)
           setValue('amount_to_be_collected', 0.00)
           setAmountCollected(0.00)
+
         }
+        console.log('amountCollected', amountCollected)
+        console.log('cod after charge', CODCharge)
       }
 
 
@@ -244,7 +199,6 @@ const EditCreateOrder = () => {
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
-      console.log(value, name, type)
       if (name == "pricing_policy" && type == "change") {
         fetchDelivaryChargeData(value?.pricing_policy?.value)
       }
@@ -253,17 +207,6 @@ const EditCreateOrder = () => {
     return () => subscription.unsubscribe()
   }, [watch])
 
-  function setDeliveryCharge(policyID) {
-    // console.log(policyID)
-    if (policiesData && policyID) {
-      const parcelInfo = policiesData.find((x) => x.id == policyID)
-      // console.log('policiesData', policiesData)
-      // console.log('parcelInfo', policyID, parcelInfo)
-      parcelInfo
-        ? setValue("delivary_charge", parcelInfo.delivary_charge)
-        : null
-    }
-  }
 
   const fetchAreaData = () => {
     return useJwt
@@ -280,7 +223,6 @@ const EditCreateOrder = () => {
   }
 
   const onSubmit = (data) => {
-    console.log("submit data", data)
 
     let isFormValid = true
 
@@ -312,13 +254,23 @@ const EditCreateOrder = () => {
       })
       isFormValid = false
     }
-    if (!data.amount_to_be_collected) {
+
+    if (data.order_type.value === 'COD' && !data.amount_to_be_collected) {
       setError("amount_to_be_collected", {
         type: "required",
         message: "Amount is required",
       })
       isFormValid = false
     }
+
+    if (data.order_type.value === '') {
+      setError("order_type", {
+        type: "required",
+        message: "Order Type is required",
+      })
+      isFormValid = false
+    }
+
 
     if (!(data.product_type && data.product_type.value)) {
       setError("product_type", {
@@ -356,33 +308,10 @@ const EditCreateOrder = () => {
       })
       isFormValid = false
     }
-    // if (!data.pickup_rider && data.pickup_rider.value) {
-    //   setError("pickup_rider", {
-    //     type: "required",
-    //     message: " Pickup Rider is required",
-    //   })
-    //   isFormValid = false
-    // }
-    // if (!data.delivary_rider && data.delivary_rider) {
-    //   setError("delivary_rider", {
-    //     type: "required",
-    //     message: " Pickup Rider is required",
-    //   })
-    //   isFormValid = false
-    // }
-    // if (!data.warehouse_status) {
-    //   setError("warehouse_status", {
-    //     type: "required",
-    //     message: "Warehouse Status is required",
-    //   })
-    //   isFormValid = false
-    // }
-
     if (!isFormValid) {
       return false
     }
 
-    setData(data)
     if (
       data.marchant.value !== null &&
       data.recipient_name !== null &&
@@ -411,8 +340,8 @@ const EditCreateOrder = () => {
         pickup_rider: data?.pickup_rider?.value,
         pricing_policy: data.pricing_policy.value,
         cash_on_delivery_charge: (Number(CODCharge) * Number(amountCollected)) / 100
-      
-}
+
+      }
 
       const headers = {
         headers: {
@@ -424,7 +353,6 @@ const EditCreateOrder = () => {
         // .axiosPost(getApi(CREATE_ORDER_EDIT), formData)
         .axiosPatch(getApi(CREATE_ORDER_EDIT) + id + "/", formData, headers)
         .then((res) => {
-          // console.log("res", res.data)
           SwalAlert("Order Edited Successfully")
           navigate("/create_order")
         })
@@ -566,7 +494,7 @@ const EditCreateOrder = () => {
                         })}
                         classNamePrefix="select"
                         options={[
-                          { value: "", label: "Select" },
+                          { value: '', label: "Select" },
                           { value: "pre-paid", label: "Pre-Paid" },
                           { value: "COD", label: "COD" },
                         ]}
