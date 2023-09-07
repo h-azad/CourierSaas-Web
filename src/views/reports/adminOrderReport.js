@@ -10,14 +10,24 @@ import * as qs from 'qs'
 import { colorSwitch, OrderStatusOptions } from "../../components/orderRelatedData"
 import { handlePDFQuery, handleSearchQuery } from "../../components/reportRelatedData"
 
+import { GENERAL_ROW_SIZE } from "../../constants/tableConfig"
 
 const AdminOrderReport = () => {
 	const [order, setOrder] = useState([])
 	const [selectboxMarchant, setSelectboxMarchant] = useState([])
 	const [selectboxRider, setSelectboxRider] = useState([])
-	const [orderCount, setOrderCount] = useState(0)
-	const [filterQuery, setFilterQuery] = useState({})
-	const [defaultPage, setDefalutPage] = useState(1)
+	const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: GENERAL_ROW_SIZE	,
+      pageSize: 2,
+    },
+  })
+	const [filterQuery, setFilterQuery] = useState({
+    page: 1,
+    page_size: GENERAL_ROW_SIZE,
+    ordering: '-created_at'
+  })
+	// const [filterQuery, setFilterQuery] = useState({})
 
 
 	const fetchDefalutData = () => {
@@ -63,79 +73,14 @@ const AdminOrderReport = () => {
 			.catch((err) => console.log(err))
 	}
 
-	useEffect(() => {
-		fetchMarchantData()
-		fetchRiderData()
-	}, [])
+	
 
-
-	// const handleSearchQuery = searchTerm => {
-	// 	return useJwt
-	// 		.axiosGet(getApi(ADMIN_GET_ORDER_REPORT_APIVIEW) + '?' + searchTerm)
-	// 		.then((res) => {
-	// 			if (res.data?.results?.length > 0) {
-	// 				setOrder(res?.data?.results)
-	// 				setOrderCount(res.data?.count)
-	// 			} else {
-	// 				setOrder('')
-	// 			}
-	// 			return res.data
-	// 		})
-	// 		.catch((err) => console.log(err))
-	// }
-
-
-	// function downloadPDFFile(file, fileName) {
-	// 	var blob = new Blob([file], { type: 'application/pdf' })
-	// 	var url = URL.createObjectURL(blob)
-	// 	var link = document.createElement('a')
-	// 	link.href = url
-	// 	link.download = fileName
-	// 	document.body.appendChild(link)
-	// 	link.click()
-	// 	document.body.removeChild(link)
-	// 	URL.revokeObjectURL(url)
-	// }
-
-	// const handlePDFQuery = (searchTerm) => {
-  //       const regex = /&([^&]+)/g 
-  //       const pageRemoveToQuery = searchTerm.match(regex)
-  //       const filterPerameter = pageRemoveToQuery ? pageRemoveToQuery.join('') : ''
-	// 	searchTerm = filterPerameter.startsWith("&") ? filterPerameter: filterPerameter.replace('$', '')
-
-	// 	return useJwt
-	// 		.axiosGet(getApi((ADMIN_GET_ORDER_REPORT_GENERATE_PDF_APIVIEW) + '?' + searchTerm))
-	// 		.then((res) => {
-	// 			if (res.data?.length > 0) {
-	// 				var file = new Blob([res.data], { type: 'application/pdf' })
-	// 				var fileName = 'orders_report.pdf'
-	// 				downloadPDFFile(file, fileName)
-	// 			} else {
-	// 				// setOrder('')
-	// 			}
-	// 			return res.data
-	// 		})
-	// 		.catch((err) => console.log(err))
-	// }
-
-	// const statusOptions = [
-	// 	{ value: "pending", label: "Pending" },
-	// 	{ value: "accepted", label: "Accepted" },
-	// 	{ value: "pickedup", label: "Picked Up" },
-	// 	{ value: "in_warehouse", label: "In Warehouse" },
-	// 	{ value: "shipped", label: "Shipped" },
-	// 	{ value: "delivered", label: "Delivered" },
-	// 	{ value: "hold", label: "Hold" },
-	// 	{ value: "returned", label: "Returned" },
-	// 	{ value: "cancelled", label: "Cancelled" },
-	// 	{ value: "completed", label: "Completed" },
-	// ]
 
 	function updateFilterQUery(term, value) {
 		let filters = { ...filterQuery }
-		if (term != 'page') {
-			filters['page'] = 1
-		}
+		// if (term != 'page') {
+		// 	filters['page'] = 1
+		// }
 
 		if (value) {
 			filters[term] = value
@@ -170,20 +115,9 @@ const AdminOrderReport = () => {
 
 	}
 
-	useEffect(() => {
-		handleSearchQuery(ADMIN_GET_ORDER_REPORT_APIVIEW, qs.stringify(filterQuery))
-			.then(res => {
-				if (res?.results?.length > 0) {
-					setOrder(res?.results)
-				} else {
-					setOrder([])
-				}
-			})
-	}, [filterQuery])
+	
 
-	const paginationUpdate = (page) => {
-		updateFilterQUery("page", page)
-	}
+
 
 	const columns = [
 		{
@@ -237,82 +171,90 @@ const AdminOrderReport = () => {
 		},
 	]
 
-	const onChangeSorter = (pagination, filters, sorter, extra) => {
-		if (sorter.order === 'ascend') {
-			updateFilterQUery("ordering", sorter.field)
-		} else if (sorter.order === 'descend') {
-			updateFilterQUery("ordering", '-' + sorter.field)
-		}
-		else {
-			setFilterQuery({})
-		}
-	}
+	// const onChangeSorter = (pagination, filters, sorter, extra) => {
+	// 	if (sorter.order === 'ascend') {
+	// 		updateFilterQUery("ordering", sorter.field)
+	// 	} else if (sorter.order === 'descend') {
+	// 		updateFilterQUery("ordering", '-' + sorter.field)
+	// 	}
+	// 	else {
+	// 		setFilterQuery({})
+	// 	}
+	// }
+
+	useEffect(() => {
+		handleSearchQuery(ADMIN_GET_ORDER_REPORT_APIVIEW, qs.stringify(filterQuery))
+			.then(res => {
+				if (res?.results?.length > 0) {
+					setOrder(res?.results)
+					updatePagination({
+						current: res?.page_number,
+						pageSize: res?.page_size,
+						total: res?.count,
+					})
+				} else {
+					setOrder([])
+					updatePagination({
+						current: 1,
+						pageSize: GENERAL_ROW_SIZE,
+						total: 0,
+					})
+				}
+			})
+	}, [filterQuery])
+
+	const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      sorter,
+    })
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([])
+    }
+  }
+
+	const updatePagination = (info) => {
+    const _tableParams = { ...tableParams }
+
+    _tableParams.pagination = info
+
+    setTableParams(_tableParams)
+  }
+
+	useEffect(() => {
+		fetchMarchantData()
+		fetchRiderData()
+	}, [])
+
+
+	useEffect(() => {
+    const _tableParams = tableParams
+    const _filters = { ...filterQuery }
+
+    if (_tableParams) {
+      _filters['page'] = _tableParams.pagination?.current
+      _filters['page_size'] = _tableParams.pagination?.pageSize
+      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+    }
+
+    setFilterQuery(_filters)
+
+  }, [JSON.stringify(tableParams)])
+
+  // useEffect(() => {
+  //   handleSearchQuery()
+  // }, [JSON.stringify(filterQuery)])
+
+
+	
 
 
 	return (
 		<>
 
 			<ReportHead propsData={propsData} />
-			<Table scroll={{ x: true }} columns={columns} dataSource={order} onChange={onChangeSorter} pagination={{ defaultPageSize: 50 }} />
-			{/* <div id="my-table" class="table-responsive">
-				<Table bordered>
-					<thead>
-						<tr>
-							<th>Date</th>
-							<th>Order ID</th>
-							<th>Marchant</th>
-							<th>Delivery Rider</th>
-							<th>Status</th>
-							<th>Delivery Charge</th>
-							<th>COD Charge</th>
-							<th>COD Amount</th>
-							<th>Accumutated Amount</th>
-							<th>Deducted Amount</th>
-						</tr>
-					</thead>
-					<tbody>
-						{order &&
-							order.map((info) => (
-								<tr key={info.id}>
-									<td>
-										<span className="align-middle fw-bold">{info?.created_at}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info?.parcel_id}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info?.marchant?.full_name}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info?.delivary_rider?.full_name}</span>
-									</td>
-
-									<td>
-										<span className="align-middle fw-bold">{info?.status}</span>
-									</td>
-
-									<td>
-										<span className="align-middle fw-bold">{info?.delivary_charge}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info?.cash_on_delivery_charge}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info?.amount_to_be_collected}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info?.accumulated}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info?.deducted_amount}</span>
-									</td>
-								</tr>
-							))}
-					</tbody>
-
-				</Table>
-				<Pagination onChange={paginationUpdate} defaultCurrent={defaultPage} total={orderCount} defaultPageSize={50} />
-			</div> */}
+			<Table scroll={{ x: true }} columns={columns} dataSource={order} onChange={handleTableChange} pagination={tableParams.pagination} />
 		</>
 	)
 }

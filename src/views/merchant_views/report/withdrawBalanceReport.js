@@ -9,9 +9,24 @@ import { Table, Tag } from "antd"
 import * as qs from 'qs'
 import { handlePDFQuery, handleSearchQuery } from "../../../components/reportRelatedData"
 
+import { GENERAL_ROW_SIZE } from '../../../constants/tableConfig'
+
 const WithdrawBalanceReport = () => {
 	const [withdrawRequest, setWithdrawRequestBalance] = useState([])
-	const [filterQuery, setFilterQuery] = useState({})
+	// const [filterQuery, setFilterQuery] = useState({})
+
+	const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: GENERAL_ROW_SIZE	,
+      pageSize: 2,
+    },
+  })
+
+  const [filterQuery, setFilterQuery] = useState({
+    page: 1,
+    page_size: GENERAL_ROW_SIZE,
+    ordering: '-created_at'
+  })
 
 	const fetchDefalutData = () => {
 		return useJwt.axiosGet(getApi(MARCHANT_GET_WITHDRAW_REQUEST_REPORT))
@@ -54,9 +69,6 @@ const WithdrawBalanceReport = () => {
 
 	function updateFilterQUery(term, value) {
 		let filters = { ...filterQuery }
-		if (term != 'page') {
-			filters['page'] = 1
-		}
 
 		if (value) {
 			filters[term] = value
@@ -66,27 +78,6 @@ const WithdrawBalanceReport = () => {
 		setFilterQuery(filters)
 	}
 
-	useEffect(() => {
-		handleSearchQuery(MARCHANT_GET_WITHDRAW_REQUEST_REPORT, qs.stringify(filterQuery))
-			.then(res => {
-				if (res?.results?.length > 0) {
-					setWithdrawRequestBalance(res?.results)
-				} else {
-					setWithdrawRequestBalance([])
-				}
-			})
-	}, [filterQuery])
-
-	const onChangeSorter = (pagination, filters, sorter, extra) => {
-		if (sorter.order === 'ascend') {
-			updateFilterQUery("ordering", sorter.field)
-		} else if (sorter.order === 'descend') {
-			updateFilterQUery("ordering", '-' + sorter.field)
-		}
-		else {
-			setFilterQuery({})
-		}
-	}
 
 	const propsData = {
 		handleSearchQuery: handleSearchQuery,
@@ -138,10 +129,60 @@ const WithdrawBalanceReport = () => {
 		},
 	]
 
+	const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      sorter,
+    })
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([])
+    }
+  }
+
+	const updatePagination = (info) => {
+    const _tableParams = { ...tableParams }
+
+    _tableParams.pagination = info
+
+    setTableParams(_tableParams)
+  }
+
+
+	useEffect(() => {
+    const _tableParams = tableParams
+    const _filters = { ...filterQuery }
+
+    if (_tableParams) {
+      _filters['page'] = _tableParams.pagination?.current
+      _filters['page_size'] = _tableParams.pagination?.pageSize
+      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+    }
+
+    setFilterQuery(_filters)
+
+  }, [JSON.stringify(tableParams)])
+
+	useEffect(() => {
+		handleSearchQuery(MARCHANT_GET_WITHDRAW_REQUEST_REPORT, qs.stringify(filterQuery))
+			.then(res => {
+				if (res?.results?.length > 0) {
+					setWithdrawRequestBalance(res?.results)
+					updatePagination({
+						current: res?.page_number,
+						pageSize: res?.page_size,
+						total: res?.count,
+					})
+				} else {
+					setWithdrawRequestBalance([])
+				}
+			})
+	}, [filterQuery])
+
 	return (
 		<>
 			<ReportHead propsData={propsData} />
-			<Table scroll={{ x: true }} columns={columns} dataSource={withdrawRequest} onChange={onChangeSorter} pagination={{ defaultPageSize: 50 }} />
+			<Table scroll={{ x: true }} columns={columns} dataSource={withdrawRequest} onChange={handleTableChange} pagination={tableParams.pagination} />
 			{/* <ReportHead propsData={propsData} />
 			<div class="table-responsive">
 				<Table bordered>

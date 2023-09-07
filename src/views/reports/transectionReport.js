@@ -11,10 +11,25 @@ import * as qs from 'qs'
 
 import { handlePDFQuery, handleSearchQuery } from "../../components/reportRelatedData"
 
+import { GENERAL_ROW_SIZE } from "../../constants/tableConfig"
+
 const AdminGetTransectionReport = () => {
   const [transections, setTransections] = useState([])
   const [selectBoxUser, setSelectBoxUser] = useState([])
-  const [filterQuery, setFilterQuery] = useState({})
+  // const [filterQuery, setFilterQuery] = useState({})
+
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: GENERAL_ROW_SIZE	,
+      pageSize: 2,
+    },
+  })
+
+  const [filterQuery, setFilterQuery] = useState({
+    page: 1,
+    page_size: GENERAL_ROW_SIZE,
+    ordering: '-created_at'
+  })
 
 
   const fetchDefalutData = () => {
@@ -44,20 +59,7 @@ const AdminGetTransectionReport = () => {
       .catch((err) => console.log(err))
   }
 
-  useEffect(() => {
-    fetchUserData()
-  }, [])
-
-  useEffect(() => {
-    handleSearchQuery(ADMIN_GET_TRANSECTION_REPORT_APIVIEW, qs.stringify(filterQuery))
-			.then(res => {
-				if (res?.results?.length > 0) {
-					setTransections(res?.results)
-				} else {
-					setTransections([])
-				}
-			})
-  }, [filterQuery])
+ 
 
   const statusOptions = [
     { value: "Cash-Out", label: "Cash-Out" },
@@ -80,9 +82,6 @@ const AdminGetTransectionReport = () => {
 
   function updateFilterQUery(term, value) {
     let filters = { ...filterQuery }
-    if (term != 'page') {
-      filters['page'] = 1
-    }
 
     if (value) {
       filters[term] = value
@@ -92,22 +91,6 @@ const AdminGetTransectionReport = () => {
     setFilterQuery(filters)
   }
 
-  
-
-  // const paginationUpdate = (page) => {
-  //   updateFilterQUery("page", page)
-  // }
-
-  const onChangeSorter = (pagination, filters, sorter, extra) => {
-		if (sorter.order === 'ascend') {
-			updateFilterQUery("ordering", sorter.field)
-		} else if (sorter.order === 'descend') {
-			updateFilterQUery("ordering", '-' + sorter.field)
-		}
-		else {
-			setFilterQuery({})
-		}
-	}
 
   const propsData = {
     handleSearchQuery: handleSearchQuery,
@@ -168,10 +151,71 @@ const AdminGetTransectionReport = () => {
 		},
 	]
 
+
+
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      sorter,
+    })
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([])
+    }
+  }
+
+	const updatePagination = (info) => {
+    const _tableParams = { ...tableParams }
+
+    _tableParams.pagination = info
+
+    setTableParams(_tableParams)
+  }
+
+  useEffect(() => {
+    fetchUserData()
+  }, [])
+
+  useEffect(() => {
+    handleSearchQuery(ADMIN_GET_TRANSECTION_REPORT_APIVIEW, qs.stringify(filterQuery))
+			.then(res => {
+				if (res?.results?.length > 0) {
+					setTransections(res?.results)
+          updatePagination({
+						current: res?.page_number,
+						pageSize: res?.page_size,
+						total: res?.count,
+					})
+				} else {
+					setTransections([])
+          updatePagination({
+						current: 1,
+						pageSize: GENERAL_ROW_SIZE,
+						total: 0,
+					})
+				}
+			})
+  }, [filterQuery])
+
+  useEffect(() => {
+    const _tableParams = tableParams
+    const _filters = { ...filterQuery }
+
+    if (_tableParams) {
+      _filters['page'] = _tableParams.pagination?.current
+      _filters['page_size'] = _tableParams.pagination?.pageSize
+      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+    }
+
+    setFilterQuery(_filters)
+
+  }, [JSON.stringify(tableParams)])
+
   return (
     <>
       <ReportHead propsData={propsData} />
-      <Table scroll={{ x: true }} columns={columns} dataSource={transections} onChange={onChangeSorter} pagination={{ defaultPageSize: 50 }} />
+      <Table scroll={{ x: true }} columns={columns} dataSource={transections} onChange={handleTableChange} pagination={tableParams.pagination} />
       {/* <div id="my-table" class="table-responsive">
         <Table bordered>
           <thead>

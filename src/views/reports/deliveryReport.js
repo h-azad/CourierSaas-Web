@@ -12,10 +12,25 @@ import * as qs from 'qs'
 import { colorSwitch } from "../../components/orderRelatedData"
 import { handlePDFQuery, handleSearchQuery } from "../../components/reportRelatedData"
 
+import { GENERAL_ROW_SIZE } from "../../constants/tableConfig"
+
 const GetAdminDeliveryReport = () => {
   const [order, setOrder] = useState([])
   const [rider, setRider] = useState([])
-  const [filterQuery, setFilterQuery] = useState({})
+  // const [filterQuery, setFilterQuery] = useState({})
+
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: GENERAL_ROW_SIZE	,
+      pageSize: 2,
+    },
+  })
+
+  const [filterQuery, setFilterQuery] = useState({
+    page: 1,
+    page_size: GENERAL_ROW_SIZE,
+    ordering: '-created_at'
+  })
 
 
   const fetchDefalutData = () => {
@@ -45,20 +60,7 @@ const GetAdminDeliveryReport = () => {
       .catch((err) => console.log(err))
   }
 
-  useEffect(() => {
-    handleSearchQuery(ADMIN_GET_DELIVERY_REPORT_APIVIEW, qs.stringify(filterQuery))
-      .then(res => {
-        if (res?.results?.length > 0) {
-          setOrder(res?.results)
-        } else {
-          setOrder([])
-        }
-      })
-  }, [filterQuery])
-
-  useEffect(() => {
-    fetchRiderData()
-  }, [])
+  
 
   const statusOptions = [
 		{ value: true, label: "Delivered" },
@@ -84,9 +86,6 @@ const GetAdminDeliveryReport = () => {
 
   function updateFilterQUery(term, value) {
     let filters = { ...filterQuery }
-    if (term != 'page') {
-      filters['page'] = 1
-    }
 
     if (value) {
       filters[term] = value
@@ -184,12 +183,71 @@ const GetAdminDeliveryReport = () => {
 		},
 	]
 
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      sorter,
+    })
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([])
+    }
+  }
+
+	const updatePagination = (info) => {
+    const _tableParams = { ...tableParams }
+
+    _tableParams.pagination = info
+
+    setTableParams(_tableParams)
+  }
+
+  useEffect(() => {
+    handleSearchQuery(ADMIN_GET_DELIVERY_REPORT_APIVIEW, qs.stringify(filterQuery))
+      .then(res => {
+        if (res?.results?.length > 0) {
+          setOrder(res?.results)
+          updatePagination({
+						current: res?.page_number,
+						pageSize: res?.page_size,
+						total: res?.count,
+					})
+        } else {
+          setOrder([])
+          updatePagination({
+						current: 1,
+						pageSize: GENERAL_ROW_SIZE,
+						total: 0,
+					})
+        }
+      })
+  }, [filterQuery])
+
+  useEffect(() => {
+    const _tableParams = tableParams
+    const _filters = { ...filterQuery }
+
+    if (_tableParams) {
+      _filters['page'] = _tableParams.pagination?.current
+      _filters['page_size'] = _tableParams.pagination?.pageSize
+      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+    }
+
+    setFilterQuery(_filters)
+
+  }, [JSON.stringify(tableParams)])
+
+
+  useEffect(() => {
+    fetchRiderData()
+  }, [])
+
   
 
   return (
     <>
       <ReportHead propsData={propsData} />
-      <Table scroll={{ x: true }} columns={columns} dataSource={order} onChange={onChangeSorter} pagination={{ defaultPageSize: 50 }} />
+      <Table scroll={{ x: true }} columns={columns} dataSource={order} onChange={handleTableChange} pagination={tableParams.pagination} />
       {/* <div id="my-table" class="table-responsive">
         <Table bordered>
           <thead>

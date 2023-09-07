@@ -11,11 +11,27 @@ import * as qs from 'qs'
 import { colorSwitch } from "../../components/orderRelatedData"
 import { handlePDFQuery, handleSearchQuery } from "../../components/reportRelatedData"
 
+import { GENERAL_ROW_SIZE } from "../../constants/tableConfig"
+
 
 const GetAdminPickupReport = () => {
   const [pickup, setPickup] = useState([])
   const [rider, setRider] = useState([])
-  const [filterQuery, setFilterQuery] = useState({})
+  // const [filterQuery, setFilterQuery] = useState({})
+
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: GENERAL_ROW_SIZE	,
+      pageSize: 2,
+    },
+  })
+
+  const [filterQuery, setFilterQuery] = useState({
+    page: 1,
+    page_size: GENERAL_ROW_SIZE,
+    ordering: '-created_at'
+  })
+
 
   const fetchDefalutData = () => {
     return useJwt.axiosGet(getApi(ADMIN_GET_PICKUP_REPORT_APIVIEW))
@@ -44,9 +60,7 @@ const GetAdminPickupReport = () => {
       .catch((err) => console.log(err))
   }
 
-  useEffect(() => {
-    fetchRiderData()
-  }, [])
+ 
 
 
   const statusOptions = [
@@ -69,9 +83,6 @@ const GetAdminPickupReport = () => {
 
   function updateFilterQUery(term, value) {
     let filters = { ...filterQuery }
-    if (term != 'page') {
-      filters['page'] = 1
-    }
 
     if (value) {
       filters[term] = value
@@ -80,30 +91,6 @@ const GetAdminPickupReport = () => {
     }
     setFilterQuery(filters)
   }
-
-  useEffect(() => {
-    handleSearchQuery(ADMIN_GET_PICKUP_REPORT_APIVIEW, qs.stringify(filterQuery))
-      .then(res => {
-        if (res?.results?.length > 0) {
-          setPickup(res?.results)
-        } else {
-          setPickup([])
-        }
-      })
-  }, [filterQuery])
-
-
-  const onChangeSorter = (pagination, filters, sorter, extra) => {
-		if (sorter.order === 'ascend') {
-			updateFilterQUery("ordering", sorter.field)
-		} else if (sorter.order === 'descend') {
-			updateFilterQUery("ordering", '-' + sorter.field)
-		}
-		else {
-			setFilterQuery({})
-		}
-	}
-
 
   const propsData = {
     handleSearchQuery: handleSearchQuery,
@@ -174,13 +161,73 @@ const GetAdminPickupReport = () => {
 		},
 	]
 
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      sorter,
+    })
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([])
+    }
+  }
+
+	const updatePagination = (info) => {
+    const _tableParams = { ...tableParams }
+
+    _tableParams.pagination = info
+
+    setTableParams(_tableParams)
+  }
+
+  useEffect(() => {
+    handleSearchQuery(ADMIN_GET_PICKUP_REPORT_APIVIEW, qs.stringify(filterQuery))
+      .then(res => {
+        if (res?.results?.length > 0) {
+          setPickup(res?.results)
+          updatePagination({
+						current: res?.page_number,
+						pageSize: res?.page_size,
+						total: res?.count,
+					})
+        } else {
+          setPickup([])
+          updatePagination({
+						current: 1,
+						pageSize: GENERAL_ROW_SIZE,
+						total: 0,
+					})
+        }
+      })
+  }, [filterQuery])
+
+  useEffect(() => {
+    const _tableParams = tableParams
+    const _filters = { ...filterQuery }
+
+    if (_tableParams) {
+      _filters['page'] = _tableParams.pagination?.current
+      _filters['page_size'] = _tableParams.pagination?.pageSize
+      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+    }
+
+    setFilterQuery(_filters)
+
+  }, [JSON.stringify(tableParams)])
+
+
+  useEffect(() => {
+    fetchRiderData()
+  }, [])
+
+  
 
   
 
   return (
     <>
       <ReportHead propsData={propsData} />
-      <Table scroll={{ x: true }} columns={columns} dataSource={pickup} onChange={onChangeSorter} pagination={{ defaultPageSize: 50 }} />
+      <Table scroll={{ x: true }} columns={columns} dataSource={pickup} onChange={handleTableChange} pagination={tableParams.pagination} />
 
       {/* <div id="my-table" class="table-responsive">
         <Table bordered>

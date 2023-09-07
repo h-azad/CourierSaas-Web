@@ -10,6 +10,7 @@ export const handleSearchQuery = async (apiUrl, searchTerm) => {
     .then((res) => {
       return res?.data
     })
+    .catch((err) => {return []})
 }
 
 
