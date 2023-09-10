@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { MoreVertical, Edit, Trash, Search, Edit3 } from "react-feather"
 import {
-  Table,
+  // Table,
   Badge,
   UncontrolledDropdown,
   DropdownMenu,
@@ -22,13 +22,29 @@ import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
 
 
+import { Table, Tag } from "antd"
+import * as qs from 'qs'
+import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
+
+
 const ListTable = () => {
   const [payment, setPayment] = useState([])
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
   const [selectedInfo, setSelectedInfo] = useState(null)
-
   const MySwal = withReactContent(Swal)
+
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: GENERAL_ROW_SIZE,
+    },
+  })
+
+  const [filterQuery, setFilterQuery] = useState({
+    page: 1,
+    page_size: GENERAL_ROW_SIZE,
+  })
 
   const deleteAction = (e, id) => {
     e.preventDefault()
@@ -81,11 +97,15 @@ const ListTable = () => {
 
   const fetchPaymentMethodData = () => {
     return useJwt
-      .axiosGet(getApi(PAYMENT_METHOD_LIST))
+      // .axiosGet(getApi(PAYMENT_METHOD_LIST))
+      .axiosGet(getApi(PAYMENT_METHOD_LIST) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
-        console.log("res", res.data)
-        setPayment(res.data)
-        return res.data
+        setPayment(res?.data?.results)
+        updatePagination({
+          current: res?.data?.page_number,
+          pageSize: res?.data?.page_size,
+          total: res?.data?.count,
+        })
       })
       .catch(err => console.log(err))
   }
@@ -135,6 +155,123 @@ const ListTable = () => {
   //   }
   // }
 
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      sorter,
+    })
+
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([])
+    }
+  }
+
+  const updatePagination = (info) => {
+    const _tableParams = { ...tableParams }
+
+    _tableParams.pagination = info
+
+    setTableParams(_tableParams)
+  }
+
+  const updateFilterQUery = (term, value) => {
+    let filters = { ...filterQuery }
+    if (term != 'page') {
+      filters['page'] = 1
+    }
+    if (value) {
+      filters[term] = value
+    } else {
+      filters.hasOwnProperty(term) && delete filters[term]
+    }
+    setFilterQuery(filters)
+  }
+
+
+  function colorSwitch(status) {
+    switch (status) {
+      case 'active':
+        return 'green'
+
+      case 'inactive':
+        return 'red'
+
+      default:
+        return 'green'
+    }
+  }
+
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'payment_method_name',
+      sorter: true,
+      defaultSortOrder: 'descend'
+
+    },
+
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      render: (text, record) => (
+        <Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
+      ),
+    },
+    {
+      title: 'Action',
+
+      render: (_, info) =>
+
+      <td>
+      <UncontrolledDropdown>
+        <DropdownToggle
+          className="icon-btn hide-arrow"
+          color="transparent"
+          size="sm"
+          caret
+        >
+          <MoreVertical size={15} />
+        </DropdownToggle>
+        <DropdownMenu>
+          <DropdownItem href={"/payment_method/edit/" + info.id}>
+            <Edit className="me-50" size={15} />{" "}
+            <span className="align-middle">Edit</span>
+          </DropdownItem>
+          <DropdownItem href="/" onClick={e => deleteAction(e, info.id)}>
+            <Trash className="me-50" size={15} />{" "}
+            <span className="align-middle">Delete</span>
+          </DropdownItem>
+          <DropdownItem href="/" onClick={e => changeStatusAction(e, info)}>
+            <Edit3 className="me-50" size={15} />{" "}
+            <span className="align-middle">Change Status</span>
+          </DropdownItem>
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    </td>
+
+    },
+  ]
+
+  useEffect(() => {
+    const _tableParams = tableParams
+    const _filters = { ...filterQuery }
+
+    if (_tableParams) {
+      _filters['page'] = _tableParams.pagination?.current
+      _filters['page_size'] = _tableParams.pagination?.pageSize
+      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+    }
+
+    setFilterQuery(_filters)
+
+  }, [JSON.stringify(tableParams)])
+
+  useEffect(() => {
+    fetchPaymentMethodData()
+  }, [JSON.stringify(filterQuery)])
+
   return (
     <>
       <CardText>
@@ -146,24 +283,27 @@ const ListTable = () => {
               </Link>
             </div>
           </div>
-          {/* <div className="col-lg-5">
+          <div className="col-lg-5">
               <div className="d-flex align-items-center ">
                 <input
                   placeholder="Search Shipment"
                   name="user_name"
                   type="text"
                   class="form-control"
-                  onChange={handleSearch}
+                  // onChange={handleSearch}
+                  onChange={(e) => { updateFilterQUery('search', e.target.value) }}
                 />
                 <Button.Ripple className="btn-icon ms-1" outline color="primary">
                   <Search size={16} />
                 </Button.Ripple>
               </div>
-            </div> */}
+            </div>
         </div>
       </CardText>
 
-      <Table bordered>
+      <Table scroll={{ x: true }} columns={columns} dataSource={payment} onChange={handleTableChange} pagination={tableParams.pagination} />
+
+      {/* <Table bordered>
         <thead>
           <tr>
             <th>Payment Method Name</th>
@@ -212,7 +352,7 @@ const ListTable = () => {
               </tr>
             ))}
         </tbody>
-      </Table>
+      </Table> */}
 
       <StatusModal
         statusModalState={statusModalState}

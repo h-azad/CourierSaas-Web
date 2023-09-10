@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { MoreVertical, Edit, Trash, Search, Edit3 } from "react-feather"
 import {
-  Table,
+  // Table,
   Badge,
   UncontrolledDropdown,
   DropdownMenu,
@@ -21,6 +21,10 @@ import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
 
+import { Table, Tag } from "antd"
+import * as qs from 'qs'
+import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
+
 
 const ListTable = () => {
   const [cities, setCities] = useState([])
@@ -29,19 +33,28 @@ const ListTable = () => {
   const [selectedStatus, setSelectedStatus] = useState(null)
   const [selectedInfo, setSelectedInfo] = useState(null)
 
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: GENERAL_ROW_SIZE,
+    },
+  })
+
+  const [filterQuery, setFilterQuery] = useState({
+    page: 1,
+    page_size: GENERAL_ROW_SIZE,
+    ordering: '-created_at'
+  })
+
   const deleteAction = (e, id) => {
     e.preventDefault()
-    // console.log("Deleted", id)
     return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
       if (result.value) {
 
         useJwt
           .axiosDelete(getApi(CITIES_DELETE + id + '/'))
           .then((res) => {
-            // console.log("res", res.data)
             SwalAlert("Deleted Successfully")
-
-            // return res.data
           })
           .finally(() => fetchCitiesData())
 
@@ -56,7 +69,6 @@ const ListTable = () => {
         status: selectedStatus,
       })
       .then((res) => {
-        console.log("res", res.data)
         setStatusModalState(false)
       })
   }
@@ -83,14 +95,53 @@ const ListTable = () => {
 
   const fetchCitiesData = () => {
     return useJwt
-      .axiosGet(getApi(CITIES_LIST))
+      // .axiosGet(getApi(CITIES_LIST))
+      .axiosGet(getApi(CITIES_LIST) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
-        // console.log("res", res.data)
-        setCities(res.data)
-        return res.data
+        setCities(res?.data?.results)
+        updatePagination({
+          current: res?.data?.page_number,
+          pageSize: res?.data?.page_size,
+          total: res?.data?.count,
+        })
       })
       .catch(err => console.log(err))
   }
+
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      sorter,
+    })
+
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([])
+    }
+  }
+
+  const updatePagination = (info) => {
+    const _tableParams = { ...tableParams }
+
+    _tableParams.pagination = info
+
+    setTableParams(_tableParams)
+  }
+
+  const updateFilterQUery = (term, value) => {
+    let filters = { ...filterQuery }
+    if (term != 'page') {
+      filters['page'] = 1
+    }
+    if (value) {
+      filters[term] = value
+    } else {
+      filters.hasOwnProperty(term) && delete filters[term]
+    }
+    setFilterQuery(filters)
+  }
+
 
   const fetchSearchCityData = searchTerm => {
     return useJwt
@@ -102,16 +153,12 @@ const ListTable = () => {
   }
 
   const handleSearch = debounce(e => {
-    console.log(e.target.value)
     const searchTerm = e.target.value
     if (searchTerm.length > 0) {
       fetchSearchCityData(searchTerm)
         .then(data => {
           if (data?.length > 0) {
-            console.log('res', data)
             setCities(data)
-          } else {
-            console.log("No data")
           }
         })
     } else {
@@ -139,6 +186,89 @@ const ListTable = () => {
     }
   }
 
+
+  function colorSwitch(status) {
+    switch (status) {
+      case 'active':
+        return 'green'
+
+      case 'inactive':
+        return 'red'
+
+      default:
+        return 'green'
+    }
+  }
+
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'city_name',
+      sorter: true,
+      defaultSortOrder: 'descend'
+
+    },
+
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      render: (text, record) => (
+        <Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
+      ),
+    },
+    {
+      title: 'Action',
+
+      render: (_, record) =>
+
+        <UncontrolledDropdown>
+          <DropdownToggle
+            className="icon-btn hide-arrow"
+            color="transparent"
+            size="sm"
+            caret
+          >
+            <MoreVertical size={15} />
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem href={"/cities/edit/" + record.id}>
+              <Edit className="me-50" size={15} />{" "}
+              <span className="align-middle">Edit</span>
+            </DropdownItem>
+            <DropdownItem href="/" onClick={e => deleteAction(e, record.id)}>
+              <Trash className="me-50" size={15} />{" "}
+              <span className="align-middle">Delete</span>
+            </DropdownItem>
+            <DropdownItem href="/" onClick={e => changeStatusAction(e, record)}>
+              <Edit3 className="me-50" size={15} />{" "}
+              <span className="align-middle">Change Status</span>
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+
+    },
+  ]
+
+  useEffect(() => {
+    const _tableParams = tableParams
+    const _filters = { ...filterQuery }
+
+    if (_tableParams) {
+      _filters['page'] = _tableParams.pagination?.current
+      _filters['page_size'] = _tableParams.pagination?.pageSize
+      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+    }
+
+    setFilterQuery(_filters)
+
+  }, [JSON.stringify(tableParams)])
+
+  useEffect(() => {
+    fetchCitiesData()
+  }, [JSON.stringify(filterQuery)])
+
+
+
   return (
     <>
       <CardText>
@@ -157,7 +287,8 @@ const ListTable = () => {
                 name="user_name"
                 type="text"
                 class="form-control"
-                onChange={handleSearch}
+                // onChange={handleSearch}
+                onChange={(e) => { updateFilterQUery('search', e.target.value) }}
               />
               <Button.Ripple className="btn-icon ms-1" outline color="primary">
                 <Search size={16} />
@@ -166,7 +297,9 @@ const ListTable = () => {
           </div>
         </div>
       </CardText>
-      <Table bordered>
+
+      <Table scroll={{ x: true }} columns={columns} dataSource={cities} onChange={handleTableChange} pagination={tableParams.pagination} />
+      {/* <Table bordered>
         <thead>
           <tr>
             <th>Name</th>
@@ -215,7 +348,7 @@ const ListTable = () => {
               </tr>
             ))}
         </tbody>
-      </Table>
+      </Table> */}
       <StatusModal
         statusModalState={statusModalState}
         setStatusModalState={setStatusModalState}

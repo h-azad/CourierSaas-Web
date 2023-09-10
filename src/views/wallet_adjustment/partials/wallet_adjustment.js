@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
 import {
-  Table,
+  // Table,
   Badge,
   UncontrolledDropdown,
   DropdownMenu,
@@ -23,6 +23,10 @@ import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 // import ChangeStatusModal from "../../../../components/merchant_views/order/ChangeStatusModal"
 
+import { Table, Popconfirm } from "antd"
+import * as qs from 'qs'
+import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
+
 
 const WalletAdjustment = () => {
   const [adjustmentData, setAdjustmentData] = useState([])
@@ -31,6 +35,21 @@ const WalletAdjustment = () => {
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
   const [selectedInfo, setSelectedInfo] = useState(null)
+
+
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: GENERAL_ROW_SIZE,
+    },
+  })
+
+  const [filterQuery, setFilterQuery] = useState({
+    page: 1,
+    page_size: GENERAL_ROW_SIZE,
+    ordering: '-created_at'
+  })
+
 
   const deleteAction = (e, id) => {
     e.preventDefault()
@@ -68,14 +87,122 @@ const WalletAdjustment = () => {
 
   const fetchAdjustmentData = () => {
     return useJwt
-      .axiosGet(getApi(ADJUSTMENT_LIST))
+      // .axiosGet(getApi(ADJUSTMENT_LIST))
+      .axiosGet(getApi(ADJUSTMENT_LIST) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
         console.log("res", res.data)
-        setAdjustmentData(res.data)
+        setAdjustmentData(res?.data?.results)
+        updatePagination({
+          current: res?.data?.page_number,
+          pageSize: res?.data?.page_size,
+          total: res?.data?.count,
+        })
         return res.data
       })
       .catch(err => console.log(err))
   }
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      sorter,
+    })
+
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([])
+    }
+  }
+
+  const updatePagination = (info) => {
+    const _tableParams = { ...tableParams }
+
+    _tableParams.pagination = info
+
+    setTableParams(_tableParams)
+  }
+
+  const updateFilterQUery = (term, value) => {
+    let filters = { ...filterQuery }
+    if (term != 'page') {
+      filters['page'] = 1
+    }
+    if (value) {
+      filters[term] = value
+    } else {
+      filters.hasOwnProperty(term) && delete filters[term]
+    }
+    setFilterQuery(filters)
+  }
+
+  function colorSwitch(status) {
+    switch (status) {
+      case 'Pending':
+        return 'orange'
+
+      case 'Cancel':
+        return 'red'
+
+      default:
+        return 'green'
+    }
+  }
+
+  const columns = [
+		{
+			title: 'Date',
+			dataIndex: 'created_at',
+
+			sorter: {
+				compare: (a, b) => a.created_at - b.created_at,
+				multiple: 2,
+			},
+		},
+    {
+			title: 'Marchant',
+			// dataIndex: 'account_wallet',
+			dataIndex: 'username'
+		},
+		// {
+		// 	title: 'Status',
+		// 	dataIndex: 'withdraw_status',
+		// 	render: (text, record) => (
+		// 		<Tag color={colorSwitch(record.withdraw_status)}>{text.toUpperCase()}</Tag>
+		// 	),
+		// },
+		{
+			title: 'Receiver Admin',
+			dataIndex: 'receiver',
+		},
+
+
+		{
+			title: 'Adjust Amount',
+			dataIndex: 'adjust_amount',
+		},
+	]
+
+
+
+ 
+
+  useEffect(() => {
+    const _tableParams = tableParams
+    const _filters = { ...filterQuery }
+
+    if (_tableParams) {
+      _filters['page'] = _tableParams.pagination?.current
+      _filters['page_size'] = _tableParams.pagination?.pageSize
+      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+    }
+
+    setFilterQuery(_filters)
+
+  }, [JSON.stringify(tableParams)])
+
+  useEffect(() => {
+    fetchAdjustmentData()
+  }, [JSON.stringify(filterQuery)])
 
   return (
     <>
@@ -91,7 +218,10 @@ const WalletAdjustment = () => {
         </div>
       </CardText>
       <div class="table-responsive">
-        <Table bordered>
+
+      <Table scroll={{ x: true }} columns={columns} dataSource={adjustmentData} onChange={handleTableChange} pagination={tableParams.pagination} />
+
+        {/* <Table bordered>
           <thead>
             <tr>
               <th>Date</th>
@@ -118,7 +248,7 @@ const WalletAdjustment = () => {
                     <span className="align-middle fw-bold">{info.adjust_amount}</span>
                   </td>                
                   <td>
-                    {/* <UncontrolledDropdown>
+                    <UncontrolledDropdown>
                       <DropdownToggle
                         className="icon-btn hide-arrow"
                         color="transparent"
@@ -141,12 +271,12 @@ const WalletAdjustment = () => {
                           <span className="align-middle">Default</span>
                         </DropdownItem>
                       </DropdownMenu>
-                    </UncontrolledDropdown> */}
+                    </UncontrolledDropdown>
                   </td>
                 </tr>
               ))}
           </tbody>
-        </Table>
+        </Table> */}
 {/* 
         <ChangeStatusModal
           statusModalState={statusModalState}

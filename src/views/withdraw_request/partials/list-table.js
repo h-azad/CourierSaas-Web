@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { MoreVertical, Edit, Trash, Search, Edit3 } from "react-feather"
 import {
-  Table,
+  // Table,
   Badge,
   UncontrolledDropdown,
   DropdownMenu,
@@ -21,13 +21,33 @@ import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
 
+import { Table, Tag } from "antd"
+import * as qs from 'qs'
+import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
+
+
 const ListTable = () => {
   const [withdrawRequest, setWithdrawRequest] = useState([])
+
   const MySwal = withReactContent(Swal)
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
   const [selectedInfo, setSelectedInfo] = useState(null)
-  console.log('withdrawRequest', withdrawRequest)
+
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: GENERAL_ROW_SIZE,
+    },
+  })
+
+  const [filterQuery, setFilterQuery] = useState({
+    page: 1,
+    page_size: GENERAL_ROW_SIZE,
+    ordering: '-created_at'
+  })
+
+
   const deleteAction = (e, id) => {
     e.preventDefault()
     return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
@@ -36,12 +56,9 @@ const ListTable = () => {
         useJwt
           .axiosDelete(getApi(WITHDRAW_REQUEST_DELETE + id + '/'))
           .then((res) => {
-            // console.log("res", res.data)
             SwalAlert("Deleted Successfully")
-
-            // return res.data
           })
-          .finally(() => fetchWithdrawRequesttData())
+          .finally(() => fetchWithdrawRequestData())
 
       }
     })
@@ -49,13 +66,13 @@ const ListTable = () => {
   }
 
 
- 
+
 
   const updateStatusAction = (e) => {
     e.preventDefault()
     useJwt
       .axiosPatch(getApi(WITHDRAW_REQUEST_UPDATE_STATUS) + selectedInfo.id + "/", {
-        withdraw_status: selectedStatus,info:selectedInfo
+        withdraw_status: selectedStatus, info: selectedInfo
       })
       .then((res) => {
         setStatusModalState(false)
@@ -71,26 +88,79 @@ const ListTable = () => {
   }
 
   useEffect(() => {
-    fetchWithdrawRequesttData()
+    fetchWithdrawRequestData()
   }, [])
 
   useEffect(() => {
     if (!statusModalState) {
       clearData()
     }
-    fetchWithdrawRequesttData()
+    fetchWithdrawRequestData()
   }, [statusModalState])
 
-  const fetchWithdrawRequesttData = () => {
+  const fetchWithdrawRequestData = () => {
     return useJwt
-      .axiosGet(getApi(WITHDRAW_REQUEST_LIST))
+      // .axiosGet(getApi(WITHDRAW_REQUEST_LIST))
+      .axiosGet(getApi(WITHDRAW_REQUEST_LIST) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
-        console.log("res", res.data)
-        setWithdrawRequest(res.data)
-        return res.data
+        setWithdrawRequest(res?.data?.results)
+        updatePagination({
+          current: res?.data?.page_number,
+          pageSize: res?.data?.page_size,
+          total: res?.data?.count,
+        })
+        // return res.data
       })
       .catch(err => console.log(err))
   }
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      sorter,
+    })
+
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([])
+    }
+  }
+
+  const updatePagination = (info) => {
+    const _tableParams = { ...tableParams }
+
+    _tableParams.pagination = info
+
+    setTableParams(_tableParams)
+  }
+
+  const updateFilterQUery = (term, value) => {
+    let filters = { ...filterQuery }
+    if (term != 'page') {
+      filters['page'] = 1
+    }
+    if (value) {
+      filters[term] = value
+    } else {
+      filters.hasOwnProperty(term) && delete filters[term]
+    }
+    setFilterQuery(filters)
+  }
+
+  function colorSwitch(status) {
+    switch (status) {
+      case 'Pending':
+        return 'orange'
+
+      case 'Cancel':
+        return 'red'
+
+      default:
+        return 'green'
+    }
+  }
+
+
 
   const fetchSearchWithdrawRequestData = searchTerm => {
     return useJwt
@@ -102,20 +172,16 @@ const ListTable = () => {
   }
 
   const handleSearch = debounce(e => {
-    console.log(e.target.value)
     const searchTerm = e.target.value
     if (searchTerm.length > 0) {
       fetchSearchWithdrawRequestData(searchTerm)
         .then(data => {
           if (data?.length > 0) {
-            console.log('res', data)
             setWithdrawRequest(data)
-          } else {
-            console.log("No data")
           }
         })
     } else {
-      fetchWithdrawRequesttData()
+      fetchWithdrawRequestData()
     }
 
   }, 300)
@@ -139,6 +205,92 @@ const ListTable = () => {
     }
   }
 
+
+  const columns = [
+    {
+      title: 'Date',
+      dataIndex: 'created_at',
+
+      sorter: {
+        compare: (a, b) => a.created_at - b.created_at,
+        multiple: 2,
+      },
+    },
+    {
+      title: 'Account',
+      // dataIndex: 'account_wallet',
+      dataIndex: ['account_wallet', 'account_name']
+    },
+    {
+      title: 'Status',
+      dataIndex: 'withdraw_status',
+      render: (text, record) => (
+        <Tag color={colorSwitch(record.withdraw_status)}>{text.toUpperCase()}</Tag>
+      ),
+    },
+    {
+      title: 'Previous Balance',
+      dataIndex: 'balance',
+    },
+
+
+    {
+      title: 'Withdraw Balance',
+      dataIndex: 'withdraw_balance',
+    },
+    {
+      title: 'Current Balance',
+      dataIndex: 'current_balance',
+    },
+    {
+      title: 'Action',
+
+      render: (_, record) =>
+        record.withdraw_status !== "Complete" ? (
+          <UncontrolledDropdown>
+            <DropdownToggle
+              className="icon-btn hide-arrow"
+              color="transparent"
+              size="sm"
+              caret
+            >
+              <MoreVertical size={15} />
+            </DropdownToggle>
+            <DropdownMenu>record
+              <DropdownItem onClick={e => changeStatusAction(e, record)}>
+                <Edit3 className="me-50" size={15} />{" "}
+                <span className="align-middle">Change Status</span>
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+
+        ) : null,
+
+    },
+  ]
+
+
+
+
+
+  useEffect(() => {
+    const _tableParams = tableParams
+    const _filters = { ...filterQuery }
+
+    if (_tableParams) {
+      _filters['page'] = _tableParams.pagination?.current
+      _filters['page_size'] = _tableParams.pagination?.pageSize
+      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+    }
+
+    setFilterQuery(_filters)
+
+  }, [JSON.stringify(tableParams)])
+
+  useEffect(() => {
+    fetchWithdrawRequestData()
+  }, [JSON.stringify(filterQuery)])
+
   return (
     <>
       <CardText>
@@ -157,7 +309,8 @@ const ListTable = () => {
                 name="marchant_name"
                 type="text"
                 class="form-control"
-                onChange={handleSearch}
+                // onChange={handleSearch}
+                onChange={(e) => { updateFilterQUery('search', e.target.value) }}
               />
               <Button.Ripple className="btn-icon ms-1" outline color="primary">
                 <Search size={16} />
@@ -166,7 +319,8 @@ const ListTable = () => {
           </div>
         </div>
       </CardText>
-      <Table bordered>
+      <Table scroll={{ x: true }} columns={columns} dataSource={withdrawRequest} onChange={handleTableChange} pagination={tableParams.pagination} />
+      {/* <Table bordered>
         <thead>
           <tr>
             <th>Marchant Name</th>
@@ -211,14 +365,6 @@ const ListTable = () => {
                       <MoreVertical size={15} />
                     </DropdownToggle>
                     <DropdownMenu>
-                      {/* <DropdownItem href={"/withdraw-request/edit/" + wallet.id}>
-                        <Edit className="me-50" size={15} />{" "}
-                        <span className="align-middle">Edit</span>
-                      </DropdownItem>
-                      <DropdownItem href="/" onClick={e => deleteAction(e, wallet.id)}>
-                        <Trash className="me-50" size={15} />{" "}
-                        <span className="align-middle">Delete</span>
-                      </DropdownItem> */}
                       <DropdownItem href="/" onClick={e => changeStatusAction(e, wallet)}>
                         <Edit3 className="me-50" size={15} />{" "}
                         <span className="align-middle">Change Status</span>
@@ -229,7 +375,7 @@ const ListTable = () => {
               </tr>
             ))}
         </tbody>
-      </Table>
+      </Table> */}
       <StatusModal
         statusModalState={statusModalState}
         setStatusModalState={setStatusModalState}

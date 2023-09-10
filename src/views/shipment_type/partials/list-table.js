@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash,Search, Edit3 } from "react-feather"
+import { MoreVertical, Edit, Trash, Search, Edit3 } from "react-feather"
 import {
-  Table,
+  // Table,
   Badge,
   UncontrolledDropdown,
   DropdownMenu,
@@ -16,48 +16,62 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, SHIPMENT_TYPE_LIST, SHIPMENT_TYPE_DELETE,SEARCH_SHIPMENT,SHIPMENT_UPDATE_STATUS, SEARCH_SHIPMENT_TYPE} from "../../../constants/apiUrls"
+import { getApi, SHIPMENT_TYPE_LIST, SHIPMENT_TYPE_DELETE, SEARCH_SHIPMENT, SHIPMENT_UPDATE_STATUS, SEARCH_SHIPMENT_TYPE } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
 
+import { Table, Tag } from "antd"
+import * as qs from 'qs'
+import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
 const ListTable = () => {
   const [shipment, setShipment] = useState([])
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
   const [selectedInfo, setSelectedInfo] = useState(null)
-
   const MySwal = withReactContent(Swal)
+
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: GENERAL_ROW_SIZE,
+    },
+  })
+
+  const [filterQuery, setFilterQuery] = useState({
+    page: 1,
+    page_size: GENERAL_ROW_SIZE,
+  })
 
   const deleteAction = (e, id) => {
     e.preventDefault()
     return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
       if (result.value) {
 
-      useJwt
-        .axiosDelete(getApi(SHIPMENT_TYPE_DELETE+id+'/'))
-        .then((res) => {
-          SwalAlert("Deleted Successfully")
-        
-        })
-        .finally(() => fetchShipmentData())
-        
+        useJwt
+          .axiosDelete(getApi(SHIPMENT_TYPE_DELETE + id + '/'))
+          .then((res) => {
+            SwalAlert("Deleted Successfully")
+
+          })
+          .finally(() => fetchShipmentData())
+
       }
     })
-   
+
   }
 
   const updateStatusAction = (e) => {
-  e.preventDefault()
-  useJwt
-    .axiosPatch(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/", {
-      status: selectedStatus,
-    })
-    .then((res) => {
-      setStatusModalState(false)
-    })
-}
+    e.preventDefault()
+    useJwt
+      .axiosPatch(getApi(SHIPMENT_UPDATE_STATUS) + selectedInfo.id + "/", {
+        status: selectedStatus,
+      })
+      .then((res) => {
+        setStatusModalState(false)
+      })
+  }
 
 
 
@@ -73,7 +87,7 @@ const ListTable = () => {
   }, [])
 
   useEffect(() => {
-    if(!statusModalState) {
+    if (!statusModalState) {
       clearData()
     }
     fetchShipmentData()
@@ -81,18 +95,22 @@ const ListTable = () => {
 
   const fetchShipmentData = () => {
     return useJwt
-      .axiosGet(getApi(SHIPMENT_TYPE_LIST))
+      // .axiosGet(getApi(SHIPMENT_TYPE_LIST))
+      .axiosGet(getApi(SHIPMENT_TYPE_LIST) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
-        console.log("res", res.data)
-        setShipment(res.data)
-        return res.data
+        setShipment(res?.data?.results)
+        updatePagination({
+          current: res?.data?.page_number,
+          pageSize: res?.data?.page_size,
+          total: res?.data?.count,
+        })
       })
       .catch(err => console.log(err))
   }
 
   const fetchSearchShipmentData = searchTerm => {
     return useJwt
-      .axiosGet(getApi(SEARCH_SHIPMENT_TYPE)+'?search='+ searchTerm)
+      .axiosGet(getApi(SEARCH_SHIPMENT_TYPE) + '?search=' + searchTerm)
       .then((res) => {
         return res.data
       })
@@ -108,14 +126,14 @@ const ListTable = () => {
           if (data?.length > 0) {
             console.log('res', data)
             setShipment(data)
-          }else{
+          } else {
             console.log("No data")
           }
         })
-    }else{
+    } else {
       fetchShipmentData()
     }
-    
+
   }, 300)
 
   const clearData = () => {
@@ -123,12 +141,12 @@ const ListTable = () => {
     setSelectedStatus(null)
   }
 
-  
 
-  function debounce (fn, time) {
+
+  function debounce(fn, time) {
     let timeoutId
     return wrapper
-    function wrapper (...args) {
+    function wrapper(...args) {
       if (timeoutId) {
         clearTimeout(timeoutId)
       }
@@ -139,35 +157,152 @@ const ListTable = () => {
     }
   }
 
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      sorter,
+    })
+
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([])
+    }
+  }
+
+  const updatePagination = (info) => {
+    const _tableParams = { ...tableParams }
+
+    _tableParams.pagination = info
+
+    setTableParams(_tableParams)
+  }
+
+  const updateFilterQUery = (term, value) => {
+    let filters = { ...filterQuery }
+    if (term != 'page') {
+      filters['page'] = 1
+    }
+    if (value) {
+      filters[term] = value
+    } else {
+      filters.hasOwnProperty(term) && delete filters[term]
+    }
+    setFilterQuery(filters)
+  }
+
+
+  function colorSwitch(status) {
+    switch (status) {
+      case 'active':
+        return 'green'
+
+      case 'inactive':
+        return 'red'
+
+      default:
+        return 'green'
+    }
+  }
+
+  const columns = [
+    {
+      title: 'Shipment Type',
+      dataIndex: 'shipment_type',
+      sorter: true,
+      defaultSortOrder: 'descend'
+
+    },
+
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      render: (text, record) => (
+        <Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
+      ),
+    },
+    {
+      title: 'Action',
+
+      render: (_, record) =>
+
+        <UncontrolledDropdown>
+          <DropdownToggle
+            className="icon-btn hide-arrow"
+            color="transparent"
+            size="sm"
+            caret
+          >
+            <MoreVertical size={15} />
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem href={"/shipment_type/edit/" + record.id}>
+              <Edit className="me-50" size={15} />{" "}
+              <span className="align-middle">Edit</span>
+            </DropdownItem>
+            <DropdownItem onClick={e => deleteAction(e, record.id)}>
+              <Trash className="me-50" size={15} />{" "}
+              <span className="align-middle">Delete</span>
+            </DropdownItem>
+            <DropdownItem href="/" onClick={e => changeStatusAction(e, record)}>
+              <Edit3 className="me-50" size={15} />{" "}
+              <span className="align-middle">Change Status</span>
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+
+    },
+  ]
+
+  useEffect(() => {
+    const _tableParams = tableParams
+    const _filters = { ...filterQuery }
+
+    if (_tableParams) {
+      _filters['page'] = _tableParams.pagination?.current
+      _filters['page_size'] = _tableParams.pagination?.pageSize
+      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+    }
+
+    setFilterQuery(_filters)
+
+  }, [JSON.stringify(tableParams)])
+
+  useEffect(() => {
+    fetchShipmentData()
+  }, [JSON.stringify(filterQuery)])
+
   return (
     <>
       <CardText>
-          <div className="row justify-content-between">
-            <div className="col-lg-5">
-              <div className="d-flex align-items-center">
-                <Link to={'/shipment_type/add'}>
-                  <Button.Ripple color="primary">Add Shipment Type</Button.Ripple>
-                </Link>
-              </div>
-            </div>
-            <div className="col-lg-5">
-              <div className="d-flex align-items-center ">
-                <input
-                  placeholder="Search Shipment"
-                  name="user_name"
-                  type="text"
-                  class="form-control"
-                  onChange={handleSearch}
-                />
-                <Button.Ripple className="btn-icon ms-1" outline color="primary">
-                  <Search size={16} />
-                </Button.Ripple>
-              </div>
+        <div className="row justify-content-between">
+          <div className="col-lg-5">
+            <div className="d-flex align-items-center">
+              <Link to={'/shipment_type/add'}>
+                <Button.Ripple color="primary">Add Shipment Type</Button.Ripple>
+              </Link>
             </div>
           </div>
-        </CardText>
+          <div className="col-lg-5">
+            <div className="d-flex align-items-center ">
+              <input
+                placeholder="Search Shipment"
+                name="user_name"
+                type="text"
+                class="form-control"
+                onChange={(e) => { updateFilterQUery('search', e.target.value) }}
+              />
+              <Button.Ripple className="btn-icon ms-1" outline color="primary">
+                <Search size={16} />
+              </Button.Ripple>
+            </div>
+          </div>
+        </div>
+      </CardText>
 
-      <Table bordered>
+      <Table scroll={{ x: true }} columns={columns} dataSource={shipment} onChange={handleTableChange} pagination={tableParams.pagination} />
+
+      {/* <Table bordered>
         <thead>
           <tr>
             <th>Shipment Type</th>
@@ -202,11 +337,11 @@ const ListTable = () => {
                         <Edit className="me-50" size={15} />{" "}
                         <span className="align-middle">Edit</span>
                       </DropdownItem>
-                      <DropdownItem href="/" onClick={e=>deleteAction(e, info.id)}>
+                      <DropdownItem href="/" onClick={e => deleteAction(e, info.id)}>
                         <Trash className="me-50" size={15} />{" "}
                         <span className="align-middle">Delete</span>
                       </DropdownItem>
-                      <DropdownItem href="/" onClick={e=>changeStatusAction(e, info)}>
+                      <DropdownItem href="/" onClick={e => changeStatusAction(e, info)}>
                         <Edit3 className="me-50" size={15} />{" "}
                         <span className="align-middle">Change Status</span>
                       </DropdownItem>
@@ -216,7 +351,7 @@ const ListTable = () => {
               </tr>
             ))}
         </tbody>
-      </Table>
+      </Table> */}
 
       <StatusModal
         statusModalState={statusModalState}
@@ -234,13 +369,13 @@ const ListTable = () => {
           <div className='form-check'>
             <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "inactive" ? true : false} onChange={() => setSelectedStatus("inactive")} />
             <Label className='form-check-label' for='ex1-inactive'>
-             Inactive
+              Inactive
             </Label>
           </div>
           <div className='form-check'>
             <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "pending" ? true : false} onChange={() => setSelectedStatus("pending")} />
             <Label className='form-check-label' for='ex1-inactive'>
-             Pending
+              Pending
             </Label>
           </div>
         </div>

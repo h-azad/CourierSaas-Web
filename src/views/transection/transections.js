@@ -85,18 +85,19 @@ const Transections = () => {
     setTableParams(_tableParams)
   }
 
-  const updateFilterQUery = (key, value) => {
+  const updateFilterQUery = (term, value) => {
     let filters = { ...filterQuery }
-    // if (term != 'page') {
-    //   filters['page'] = 1
-    // }
+    if (term != 'page') {
+      filters['page'] = 1
+    }
     if (value) {
-      filters[key] = value
+      filters[term] = value
     } else {
       filters.hasOwnProperty(term) && delete filters[term]
     }
     setFilterQuery(filters)
   }
+
 
   const fetchSearchsetTransectionsData = searchTerm => {
     return useJwt
@@ -109,16 +110,12 @@ const Transections = () => {
   }
 
   const handleSearch = debounce(e => {
-    console.log(e.target.value)
     const searchTerm = e.target.value
     if (searchTerm?.length > 0) {
       fetchSearchsetTransectionsData(searchTerm)
         .then(data => {
           if (data?.length > 0) {
-            console.log('res', data)
             setTransections(data)
-          } else {
-            console.log("No data")
           }
         })
     } else {
@@ -155,16 +152,6 @@ const Transections = () => {
     }
   }
 
-  const onChangeSorter = (pagination, filters, sorter, extra) => {
-    if (sorter.order === 'ascend') {
-      // updateFilterQUery("ordering", sorter.field)
-    } else if (sorter.order === 'descend') {
-      updateFilterQUery("ordering", '-' + sorter.field)
-    }
-    else {
-      // setFilterQuery({})
-    }
-  }
 
   const columns = [
     {
@@ -233,7 +220,8 @@ const Transections = () => {
                 type="text"
                 class="form-control"
                 // value=""
-                onChange={fetchTransectionsData}
+                // onChange={fetchTransectionsData}
+                onChange={(e)=>{updateFilterQUery('search', e.target.value)}}
                 // onChange={handleSearch}
               />
               <Button.Ripple className="btn-icon ms-1" outline color="primary">
