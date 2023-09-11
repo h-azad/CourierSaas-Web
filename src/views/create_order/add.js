@@ -20,10 +20,11 @@ import {
   DELIVARY_CHARGE_BY_PERCEL_TYPE,
   RIDER_LIST,
   PRODUCT_TYPE_LIST,
-  AREAS_LIST,
+  AREAS_FORM_LIST,
   PRICING_POLICY_LIST,
-  SHIPMENT_TYPE_LIST,
+  SHIPMENT_TYPE_FORM_LIST,
   PRICING_POLICY_BY_PRODUCT,
+  PRODUCT_TYPE_USEING_FORM,
 } from "@src/constants/apiUrls"
 
 import { useEffect, useState } from "react"
@@ -109,7 +110,7 @@ const AddCreateOrder = () => {
 
   const fetchShipmentTypeData = () => {
     return useJwt
-      .axiosGet(getApi(SHIPMENT_TYPE_LIST) + '?request-location=form')
+      .axiosGet(getApi(SHIPMENT_TYPE_FORM_LIST))
       .then((res) => {
         let shipmenttypeData = []
 
@@ -126,7 +127,7 @@ const AddCreateOrder = () => {
   // ?search_fields=status&search=pending
   const fetchProductData = () => {
     return useJwt
-      .axiosGet(getApi(PRODUCT_TYPE_LIST) + '?request-location=form')
+      .axiosGet(getApi(PRODUCT_TYPE_USEING_FORM))
       .then((res) => {
         let productData = []
 
@@ -225,7 +226,7 @@ const AddCreateOrder = () => {
 
   const fetchAreaData = () => {
     return useJwt
-      .axiosGet(getApi(AREAS_LIST) + '?request-location=form')
+      .axiosGet(getApi(AREAS_FORM_LIST))
       .then((res) => {
         let areaData = []
         res.data.map((data) => {

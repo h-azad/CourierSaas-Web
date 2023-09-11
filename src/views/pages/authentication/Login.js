@@ -55,14 +55,14 @@ const ToastContent = ({ t, name, role }) => {
   )
 }
 
-// const defaultValues = {
-//   password: '123456',
-//   loginEmail: 'org2@gmail.com'
-// }
+const defaultValues = {
+  password: '123456',
+  loginEmail: 'test@gmail.com'
+}
 
 const Login = () => {
   // ** Hooks
-  const domainName = window.location.href.replace('3000/login','8000')
+  const domainName = window.location.href.replace('3000/login', '8000')
   localStorage.setItem('domainName', domainName)
 
   const [error, setErrors] = useState()
@@ -119,9 +119,9 @@ const Login = () => {
       }
     }
   }
-//n
+  //n
   useEffect(() => {
-    if (isUserLoggedIn()){
+    if (isUserLoggedIn()) {
       navigate('/home')
     }
   }, [])
@@ -188,20 +188,21 @@ const Login = () => {
         </Col>
         <Col className='d-flex align-items-center auth-bg px-2 p-lg-5' lg='4' sm='12'>
           <Col className='px-xl-2 mx-auto' sm='8' md='6' lg='12'>
-            
+
             <CardTitle tag='h2' className='fw-bold mb-1'>
-            {error && <h4 style={{color: "red"}}>{error}</h4>}
+              {error && <h4 style={{ color: "red" }}>{error}</h4>}
               Welcome to Courier! 👋
             </CardTitle>
-            
+
             <CardText className='mb-2'>Please sign-in to your account and start the adventure</CardText>
-           
+
             <Form className='auth-login-form mt-2' onSubmit={handleSubmit(onSubmit)}>
               <div className='mb-1'>
                 <Label className='form-label' for='login-email'>
                   Email
                 </Label>
                 <Controller
+                  defaultValue={defaultValues.loginEmail}
                   id='loginEmail'
                   name='loginEmail'
                   control={control}
@@ -226,6 +227,7 @@ const Login = () => {
                   </Link>
                 </div>
                 <Controller
+                  defaultValue={defaultValues.password}
                   id='password'
                   name='password'
                   control={control}
@@ -243,7 +245,7 @@ const Login = () => {
               <Button type='submit' color='primary' block>
                 Sign in
               </Button>
-              
+
             </Form>
             <p className='text-center mt-2'>
               <span className='me-25'>New on our platform?</span>

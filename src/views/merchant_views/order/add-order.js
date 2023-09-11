@@ -19,10 +19,10 @@ import {
   CREATE_ORDER_ADD,
   DELIVARY_CHARGE_BY_PERCEL_TYPE,
   RIDER_LIST,
-  PRODUCT_TYPE_LIST,
-  AREAS_LIST,
+  PRODUCT_TYPE_USEING_FORM,
+  AREAS_FORM_LIST,
   PRICING_POLICY_LIST,
-  SHIPMENT_TYPE_LIST,
+  SHIPMENT_TYPE_FORM_LIST,
   PRICING_POLICY_BY_PRODUCT,
   MARCHANT_CREATE_ORDER,
   CITIES_LIST,
@@ -103,7 +103,7 @@ const MerchantAddOrder = () => {
 
   const fetchShipmentTypeData = () => {
     return useJwt
-      .axiosGet(getApi(SHIPMENT_TYPE_LIST))
+      .axiosGet(getApi(SHIPMENT_TYPE_FORM_LIST))
       .then((res) => {
         let shipmenttypeData = []
 
@@ -119,7 +119,7 @@ const MerchantAddOrder = () => {
 
   const fetchProductData = () => {
     return useJwt
-      .axiosGet(getApi(PRODUCT_TYPE_LIST))
+      .axiosGet(getApi(PRODUCT_TYPE_USEING_FORM))
       .then((res) => {
         let productData = []
 
@@ -250,7 +250,7 @@ const MerchantAddOrder = () => {
 
   const fetchAreaData = () => {
     return useJwt
-      .axiosGet(getApi(AREAS_LIST))
+      .axiosGet(getApi(AREAS_FORM_LIST))
       .then((res) => {
         let areaData = []
         res.data.map((data) => {

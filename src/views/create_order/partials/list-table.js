@@ -28,10 +28,8 @@ import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
 import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
 import * as qs from 'qs'
 
-import { OrderStatusOptions } from '../../../components/orderRelatedData'
-
-
-import { Table } from "antd"
+import { OrderStatusOptions, colorSwitch } from '../../../components/orderRelatedData'
+import { Table, Tag } from "antd"
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
 
@@ -178,24 +176,6 @@ const CreateOrderList = () => {
     handleSearchQuery(qs.stringify(filterQuery))
   }, [filterQuery])
 
-  const paginationUpdate = (page) => {
-    updateFilterQUery("page", page)
-  }
-
-
-
-  function colorSwitch(status) {
-    switch (status) {
-      case 'active':
-        return 'green'
-
-      case 'inactive':
-        return 'red'
-
-      default:
-        return 'green'
-    }
-  }
 
   const columns = [
 
@@ -275,11 +255,8 @@ const CreateOrderList = () => {
                 </h6>
                 <h6 className="mb-25 ">
                   Order Status :{" "}
-                  <span
-                    className="highlight-status"
-                    style={{ textTransform: "capitalize" }}
-                  >
-                    {info.status}
+                  <span className="highlight-status" >
+                    <Tag color={colorSwitch(info.status)}>{info.status.toUpperCase()}</Tag>
                   </span>
                 </h6>
                 <h6 className="mb-25">

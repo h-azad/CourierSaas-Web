@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash, Search, Edit3 } from "react-feather"
+import { MoreVertical, Search, Edit3 } from "react-feather"
 import {
-  Table,
-  Badge,
   UncontrolledDropdown,
   DropdownMenu,
   DropdownItem,
@@ -13,8 +11,6 @@ import {
   Input,
 } from "reactstrap"
 import { useEffect, useState } from "react"
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
 
 import SwalAlert from "../../../../components/SwalAlert"
@@ -22,13 +18,32 @@ import StatusModal from "../../../../components/StatusModal"
 import SwalConfirm from "../../../../components/SwalConfirm"
 import { getApi, WITHDRAW_REQUEST_LIST, WITHDRAW_REQUEST_DELETE, WITHDRAW_REQUEST_SEARCH, WITHDRAW_REQUEST_UPDATE_STATUS } from "../../../../constants/apiUrls"
 
+import { Table, Tag } from "antd"
+import * as qs from 'qs'
+import { GENERAL_ROW_SIZE } from "../../../../constants/tableConfig"
+
+
+
 const MarchantBalanceWithrawRequestList = () => {
   const [withdrawRequest, setWithdrawRequest] = useState([])
-  const MySwal = withReactContent(Swal)
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
   const [selectedInfo, setSelectedInfo] = useState(null)
-  console.log('withdrawRequest', withdrawRequest)
+
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: GENERAL_ROW_SIZE,
+    },
+  })
+
+  const [filterQuery, setFilterQuery] = useState({
+    page: 1,
+    page_size: GENERAL_ROW_SIZE,
+    ordering: '-created_at'
+  })
+
+
   const deleteAction = (e, id) => {
     e.preventDefault()
     return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
@@ -42,7 +57,7 @@ const MarchantBalanceWithrawRequestList = () => {
 
             // return res.data
           })
-          .finally(() => fetchWithdrawRequesttData())
+          .finally(() => fetchWithdrawRequestData())
 
       }
     })
@@ -69,75 +84,161 @@ const MarchantBalanceWithrawRequestList = () => {
     setSelectedInfo(info)
   }
 
-  useEffect(() => {
-    fetchWithdrawRequesttData()
-  }, [])
+  // useEffect(() => {
+  //   fetchWithdrawRequestData()
+  // }, [])
 
-  useEffect(() => {
-    if (!statusModalState) {
-      clearData()
-    }
-    fetchWithdrawRequesttData()
-  }, [statusModalState])
+  // useEffect(() => {
+  //   if (!statusModalState) {
+  //     clearData()
+  //   }
+  //   fetchWithdrawRequestData()
+  // }, [statusModalState])
 
-  const fetchWithdrawRequesttData = () => {
+  const fetchWithdrawRequestData = () => {
     return useJwt
-      .axiosGet(getApi(WITHDRAW_REQUEST_LIST))
+      .axiosGet(getApi(WITHDRAW_REQUEST_LIST) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
-        console.log("res", res.data)
-        setWithdrawRequest(res.data)
-        return res.data
+        setWithdrawRequest(res?.data?.results)
+        updatePagination({
+          current: res?.data?.page_number,
+          pageSize: res?.data?.page_size,
+          total: res?.data?.count,
+        })
       })
       .catch(err => console.log(err))
   }
 
-  const fetchSearchWithdrawRequestData = searchTerm => {
-    return useJwt
-      .axiosGet(getApi(WITHDRAW_REQUEST_SEARCH) + '?search=' + searchTerm)
-      .then((res) => {
-        return res.data
-      })
-      .catch((err) => console.log(err))
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      sorter,
+    })
+
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([])
+    }
   }
 
-  const handleSearch = debounce(e => {
-    console.log(e.target.value)
-    const searchTerm = e.target.value
-    console.log('search', searchTerm)
-    if (searchTerm.length > 0) {
-      fetchSearchWithdrawRequestData(searchTerm)
-        .then(data => {
-          if (data?.length > 0) {
-            console.log('res', data)
-            setWithdrawRequest(data)
-          } else {
-            console.log("No data")
-          }
-        })
+  const updatePagination = (info) => {
+    const _tableParams = { ...tableParams }
+
+    _tableParams.pagination = info
+
+    setTableParams(_tableParams)
+  }
+
+  const updateFilterQUery = (term, value) => {
+    let filters = { ...filterQuery }
+    if (term != 'page') {
+      filters['page'] = 1
+    }
+    if (value) {
+      filters[term] = value
     } else {
-      fetchWithdrawRequesttData()
+      filters.hasOwnProperty(term) && delete filters[term]
     }
-
-  }, 300)
-
-  const clearData = () => {
-    setSelectedInfo(null)
-    setSelectedStatus(null)
+    setFilterQuery(filters)
   }
 
-  function debounce(fn, time) {
-    let timeoutId
-    return wrapper
-    function wrapper(...args) {
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-      }
-      timeoutId = setTimeout(() => {
-        timeoutId = null
-        fn(...args)
-      }, time)
+  function colorSwitch(status) {
+    switch (status) {
+      case 'Pending':
+        return 'orange'
+
+      case 'Cancel':
+        return 'red'
+
+      default:
+        return 'green'
     }
   }
+
+
+  const columns = [
+    {
+      title: 'Date',
+      dataIndex: 'created_at',
+
+      sorter: {
+        compare: (a, b) => a.created_at - b.created_at,
+        multiple: 2,
+      },
+    },
+    {
+      title: 'Account',
+      dataIndex: ['account_wallet', 'account_name']
+    },
+    {
+      title: 'Status',
+      dataIndex: 'withdraw_status',
+      render: (text, record) => (
+        <Tag color={colorSwitch(record.withdraw_status)}>{text.toUpperCase()}</Tag>
+      ),
+    },
+    {
+      title: 'Previous Balance',
+      dataIndex: 'balance',
+    },
+
+
+    {
+      title: 'Withdraw Balance',
+      dataIndex: 'withdraw_balance',
+    },
+    {
+      title: 'Current Balance',
+      dataIndex: 'current_balance',
+    },
+    {
+      title: 'Action',
+
+      render: (_, record) =>
+        record.withdraw_status === "Pending" ? (
+          <td>
+            <UncontrolledDropdown>
+              <DropdownToggle
+                className="icon-btn hide-arrow"
+                color="transparent"
+                size="sm"
+                caret
+              >
+                <MoreVertical size={15} />
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem href="/" onClick={e => changeStatusAction(e, wallet)}>
+                  <Edit3 className="me-50" size={15} />{" "}
+                  <span className="align-middle">Cancel</span>
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </td>
+
+        ) : null,
+
+    },
+  ]
+
+  useEffect(() => {
+    const _tableParams = tableParams
+    const _filters = { ...filterQuery }
+
+    if (_tableParams) {
+      _filters['page'] = _tableParams.pagination?.current
+      _filters['page_size'] = _tableParams.pagination?.pageSize
+      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+    }
+
+    setFilterQuery(_filters)
+
+  }, [JSON.stringify(tableParams)])
+
+  useEffect(() => {
+    fetchWithdrawRequestData()
+  }, [JSON.stringify(filterQuery)])
+
 
   return (
     <>
@@ -155,9 +256,10 @@ const MarchantBalanceWithrawRequestList = () => {
               <input
                 placeholder="Search Withdraw Request"
                 name="marchant_name"
-                type="date"
+                type="text"
                 class="form-control"
-                onChange={handleSearch}
+                // onChange={handleSearch}
+                onChange={(e) => { updateFilterQUery('search', e.target.value) }}
               />
               <Button.Ripple className="btn-icon ms-1" outline color="primary">
                 <Search size={16} />
@@ -166,61 +268,9 @@ const MarchantBalanceWithrawRequestList = () => {
           </div>
         </div>
       </CardText>
-      <Table bordered>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Previous Balance</th>
-            <th>Withdraw Balance</th>
-            <th>Current Balance</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {withdrawRequest &&
-            withdrawRequest.map((wallet) => (
-              <tr key={wallet.id}>
-                <td>
-                  <span className="align-middle fw-bold">{wallet.created_at}</span>
-                </td>
-                <td>
-                  <span className="align-middle fw-bold">{wallet.balance}</span>
-                </td>
-                <td>
-                  <span className="align-middle fw-bold">{wallet.withdraw_balance}</span>
-                </td>
-                <td>
-                  <span className="align-middle fw-bold">{wallet.current_balance}</span>
-                </td>
-                <td>
-                  <span className="align-middle fw-bold">{wallet.withdraw_status
-                  }</span>
-                </td>
-                {wallet.withdraw_status ==="Pending" &&
-                <td>
-                  <UncontrolledDropdown>
-                    <DropdownToggle
-                      className="icon-btn hide-arrow"
-                      color="transparent"
-                      size="sm"
-                      caret
-                    >
-                      <MoreVertical size={15} />
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      <DropdownItem href="/" onClick={e => changeStatusAction(e, wallet)}>
-                        <Edit3 className="me-50" size={15} />{" "}
-                        <span className="align-middle">Cancel</span>
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </UncontrolledDropdown>
-                </td>}
 
-              </tr>
-            ))}
-        </tbody>
-      </Table>
+      <Table scroll={{ x: true }} columns={columns} dataSource={withdrawRequest} onChange={handleTableChange} pagination={tableParams.pagination} />
+
       <StatusModal
         statusModalState={statusModalState}
         setStatusModalState={setStatusModalState}

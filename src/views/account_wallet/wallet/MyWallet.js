@@ -16,15 +16,12 @@ const MyWallet = () => {
     fetchAccountWalletData()
   }, [])
 
-
   const fetchAccountWalletData = () => {
     return useJwt
       .axiosGet(getApi(ACCOUNT_WALLET_LIST))
       .then((res) => {
-        console.log("res", res.data)
-        setBalance(res.data?.balance)
-        setName(res.data?.account_name)
-        return res.data
+        setBalance(res?.data?.results[0]?.balance)
+        setName(res?.data?.results[0]?.account_name)
       })
       .catch(err => console.log(err))
   }

@@ -3,7 +3,7 @@ import Select from "react-select"
 import classNames from "classnames"
 import { Checkbox, DatePicker, Input, Button } from "antd"
 
-const TaskFilter = ({ updateFilterQUery, handleSearchQuery, setFilterQuery }) => {
+const TaskFilter = ({ updateFilterQUery, clearFilter }) => {
 	const { Search } = Input
 
 	const [orderStatus, setOrderStatus] = useState("")
@@ -24,16 +24,7 @@ const TaskFilter = ({ updateFilterQUery, handleSearchQuery, setFilterQuery }) =>
 		{ value: "completed", label: "Completed" },
 	]
 
-	const clearFilter = () => {
-		setOrderStatus("")
-		setorderID('')
-		setReceipientName('')
-		setphoneNumber('')
-		setSelectedValue('')
-		setSelectedDate(null)
-		handleSearchQuery()
-		setFilterQuery({})
-	}
+
 
 
 	return (

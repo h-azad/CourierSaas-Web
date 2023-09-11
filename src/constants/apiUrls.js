@@ -133,6 +133,7 @@ export const AREAS_UPDATE_STATUS = "/area/"
 export const AREAS_SEARCH = '/search-area/'
 export const AREAS_BY_CITY = '/get-area/'
 export const AREAS_STATISTICS = "/statistics/area/"
+export const AREAS_FORM_LIST = "/area/form-list/"
 
 
 export const ROUTE = "/api/route/"
@@ -150,6 +151,8 @@ export const SHIPMENT_UPDATE_STATUS= '/shipment_type/'
 export const SEARCH_SHIPMENT = '/search_shipment/'
 export const SEARCH_SHIPMENT_TYPE = "/search-shipment-type/"
 export const SHIPMENT_TYPE_STATISTICS = "/shipment-type/statistics/"
+export const SHIPMENT_TYPE_FORM_LIST = "/shipment-type/form-view/"
+
 
 
 // Product Type API's 
@@ -161,6 +164,7 @@ export const PRODUCT_TYPE_DELETE = '/product_type/'
 export const PRODUCT_TYPE_DETAILS = '/product_type/'
 export const PRODUCT_UPDATE_STATUS = "/product_type/"
 export const SEARCH_PRODUCT = '/search_product/'
+export const PRODUCT_TYPE_USEING_FORM = "/product-type/form-view/"
 export const SEARCH_PRODUCT_TYPE = "/search-product-type/"
 export const PRODUCT_TYPE_STATISTICS = "/product-type/statistics/"
 
