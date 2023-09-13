@@ -64,9 +64,7 @@ const MarchantBalanceWithrawRequestAdd = () => {
   }, [watch])
 
 
-  useEffect(() => {
-    console.log(withdrawBalance)
-  }, [withdrawBalance])
+
 
 
   const fetchWithdrawRequestData = () => {
@@ -98,7 +96,6 @@ const MarchantBalanceWithrawRequestAdd = () => {
       return false
     }
 
-    console.log("data", data)
     setData(data)
     if (data.withdrawbalance !== null) {
       let formData = {
@@ -107,7 +104,6 @@ const MarchantBalanceWithrawRequestAdd = () => {
         current_balance: data.current_balance,
         account_wallet: accountWallet,
       }
-      console.log("formdata", formData)
       useJwt
         .axiosPost(getApi(WITHDRAW_REQUEST_ADD), formData)
         .then((res) => {

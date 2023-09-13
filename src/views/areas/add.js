@@ -18,7 +18,7 @@ import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import { selectThemeColors } from "@utils"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, AREAS_ADD, CITIES_LIST } from '@src/constants/apiUrls'
+import { getApi, AREAS_ADD, CITY_FORM_LIST } from '@src/constants/apiUrls'
 import ToastContent from "../../components/ToastContent"
 import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
@@ -47,7 +47,7 @@ const AddAreas = () => {
 
   const fetchCitiesData = () => {
     return useJwt
-      .axiosGet(getApi(CITIES_LIST) + '?request-location=form')
+      .axiosGet(getApi(CITY_FORM_LIST) + '?request-location=form')
       .then((res) => {
         // console.log("res", res.data)
         let cityData = []

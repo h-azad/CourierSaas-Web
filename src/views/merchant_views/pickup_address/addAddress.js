@@ -17,7 +17,7 @@ import { useForm, Controller } from "react-hook-form"
 import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
-  CITIES_LIST,
+  CITY_FORM_LIST,
   AREAS_BY_CITY,
   MARCHANT_PICKUP_ADDRESS
 } from "@src/constants/apiUrls"
@@ -51,11 +51,12 @@ const MerchantAddPickupAddress = () => {
 
   const fetchCityData = () => {
     return useJwt
-      .axiosGet(getApi(CITIES_LIST))
+      .axiosGet(getApi(CITY_FORM_LIST))
       .then((res) => {
+  
         let cityData = []
         res.data.map((data) => {
-          cityData.push({ value: data.id, label: data.city_name })
+          cityData.push({ value: data?.id, label: data?.city_name })
         })
         setSelectboxCity(cityData)
         return res.data

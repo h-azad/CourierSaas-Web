@@ -13,7 +13,7 @@ import Select from "react-select"
 import { useForm, Controller } from 'react-hook-form'
 import classnames from 'classnames'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, MARCHANT_ADD, PAYMENT_METHOD_LIST, CITIES_LIST,AREAS_LIST } from '@src/constants/apiUrls'
+import { getApi, MARCHANT_ADD, PAYMENT_METHOD_FORM_LIST, CITY_FORM_LIST,AREAS_LIST } from '@src/constants/apiUrls'
 import SwalAlert from "../../components/SwalAlert"
 import { useEffect, useState } from "react"
 import {identity } from "../../constants/data/identity"
@@ -66,7 +66,7 @@ const AddMerchants = () => {
 
   const fetchPaymentmethodData = () => {
     return useJwt
-      .axiosGet(getApi(PAYMENT_METHOD_LIST) + '?request-location=form')
+      .axiosGet(getApi(PAYMENT_METHOD_FORM_LIST) + '?request-location=form')
       .then((res) => {
         let paymentmethodData = []
 
@@ -82,7 +82,7 @@ const AddMerchants = () => {
 
   const fetchCityData = () => {
     return useJwt
-      .axiosGet(getApi(CITIES_LIST) + '?request-location=form')
+      .axiosGet(getApi(CITY_FORM_LIST) + '?request-location=form')
       .then((res) => {
         let cityData = []
 

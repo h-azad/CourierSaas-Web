@@ -12,15 +12,15 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useForm, Controller } from 'react-hook-form'
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, ADMIN_ROLE } from '@src/constants/apiUrls'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import SwalAlert from '../../../components/SwalAlert'
 
 
 const EditAdminRole = () => {
-  const [adminRole, setAdminRole] = useState({})
 
   const {
     control,
+    setValue,
     setError,
     handleSubmit,
     formState: { errors }
@@ -38,8 +38,7 @@ const EditAdminRole = () => {
     return useJwt
       .axiosGet(getApi(ADMIN_ROLE + id + '/'))
       .then((res) => {
-        setAdminRole(res.data)
-        return res.data
+        setValue('name', res?.data?.name)
       })
       .catch(err => console.log(err))
   }
@@ -86,7 +85,6 @@ const EditAdminRole = () => {
               Name
             </Label>
             <Controller
-              defaultValue={adminRole?.name}
               control={control}
               id='name'
               name='name'

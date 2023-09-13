@@ -2,6 +2,8 @@
 //n
 import { useContext, useEffect, useState } from 'react'
 
+
+import { getApi } from '@src/constants/apiUrls'
 // import { useContext } from 'react'
 
 import { Link, useNavigate } from 'react-router-dom'
@@ -55,10 +57,10 @@ const ToastContent = ({ t, name, role }) => {
   )
 }
 
-const defaultValues = {
-  password: '123456',
-  loginEmail: 'test@gmail.com'
-}
+// const defaultValues = {
+//   password: '123456',
+//   loginEmail: 'test@gmail.com'
+// }
 
 const Login = () => {
   // ** Hooks
@@ -202,7 +204,7 @@ const Login = () => {
                   Email
                 </Label>
                 <Controller
-                  defaultValue={defaultValues.loginEmail}
+                  // defaultValue={defaultValues.loginEmail}
                   id='loginEmail'
                   name='loginEmail'
                   control={control}
@@ -227,7 +229,7 @@ const Login = () => {
                   </Link>
                 </div>
                 <Controller
-                  defaultValue={defaultValues.password}
+                  // defaultValue={defaultValues.password}
                   id='password'
                   name='password'
                   control={control}

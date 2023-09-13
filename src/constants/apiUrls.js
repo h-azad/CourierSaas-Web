@@ -122,6 +122,7 @@ export const CITIES_DETAILS = '/city/'
 export const CITY_UPDATE_STATUS = "/city/"
 export const CITIES_SEARCH = '/search-city/'
 export const CITY_STATISTICS = "/city/statistics/"
+export const CITY_FORM_LIST = "/city/form-list/"
 
 // Areas API's 
 export const AREAS_ADD = '/area/'
@@ -215,6 +216,7 @@ export const PAYMENT_METHOD_DETAILS = '/payment_method/'
 export const PAYMENT_METHOD_UPDATE_STATUS = "/payment_method/"
 export const SEARCH_PAYMENT_METHOD = '/search_payment_method/'
 export const PAYMENT_METHOD_STATISTICS = "/payment-method/statistics/"
+export const PAYMENT_METHOD_FORM_LIST = "/payment-method-form-list/statistics/"
 
 //Account Wallet
 export const ACCOUNT_WALLET_ADD = "/api/account-wallet/"

@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { Label, Card, Form, CardBody, Button, } from "reactstrap"
 import classnames from 'classnames'
 import Select from "react-select"
-import { getApi, CITIES_LIST, AREAS_BY_CITY } from '@src/constants/apiUrls'
+import { getApi, CITY_FORM_LIST, AREAS_BY_CITY } from '@src/constants/apiUrls'
 import useJwt from '@src/auth/jwt/useJwt'
 
 
@@ -51,7 +51,7 @@ export default function Form2({ setCity, setAreas, next, prev }) {
 
   const fetchCityData = () => {
     return useJwt
-      .axiosGet(getApi(CITIES_LIST) + '?request-location=form')
+      .axiosGet(getApi(CITY_FORM_LIST) + '?request-location=form')
       .then((res) => {
         let cityData = []
 

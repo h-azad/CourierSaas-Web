@@ -13,7 +13,7 @@ import Select from "react-select"
 import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, PRICING_POLICY_ADD, PRODUCT_TYPE_LIST } from '@src/constants/apiUrls'
+import { getApi, PRICING_POLICY_ADD, PRODUCT_TYPE_USEING_FORM } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
 
@@ -42,7 +42,7 @@ const AddPricingPolicy = () => {
 
   const fetchProductData = () => {
     return useJwt
-      .axiosGet(getApi(PRODUCT_TYPE_LIST) + '?request-location=form')
+      .axiosGet(getApi(PRODUCT_TYPE_USEING_FORM))
       .then((res) => {
         let productData = []
 

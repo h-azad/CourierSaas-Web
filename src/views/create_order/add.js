@@ -19,9 +19,7 @@ import {
   MARCHANT_LIST,
   DELIVARY_CHARGE_BY_PERCEL_TYPE,
   RIDER_LIST,
-  PRODUCT_TYPE_LIST,
   AREAS_FORM_LIST,
-  PRICING_POLICY_LIST,
   SHIPMENT_TYPE_FORM_LIST,
   PRICING_POLICY_BY_PRODUCT,
   PRODUCT_TYPE_USEING_FORM,
@@ -47,7 +45,6 @@ const AddCreateOrder = () => {
   const [amountCollected, setAmountCollected] = useState(0)
   const [CODCharge, setCODCharge] = useState(0)
   const [orderType, setOrderType] = useState()
-  console.log('amountCollected', amountCollected)
   const navigate = useNavigate()
   const [inputValue, setInputValue] = useState("")
   const {
@@ -222,6 +219,7 @@ const AddCreateOrder = () => {
 
     return () => subscription.unsubscribe()
   }, [watch])
+
 
 
   const fetchAreaData = () => {

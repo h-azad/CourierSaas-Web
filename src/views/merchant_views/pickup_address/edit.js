@@ -17,28 +17,22 @@ import { useForm, Controller } from "react-hook-form"
 import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
-  CITIES_LIST,
+  CITY_FORM_LIST,
   AREAS_BY_CITY,
   MARCHANT_PICKUP_ADDRESS
 } from "@src/constants/apiUrls"
 import { useEffect, useState } from "react"
 import SwalAlert from "../../../components/SwalAlert"
-// import { getUserData } from "../../../auth/utils"
 
 const MerchantEditPickupAddress = () => {
-
+  let { id } = useParams()
   const [selectboxProduct, setSelectboxCity] = useState([])
   const [selectboxArea, setSelectboxArea] = useState([])
-  const [data, setData] = useState(null)
-
   const navigate = useNavigate()
-  let { id } = useParams()
 
   const {
-    reset,
     control,
     watch,
-    resetField,
     setError,
     setValue,
     handleSubmit,
@@ -48,17 +42,28 @@ const MerchantEditPickupAddress = () => {
 
     },
   })
-  useEffect(() => {
-    fetchCityData()
-  }, [])
+  
+
+  const fetchAddressData = (id) => {
+    return useJwt
+      .axiosGet(getApi(MARCHANT_PICKUP_ADDRESS + id + "/"))
+      .then((res) => {
+        setValue('phone', res?.data?.phone)
+        setValue('street_address', res?.data?.street_address)
+        setValue('city', {value: res?.data?.city?.id, label: res?.data?.city?.city_name})
+        setValue('area', {value: res?.data?.area?.id, label: res?.data?.area?.area_name})
+      })
+      .catch((err) => console.log(err))
+  }
 
   const fetchCityData = () => {
     return useJwt
-      .axiosGet(getApi(CITIES_LIST + id + '/'))
+      .axiosGet(getApi(CITY_FORM_LIST))
       .then((res) => {
+  
         let cityData = []
         res.data.map((data) => {
-          cityData.push({ value: data.id, label: data.city_name })
+          cityData.push({ value: data?.id, label: data?.city_name })
         })
         setSelectboxCity(cityData)
         return res.data
@@ -81,19 +86,10 @@ const MerchantEditPickupAddress = () => {
       .catch((err) => console.log(err))
   }
 
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) => {
-      if (name == "city" && type == "change") {
-        setSelectboxArea([])
-        fetchAreaData(value.city.value)
-      }
-    })
-    return () => subscription.unsubscribe()
-  }, [watch])
+  
 
 
   const onSubmit = (data) => {
-    console.log("from data", data)
 
     let isFormValid = true
 
@@ -121,39 +117,64 @@ const MerchantEditPickupAddress = () => {
       isFormValid = false
     }
 
+    if (!(data.street_address)) {
+      setError("street_address", {
+        type: "required",
+        message: "Street Address is required",
+      })
+      isFormValid = false
+    }
+
+    
+
     if (!isFormValid) {
       return false
     }
 
-    setData(data)
     if (
       data.phone !== null &&
       data.city.value !== null &&
-      data.area.value !== null
+      data.area.value !== null &&
+      data.street_address !== null
     ) {
       let formData = {
         phone: data.phone,
         city: data.city.value,
         area: data.area.value,
+        street_address: data.street_address
       }
 
-      console.log("formData", formData)
-
       const headers = {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      headers: {
+        'Content-Type': 'multipart/form-data'
         }
       }
 
       useJwt
-        .axiosPost(getApi(MARCHANT_PICKUP_ADDRESS), formData, headers)
+        .axiosPatch(getApi(MARCHANT_PICKUP_ADDRESS) + id + "/", formData, headers )
         .then((res) => {
-          SwalAlert("Pickup Address Added Successfully")
+          SwalAlert("Pickup Address Update Successfully")
           navigate("/marchant-pickup-address")
         })
         .catch(err => console.log(err))
-    }
+      }
   }
+
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => {
+      if (name == "city" && type == "change") {
+        setSelectboxArea([])
+        fetchAreaData(value.city.value)
+      }
+    })
+    return () => subscription.unsubscribe()
+  }, [watch])
+
+
+  useEffect(() => {
+    fetchAddressData(id)
+    fetchCityData()
+  }, [])
 
 
   return (
@@ -164,7 +185,7 @@ const MerchantEditPickupAddress = () => {
 
       <CardBody>
         <Form onSubmit={handleSubmit(onSubmit)}>
-
+          
           <div class="row">
             <div class="col-lg-6">
               <div className="mb-1">
@@ -172,7 +193,6 @@ const MerchantEditPickupAddress = () => {
                   Phone Number*
                 </Label>
                 <Controller
-                  defaultValue=""
                   control={control}
                   id="phone"
                   name="phone"
@@ -187,6 +207,30 @@ const MerchantEditPickupAddress = () => {
                 />
                 {errors && errors.phone && (
                   <span>{errors.phone.message}</span>
+                )}
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div className="mb-1">
+                <Label className="form-label" for="street_address">
+                  Pickup Address
+                </Label>
+                <Controller
+                  defaultValue=""
+                  control={control}
+                  id="street_address"
+                  name="street_address"
+                  render={({ field }) => (
+                    <Input
+                      type="text"
+                      placeholder=""
+                      invalid={errors.street_address && true}
+                      {...field}
+                    />
+                  )}
+                />
+                {errors && errors.street_address && (
+                  <span>{errors.street_address.message}</span>
                 )}
               </div>
             </div>
@@ -262,4 +306,6 @@ const MerchantEditPickupAddress = () => {
   )
 }
 export default MerchantEditPickupAddress
+
+
 

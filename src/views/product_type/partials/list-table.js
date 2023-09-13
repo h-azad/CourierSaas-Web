@@ -215,17 +215,12 @@ const ListTable = () => {
 
     {
       title: 'Volume Unit',
-      dataIndex: 'product_type',
+      dataIndex: 'volume_unit',
     },
 
     {
       title: 'Weight Unit',
-      dataIndex: 'product_type',
-    },
-
-    {
-      title: 'Product Type',
-      dataIndex: 'product_type',
+      dataIndex: 'weight_unit',
     },
 
     {

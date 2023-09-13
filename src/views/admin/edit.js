@@ -39,7 +39,6 @@ const EditAdmin = () => {
     useJwt
       .axiosGet(getApi(ADMIN_DETAILS) + id + "/")
       .then((res) => {
-        console.log(res)
         setValue("name", res.data.name)
         if (res.data.admin_role=='Admin'){
           setValue('admin_role', { value: 'Admin', label: 'Admin' })
