@@ -19,6 +19,7 @@ function CreateOrderList() {
   })
 
   const fetchOrderStatisticsData = () => {
+    console.log(getApi(ORDER_STATISTICS))
     return useJwt
       .axiosGet(getApi(ORDER_STATISTICS))
       .then((res) => {

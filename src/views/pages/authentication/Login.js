@@ -2,8 +2,6 @@
 //n
 import { useContext, useEffect, useState } from 'react'
 
-
-import { getApi } from '@src/constants/apiUrls'
 // import { useContext } from 'react'
 
 import { Link, useNavigate } from 'react-router-dom'
@@ -40,6 +38,10 @@ import { Row, Col, Form, Input, Label, Alert, Button, CardText, CardTitle, Uncon
 import '@styles/react/pages/page-authentication.scss'
 import coverPhoto from '@src/assets/images/pages/register.jpg'
 
+// import { handleLogout } from '@src/redux/authentication'
+
+
+
 const ToastContent = ({ t, name, role }) => {
   return (
     <div className='d-flex'>
@@ -63,9 +65,6 @@ const ToastContent = ({ t, name, role }) => {
 // }
 
 const Login = () => {
-  // ** Hooks
-  const domainName = window.location.href.replace('3000/login', '8000')
-  localStorage.setItem('domainName', domainName)
 
   const [error, setErrors] = useState()
   const { skin } = useSkin()

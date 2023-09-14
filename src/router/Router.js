@@ -18,6 +18,7 @@ import { getRoutes } from './routes'
 import CreateOrganization from '../views/pages/authentication/CreateOrganization'
 import ResetPasswordBasic from '../views/pages/authentication/ResetPasswordBasic'
 import ForgotPasswordBasic from '../views/pages/authentication/ForgotPasswordBasic'
+import VerifySSOLogin from '@src/views/pages/authentication/VerifySSOLogin'
 
 // ** Components
 const Error = lazy(() => import('../views/pages/misc/Error'))
@@ -46,6 +47,14 @@ const Router = () => {
       index: true,
       element: <Navigate replace to={getHomeRoute()} />,
     },
+
+    {
+      path: "/verifysso-login",
+      index: true,
+      element: < VerifySSOLogin />,
+    },
+
+    
 
     {
       path: "/forgot-password",
