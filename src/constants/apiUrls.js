@@ -226,6 +226,7 @@ export const ACCOUNT_WALLET_DELETE = "/api/account-wallet/"
 export const ACCOUNT_WALLET_DETAILS = "/api/account-wallet/"
 export const ACCOUNT_WALLET_UPDATE_STATUS = "/api/account-wallet/"
 export const ACCOUNT_WALLET_SEARCH = "/api/account-wallet-search/"
+export const ACCOUNT_WALLET_FORM_LIST = "/api/account-wallet/form-list/"
 
 
 

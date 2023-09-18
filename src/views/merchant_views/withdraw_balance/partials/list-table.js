@@ -18,7 +18,7 @@ import StatusModal from "../../../../components/StatusModal"
 import SwalConfirm from "../../../../components/SwalConfirm"
 import { getApi, WITHDRAW_REQUEST_LIST, WITHDRAW_REQUEST_DELETE, WITHDRAW_REQUEST_SEARCH, WITHDRAW_REQUEST_UPDATE_STATUS } from "../../../../constants/apiUrls"
 
-import { Table, Tag } from "antd"
+import { Table, Tag, Popover } from "antd"
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../../constants/tableConfig"
 
@@ -196,27 +196,36 @@ const MarchantBalanceWithrawRequestList = () => {
       title: 'Action',
 
       render: (_, record) =>
-        record.withdraw_status === "Pending" ? (
-          <td>
-            <UncontrolledDropdown>
-              <DropdownToggle
-                className="icon-btn hide-arrow"
-                color="transparent"
-                size="sm"
-                caret
-              >
-                <MoreVertical size={15} />
-              </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem href="/" onClick={e => changeStatusAction(e, wallet)}>
-                  <Edit3 className="me-50" size={15} />{" "}
-                  <span className="align-middle">Cancel</span>
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          </td>
 
+        record.withdraw_status === "Pending" ? (
+          <Popover content={
+            <span onClick={e => changeStatusAction(e, record)} className="align-middle">Change Status</span>
+          } trigger="click">
+            <MoreVertical size={15} />
+          </Popover>
         ) : null,
+
+        // record.withdraw_status === "Pending" ? (
+        //   <td>
+        //     <UncontrolledDropdown>
+        //       <DropdownToggle
+        //         className="icon-btn hide-arrow"
+        //         color="transparent"
+        //         size="sm"
+        //         caret
+        //       >
+        //         <MoreVertical size={15} />
+        //       </DropdownToggle>
+        //       <DropdownMenu>
+        //         <DropdownItem href="/" onClick={e => changeStatusAction(e, record)}>
+        //           <Edit3 className="me-50" size={15} />{" "}
+        //           <span className="align-middle">Cancel</span>
+        //         </DropdownItem>
+        //       </DropdownMenu>
+        //     </UncontrolledDropdown>
+        //   </td>
+
+        // ) : null,
 
     },
   ]

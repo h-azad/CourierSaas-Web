@@ -3,7 +3,7 @@
 // import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, ADMIN_GET_TRANSECTION_REPORT_APIVIEW, ADMIN_GET_TRANSECTION_REPORT_GENERATE_PDF_APIVIEW, ACCOUNT_WALLET_LIST } from "../../constants/apiUrls"
+import { getApi, ADMIN_GET_TRANSECTION_REPORT_APIVIEW, ADMIN_GET_TRANSECTION_REPORT_GENERATE_PDF_APIVIEW, ACCOUNT_WALLET_FORM_LIST } from "../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
 import { Table, Tag } from "antd"
@@ -45,7 +45,7 @@ const AdminGetTransectionReport = () => {
 
   const fetchUserData = () => {
     return useJwt
-      .axiosGet(getApi(ACCOUNT_WALLET_LIST))
+      .axiosGet(getApi(ACCOUNT_WALLET_FORM_LIST))
       .then((res) => {
         let userData = []
 

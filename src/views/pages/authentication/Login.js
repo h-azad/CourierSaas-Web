@@ -66,6 +66,11 @@ const ToastContent = ({ t, name, role }) => {
 
 const Login = () => {
 
+  // localStorage.removeItem('domainName')
+  const domainName = window.location.href.replace('3000/login', '8000')
+  localStorage.setItem('domainName', domainName)
+  console.log('domainName', domainName)
+
   const [error, setErrors] = useState()
   const { skin } = useSkin()
   const dispatch = useDispatch()

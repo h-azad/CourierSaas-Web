@@ -184,7 +184,7 @@ import { EyeOutlined } from "@ant-design/icons"
 //   CREATE_ORDER_DELETE,
 // } from "../../../constants/apiUrls"
 
-import { getApi, MARCHANT_ORDER_LIST, ORDER_STATISTICS, } from "../../../constants/apiUrls"
+import { getApi, MARCHANT_ORDER_LIST, ORDER_STATISTICS, CREATE_ORDER_DELETE } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
@@ -238,11 +238,11 @@ const MerchantOrdersList = () => {
       function (result) {
         if (result.value) {
           useJwt
-            .axiosDelete(getApi(MARCHANT_DELETE_ORDER + id + "/"))
+            .axiosDelete(getApi(CREATE_ORDER_DELETE + id + "/"))
             .then((res) => {
               SwalAlert("Deleted Successfully")
             })
-            .finally(() => currentOrderData.handleSearchQuery())
+            .finally(() => fetchCreateOrderData())
         }
       }
     )

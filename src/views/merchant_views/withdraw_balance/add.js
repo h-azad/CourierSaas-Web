@@ -71,12 +71,9 @@ const MarchantBalanceWithrawRequestAdd = () => {
     return useJwt
       .axiosGet(getApi(ACCOUNT_WALLET_LIST))
       .then((res) => {
-        setAccountWallet(res.data.id)
-        setBalance(res.data.balance)
-        setValue('balance', res.data.balance)
-
-        console.log('data is ', res.data)
-        return res.data
+        setAccountWallet(res?.data?.results[0]?.id)
+        setBalance(res?.data?.results[0]?.balance)
+        setValue('balance', res?.data?.results[0]?.balance)
       })
       .catch((err) => console.log(err))
   }
@@ -152,12 +149,13 @@ const MarchantBalanceWithrawRequestAdd = () => {
                   Withdraw Balance
                 </Label>
                 <Controller
-                  defaultValue=""
+                  // defaultValue=""
                   control={control}
                   id="withdrawbalance"
                   name="withdrawbalance"
                   render={({ field }) => (
                     <Input
+                      disabled={balance > 0 ? false: true}
                       type="number"
                       placeholder="Withdraw Balance"
                       invalid={errors.balance && true}

@@ -11,6 +11,24 @@
       "@components/*": [
         "./src/@core/components/*"
       ],
+      "@layouts/*": [
+        "./src/@core/layouts/*"
+      ],
+      "@store/*": [
+        "./src/redux/*"
+      ],
+      "@styles/*": [
+        "./src/@core/scss/*"
+      ],
+      "@configs/*": [
+        "./src/configs/*"
+      ],
+      "@utils/*": [
+        "./src/utility/Utils/*"
+      ],
+      "@hooks/*": [
+        "./src/utility/hooks/*"
+      ]
     }
   }
 }

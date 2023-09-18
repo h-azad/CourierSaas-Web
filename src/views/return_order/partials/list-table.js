@@ -161,13 +161,12 @@ const CreateOrderList = () => {
   }
 
   const assignHandler = (e) => {
-    console.log('e.target.value', e.target)
     e.preventDefault()
     useJwt
       .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${selectedInfo.id}/return_order/`, { orderIdInFo: orderIdInFo, selectedRiderIds: selectedRiderIds })
       .then((res) => {
-        console.log("res", res.data)
         setStatusModalState(false)
+        fetchCreateOrderData()
       })
     //   .finally(() => fetchRiderData())
   }

@@ -21,7 +21,7 @@ import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
 
-import { Table, Tag } from "antd"
+import { Table, Tag, Popover } from "antd"
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
@@ -246,24 +246,12 @@ const ListTable = () => {
       title: 'Action',
 
       render: (_, record) =>
-        record.withdraw_status !== "Complete" ? (
-          <UncontrolledDropdown>
-            <DropdownToggle
-              className="icon-btn hide-arrow"
-              color="transparent"
-              size="sm"
-              caret
-            >
-              <MoreVertical size={15} />
-            </DropdownToggle>
-            <DropdownMenu>record
-              <DropdownItem onClick={e => changeStatusAction(e, record)}>
-                <Edit3 className="me-50" size={15} />{" "}
-                <span className="align-middle">Change Status</span>
-              </DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
-
+        record.withdraw_status === "Pending"  ? (
+          <Popover content={
+            <span onClick={e => changeStatusAction(e, record)} className="align-middle">Change Status</span>
+          } trigger="click">
+            <MoreVertical size={15} />
+          </Popover>
         ) : null,
 
     },

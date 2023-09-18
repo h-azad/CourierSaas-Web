@@ -340,6 +340,14 @@ const MerchantAddOrder = () => {
       isFormValid = false
     }
 
+    if (!data.pickup_address) {
+      setError("pickup_address", {
+        type: "required",
+        message: "Pickup Address is required",
+      })
+      isFormValid = false
+    }
+
     if (!isFormValid) {
       return false
     }
@@ -402,7 +410,6 @@ const MerchantAddOrder = () => {
   useEffect(() => {
     if(selectboxStreetAddress.length > 0){
       const ss = selectboxStreetAddress.find(x => x.default)
-      console.log('ss', ss)
       if (ss) {
         setValue('pickup_address', {value: ss.id, label: ss.street_address})
       }

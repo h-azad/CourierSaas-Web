@@ -17,8 +17,8 @@ import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
   WITHDRAW_REQUEST_ADD,
-  WITHDRAW_REQUEST_LIST,
-  ACCOUNT_WALLET_LIST
+  ACCOUNT_WALLET_DETAILS,
+  ACCOUNT_WALLET_FORM_LIST
 } from "@src/constants/apiUrls"
 import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
@@ -28,7 +28,6 @@ const AddAreas = () => {
   const [selectboxWithdrawRequest, setSelectboxWithdrawRequest] = useState([])
   const [balance, setBalance] = useState()
   const [withdrawBalance, setWithdrawBalance] = useState()
-  const [accountWallet, setAccountWallet] = useState()
 
   const navigate = useNavigate()
   const {
@@ -76,10 +75,8 @@ const AddAreas = () => {
 
 
   const getMerchantBalance = (id) => {
-    console.log("getMerchantBalance", id)
-
     useJwt
-      .axiosGet(getApi(ACCOUNT_WALLET_LIST) + id + "/" + '?request-location=form')
+      .axiosGet(getApi(ACCOUNT_WALLET_DETAILS) + id + "/")
       .then((res) => {
         let responseData = res.data
         if (responseData.balance) {
@@ -99,7 +96,7 @@ const AddAreas = () => {
   const fetchWithdrawRequestData = () => {
     return useJwt
       // .axiosGet(getApi(WITHDRAW_REQUEST_LIST))
-      .axiosGet(getApi(ACCOUNT_WALLET_LIST) + '?request-location=form')
+      .axiosGet(getApi(ACCOUNT_WALLET_FORM_LIST) + '?request-location=form')
     
       .then((res) => {
         console.log("res", res.data)

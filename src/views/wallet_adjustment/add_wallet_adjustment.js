@@ -17,7 +17,7 @@ import { useForm, Controller } from "react-hook-form"
 import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
-  ACCOUNT_WALLET_LIST,
+  ACCOUNT_WALLET_FORM_LIST,
   AREAS_BY_CITY,
   ADJUSTMENT_LIST
 } from "@src/constants/apiUrls"
@@ -52,7 +52,7 @@ const AddWalletAdjustment = () => {
 
   const fetchCityData = () => {
     return useJwt
-      .axiosGet(getApi(ACCOUNT_WALLET_LIST) + '?request-location=form')
+      .axiosGet(getApi(ACCOUNT_WALLET_FORM_LIST) + '?request-location=form')
       .then((res) => {
         let walletAccount = []
         // console.log('res.data', res)
