@@ -2,6 +2,10 @@ import {apiBaseUrl} from '../configs/apiConfig'
 
 export const BASE_API = apiBaseUrl
 
+// Notification
+
+export const RIDER_NOTIFICATION_LIST = '/rider_app/rider-notification/list'
+
 
 // Manage Merchant API's 
 export const MARCHANT_ADD = '/manage-user/create-merchant'
