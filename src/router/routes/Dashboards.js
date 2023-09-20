@@ -99,6 +99,8 @@ import AddRoute from '../../views/route/add'
 import EditRoute from '../../views/route/edit'
 import GetAdminCencelIssue from '../../views/reports/cancelIssue'
 import ReturnOrderList from '../../views/return_order/list'
+import CurrentLocationSet from '../../views/rider/currentLocation/currentLocationSet'
+import GetCurrentLocationRider from '@src/views/rider/currentLocation/getRiderLocation'
 
 
 
@@ -107,11 +109,20 @@ const SecondPage = lazy(() => import("../../views/SecondPage"))
 const Error = lazy(() => import("../../views/Error"))
 
 const DashboardRoutes = [
+  {
+    path: "/rider/locations",
+    element: <CurrentLocationSet />
+  },
+  {
+    path: "/rider/locations/list",
+    element: <GetCurrentLocationRider />
+  },
 
   {
     path: "/profile",
     element: <Profile />
   },
+  
   {
     path: "/profile/edit",
     element: <EditProfile />

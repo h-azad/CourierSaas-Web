@@ -175,6 +175,22 @@ const adminMenu = [
         action: 'admin-pages',
         resource: 'Rider-write',
         navLink: "/rider/add",
+      },
+      {
+        id: 'rider-location',
+        title: 'Locations',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Rider-write',
+        navLink: "/rider/locations",
+      },
+      {
+        id: 'rider-get-location',
+        title: 'List Locations',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Rider-write',
+        navLink: "/rider/locations/list",
       }
     ]
   },

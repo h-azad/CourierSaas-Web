@@ -310,6 +310,9 @@ export const FILTER_BY_YEAR_TRANSACTION_OVERVIEW = "/rider_app/rider-filter-tran
 export const MARCHANT_DASHBOARD = '/marchant_app/marchant-dashboard'
 
 
+export const USER_LOCATION = '/api/user/user-location/'
+
+
 
 
 

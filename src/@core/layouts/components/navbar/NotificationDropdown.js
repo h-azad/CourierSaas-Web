@@ -62,13 +62,28 @@ const NotificationDropdown = () => {
         encrypted: true, // Use SSL
       });
 
-      const chName = "private-" + getUserData().id;
+      const chName = "private-" + getUserData()?.id;
+
       var channel = pusher.subscribe(chName);
       channel.bind('new-notification', function (data) {
-        console.log('notification data', data)
-        // fetchNotificationData()
+
+
+
+        const array1 = [data]
+        const array2 = notificationData
+        const array3 = array1.concat(array2)
+        setNotificationData(array3)
+
+
+
       });
-    }, [])
+
+      return () => {
+        pusher.unsubscribe(chName);
+      };
+    }, [notificationData])
+
+    console.log('notificationData =>>>>>>>>>>>>', notificationData)
 
 
     return (
@@ -113,7 +128,7 @@ const NotificationDropdown = () => {
       >
         <Bell size={21} />
         <Badge pill color="danger" className="badge-up">
-          {totalNotification}
+          {notificationData.length}
         </Badge>
       </DropdownToggle>
       <DropdownMenu end tag="ul" className="dropdown-menu-media mt-0">
