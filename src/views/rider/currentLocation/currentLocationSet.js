@@ -34,7 +34,7 @@ const CurrentLocationSet = () => {
   const [longitude, setLongitude] = useState("")
   const [ipAddress, setIpAddress] = useState("")
   const [deviceInfo, setDeviceInfo] = useState({})
-  const [locationName, setLocationName] = useState({})
+  const [locationName, setLocationName] = useState()
   const [locationInfo, setlocationInfo] = useState()
 
   
@@ -63,19 +63,21 @@ const CurrentLocationSet = () => {
           setLatitude(latitude)
           setLongitude(longitude)
 
-          var formData = new FormData()
-          formData.append('last_latitude', latitude)
-          formData.append('last_longitude', longitude)
+          const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_API_KEY}`)
+          const data = await response.json()
+          if (data.results.length > 0) {
+            const locationName = data.results[0].formatted_address
+            setLocationName(locationName)
 
-          updateLocation(formData)
+            var formData = new FormData()
+            formData.append('last_latitude', latitude)
+            formData.append('last_longitude', longitude)
+            formData.append('location_name', locationName)
+            updateLocation(formData)
+          }
         }
         
-        // const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_API_KEY}`)
-        // const data = await response.json()
-        // if (data.results.length > 0) {
-        //   const locationName = data.results[0].formatted_address
-        //   setLocationName(locationName)
-        // }
+        
       })
     }
   }
