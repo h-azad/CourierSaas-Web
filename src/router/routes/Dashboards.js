@@ -110,11 +110,11 @@ const Error = lazy(() => import("../../views/Error"))
 
 const DashboardRoutes = [
   {
-    path: "/rider/locations",
+    path: "/user/current-location",
     element: <CurrentLocationSet />
   },
   {
-    path: "/rider/locations/list",
+    path: "/rider/locations-list",
     element: <GetCurrentLocationRider />
   },
 

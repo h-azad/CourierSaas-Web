@@ -82,7 +82,6 @@ const EditCreateOrder = () => {
         let delivaryChargeData = []
 
         res.data.map((data) => {
-          console.log('delivery charge', data)
           setDelivaryCharge(data.delivary_charge)
           setValue("delivary_charge", data.delivary_charge)
           setCODCharge(data.cod_charge)

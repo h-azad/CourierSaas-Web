@@ -1,19 +1,15 @@
 // ** React Imports
 import { Fragment, useEffect, useState } from "react"
 
-// ** Custom Components
-import Avatar from "@components/avatar"
-
 // ** Third Party Components
 import classnames from "classnames"
 import PerfectScrollbar from "react-perfect-scrollbar"
-import { Bell, X, Check, AlertTriangle } from "react-feather"
-
+import { Bell } from "react-feather"
+import OrderDetailsDrawer from "@src/components/order/OrderDetailsDrawer"
 // ** Reactstrap Imports
 import {
   Button,
   Badge,
-  Input,
   DropdownMenu,
   DropdownItem,
   DropdownToggle,
@@ -32,17 +28,44 @@ import Pusher from 'pusher-js'
 const NotificationDropdown = () => {
 
   const [notificationData, setNotificationData] = useState([])
-  let totalNotification = notificationData.length
+  const [orderid, setOrderId] = useState(0)
+
+  const [open, setOpen] = useState(false)
+  const showOrderDetailsDrawer = () => {
+    setOpen(true)
+
+  }
+  const onCloseOrderDetailsDrawer = () => {
+    setOpen(false)
+  }
 
   // ** Function to render Notifications
   /*eslint-disable */
   const renderNotificationItems = () => {
+
+    function removeElementById(array, id) {
+      const index = array.findIndex(item => item.id === id);
+      if (index !== -1) {
+        array.splice(index, 1);
+      }
+    }
 
     const fetchNotificationData = () => {
       return useJwt
         .axiosGet(getApi(RIDER_NOTIFICATION_LIST))
         .then((res) => {
           setNotificationData(res?.data)
+        })
+        .catch((err) => console.log(err))
+    }
+
+    const fetchDetailsNotification = (id) => {
+      return useJwt
+        .axiosPost(getApi(RIDER_NOTIFICATION_LIST) + '/' + id + '/')
+        .then((res) => {
+          removeElementById(notificationData, id);
+          setNotificationData(notificationData)
+          SwalAlert("Read Notification")
         })
         .catch((err) => console.log(err))
     }
@@ -67,14 +90,10 @@ const NotificationDropdown = () => {
       var channel = pusher.subscribe(chName);
       channel.bind('new-notification', function (data) {
 
-
-
         const array1 = [data]
         const array2 = notificationData
         const array3 = array1.concat(array2)
         setNotificationData(array3)
-
-
 
       });
 
@@ -82,9 +101,6 @@ const NotificationDropdown = () => {
         pusher.unsubscribe(chName);
       };
     }, [notificationData])
-
-    console.log('notificationData =>>>>>>>>>>>>', notificationData)
-
 
     return (
       <PerfectScrollbar
@@ -103,8 +119,8 @@ const NotificationDropdown = () => {
               })}
             >
               <Fragment>
-                <p style={{ color: "red" }}>{item.message} {' '}</p>
-                {item?.order?.parcel_id}
+                <h5 style={{ color: "red" }}>{item.message} {' '}</h5>
+                <p onClick={() => { setOrderId(item?.order?.id), showOrderDetailsDrawer(), fetchDetailsNotification(item?.id) }}>{item?.order?.parcel_id}</p>
               </Fragment>
             </div>
             // </a>
@@ -116,38 +132,44 @@ const NotificationDropdown = () => {
   /*eslint-enable */
 
   return (
-    <UncontrolledDropdown
-      tag="li"
-      className="dropdown-notification nav-item me-25"
-    >
-      <DropdownToggle
-        tag="a"
-        className="nav-link"
-        href="/"
-        onClick={(e) => e.preventDefault()}
+    <>
+      <UncontrolledDropdown
+        tag="li"
+        className="dropdown-notification nav-item me-25"
       >
-        <Bell size={21} />
-        <Badge pill color="danger" className="badge-up">
-          {notificationData.length}
-        </Badge>
-      </DropdownToggle>
-      <DropdownMenu end tag="ul" className="dropdown-menu-media mt-0">
-        <li className="dropdown-menu-header">
-          <DropdownItem className="d-flex" tag="div" header>
-            <h4 className="notification-title mb-0 me-auto">Notifications</h4>
-            <Badge tag="div" color="light-primary" pill>
-              6 New
-            </Badge>
-          </DropdownItem>
-        </li>
-        {renderNotificationItems()}
-        <li className="dropdown-menu-footer">
-          <Button color="primary" block>
-            Read all notifications
-          </Button>
-        </li>
-      </DropdownMenu>
-    </UncontrolledDropdown>
+        <DropdownToggle
+          tag="a"
+          className="nav-link"
+          href="/"
+          onClick={(e) => e.preventDefault()}
+        >
+          <Bell size={21} />
+          <Badge pill color="danger" className="badge-up">
+            {notificationData.length}
+          </Badge>
+        </DropdownToggle>
+        <DropdownMenu end tag="ul" className="dropdown-menu-media mt-0">
+          <li className="dropdown-menu-header">
+            <DropdownItem className="d-flex" tag="div" header>
+              <h4 className="notification-title mb-0 me-auto">Notifications</h4>
+              <Badge tag="div" color="light-primary" pill>
+                6 New
+              </Badge>
+            </DropdownItem>
+          </li>
+          {renderNotificationItems()}
+          <li className="dropdown-menu-footer">
+            <Button color="primary" block>
+              Read all notifications
+            </Button>
+          </li>
+        </DropdownMenu>
+      </UncontrolledDropdown>
+
+      <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
+    </>
+
+
   )
 }
 

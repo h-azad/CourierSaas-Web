@@ -10,12 +10,18 @@ import DeliveryReport from "../../views/rider/report/deliveryReport"
 import MarchantCollectionReport from "../../views/rider/report/collectionReport"
 import MyWallet from "../../views/account_wallet/wallet/MyWallet"
 import ReturnView from "../../components/rider_view/task/return/ReturnView"
+import CurrentLocationSet from "@src/views/rider/currentLocation/currentLocationSet"
 
 const RiderRoutes = [
     // {
     //     path: "/rider-dashboard",
     //     element: <RiderDashboard />
     // },
+
+    {
+        path: "/rider/current-location",
+        element: <CurrentLocationSet />
+    },
     
     {
         path: "/rider-wallet",

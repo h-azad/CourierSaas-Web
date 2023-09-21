@@ -13,7 +13,7 @@ import MarchantWallet from "../../views/merchant_views/wallet"
 import MarchantBalanceWithrawRequestAdd from "../../views/merchant_views/withdraw_balance/add"
 import MarchantBalanceWithrawRequestList from "../../views/merchant_views/withdraw_balance/partials/list-table"
 
-
+import CurrentLocationSet from "@src/views/rider/currentLocation/currentLocationSet"
 
 
 const MarchantRoutes = [
@@ -21,6 +21,12 @@ const MarchantRoutes = [
         path: "/marchant-dashboard",
         element: <MarchantDashboard />
     },
+
+    {
+        path: "/marchant/current-location",
+        element: <CurrentLocationSet />
+    },
+
     {
         path: "/marchant-orders",
         element: <MerchantOrdersList />

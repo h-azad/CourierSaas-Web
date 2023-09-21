@@ -1,35 +1,37 @@
-
-.ant-btn{
+.ant-btn {
 	font-size: 14px;
-    height: 32px;
-    padding: 4px 15px;
-    border-radius: 6px;
+	height: 32px;
+	padding: 4px 15px;
+	border-radius: 6px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
-.invoice-title-card{
+
+.invoice-title-card {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	margin: 5px 0;
-	
+
 }
-.invoice-preview-card{
+
+.invoice-preview-card {
 	border: 1px solid rgb(227, 222, 222);
 	margin-bottom: 1rem !important;
 }
+
 .highlight-status {
-  color: #FF5733; 
-  font-weight: bold; 
+	color: #FF5733;
+	font-weight: bold;
 }
 
 .highlight-pickup-status {
-  color:#69cf88;
-  font-weight: bold; 
+	color: #69cf88;
+	font-weight: bold;
 }
 
-.button-wrapper{
+.button-wrapper {
 	display: flex;
 	align-items: flex-end;
 	justify-content: space-between;
@@ -38,22 +40,23 @@
 	border: 1px solid rgb(199, 198, 198);
 	height: max-content;
 	width: 120px;
-	
+
 	border-radius: 5px;
 
-	.action-view{
+	.action-view {
 		border: none;
 		display: flex;
 		align-items: center;
 		justify-content: flex-start;
-	
+
 		gap: 5px;
 		padding: 5px;
 		background-color: inherit;
 		position: relative;
 		color: rgb(96, 96, 96) !important;
-font-size: 12px;
-		&::after{
+		font-size: 12px;
+
+		&::after {
 			content: "";
 			position: absolute;
 			height: 100%;
@@ -63,10 +66,25 @@ font-size: 12px;
 			top: 0;
 
 		}
-		a{
+
+		a {
 			font-size: 12px;
 		}
 	}
 
 }
 
+.map-location-info {
+	position: relative;
+	color: #000;
+	min-width: 150px;
+	min-height: 50px;
+	background: #fff;
+	border-radius: 10px;
+	font-size: 20px;
+	padding: 10px;
+	box-shadow: 3px 13px 46px 0px rgba(0, 0, 0, 0.16);
+	-webkit-box-shadow: 3px 13px 46px 0px rgba(0, 0, 0, 0.16);
+	-moz-box-shadow: 3px 13px 46px 0px rgba(0, 0, 0, 0.16);
+	z-index: 100;
+}

@@ -176,21 +176,21 @@ const adminMenu = [
         resource: 'Rider-write',
         navLink: "/rider/add",
       },
-      {
-        id: 'rider-location',
-        title: 'Locations',
-        icon: <Circle size={12} />,
-        action: 'admin-pages',
-        resource: 'Rider-write',
-        navLink: "/rider/locations",
-      },
+      // {
+      //   id: 'rider-location',
+      //   title: 'Current Locations',
+      //   icon: <Circle size={12} />,
+      //   action: 'admin-pages',
+      //   resource: 'Rider-write',
+      //   navLink: "/user/current-locations",
+      // },
       {
         id: 'rider-get-location',
-        title: 'List Locations',
+        title: 'Current Locations',
         icon: <Circle size={12} />,
         action: 'admin-pages',
         resource: 'Rider-write',
-        navLink: "/rider/locations/list",
+        navLink: "/rider/locations-list",
       }
     ]
   },
@@ -728,6 +728,20 @@ const marchantMenu = [
   },
 
 
+  {
+    header: 'Current Location',
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+  },
+
+  {
+    id: 'marchant-current-location',
+    title: 'Current Locations',
+    icon: <MapPin size={12} />,
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+    navLink: "/marchant/current-location",
+  },
 
 
 
@@ -917,6 +931,22 @@ const riderMenu = [
     resource: 'RIDER',
     navLink: "/rider-wallet"
   },
+
+  {
+    header: 'Current Location',
+    action: 'rider-pages',
+    resource: 'RIDER',
+  },
+
+  {
+    id: 'rider-current-location',
+    title: 'Current Locations',
+    icon: <MapPin size={12} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/rider/current-location",
+  },
+
 
 
   {
