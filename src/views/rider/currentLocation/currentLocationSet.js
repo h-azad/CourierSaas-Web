@@ -90,13 +90,13 @@ const CurrentLocationSet = () => {
 
 
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      return getMyLocation()
-    }, 10000)
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     return getMyLocation()
+  //   }, 10000)
     
-    return () => clearInterval(timer)
-  }, [])
+  //   return () => clearInterval(timer)
+  // }, [])
 
  
 

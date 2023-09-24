@@ -67,6 +67,14 @@ const adminMenu = [
         navLink: "/create_order/add",
       },
       {
+        id: 'order-add',
+        title: 'Add O',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Order-write',
+        navLink: "/create_order/add-order",
+      },
+      {
         id: 'return-order',
         title: 'Return Order',
         icon: <Circle size={12} />,

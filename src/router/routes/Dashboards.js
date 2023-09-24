@@ -101,7 +101,8 @@ import GetAdminCencelIssue from '../../views/reports/cancelIssue'
 import ReturnOrderList from '../../views/return_order/list'
 import CurrentLocationSet from '../../views/rider/currentLocation/currentLocationSet'
 import GetCurrentLocationRider from '@src/views/rider/currentLocation/getRiderLocation'
-
+import AddOrder from '@src/views/create_order/add/add'
+import InvoicePreview from '@src/views/create_order/invoice/preview'
 
 
 const Home = lazy(() => import("../../views/Home"))
@@ -109,6 +110,16 @@ const SecondPage = lazy(() => import("../../views/SecondPage"))
 const Error = lazy(() => import("../../views/Error"))
 
 const DashboardRoutes = [
+
+  
+  {
+    path: "/create_order/invoice",
+    element: <InvoicePreview />
+  },
+  {
+    path: "/create_order/add-order",
+    element: <AddOrder />
+  },
   {
     path: "/user/current-location",
     element: <CurrentLocationSet />
