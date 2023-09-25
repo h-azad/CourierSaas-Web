@@ -15,7 +15,7 @@ import { useForm, Controller } from "react-hook-form"
 
 
 const ParcelItems = ({ parcellItemPropsData }) => {
-  const [fields, setFields] = useState([])
+
   const {
     control,
     setError,
@@ -30,55 +30,64 @@ const ParcelItems = ({ parcellItemPropsData }) => {
   })
 
   const onSubmit = (data) => {
-    let isFormValid = true
+    parcellItemPropsData.setParcelItems(parcellItemPropsData.parcelItems)
+    parcellItemPropsData.next()
 
-    if (!(data.item_details)) {
-      setError("item_details", {
-        type: "required",
-        message: "Item Details is required",
-      })
-      isFormValid = false
-    }
-    if (!(data.item_quantity)) {
-      setError("item_quantity", {
-        type: "required",
-        message: "Item Quantiry is required",
-      })
-      isFormValid = false
-    }
+    // let isFormValid = true
 
-    if (!isFormValid) {
-      return false
-    }
+    // if (!(data.item_details)) {
+    //   setError("item_details", {
+    //     type: "required",
+    //     message: "Item Details is required",
+    //   })
+    //   isFormValid = false
+    // }
+    // if (!(data.item_quantity)) {
+    //   setError("item_quantity", {
+    //     type: "required",
+    //     message: "Item Quantiry is required",
+    //   })
+    //   isFormValid = false
+    // }
 
-    if (
-      data.item_details !== null &&
-      data.item_quantity !== null
+    // if (!isFormValid) {
+    //   return false
+    // }
 
-    ) {
+    // if (
+    //   data.item_details !== null &&
+    //   data.item_quantity !== null
 
-      parcellItemPropsData.setProductDetails(data.item_details)
-      parcellItemPropsData.setItemQuentiry(data.item_quantity)
-      parcellItemPropsData.next()
+    // ) {
 
-    }
+    //   parcellItemPropsData.setParcelItems(data.item_details)
+    //   parcellItemPropsData.setItemQuentiry(data.item_quantity)
+    //   parcellItemPropsData.next()
+
+    // }
   }
 
 
   const addField = () => {
-    setFields([...fields, ''])
+    let filedDummy = [...parcellItemPropsData.parcelItems]
+    filedDummy.push({
+      'item_details': '',
+      'item_quantity': ''
+    })
+
+    parcellItemPropsData.setParcelItems(filedDummy)
   }
 
   const removeField = (index) => {
-    const newFields = [...fields]
+    const newFields = [...parcellItemPropsData.parcelItems]
     newFields.splice(index, 1)
-    setFields(newFields)
+    parcellItemPropsData.setParcelItems(newFields)
   }
 
-  const handleFieldChange = (value, index) => {
-    const newFields = [...fields]
-    newFields[index] = value
-    setFields(newFields)
+  const handleFieldChange = (value, state, index) => {
+    const newFields = [...parcellItemPropsData.parcelItems]
+    newFields[index][state] = value
+    parcellItemPropsData.setParcelItems(newFields)
   }
 
   return (
@@ -91,53 +100,58 @@ const ParcelItems = ({ parcellItemPropsData }) => {
       <CardBody>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <div class="row">
-            <div class="col-lg-6">
-              <div className="mb-1">
-                <Label className="form-label" for="item_details">
-                  Item Details*
-                </Label>
-                <Controller
-                  defaultValue={parcellItemPropsData?.productDetails}
-                  control={control}
-                  id="item_details"
-                  name="item_details"
-                  render={({ field }) => (
+            {parcellItemPropsData.parcelItems.map((item, index) => (
+              <>
+                <div class="col-lg-5">
+                  <div className="mb-1">
+                    <Label className="form-label" for="item_details">
+                      Item Details*
+                    </Label>
                     <Input
+                      defaultValue={item?.item_details}
                       placeholder=""
+                      onChange={(e) => handleFieldChange(e.target.value, 'item_details', index)}
                       invalid={errors.item_details && true}
-                      {...field}
                     />
-                  )}
-                />
-                {errors && errors.item_details && (
-                  <span>{errors.item_details.message}</span>
-                )}
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div className="mb-1">
-                <Label className="form-label" for="item_quantity">
-                  Item Quantity*
-                </Label>
-                <Controller
-                  defaultValue={parcellItemPropsData?.itemQuentity}
-                  control={control}
-                  id="item_quantity"
-                  name="item_quantity"
-                  render={({ field }) => (
+                    {errors && errors.item_details && (
+                      <span>{errors.item_details.message}</span>
+                    )}
+                  </div>
+                </div>
+                <div class="col-lg-5">
+                  <div className="mb-1">
+                    <Label className="form-label" for="item_quantity">
+                      Item Quantity*
+                    </Label>
+
                     <Input
                       type="number"
+                      defaultValue={item.item_quantity}
                       placeholder=""
+                      onChange={(e) => handleFieldChange(e.target.value, 'item_quantity', index)}
                       invalid={errors.item_quantity && true}
-                      {...field}
+
                     />
-                  )}
-                />
-                {errors && errors.item_quantity && (
-                  <span>{errors.item_quantity.message}</span>
-                )}
-              </div>
-            </div>
+                    {errors && errors.item_quantity && (
+                      <span>{errors.item_quantity.message}</span>
+                    )}
+                  </div>
+                </div>
+                <div className='col-md-2 css flex-between'>
+                  <Button className="me-1" color="danger"
+                    style={{
+                      marginTop: '20px',
+                    }}
+                    onClick={() => removeField(index)}
+                  >
+                    Remove
+                  </Button>
+                </div>
+
+              </>
+
+            ))}
+            
           </div>
           <div className="d-flex">
             {parcellItemPropsData.currentStep > 0 && (
@@ -156,24 +170,14 @@ const ParcelItems = ({ parcellItemPropsData }) => {
                 Next
               </Button>
             )}
+
+            <Button className="me-1" color="info" onClick={addField}>
+              Add New
+            </Button>
+
           </div>
         </Form>
 
-
-        {/* <div>
-          <button onClick={addField}>Add Field</button>
-          {fields.map((field, index) => (
-            <div key={index}>
-              <input
-                type="text"
-                value={field}
-                onChange={(e) => handleFieldChange(e.target.value, index)}
-              />
-              <button onClick={() => removeField(index)}>Remove</button>
-            </div>
-          ))}
-        </div> */}
-        
       </CardBody>
     </Card>
 

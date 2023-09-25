@@ -215,6 +215,16 @@ const CreateOrderList = () => {
                       <MoreVertical size={15} />
                     </DropdownToggle>
                     <DropdownMenu>
+
+
+                      <Link to={"/create_order/invoice/" + info.id}>
+                        <DropdownItem>
+                          <Edit className="me-50" size={15} />{" "}
+                          <span className="align-middle">Invoice</span>
+                        </DropdownItem>
+                      </Link>
+
+
                       <DropdownItem
                         href={"/create_order/edit/" + info.id}
                       >
@@ -228,6 +238,7 @@ const CreateOrderList = () => {
                         <Trash className="me-50" size={15} />{" "}
                         <span className="align-middle">Delete</span>
                       </DropdownItem>
+
                       <DropdownItem
                         href="/"
                         onClick={(e) => changeStatusAction(e, info)}

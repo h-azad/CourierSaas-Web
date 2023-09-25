@@ -17,13 +17,22 @@ const AddOrder = () => {
   const [stepsData, setStepsData] = useState()
 
   const [orderType, setOrderType] = useState()
+
+  const [marchant, setMarchant] = useState()
+  const [city, setCity] = useState()
+  const [area, setArea] = useState()
+  const [amountCollected, setAmountCollected] = useState()
+  const [deliveryCharge, setDeliveryCharge] = useState()
+
   const [productTypeData, setProductTypeData] = useState()
   const [percellTypeData, setPricingPolicyData] = useState()
   const [shipmentData, setShipmentTypeData] = useState()
 
-  const [productDetails, setProductDetails] = useState()
+  const [parcelItems, setParcelItems] = useState([{
+    'item_details': '',
+    'item_quantity': ''
+  }])
   const [itemQuentity, setItemQuentiry] = useState()
-
 
   const next = () => {
     setCurrentStep(currentStep + 1)
@@ -51,8 +60,17 @@ const AddOrder = () => {
     currentStep: currentStep,
     stepsData: stepsData,
 
-    // setMarchantData: setMarchantData,
-    // marchantData: marchantData,
+
+    setMarchant: setMarchant,
+    marchant: marchant,
+    setCity: setCity,
+    city: city,
+    setArea: setArea,
+    area: area,
+    setAmountCollected: setAmountCollected,
+    amountCollected: amountCollected,
+    setDeliveryCharge: setDeliveryCharge,
+    deliveryCharge: deliveryCharge,
     setOrderType: setOrderType,
     orderType: orderType,
     setProductTypeData: setProductTypeData,
@@ -70,8 +88,8 @@ const AddOrder = () => {
     currentStep: currentStep,
     stepsData: stepsData,
 
-    setProductDetails: setProductDetails,
-    productDetails: productDetails,
+    setParcelItems: setParcelItems,
+    parcelItems: parcelItems,
     setItemQuentiry: setItemQuentiry,
     itemQuentity: itemQuentity,
 
@@ -89,12 +107,17 @@ const AddOrder = () => {
     phoneNumber: phoneNumber,
     delivaryAddress: delivaryAddress,
 
+    marchant: marchant,
+    city: city,
+    area: area,
+    amountCollected: amountCollected,
+    deliveryCharge: deliveryCharge,
     orderType: orderType,
     productTypeData: productTypeData,
     percellTypeData: percellTypeData,
     shipmentData: shipmentData,
 
-    productDetails: productDetails,
+    parcelItems: parcelItems,
     itemQuentity: itemQuentity,
 
     next: next,
@@ -102,10 +125,14 @@ const AddOrder = () => {
   }
 
   const steps = [
-    {
-      title: 'Parcel Items',
-      content: <ParcelItems parcellItemPropsData={parcellItemPropsData} />,
-    },
+    // {
+    //   title: 'Parcel Info',
+    //   content: <ParcelInfo parcellInfoPropsData={parcellInfoPropsData} />,
+    // },
+    // {
+    //   title: 'Parcel Items',
+    //   content: <ParcelItems parcellItemPropsData={parcellItemPropsData} />,
+    // },
     {
       title: 'Recipient Info',
       content: <RecipientInfo recipienInfoPropsData={recipienInfoPropsData} />,
@@ -144,7 +171,6 @@ const AddOrder = () => {
 
   useEffect(() => { setStepsData(steps) }, [])
 
-  console.log(currentStep)
   return (
     <>
       <Steps labelPlacement="vertical" current={currentStep} items={items} />

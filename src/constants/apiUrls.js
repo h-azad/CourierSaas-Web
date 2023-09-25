@@ -204,6 +204,7 @@ export const ORDER_STATUS_UPDATE = '/create-order/change-status/'
 export const ORDER_STATISTICS = "/api/user/order-statistics/"
 
 export const ORDER_RETURN = "/order-return/"
+export const ORDER_INVOICE = "/order-invoice/"
 
 
 

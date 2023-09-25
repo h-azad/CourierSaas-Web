@@ -113,7 +113,7 @@ const DashboardRoutes = [
 
   
   {
-    path: "/create_order/invoice",
+    path: "/create_order/invoice/:id",
     element: <InvoicePreview />
   },
   {
