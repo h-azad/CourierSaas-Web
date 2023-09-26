@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 // ** Reactstrap Imports
 import { Card, CardBody, Button } from 'reactstrap'
 
-const PreviewActions = ({ id, setSendSidebarOpen, setAddPaymentOpen }) => {
+const PreviewActions = ({ id, setSendSidebarOpen, setAddPaymentOpen, handlePDFQuery }) => {
   return (
     <Card className='invoice-action-wrapper'>
       <CardBody>
@@ -14,7 +14,7 @@ const PreviewActions = ({ id, setSendSidebarOpen, setAddPaymentOpen }) => {
         {/* <Button color='secondary' block outline className='mb-75'>
           Download
         </Button> */}
-        <Button color='success' tag={Link} to='/apps/invoice/print' target='_blank' block outline className='mb-75'>
+        <Button onClick={()=>handlePDFQuery(id)} color='success' block outline className='mb-75'>
           Print
         </Button>
         {/* <Button tag={Link} to={`/apps/invoice/edit/${id}`} color='secondary' block outline className='mb-75'>

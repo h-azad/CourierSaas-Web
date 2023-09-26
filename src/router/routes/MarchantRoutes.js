@@ -1,3 +1,4 @@
+import AddOrderMarchant from "@src/views/merchant_views/order/add/add"
 import MarchantDashboard from "../../views/dashboard/marchant"
 import MerchantAddOrder from "../../views/merchant_views/order/add-order"
 import EditMarchantOrder from "../../views/merchant_views/order/edit"
@@ -35,6 +36,11 @@ const MarchantRoutes = [
         path: "/marchant-orders/create",
         element: <MerchantAddOrder />
     },
+    {
+        path: "/marchant-orders/add",
+        element: <AddOrderMarchant />
+    },
+    
     {
         path: "/marchant-orders/view/:id",
         element: <MarchantOrderView />

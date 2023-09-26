@@ -125,8 +125,7 @@ const PreviewCard = ({ data }) => {
             <th className='py-1'>#</th>
             <th className='py-1'>Details</th>
             <th className='py-1'>Quantity</th>
-            <th className='py-1'>Total</th>
-          </tr>
+            </tr>
         </thead>
         <tbody>
           {data?.parcel_items?.map((item, index) => {

@@ -162,7 +162,7 @@
 import { Link } from "react-router-dom"
 import Select from "react-select"
 import classNames from "classnames"
-import { MoreVertical, Edit, Trash, Edit3, Eye } from "react-feather"
+import { MoreVertical, Edit, Trash, Edit3, Eye, Book } from "react-feather"
 import { Checkbox, DatePicker, Input, Typography, Tag, Table } from "antd"
 import {
   UncontrolledDropdown,
@@ -310,7 +310,7 @@ const MerchantOrdersList = () => {
   }
 
 
-  
+
 
 
   // function colorSwitch(status) {
@@ -363,7 +363,14 @@ const MerchantOrdersList = () => {
                     >
                       <MoreVertical size={15} />
                     </DropdownToggle>
+                    
                     <DropdownMenu>
+                      <Link to={"/create_order/invoice/" + info.id}>
+                        <DropdownItem>
+                          <Book className="me-50" size={15} />{" "}
+                          <span className="align-middle">Invoice</span>
+                        </DropdownItem>
+                      </Link>
                       <DropdownItem href={"/marchant_order/edit/" + info?.id}>
                         <Edit className="me-50" size={15} />{" "}
                         <span className="align-middle">Edit</span>

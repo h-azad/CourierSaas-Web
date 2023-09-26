@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import Select from "react-select"
 import classNames from "classnames"
-import { MoreVertical, Edit, Trash, Edit3 } from "react-feather"
+import { MoreVertical, Edit, Trash, Edit3, Book } from "react-feather"
 import { Checkbox, DatePicker, Input, Typography, Drawer, Pagination } from "antd"
 import {
   UncontrolledDropdown,
@@ -219,7 +219,7 @@ const CreateOrderList = () => {
 
                       <Link to={"/create_order/invoice/" + info.id}>
                         <DropdownItem>
-                          <Edit className="me-50" size={15} />{" "}
+                          <Book className="me-50" size={15} />{" "}
                           <span className="align-middle">Invoice</span>
                         </DropdownItem>
                       </Link>

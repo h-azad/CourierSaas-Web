@@ -103,13 +103,13 @@ const InvoicePreview = () => {
 
   return (
     <div className='invoice-preview-wrapper'>
-      <button onClick={() => { handlePDFQuery(32) }}>PDF</button>
+      {/* <button onClick={() => { handlePDFQuery(32) }}>PDF</button> */}
       <Row className='invoice-preview'>
         <Col xl={9} md={8} sm={12}>
           <PreviewCard id="divcontents" data={data} />
         </Col>
         <Col xl={3} md={4} sm={12}>
-          <PreviewActions id={26} setSendSidebarOpen={setSendSidebarOpen} setAddPaymentOpen={setAddPaymentOpen} />
+          <PreviewActions handlePDFQuery={handlePDFQuery} id={id} setSendSidebarOpen={setSendSidebarOpen} setAddPaymentOpen={setAddPaymentOpen} />
         </Col>
       </Row>
       <SendInvoiceSidebar toggleSidebar={toggleSendSidebar} open={sendSidebarOpen} />

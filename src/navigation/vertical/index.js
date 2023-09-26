@@ -688,6 +688,15 @@ const marchantMenu = [
         navLink: "/marchant-orders/create"
       },
 
+      {
+        id: "my_order_create_marchant",
+        title: "Add New Orders O",
+        icon: <Circle size={20} />,
+        action: 'marchant-pages',
+        resource: 'MARCHANT',
+        navLink: "/marchant-orders/add"
+      },
+
     ]
   },
 
