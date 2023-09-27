@@ -115,6 +115,9 @@ export default class JwtService {
   axiosGet(url, ...args){
     return axios.get(url, ...args)
   }
+  axiosGetFile(url, responseType='blob') {
+    return axios.get(url, { responseType: 'blob' })
+  }
   axiosPost(url, ...args){
     // console.log('API args', args)
     return axios.post(url, ...args)

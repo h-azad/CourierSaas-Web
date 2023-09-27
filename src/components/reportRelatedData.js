@@ -30,17 +30,39 @@ function downloadPDFFile(file, fileName) {
 export const handlePDFQuery = (apiUrl, searchTerm, reportName) => {
 
   return useJwt
-    .axiosGet(getApi((apiUrl) + '?' + searchTerm))
+    .axiosGetFile(getApi((apiUrl) + '?' + searchTerm))
     .then((res) => {
-      if (res.data?.length > 0) {
-        var file = new Blob([res.data], { type: 'application/pdf' })
-        var fileName = `${reportName}.pdf`
-        downloadPDFFile(file, fileName)
+      if (res.data) {
+        const url = window.URL.createObjectURL(new Blob([res.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', reportName+'.pdf')
+        document.body.appendChild(link)
+        link.click()
       }
-      return res.data
     })
     .catch((err) => console.log(err))
 
 }
 
+
+// export const handlePDFQuery = (apiUrl, searchTerm, reportName) => {
+
+//   return useJwt
+//     .axiosGetFile(getApi((apiUrl) + '/generatePdf/'))
+//     .then((res) => {
+//       console.log(res.data)
+//       if (res.data) {
+//         const url = window.URL.createObjectURL(new Blob([res.data]))
+//         const link = document.createElement('a')
+//         link.href = url
+//         link.setAttribute('download', 'test.pdf')
+//         document.body.appendChild(link)
+//         link.click()
+//       }
+//       // return res.data
+//     })
+//     .catch((err) => console.log(err))
+
+// }
 

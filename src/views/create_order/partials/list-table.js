@@ -20,6 +20,7 @@ import {
   getApi,
   CREATE_ORDER_LIST,
   CREATE_ORDER_DELETE,
+  ORDER_INVOICE,
 } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
@@ -31,6 +32,8 @@ import * as qs from 'qs'
 import { OrderStatusOptions, colorSwitch } from '../../../components/orderRelatedData'
 import { Table, Tag } from "antd"
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
+
+import { handlePDFQuery } from "@src/components/reportRelatedData"
 
 
 const CreateOrderList = () => {
@@ -69,6 +72,25 @@ const CreateOrderList = () => {
     page: 1,
     page_size: GENERAL_ROW_SIZE,
   })
+
+
+
+ const invoiceDownloadToPDF = (info) => {
+    return useJwt
+      .axiosGetFile(getApi(ORDER_INVOICE) + info.id + "/")
+      .then((res) => {
+        if (res.data) {
+          const url = window.URL.createObjectURL(new Blob([res.data]))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', `parcel ${info.recipient_name}.pdf`)
+          document.body.appendChild(link)
+          link.click()
+        }
+      })
+      .catch((err) => console.log(err))
+
+  }
 
 
   const deleteAction = (e, id) => {
@@ -217,12 +239,12 @@ const CreateOrderList = () => {
                     <DropdownMenu>
 
 
-                      <Link to={"/create_order/invoice/" + info.id}>
-                        <DropdownItem>
+                      {/* <Link to={"/create_order/invoice/" + info.id}> */}
+                        <DropdownItem onClick={() =>invoiceDownloadToPDF(info)}>
                           <Book className="me-50" size={15} />{" "}
                           <span className="align-middle">Invoice</span>
                         </DropdownItem>
-                      </Link>
+                    
 
 
                       <DropdownItem
