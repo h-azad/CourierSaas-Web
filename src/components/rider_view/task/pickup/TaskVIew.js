@@ -21,7 +21,7 @@ import toast from "react-hot-toast"
 import { EyeOutlined } from "@ant-design/icons"
 import { MoreVertical, Edit3 } from "react-feather"
 import CancelReasonModal from "./CancelReasonModal"
-import SwalConfirm from "../../../SwalConfirm"
+import RiderPickupConfirmSwalAlert from "../../../RiderPickupConfirmSwalAlert"
 
 import OrderDetailsDrawer from "../../../order/OrderDetailsDrawer"
 
@@ -261,7 +261,7 @@ const PickupView = ({ orderInfo }) => {
 
   const confirmPickup = (e, info) => {
     e.preventDefault()
-    return SwalConfirm(`Confirm Pickup`).then(
+    return RiderPickupConfirmSwalAlert(info?.pickup_address?.street_address, info?.marchant?.full_name, info?.pickup_address?.phone, `Confirm Pickup ?`).then(
       function (result) {
         if (result.value) {
           useJwt

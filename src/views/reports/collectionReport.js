@@ -2,19 +2,31 @@
 // import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW, ADMIN_GET_DELIVERY_REPORT_GENERATE_PDF_APIVIEW, RIDER_LIST } from "../../constants/apiUrls"
+import { getApi, ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW, ADMIN_GET_DELIVERY_COLLECTION_REPORT_GENERATE_PDFAPIVIEW, RIDER_LIST } from "../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
 import { Table, Tag } from "antd"
 import * as qs from 'qs'
 
-
+import { GENERAL_ROW_SIZE } from "../../constants/tableConfig"
 import { handlePDFQuery, handleSearchQuery } from "../../components/reportRelatedData"
 
 const AdminGetCollectionReport = () => {
   const [order, setOrder] = useState([])
   const [rider, setRider] = useState([])
-  const [filterQuery, setFilterQuery] = useState({})
+  // const [filterQuery, setFilterQuery] = useState({})
+
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: GENERAL_ROW_SIZE,
+      pageSize: 2,
+    },
+  })
+  const [filterQuery, setFilterQuery] = useState({
+    page: 1,
+    page_size: GENERAL_ROW_SIZE,
+    ordering: '-created_at'
+  })
 
   const fetchDefalutData = () => {
 		return useJwt.axiosGet(getApi(ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW))
@@ -44,22 +56,15 @@ const AdminGetCollectionReport = () => {
       .catch((err) => console.log(err))
   }
 
-  useEffect(() => {
-    fetchRiderData()
-  }, [])
-
-
-
+  
   const statusOptions = [
     { value: 'pre-paid', label: "Pre-Paid" },
     { value: 'COD', label: "COD" },
   ]
 
+
   function updateFilterQUery(term, value) {
     let filters = { ...filterQuery }
-    if (term != 'page') {
-      filters['page'] = 1
-    }
 
     if (value) {
       filters[term] = value
@@ -69,31 +74,8 @@ const AdminGetCollectionReport = () => {
     setFilterQuery(filters)
   }
 
-  useEffect(() => {
-    handleSearchQuery(ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW, qs.stringify(filterQuery))
-			.then(res => {
-				if (res?.results?.length > 0) {
-					setOrder(res?.results)
-				} else {
-					setOrder([])
-				}
-			})
-  }, [filterQuery])
 
-  const paginationUpdate = (page) => {
-    updateFilterQUery("page", page)
-  }
 
-  const onChangeSorter = (pagination, filters, sorter, extra) => {
-		if (sorter.order === 'ascend') {
-			updateFilterQUery("ordering", sorter.field)
-		} else if (sorter.order === 'descend') {
-			updateFilterQUery("ordering", '-' + sorter.field)
-		}
-		else {
-			setFilterQuery({})
-		}
-	}
 
   const propsData = {
     handleSearchQuery: handleSearchQuery,
@@ -101,14 +83,13 @@ const AdminGetCollectionReport = () => {
     fetchDefalutData: fetchDefalutData,
 
     getDataApiUrl: ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW,
-		fetchReportPDF: ADMIN_GET_DELIVERY_REPORT_GENERATE_PDF_APIVIEW,
+		fetchReportPDF: ADMIN_GET_DELIVERY_COLLECTION_REPORT_GENERATE_PDFAPIVIEW,
 
     updateFilterQUery: updateFilterQUery,
     filterQuery: filterQuery,
 
     statusOptions: statusOptions,
     selectboxData: rider,
-    // selectboxRider: selectboxRider,
 
     statusOptionPlaceholder: "Delivery Type",
     selectOptionKey: "order_type",
@@ -124,33 +105,12 @@ const AdminGetCollectionReport = () => {
 		{
 			title: 'Date',
 			dataIndex: 'date',
-
-			sorter: {
-				compare: (a, b) => a.created_at - b.created_at,
-				multiple: 2,
-			},
 		},
 		{
 			title: 'Total Delivery',
 			dataIndex: 'total_delivery',
-
 		},
 
-		// {
-		// 	title: 'Status',
-		// 	dataIndex: 'status',
-		// 	render: (text, record) => (
-		// 		<Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
-		// 	),
-		// },
-		// {
-		// 	title: 'Delivery Status',
-		// 	dataIndex: 'delivery_status',
-		// 	render: (text, record) => (
-		// 		<Tag color={statusOptionsColorSwitch(record.delivery_status)}>{text.toUpperCase()}</Tag>
-		// 	),
-			
-		// },
 		{
 			title: 'Total COD',
 			dataIndex: 'total_cod',
@@ -173,56 +133,72 @@ const AdminGetCollectionReport = () => {
 		},
 	]
 
+
+  useEffect(() => {
+    handleSearchQuery(ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW, qs.stringify(filterQuery))
+      .then(res => {
+        if (res?.results?.length > 0) {
+          setOrder(res?.results)
+          updatePagination({
+            current: res?.page_number,
+            pageSize: res?.page_size,
+            total: res?.count,
+          })
+        } else {
+          setOrder([])
+          updatePagination({
+            current: 1,
+            pageSize: GENERAL_ROW_SIZE,
+            total: 0,
+          })
+        }
+      })
+  }, [filterQuery])
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      sorter,
+    })
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([])
+    }
+  }
+
+  const updatePagination = (info) => {
+    const _tableParams = { ...tableParams }
+
+    _tableParams.pagination = info
+
+    setTableParams(_tableParams)
+  }
+
+
+  useEffect(() => {
+    fetchRiderData()
+  }, [])
+
+
+  useEffect(() => {
+    const _tableParams = tableParams
+    const _filters = { ...filterQuery }
+
+    if (_tableParams) {
+      _filters['page'] = _tableParams.pagination?.current
+      _filters['page_size'] = _tableParams.pagination?.pageSize
+      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+    }
+
+    setFilterQuery(_filters)
+
+  }, [JSON.stringify(tableParams)])
+
+
   return (
     <>
-
       <ReportHead propsData={propsData} />
-      <Table scroll={{ x: true }} columns={columns} dataSource={order} onChange={onChangeSorter} pagination={{ defaultPageSize: 50 }} />
-
-      {/* <div id="my-table" class="table-responsive">
-        <Table bordered>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Total Delivery</th>
-              <th>Total COD</th>
-              <th>Total Pre-Paid</th>
-              <th>Total Delivery Charge</th>
-              <th>Total Collected Amount</th>
-              <th>Total Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {order &&
-              order.map((info) => (
-                <tr key={info.id}>
-                  <td>
-                    <span className="align-middle fw-bold">{info.date}</span>
-                  </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.total_delivery}</span>
-                  </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.total_cod}</span>
-                  </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.total_pre_paid}</span>
-                  </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.total_delivery_charge}</span>
-                  </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.total_collect_amount}</span>
-                  </td>
-                  <td>
-                    <span className="align-middle fw-bold">{info.total}</span>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
-        <Pagination onChange={paginationUpdate} defaultCurrent={defaultPage} total={collectedCount} defaultPageSize={50} />
-      </div> */}
+      <Table scroll={{ x: true }} columns={columns} dataSource={order} onChange={handleTableChange} pagination={tableParams.pagination} />
     </>
   )
 }

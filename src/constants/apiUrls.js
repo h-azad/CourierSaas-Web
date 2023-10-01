@@ -291,6 +291,7 @@ export const ADMIN_GET_CANCEL_ISSUE_REPORT_APIVIEW = "/api/admin/order-cancel-is
 export const ADMIN_GET_CANCEL_ISSUE_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/order-cancel-issue/report-generate-pdf"
 
 export const ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW = "/api/admin/delivery-collection-report"
+export const ADMIN_GET_DELIVERY_COLLECTION_REPORT_GENERATE_PDFAPIVIEW = "/api/admin/delivery-collection-report-generate-pdf"
 export const ADMIN_GET_ORDER_REVENUE_REPORT_APIVIEW = "/api/admin/order-revenue-report"
 export const ADMIN_GET_ORDER_REVENUE_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/order-revenue-report-generate-pdf"
 

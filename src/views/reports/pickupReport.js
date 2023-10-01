@@ -136,21 +136,14 @@ const GetAdminPickupReport = () => {
 
 		},
 
-		{
-			title: 'Status',
-			dataIndex: 'status',
-			render: (text, record) => (
-				<Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
-			),
-		},
-		{
-			title: 'Pickup',
-			dataIndex: 'pickup_status',
-			render: (text, record) => (
-				<Tag color={statusOptionsColorSwitch(record.pickup_status)}>{text.toUpperCase()}</Tag>
-			),
-			
-		},
+		// {
+		// 	title: 'Status',
+		// 	dataIndex: 'status',
+		// 	render: (text, record) => (
+		// 		<Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
+		// 	),
+		// },
+		
 		{
 			title: 'Phone',
 			dataIndex: 'phone',
@@ -159,6 +152,14 @@ const GetAdminPickupReport = () => {
 			title: 'Address',
 			dataIndex: 'pickup_address',
 		},
+    {
+      title: 'Pickup Status',
+      dataIndex: 'pickup_status',
+      render: (text, record) => (
+        <Tag color={statusOptionsColorSwitch(record.pickup_status)}>{text.toUpperCase()}</Tag>
+      ),
+
+    },
 	]
 
   const handleTableChange = (pagination, filters, sorter) => {

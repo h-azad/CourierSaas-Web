@@ -116,6 +116,10 @@ const AdminGetTransectionReport = () => {
   }
 
   const columns = [
+    {
+      title: 'Transactions ID',
+      dataIndex: 'transection_id',
+    },
 		{
 			title: 'Date',
 			dataIndex: 'created_at',
@@ -126,14 +130,11 @@ const AdminGetTransectionReport = () => {
 			},
 		},
 		{
-			title: 'Account',
+			title: 'Account Name',
 			dataIndex: 'user_name',
 
 		},
-		{
-			title: 'Transactions ID',
-			dataIndex: 'transection_id',
-		},
+		
 		{
 			title: 'Amount',
 			dataIndex: 'amount',

@@ -127,13 +127,7 @@ const GetAdminCencelIssue = () => {
 			dataIndex: 'order',
 
 		},
-    {
-			title: 'Status',
-			dataIndex: 'cancel_type',
-			render: (text, record) => (
-				<Tag color={statusOptionsColorSwitch(record.cancel_type)}>{text.toUpperCase()}</Tag>
-			),
-		},
+    
     {
 			title: 'Rider',
 			dataIndex: 'rider',
@@ -143,6 +137,14 @@ const GetAdminCencelIssue = () => {
 			title: 'Reason',
 			dataIndex: 'reason',
 		},
+
+    {
+      title: 'Cancel Type',
+      dataIndex: 'cancel_type',
+      render: (text, record) => (
+        <Tag color={statusOptionsColorSwitch(record.cancel_type)}>{text.toUpperCase()}</Tag>
+      ),
+    },
 
 	]
 

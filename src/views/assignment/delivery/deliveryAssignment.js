@@ -4,14 +4,12 @@ import { Link } from "react-router-dom"
 import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
 import {
   Table,
-  Badge,
   UncontrolledDropdown,
   DropdownMenu,
   DropdownItem,
   DropdownToggle,
   Button,
   CardText,
-  Label,
   Input,
   Modal, ModalHeader, ModalBody, ModalFooter
 } from "reactstrap"
@@ -23,11 +21,8 @@ import {
   getApi,
   RIDER_ASSIGNMENT,
   RIDER_DELETE,
-  RIDER_SEARCH,
   UNPICKUP_ORDER_LIST,
   RIDER_SEARCH_FILTER,
-  RIDER_UPDATE_STATUS,
-  CREATE_ORDER_LIST
 } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
@@ -44,7 +39,6 @@ const RiderAssignmentList = () => {
 
   const [selectedOrderIds, setselectedOrderid] = useState([])
   const [riderId, setRiderId] = useState()
-  console.log('select', selectedOrderIds)
 
   const deleteAction = (e, id) => {
     e.preventDefault()
@@ -65,8 +59,6 @@ const RiderAssignmentList = () => {
 
 
   const updateStatusAction = (e) => {
-    console.log('rider id', riderId)
-    console.log('order id', selectedOrderIds)
     e.preventDefault()
     useJwt
       .axiosPost(getApi(RIDER_ASSIGNMENT + "/"), {
@@ -74,7 +66,6 @@ const RiderAssignmentList = () => {
         selectedOrderIds: selectedOrderIds
       })
       .then((res) => {
-        console.log("res", res.data)
         setStatusModalState(false)
       })
     //   .finally(() => fetchRiderData())
@@ -97,7 +88,6 @@ const RiderAssignmentList = () => {
 
   const changeStatusAction = (e, info) => {
     e.preventDefault()
-    console.log('info is ', info)
     setRiderId(info.id)
     fetchOrderData()
     setStatusModalState(true)
@@ -130,10 +120,8 @@ const RiderAssignmentList = () => {
   const fetchOrderData = () => {
     return useJwt.axiosGet(getApi(UNPICKUP_ORDER_LIST))
       .then((res) => {
-        console.log(res.data)
         setOrder(res.data)
       }).catch((err) => {
-        console.log(err)
       })
   }
 
@@ -148,13 +136,11 @@ const RiderAssignmentList = () => {
   }
 
   const handleSearch = debounce(e => {
-    console.log(e.target.value)
     const searchTerm = e.target.value
     if (searchTerm.length > 0) {
       fetchSearchRidersData(searchTerm)
         .then(data => {
           if (data.length > 0) {
-            console.log('res', data)
             setRider(data)
           } else {
             console.log("No data")

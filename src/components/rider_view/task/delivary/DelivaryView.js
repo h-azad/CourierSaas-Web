@@ -1,7 +1,7 @@
 import React from "react"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
-import SwalConfirm from "../../../SwalConfirm"
+import RiderDeliveryConfirmSwalAlert from "../../../RiderDeliveryConfirmSwalAlert"
 import {
   getApi,
   RIDER_DELIVARY_STATUS_UPDATE,
@@ -325,7 +325,7 @@ const DelivaryView = ({ }) => {
 
   const confirmDelivery = (e, info) => {
     e.preventDefault()
-    return SwalConfirm(`Confirm Delivery`).then(
+    return RiderDeliveryConfirmSwalAlert(info?.delivary_address, info?.recipient_name, info?.phone_number, `Confirm Delivery ?`).then(
       function (result) {
         if (result.value) {
           useJwt

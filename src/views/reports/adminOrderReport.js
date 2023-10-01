@@ -78,9 +78,7 @@ const AdminOrderReport = () => {
 
 	function updateFilterQUery(term, value) {
 		let filters = { ...filterQuery }
-		// if (term != 'page') {
-		// 	filters['page'] = 1
-		// }
+
 
 		if (value) {
 			filters[term] = value
@@ -141,14 +139,11 @@ const AdminOrderReport = () => {
 		{
 			title: 'Delivery Rider',
 			dataIndex: ['delivary_rider', 'full_name'],
-		},
-		{
-			title: 'Status',
-			dataIndex: 'status',
 			render: (text, record) => (
-				<Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
+				record?.delivary_rider?.full_name ? record?.delivary_rider?.full_name : 'N/A'
 			),
 		},
+		
 		{
 			title: 'Delivery Charge',
 			dataIndex: 'delivary_charge',
@@ -169,18 +164,15 @@ const AdminOrderReport = () => {
 			title: 'Deducted Amount',
 			dataIndex: 'deducted_amount',
 		},
+		{
+			title: 'Status',
+			dataIndex: 'status',
+			render: (text, record) => (
+				<Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
+			),
+		},
 	]
 
-	// const onChangeSorter = (pagination, filters, sorter, extra) => {
-	// 	if (sorter.order === 'ascend') {
-	// 		updateFilterQUery("ordering", sorter.field)
-	// 	} else if (sorter.order === 'descend') {
-	// 		updateFilterQUery("ordering", '-' + sorter.field)
-	// 	}
-	// 	else {
-	// 		setFilterQuery({})
-	// 	}
-	// }
 
 	useEffect(() => {
 		handleSearchQuery(ADMIN_GET_ORDER_REPORT_APIVIEW, qs.stringify(filterQuery))

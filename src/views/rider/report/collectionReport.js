@@ -9,14 +9,26 @@ import React from 'react'
 import * as qs from 'qs'
 import { Table, Tag } from "antd"
 
-import { colorSwitch, OrderStatusOptions } from "../../../components/orderRelatedData"
+import { GENERAL_ROW_SIZE } from '../../../constants/tableConfig'
+
 import { handlePDFQuery, handleSearchQuery } from "../../../components/reportRelatedData"
 
 
 const MarchantCollectionReport = () => {
 	const [order, setOrder] = useState([])
-	const [filterQuery, setFilterQuery] = useState({})
-	const [orderCount, setOrderCount] = useState(0)
+	
+	const [tableParams, setTableParams] = useState({
+		pagination: {
+			current: GENERAL_ROW_SIZE,
+			pageSize: 2,
+		},
+	})
+
+	const [filterQuery, setFilterQuery] = useState({
+		page: 1,
+		page_size: GENERAL_ROW_SIZE,
+		ordering: '-created_at'
+	})
 
 
 	const fetchDefalutData = () => {
@@ -40,9 +52,6 @@ const MarchantCollectionReport = () => {
 
 	function updateFilterQUery(term, value) {
 		let filters = { ...filterQuery }
-		if (term != 'page') {
-			filters['page'] = 1
-		}
 
 		if (value) {
 			filters[term] = value
@@ -52,20 +61,7 @@ const MarchantCollectionReport = () => {
 		setFilterQuery(filters)
 	}
 
-	useEffect(() => {
-		handleSearchQuery(RIDER_GET_DELIVERY_COLLECTION_REPORT, qs.stringify(filterQuery))
-			.then(res => {
-				if (res?.results?.length > 0) {
-					setOrder(res?.results)
-				} else {
-					setOrder([])
-				}
-			})
-	}, [filterQuery])
 
-	const paginationUpdate = (page) => {
-		updateFilterQUery("page", page)
-	}
 
 	const onChangeSorter = (pagination, filters, sorter, extra) => {
 		if (sorter.order === 'ascend') {
@@ -149,56 +145,60 @@ const MarchantCollectionReport = () => {
 	]
 
 
+	const handleTableChange = (pagination, filters, sorter) => {
+		setTableParams({
+			pagination,
+			filters,
+			sorter,
+		})
+		if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+			setData([])
+		}
+	}
+
+	const updatePagination = (info) => {
+		const _tableParams = { ...tableParams }
+
+		_tableParams.pagination = info
+
+		setTableParams(_tableParams)
+	}
+
+
+	useEffect(() => {
+		const _tableParams = tableParams
+		const _filters = { ...filterQuery }
+
+		if (_tableParams) {
+			_filters['page'] = _tableParams.pagination?.current
+			_filters['page_size'] = _tableParams.pagination?.pageSize
+			_filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+		}
+
+		setFilterQuery(_filters)
+
+	}, [JSON.stringify(tableParams)])
+
+	useEffect(() => {
+		handleSearchQuery(RIDER_GET_DELIVERY_COLLECTION_REPORT, qs.stringify(filterQuery))
+			.then(res => {
+				if (res?.results?.length > 0) {
+					setOrder(res?.results)
+					updatePagination({
+						current: res?.page_number,
+						pageSize: res?.page_size,
+						total: res?.count,
+					})
+				} else {
+					setOrder([])
+				}
+			})
+	}, [filterQuery])
+
 	return (
 		<>
-			<ReportHead propsData={propsData} />
-			<Table scroll={{ x: true }} columns={columns} dataSource={order} onChange={onChangeSorter} pagination={{ defaultPageSize: 50 }} />
-			
-
-			{/* <div id="my-table" class="table-responsive">
-				<Table bordered>
-					<thead>
-						<tr>
-							<th>Date</th>
-							<th>Total Delivery</th>
-							<th>Total COD</th>
-							<th>Total Pre-Paid</th>
-							<th>Total Delivery Charge</th>
-							<th>Total Collected Amount</th>
-							<th>Total Amount</th>
-						</tr>
-					</thead>
-					<tbody>
-						{order &&
-							order.map((info) => (
-								<tr key={info.id}>
-									<td>
-										<span className="align-middle fw-bold">{info.date}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.total_delivery}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.total_cod}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.total_pre_paid}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.total_delivery_charge}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.total_collect_amount}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.total}</span>
-									</td>
-								</tr>
-							))}
-					</tbody>
-				</Table>
-				<Pagination onChange={paginationUpdate} defaultCurrent={1} total={orderCount} defaultPageSize={50} />
-			</div> */}
+			<ReportHead propsData={propsData} />			
+			<Table scroll={{ x: true }} columns={columns} dataSource={order} onChange={handleTableChange} pagination={tableParams.pagination} />
 		</>
 	)
 }

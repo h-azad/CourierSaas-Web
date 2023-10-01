@@ -17,9 +17,6 @@ import { GENERAL_ROW_SIZE } from "../../constants/tableConfig"
 const AdminGetWithdrawRequestReport = () => {
   const [withdrawRequest, setWithdrawRequest] = useState([])
   const [selectAccountWallet, setselectAccountWallet] = useState([])
-  const [withdrawRequestCount, setWithdrawRequestCount] = useState(0)
-  // const [filterQuery, setFilterQuery] = useState({})
-  const [defaultPage, setDefalutPage] = useState(1)
 
   const [tableParams, setTableParams] = useState({
     pagination: {
@@ -142,13 +139,7 @@ const AdminGetWithdrawRequestReport = () => {
 			title: 'Account',
 			dataIndex: 'account_wallet',
 		},
-		{
-			title: 'Status',
-			dataIndex: 'withdraw_status',
-			render: (text, record) => (
-				<Tag color={colorSwitch(record.withdraw_status)}>{text.toUpperCase()}</Tag>
-			),
-		},
+		
 		{
 			title: 'Previous Balance',
 			dataIndex: 'balance',
@@ -163,6 +154,13 @@ const AdminGetWithdrawRequestReport = () => {
 			title: 'Current Balance',
 			dataIndex: 'current_balance',
 		},
+    {
+      title: 'Status',
+      dataIndex: 'withdraw_status',
+      render: (text, record) => (
+        <Tag color={colorSwitch(record.withdraw_status)}>{text.toUpperCase()}</Tag>
+      ),
+    },
 	]
 
 
