@@ -184,7 +184,7 @@ import { EyeOutlined } from "@ant-design/icons"
 //   CREATE_ORDER_DELETE,
 // } from "../../../constants/apiUrls"
 
-import { getApi, MARCHANT_ORDER_LIST, ORDER_STATISTICS, CREATE_ORDER_DELETE } from "../../../constants/apiUrls"
+import { getApi, MARCHANT_ORDER_LIST, ORDER_STATISTICS, CREATE_ORDER_DELETE, ORDER_INVOICE, } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
@@ -262,6 +262,23 @@ const MerchantOrdersList = () => {
         })
       })
       .catch((err) => console.log(err))
+  }
+
+  const invoiceDownloadToPDF = (info) => {
+    return useJwt
+      .axiosGetFile(getApi(ORDER_INVOICE) + info.id + "/")
+      .then((res) => {
+        if (res.data) {
+          const url = window.URL.createObjectURL(new Blob([res.data]))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', `parcel ${info.recipient_name}.pdf`)
+          document.body.appendChild(link)
+          link.click()
+        }
+      })
+      .catch((err) => console.log(err))
+
   }
 
   const handleTableChange = (pagination, filters, sorter) => {
@@ -354,7 +371,7 @@ const MerchantOrdersList = () => {
                   <button className="action-view" type="primary" onClick={() => { setOrderId(info?.id), showOrderDetailsDrawer() }}>
                     View
                   </button>
-                  {info.status === 'pending' && <UncontrolledDropdown>
+                  <UncontrolledDropdown>
                     <DropdownToggle
                       className="icon-btn hide-arrow"
                       color="transparent"
@@ -363,28 +380,31 @@ const MerchantOrdersList = () => {
                     >
                       <MoreVertical size={15} />
                     </DropdownToggle>
-                    
+
                     <DropdownMenu>
-                      <Link to={"/create_order/invoice/" + info.id}>
-                        <DropdownItem>
-                          <Book className="me-50" size={15} />{" "}
-                          <span className="align-middle">Invoice</span>
-                        </DropdownItem>
-                      </Link>
-                      <DropdownItem href={"/marchant_order/edit/" + info?.id}>
-                        <Edit className="me-50" size={15} />{" "}
-                        <span className="align-middle">Edit</span>
+                      <DropdownItem onClick={() => invoiceDownloadToPDF(info)}>
+                        <Book className="me-50" size={15} />{" "}
+                        <span className="align-middle">Invoice</span>
                       </DropdownItem>
-                      <DropdownItem
-                        href="/"
-                        onClick={(e) => deleteOrderAction(e, info?.id)}
-                      >
-                        <Trash className="me-50" size={15} />{" "}
-                        <span className="align-middle">Delete</span>
-                      </DropdownItem>
+                      {info.status === 'pending' &&
+                        <>
+                          <DropdownItem href={"/marchant_order/edit/" + info?.id}>
+                            <Edit className="me-50" size={15} />{" "}
+                            <span className="align-middle">Edit</span>
+                          </DropdownItem>
+                          <DropdownItem
+                            href="/"
+                            onClick={(e) => deleteOrderAction(e, info?.id)}
+                          >
+                            <Trash className="me-50" size={15} />{" "}
+                            <span className="align-middle">Delete</span>
+                          </DropdownItem>
+                        </>
+
+                      }
                     </DropdownMenu>
 
-                  </UncontrolledDropdown>}
+                  </UncontrolledDropdown>
 
                 </div>
               </Col>

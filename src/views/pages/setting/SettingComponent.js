@@ -11,7 +11,8 @@ const SettingComponent = () => {
       >
         
       </Space>
-      <Tabs
+      <EditCompanySetting />
+      {/* <Tabs
         tabPosition='left'
         items={new Array(3).fill(null).map((_, i) => {
           const id = String(i + 1)
@@ -23,7 +24,7 @@ const SettingComponent = () => {
           }
           
         })}
-      />
+      /> */}
     </>
   )
 }

@@ -7,6 +7,7 @@ import {
   RIDER_DELIVARY_STATUS_UPDATE,
   RIDER_DELIVERY_CREATE_ORDER_FILTER,
   DELIVERY_ASSIGNMENT,
+  ORDER_INVOICE,
 } from "@src/constants/apiUrls"
 import toast from "react-hot-toast"
 import {
@@ -20,7 +21,7 @@ import {
   DropdownToggle,
 } from "reactstrap"
 import { EyeOutlined } from "@ant-design/icons"
-import { MoreVertical, Edit3 } from "react-feather"
+import { MoreVertical, Edit3, Book } from "react-feather"
 import CancelReasonModal from "./CancelReasonModal"
 import OrderDetailsDrawer from "../../../order/OrderDetailsDrawer"
 import HoldReasonModal from "./HoldReasonModal"
@@ -76,6 +77,23 @@ const DelivaryView = ({ }) => {
       .catch((err) => console.log(err))
   }
 
+  const invoiceDownloadToPDF = (info) => {
+    return useJwt
+      .axiosGetFile(getApi(ORDER_INVOICE) + info.id + "/")
+      .then((res) => {
+        if (res.data) {
+          const url = window.URL.createObjectURL(new Blob([res.data]))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', `parcel ${info.recipient_name}.pdf`)
+          document.body.appendChild(link)
+          link.click()
+        }
+      })
+      .catch((err) => console.log(err))
+
+  }
+
   const handleTableChange = (pagination, filters, sorter) => {
     setTableParams({
       pagination,
@@ -128,6 +146,12 @@ const DelivaryView = ({ }) => {
                       <MoreVertical size={15} />
                     </DropdownToggle>
                     <DropdownMenu>
+                      
+                      <DropdownItem onClick={() => invoiceDownloadToPDF(info)}>
+                        <Book className="me-50" size={15} />{" "}
+                        <span className="align-middle">Invoice</span>
+                      </DropdownItem>
+
                       {info.pickup_status &&
                         info.warehouse_status &&
                         !info.delivery_status && (

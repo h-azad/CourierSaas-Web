@@ -58,17 +58,17 @@ const adminMenu = [
         resource: 'Order-read',
         navLink: "/create_order/",
       },
+      // {
+      //   id: 'order-add',
+      //   title: 'Add',
+      //   icon: <Circle size={12} />,
+      //   action: 'admin-pages',
+      //   resource: 'Order-write',
+      //   navLink: "/create_order/add",
+      // },
       {
         id: 'order-add',
         title: 'Add',
-        icon: <Circle size={12} />,
-        action: 'admin-pages',
-        resource: 'Order-write',
-        navLink: "/create_order/add",
-      },
-      {
-        id: 'order-add',
-        title: 'Add O',
         icon: <Circle size={12} />,
         action: 'admin-pages',
         resource: 'Order-write',
@@ -679,18 +679,18 @@ const marchantMenu = [
         resource: 'MARCHANT',
         navLink: "/marchant-orders/"
       },
-      {
-        id: "my_order_create",
-        title: "Add New Orders",
-        icon: <Circle size={20} />,
-        action: 'marchant-pages',
-        resource: 'MARCHANT',
-        navLink: "/marchant-orders/create"
-      },
+      // {
+      //   id: "my_order_create",
+      //   title: "Add New Orders",
+      //   icon: <Circle size={20} />,
+      //   action: 'marchant-pages',
+      //   resource: 'MARCHANT',
+      //   navLink: "/marchant-orders/create"
+      // },
 
       {
         id: "my_order_create_marchant",
-        title: "Add New Orders O",
+        title: "Add New Order",
         icon: <Circle size={20} />,
         action: 'marchant-pages',
         resource: 'MARCHANT',

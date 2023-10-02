@@ -88,13 +88,7 @@ const OrderReport = () => {
 			dataIndex: 'parcel_id',
 
 		},
-		{
-			title: 'Status',
-			dataIndex: 'status',
-			render: (text, record) => (
-				<Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
-			),
-		},
+		
 		{
 			title: 'Delivery Charge',
 			dataIndex: 'delivary_charge',
@@ -114,6 +108,13 @@ const OrderReport = () => {
 		{
 			title: 'Total Amount',
 			dataIndex: 'total_amount',
+		},
+		{
+			title: 'Status',
+			dataIndex: 'status',
+			render: (text, record) => (
+				<Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
+			),
 		},
 	]
 

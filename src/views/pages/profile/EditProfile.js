@@ -264,7 +264,9 @@ const EditProfile = () => {
           .then((res) => {
             console.log("res", res.data)
             SwalAlert("Profile Edited Successfully")
+            
             navigate("/profile")
+
           })
           .catch(err => console.log(err))
 

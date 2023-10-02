@@ -104,6 +104,11 @@ function colorSwitch(status) {
 
 	const columns = [
 		{
+			title: 'Transections ID',
+			dataIndex: 'transection_id',
+
+		},
+		{
 			title: 'Date',
 			dataIndex: 'created_at',
 
@@ -112,11 +117,7 @@ function colorSwitch(status) {
 				multiple: 2,
 			},
 		},
-		{
-			title: 'Transections ID',
-			dataIndex: 'transection_id',
-
-		},
+		
 		{
 			title: 'Amount',
 			dataIndex: 'amount',

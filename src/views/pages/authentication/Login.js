@@ -72,6 +72,7 @@ const Login = () => {
   console.log('domainName', domainName)
 
   const [error, setErrors] = useState()
+  const [reload, setReload] = useState(true)
   const { skin } = useSkin()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -126,6 +127,8 @@ const Login = () => {
     }
   }
   //n
+
+
   useEffect(() => {
     if (isUserLoggedIn()) {
       navigate('/home')

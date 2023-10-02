@@ -121,21 +121,14 @@ const DeliveryReport = () => {
 
 		},
 
-		{
-			title: 'Status',
-			dataIndex: 'status',
-			render: (text, record) => (
-				<Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
-			),
-		},
-		{
-			title: 'Delivery Status',
-			dataIndex: 'delivery_status',
-			render: (text, record) => (
-				<Tag color={statusOptionsColorSwitch(record.delivery_status)}>{text.toUpperCase()}</Tag>
-			),
-			
-		},
+		// {
+		// 	title: 'Status',
+		// 	dataIndex: 'status',
+		// 	render: (text, record) => (
+		// 		<Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
+		// 	),
+		// },
+		
 		{
 			title: 'Phone',
 			dataIndex: 'phone_number',
@@ -143,6 +136,13 @@ const DeliveryReport = () => {
 		{
 			title: 'Address',
 			dataIndex: 'delivary_address',
+		},
+		{
+			title: 'Delivery Status',
+			dataIndex: 'delivery_status',
+			render: (text, record) => (
+				<Tag color={statusOptionsColorSwitch(record.delivery_status)}>{text.toUpperCase()}</Tag>
+			),
 		},
 	]
 

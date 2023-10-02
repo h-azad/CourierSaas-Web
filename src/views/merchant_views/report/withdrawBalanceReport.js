@@ -106,13 +106,7 @@ const WithdrawBalanceReport = () => {
 				multiple: 2,
 			},
 		},
-		{
-			title: 'Status',
-			dataIndex: 'withdraw_status',
-			render: (text, record) => (
-				<Tag color={colorSwitch(record.withdraw_status)}>{text.toUpperCase()}</Tag>
-			),
-		},
+		
 		{
 			title: 'Previous Balance',
 			dataIndex: 'balance',
@@ -126,6 +120,13 @@ const WithdrawBalanceReport = () => {
 		{
 			title: 'Current Balance',
 			dataIndex: 'current_balance',
+		},
+		{
+			title: 'Status',
+			dataIndex: 'withdraw_status',
+			render: (text, record) => (
+				<Tag color={colorSwitch(record.withdraw_status)}>{text.toUpperCase()}</Tag>
+			),
 		},
 	]
 

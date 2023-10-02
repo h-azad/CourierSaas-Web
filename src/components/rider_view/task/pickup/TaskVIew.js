@@ -15,11 +15,12 @@ import {
   getApi,
   RIDER_PICKUP_CREATE_ORDER_FILTER,
   RIDER_ASSIGNMENT,
+  ORDER_INVOICE,
 } from "@src/constants/apiUrls"
 
 import toast from "react-hot-toast"
 import { EyeOutlined } from "@ant-design/icons"
-import { MoreVertical, Edit3 } from "react-feather"
+import { MoreVertical, Edit3, Book } from "react-feather"
 import CancelReasonModal from "./CancelReasonModal"
 import RiderPickupConfirmSwalAlert from "../../../RiderPickupConfirmSwalAlert"
 
@@ -27,7 +28,7 @@ import OrderDetailsDrawer from "../../../order/OrderDetailsDrawer"
 
 import { GENERAL_ROW_SIZE } from "../../../../constants/tableConfig"
 import * as qs from 'qs'
-import { Table } from "antd"
+import { Table, Tag } from "antd"
 
 const PickupView = ({ orderInfo }) => {
   const [pickupData, setPickupData] = useState([])
@@ -128,6 +129,11 @@ const PickupView = ({ orderInfo }) => {
                     </DropdownToggle>
                     <DropdownMenu>
 
+                      <DropdownItem onClick={() => invoiceDownloadToPDF(info)}>
+                        <Book className="me-50" size={15} />{" "}
+                        <span className="align-middle">Invoice</span>
+                      </DropdownItem>
+
                       {info.pickup_status == false &&
                         !info.warehouse_status && (
                           <DropdownItem
@@ -171,7 +177,8 @@ const PickupView = ({ orderInfo }) => {
                 </h6>
                 <h6 className="mb-25 ">
                   Order Status :{" "}
-                  <span className="highlight-status">{info.status}</span>
+                  <Tag className="highlight-status text-success">{info.status.toUpperCase()}</Tag>
+                  {/* <span className="highlight-status text-success">{info.status.toUpperCase()}</span> */}
                 </h6>
                 <h6 className="mb-25">
                   Pickup Status :
@@ -274,6 +281,23 @@ const PickupView = ({ orderInfo }) => {
         }
       }
     )
+  }
+
+  const invoiceDownloadToPDF = (info) => {
+    return useJwt
+      .axiosGetFile(getApi(ORDER_INVOICE) + info.id + "/")
+      .then((res) => {
+        if (res.data) {
+          const url = window.URL.createObjectURL(new Blob([res.data]))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', `parcel ${info.recipient_name}.pdf`)
+          document.body.appendChild(link)
+          link.click()
+        }
+      })
+      .catch((err) => console.log(err))
+
   }
 
   const pickupCancelIssue = (e, info) => {
