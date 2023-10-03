@@ -56,8 +56,9 @@ const AddRoute = () => {
     return useJwt
       .axiosPost(getApi(ROUTE), formData, headers)
       .then((res) => {
-        SwalAlert("Route Added Successfully")
+        console.log('Hello Route')
         navigate("/route")
+        SwalAlert("Route Added Successfully")
       })
       .catch(err => console.log(err))
   }

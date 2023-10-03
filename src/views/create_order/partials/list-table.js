@@ -452,7 +452,7 @@ const CreateOrderList = () => {
           <CardBody>
             <div className="invoice-title-card">
               <h3> Orders </h3>
-              <Link to={"/create_order/add"}>
+              <Link to={"/create_order/add-order"}>
                 <Button type="primary" color="primary">
                   {" "}
                   + Create Order

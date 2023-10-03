@@ -10,7 +10,7 @@ export default function RiderPickupConfirmSwalAlert(pickupAddress, sender, phone
     html:
       <Card size="small" title={pickupAddress} style={{ width: 300, margin: 'auto' }}>
         <p><b>Sender : </b> {sender}</p>
-        <p><b>Phone</b> : {phone}</p>
+        {phone && <p><b>Phone</b> : {phone}</p>}
       </Card >,
     title: title,
     showCancelButton: true,

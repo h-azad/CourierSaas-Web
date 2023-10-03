@@ -30,6 +30,11 @@ const CreateOrderInfoList = ({ orderDetails }) => {
               </tr>
 
               <tr>
+                <th>Receiver</th>
+                <th>{orderDetails?.recipient_name}</th>
+              </tr>
+
+              <tr>
                 <th>Status</th>
                 <th>{orderDetails?.status}</th>
               </tr>
@@ -69,7 +74,7 @@ const CreateOrderInfoList = ({ orderDetails }) => {
               </tr>
               <tr>
                 <th>Warehouse Status</th>
-                <th>{orderDetails?.warehouse_status}</th>
+                <th>{orderDetails?.warehouse_status.toString().toUpperCase()}</th>
               </tr>
 
               <tr>
