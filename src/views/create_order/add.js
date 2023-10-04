@@ -468,6 +468,7 @@ const AddCreateOrder = () => {
                   render={({ field }) => (
                     <Input
                       type="number"
+                      min={0}
                       placeholder=""
                       invalid={errors.phone_number && true}
                       {...field}

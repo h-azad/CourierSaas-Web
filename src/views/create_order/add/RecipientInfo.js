@@ -66,7 +66,7 @@ const RecipientInfo = ({ recipienInfoPropsData }) => {
       recipienInfoPropsData.setPhoneNumber(data.phone_number)
       recipienInfoPropsData.setDelivaryAddress(data.delivary_address)
       recipienInfoPropsData.next()
-      
+
     }
   }
 
@@ -117,6 +117,7 @@ const RecipientInfo = ({ recipienInfoPropsData }) => {
                   render={({ field }) => (
                     <Input
                       type="number"
+                      min={0}
                       placeholder=""
                       invalid={errors.phone_number && true}
                       {...field}

@@ -418,6 +418,7 @@ const AddOrder = ({ parcellInfoPropsData }) => {
                   render={({ field }) => (
                     <Input
                       type="number"
+                      min={0}
                       readOnly={orderType === 'pre-paid' ? true : false}
                       value={amountCollected}
                       // onChange={(e) => setAmountCollected(e.target.value)}

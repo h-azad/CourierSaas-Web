@@ -12,10 +12,17 @@ const initialUser = () => {
   return item ? JSON.parse(item) : {}
 }
 
+const initialProfileData = () => {
+  const item = window.localStorage.getItem('profileData')
+  //** Parse stored json or if none return initialValue
+  return item ? JSON.parse(item) : {}
+}
+
 export const authSlice = createSlice({
   name: 'authentication',
   initialState: {
-    userData: initialUser()
+    userData: initialUser(),
+    profileData: initialProfileData()
   },
   reducers: {
     handleLogin: (state, action) => {
@@ -26,6 +33,11 @@ export const authSlice = createSlice({
       localStorage.setItem('userData', JSON.stringify(action.payload))
       localStorage.setItem(config.storageTokenKeyName, action.payload.accessToken)
       localStorage.setItem(config.storageRefreshTokenKeyName, action.payload.refreshToken)
+    },
+    handleProfileData: (state, action) => {
+      state.profileData = action.payload
+      localStorage.setItem('profileData', JSON.stringify(action.payload))
+     
     },
     handleLogout: state => {
       state.userData = {}
@@ -39,6 +51,6 @@ export const authSlice = createSlice({
   }
 })
 
-export const { handleLogin, handleLogout } = authSlice.actions
+export const { handleLogin, handleLogout, handleProfileData } = authSlice.actions
 
 export default authSlice.reducer

@@ -6,6 +6,12 @@ import { useContext, useEffect, useState } from 'react'
 
 import { Link, useNavigate } from 'react-router-dom'
 
+import {
+  getApi,
+  GET_USER,
+  PROFILE
+} from "@src/constants/apiUrls"
+
 // ** Custom Hooks
 import { useSkin } from '@hooks/useSkin'
 import useJwt from '@src/auth/jwt/useJwt'
@@ -19,7 +25,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { Facebook, Twitter, Mail, GitHub, HelpCircle, Coffee, X } from 'react-feather'
 
 // ** Actions
-import { handleLogin } from '@store/authentication'
+import { handleLogin, handleProfileData } from '@store/authentication'
 
 // ** Context
 import { AbilityContext } from '@src/utility/context/Can'
@@ -114,6 +120,7 @@ const Login = () => {
           toast(t => (
             <ToastContent t={t} role={data.role || 'admin'} name={data.name || 'John Doe'} />
           ))
+          fetchUserData()
         })
         .catch(err => setErrors(err.response.data.errors.non_field_errors))
     } else {
@@ -127,6 +134,46 @@ const Login = () => {
     }
   }
   //n
+
+
+
+  const fetchProfileData = () => {
+    return useJwt
+      .axiosGet(getApi(PROFILE))
+      .then((res) => {
+        dispatch(handleProfileData(res?.data))
+        // setProfileInformation({
+        //   name: res?.data?.full_name,
+        //   email: res?.data?.email,
+        //   profile_picture: res?.data?.profile_picture
+        // })
+      })
+      .catch(err => console.log(err))
+  }
+
+  const fetchUserData = () => {
+    return useJwt
+      .axiosGet(getApi(GET_USER))
+      .then((res) => {
+        if (res?.data?.role == null) {
+          dispatch(handleProfileData(res?.data))
+          // console.log('res?.data?', res?.data)
+          // setProfileInformation({
+          //   name: res?.data?.name,
+          //   email: res?.data?.email,
+          //   profile_picture: res?.data?.profile_picture
+          // })
+        } else {
+          fetchProfileData()
+        }
+      })
+      .catch(err => console.log(err))
+  }
+
+
+  // useEffect(() => {
+  //   fetchUserData()
+  // }, [])
 
 
   useEffect(() => {

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 // ** Actions
 import { handleLogout } from "@store/authentication"
 
+
 // ** Custom Components
 import Avatar from "@components/avatar"
 import useJwt from '@src/auth/jwt/useJwt'
@@ -35,20 +36,25 @@ import {
 
 // ** Default Avatar Image
 import defaultAvatar from "@src/assets/images/portrait/small/avatar-s-11.jpg"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useState, useEffect } from "react"
 import { apiBaseUrl } from "../../../../configs/apiConfig"
 
 const UserDropdown = () => {
+
+  const { profileData: profileInformation } = useSelector((state) => state.authentication)
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [profileInformation, setProfileInformation] = useState({
-    name: null,
-    email: null,
-    role: null,
-    admin_role: null,
-    profile_picture: null
-  })
+  // const [profileInformation, setProfileInformation] = useState({
+  //   name: null,
+  //   email: null,
+  //   role: null,
+  //   admin_role: null,
+  //   profile_picture: null
+  // })
+
+  console.log("profileInformation", profileInformation)
 
   const submitLogout = async (e) => {
     if (e != undefined) {
@@ -62,41 +68,41 @@ const UserDropdown = () => {
   }
 
 
-  const fetchProfileData = () => {
-    return useJwt
-      .axiosGet(getApi(PROFILE))
-      .then((res) => {
-        setProfileInformation({
-          name: res?.data?.full_name,
-          email: res?.data?.email,
-          profile_picture: res?.data?.profile_picture
-        })
-      })
-      .catch(err => console.log(err))
-  }
+  // const fetchProfileData = () => {
+  //   return useJwt
+  //     .axiosGet(getApi(PROFILE))
+  //     .then((res) => {
+  //       // setProfileInformation({
+  //       //   name: res?.data?.full_name,
+  //       //   email: res?.data?.email,
+  //       //   profile_picture: res?.data?.profile_picture
+  //       // })
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
-  const fetchUserData = () => {
-    return useJwt
-      .axiosGet(getApi(GET_USER))
-      .then((res) => {
-        if(res?.data?.role==null){
-          console.log('res?.data?', res?.data)
-          setProfileInformation({
-            name: res?.data?.name,
-            email: res?.data?.email,
-            profile_picture: res?.data?.profile_picture
-          })
-        }else{
-          fetchProfileData()
-        }
-      })
-      .catch(err => console.log(err))
-  }
+  // const fetchUserData = () => {
+  //   return useJwt
+  //     .axiosGet(getApi(GET_USER))
+  //     .then((res) => {
+  //       if(res?.data?.role==null){
+  //         console.log('res?.data?', res?.data)
+  //         setProfileInformation({
+  //           name: res?.data?.name,
+  //           email: res?.data?.email,
+  //           profile_picture: res?.data?.profile_picture
+  //         })
+  //       }else{
+  //         fetchProfileData()
+  //       }
+  //     })
+  //     .catch(err => console.log(err))
+  // }
 
 
-  useEffect(() => {
-    fetchUserData()
-  }, [])
+  // useEffect(() => {
+  //   fetchUserData()
+  // }, [])
 
   return (
     <UncontrolledDropdown tag="li" className="dropdown-user nav-item">
@@ -107,7 +113,7 @@ const UserDropdown = () => {
         onClick={(e) => e.preventDefault()}
       >
         <div className="user-nav d-sm-flex d-none">
-          <span className="user-name fw-bold">{profileInformation?.name}</span>
+          <span className="user-name fw-bold">{profileInformation.name ? profileInformation.name : profileInformation.full_name }</span>
           <span className="user-status">{profileInformation.role ? profileInformation.role : profileInformation.admin_role}</span>
         </div>
         <Avatar

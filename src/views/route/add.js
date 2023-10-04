@@ -5,7 +5,7 @@ import {
   CardTitle,
   CardBody,
 } from "reactstrap"
-
+import { useNavigate } from "react-router-dom"
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, ROUTE } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
@@ -23,6 +23,7 @@ const AddRoute = () => {
   const [title, setTitle] = useState()
   const [startLocation, setStartLocation] = useState()
   const [coordinate, setCoordinate] = useState()
+  const navigate = useNavigate()
 
   const [city, setCity] = useState()
   const [areas, setAreas] = useState([])

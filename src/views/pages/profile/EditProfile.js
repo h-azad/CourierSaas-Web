@@ -19,6 +19,9 @@ import { useEffect, useState } from "react"
 import { identity } from "../../../constants/data/identity"
 import { AREAS_BY_CITY } from "../../../constants/apiUrls"
 import React, { useRef } from "react"
+import { handleProfileData } from "@src/redux/authentication"
+
+import { useDispatch } from "react-redux"
 
 const handleImgReset = () => {
   setAvatar(require('@src/assets/images/avatars/avatar-blank.png').default)
@@ -26,6 +29,7 @@ const handleImgReset = () => {
 
 
 const EditProfile = () => {
+  const dispatch = useDispatch()
   const [selectboxPaymentMethod, setSelectboxPaymentMethod] = useState([])
   const [selectboxCity, setSelectboxCity] = useState([])
   const [selectboxArea, setSelectboxArea] = useState([])
@@ -33,21 +37,34 @@ const EditProfile = () => {
   const [adminInFo, setAdminInFo] = useState(null)
   const [userRole, setUserRole] = useState(null)
   // const [avatar, setAvatar] = useState(avatar)
-  console.log()
 
   const [avatar, setAvatar] = useState()
-  console.log("avatar x", avatar)
 
-  const onChange = e => {
-    const reader = new FileReader(),
-      files = e.target.files
-    reader.onload = function () {
-      setAvatar(reader.result)
-    }
-    reader.readAsDataURL(files[0])
+
+
+
+  const updateFetchProfileData = () => {
+    return useJwt
+      .axiosGet(getApi(PROFILE))
+      .then((res) => {
+        dispatch(handleProfileData(res?.data))
+      })
+      .catch(err => console.log(err))
   }
 
-  let { id } = useParams()
+  const updateFetchUserData = () => {
+    return useJwt
+      .axiosGet(getApi(GET_USER))
+      .then((res) => {
+        if (res?.data?.role == null) {
+          dispatch(handleProfileData(res?.data))
+        } else {
+          updateFetchProfileData()
+        }
+      })
+      .catch(err => console.log(err))
+  }
+
 
   const fetchProfileData = () => {
     return useJwt
@@ -75,6 +92,23 @@ const EditProfile = () => {
 
 
 
+
+
+  const onChange = e => {
+    const reader = new FileReader(),
+      files = e.target.files
+    reader.onload = function () {
+      setAvatar(reader.result)
+    }
+    reader.readAsDataURL(files[0])
+  }
+
+  let { id } = useParams()
+
+  
+
+
+
   useEffect(() => {
     // fetchProfileData()
     fetchUserData()
@@ -98,7 +132,6 @@ const EditProfile = () => {
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
-      console.log(value, name, type)
       if (name == 'city' && type == 'change') {
         setValue('area', null)
         fetchAreaData(value.city.value)
@@ -251,20 +284,17 @@ const EditProfile = () => {
           formData.append(key, data[key])
         }
       })
-      console.log('formData', formData)
       const headers = {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }
       if (userRole === 'MARCHANT') {
-        console.log('submit form', data)
         useJwt
           .axiosPatch(getApi(MARCHANT_PROFILE_UPDATE) + userInFo.id + "/", formData, headers)
           .then((res) => {
-            console.log("res", res.data)
             SwalAlert("Profile Edited Successfully")
-            
+            updateFetchUserData()
             navigate("/profile")
 
           })
@@ -274,8 +304,8 @@ const EditProfile = () => {
         useJwt
           .axiosPatch(getApi(RIDER_PROFILE_UPDATE) + userInFo.id + "/", formData, headers)
           .then((res) => {
-            console.log("res", res.data)
             SwalAlert("Profile Edited Successfully")
+            updateFetchUserData()
             navigate("/profile")
           })
           .catch(err => console.log(err))
@@ -317,13 +347,11 @@ const EditProfile = () => {
         }
       }
 
-      console.log('form data', formData)
-
       useJwt
         .axiosPatch(getApi(ADMIN_EDIT) + adminInFo.id + "/", formData, headers)
         .then((res) => {
-          console.log("res", res.data)
           SwalAlert("Profile Edited Successfully")
+          updateFetchUserData()
           navigate("/profile")
         })
         .catch(err => console.log(err))

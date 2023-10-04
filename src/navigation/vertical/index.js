@@ -95,14 +95,14 @@ const adminMenu = [
     navLink: "/assignment"
   },
 
-  {
-    id: "agent-assignment",
-    title: "Agent Assignment",
-    icon: <CornerUpRight size={20} />,
-    action: 'admin-pages',
-    resource: 'Assignment-read',
-    navLink: "/agent-assignment"
-  },
+  // {
+  //   id: "agent-assignment",
+  //   title: "Agent Assignment",
+  //   icon: <CornerUpRight size={20} />,
+  //   action: 'admin-pages',
+  //   resource: 'Assignment-read',
+  //   navLink: "/agent-assignment"
+  // },
 
 
   {
@@ -203,55 +203,55 @@ const adminMenu = [
     ]
   },
 
-  {
-    id: "agent-typ",
-    title: "Agent Type",
-    icon: <Type size={20} />,
+  // {
+  //   id: "agent-typ",
+  //   title: "Agent Type",
+  //   icon: <Type size={20} />,
 
-    children: [
-      {
-        id: 'agent-type-index',
-        title: 'Index',
-        icon: <Circle size={12} />,
-        action: 'admin-pages',
-        resource: 'Agent Type-read',
-        navLink: "/agent-type/",
-      },
-      {
-        id: 'agent-type-add',
-        title: 'Add',
-        icon: <Circle size={12} />,
-        action: 'admin-pages',
-        resource: 'Agent Type-read',
-        navLink: "/agent-type/add",
-      }
-    ]
-  },
+  //   children: [
+  //     {
+  //       id: 'agent-type-index',
+  //       title: 'Index',
+  //       icon: <Circle size={12} />,
+  //       action: 'admin-pages',
+  //       resource: 'Agent Type-read',
+  //       navLink: "/agent-type/",
+  //     },
+  //     {
+  //       id: 'agent-type-add',
+  //       title: 'Add',
+  //       icon: <Circle size={12} />,
+  //       action: 'admin-pages',
+  //       resource: 'Agent Type-read',
+  //       navLink: "/agent-type/add",
+  //     }
+  //   ]
+  // },
 
-  {
-    id: "agent",
-    title: "Agent",
-    icon: <User size={20} />,
+  // {
+  //   id: "agent",
+  //   title: "Agent",
+  //   icon: <User size={20} />,
 
-    children: [
-      {
-        id: 'agent-index',
-        title: 'Index',
-        icon: <Circle size={12} />,
-        action: 'admin-pages',
-        resource: 'Agent-read',
-        navLink: "/agent/",
-      },
-      {
-        id: 'agent-add',
-        title: 'Add',
-        icon: <Circle size={12} />,
-        action: 'admin-pages',
-        resource: 'Agent-write',
-        navLink: "/agent/add",
-      }
-    ]
-  },
+  //   children: [
+  //     {
+  //       id: 'agent-index',
+  //       title: 'Index',
+  //       icon: <Circle size={12} />,
+  //       action: 'admin-pages',
+  //       resource: 'Agent-read',
+  //       navLink: "/agent/",
+  //     },
+  //     {
+  //       id: 'agent-add',
+  //       title: 'Add',
+  //       icon: <Circle size={12} />,
+  //       action: 'admin-pages',
+  //       resource: 'Agent-write',
+  //       navLink: "/agent/add",
+  //     }
+  //   ]
+  // },
 
 
   {

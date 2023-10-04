@@ -17,6 +17,8 @@ import {
   COMPANY_SETTING,
 } from "@src/constants/apiUrls"
 
+import 'dayjs/locale/zh-cn'
+import dayjs from 'dayjs'
 
 import { Radio, Select, Space } from 'antd'
 

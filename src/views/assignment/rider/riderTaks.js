@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
 import {
-  Table,
+  // Table,
   Badge,
   UncontrolledDropdown,
   DropdownMenu,
@@ -29,12 +29,30 @@ import { EyeOutlined } from '@ant-design/icons'
 import { useParams } from "react-router-dom"
 import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
 
+import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
+import * as qs from 'qs'
+import { Table, Tag } from "antd"
+
+
+
 const ListTable = () => {
+  let { id } = useParams()
   const [createOrder, setCreateOrder] = useState([])
-  const MySwal = withReactContent(Swal)
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState(null)
   const [selectedInfo, setSelectedInfo] = useState(null)
+
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: GENERAL_ROW_SIZE,
+    },
+  })
+
+  const [filterQuery, setFilterQuery] = useState({
+    page: 1,
+    page_size: GENERAL_ROW_SIZE,
+  })
 
   const [orderid, setOrderId] = useState(0)
 
@@ -48,28 +66,16 @@ const ListTable = () => {
     setOpen(false)
   }
 
-  let { id } = useParams()
-  const deleteAction = (e, id) => {
-    e.preventDefault()
-    return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
-      if (result.value) {
 
-        useJwt
-          .axiosDelete(getApi(CREATE_ORDER_DELETE + id + '/'))
-          .then((res) => {
-            SwalAlert("Deleted Successfully")
-          })
-          .finally(() => fetchCreateOrderData())
-
-      }
-    })
-
+  const clearData = () => {
+    setSelectedInfo(null)
+    setSelectedStatus(null)
   }
+
 
   const updateStatusAction = (e) => {
     e.preventDefault()
-    console.log("selectedInfo", selectedInfo)
-    console.log("selectedStatus", selectedStatus)
+
     useJwt
       .axiosPatch(getApi(CREATE_ORDER_EDIT + selectedInfo.id + '/'), {
         status: "in_warehouse",
@@ -95,20 +101,161 @@ const ListTable = () => {
       })
   }
 
-  useEffect(() => {
-    fetchCreateOrderData()
-  }, [])
 
   const fetchCreateOrderData = () => {
     return useJwt
-      .axiosGet(getApi(PICKUP_RIDER_TASK + "/" + id))
+      .axiosGet(getApi(PICKUP_RIDER_TASK + "/" + id) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
-        console.log("res", res.data)
-        setCreateOrder(res.data)
-        return res.data
+        setCreateOrder(res?.data?.results)
+        updatePagination({
+          current: res?.data?.page_number,
+          pageSize: res?.data?.page_size,
+          total: res?.data?.count,
+        })
       })
+
       .catch(err => console.log(err))
   }
+
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      sorter,
+    })
+
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([])
+    }
+  }
+
+  const updatePagination = (info) => {
+    const _tableParams = { ...tableParams }
+
+    _tableParams.pagination = info
+
+    setTableParams(_tableParams)
+  }
+
+
+  const columns = [
+
+    {
+
+      render: (_, info) =>
+
+        <Card className='invoice-preview-card'>
+          <CardBody>
+            <Row >
+              <Col xl='9'>
+                <h5 className='mb-25'><b>Parcel Id :{info?.parcel_id} </b> </h5>
+                <h9 className='mb-25'>Created: {info.created_at}</h9>
+              </Col>
+              <Col xl='3'>
+                <div className='button-wrapper'>
+                  <button className="action-view" type="primary" onClick={() => { setOrderId(info?.id), showOrderDetailsDrawer() }}>
+                    <EyeOutlined />
+                    View
+                  </button>
+                  <UncontrolledDropdown>
+                    <DropdownToggle
+                      className="icon-btn hide-arrow"
+                      color="transparent"
+                      size="sm"
+                      caret
+                    >
+                      <MoreVertical size={15} />
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      {info.warehouse_status == false && <DropdownItem href="/" onClick={e => changeStatusAction(e, info)}>
+                        <Edit3 className="me-50" size={15} />{" "}
+                        <span className="align-middle">Receive Confirm</span>
+                      </DropdownItem>}
+
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </div>
+              </Col>
+            </Row>
+            <Row className='mt-2' >
+              <Col xl='7'>
+                <h6 className='mb-25'><b>Recipient Name :{info?.recipient_name}</b>  </h6>
+                <h6 className='mb-25'>Phone Number : {info?.phone_number}</h6>
+                <h6 className='mb-25'>Delivary Address : {info?.delivary_address}</h6>
+                <h6 className='mb-25 '>Order Status : <span className='highlight-status'>{info.status === "in_warehouse" ? "In Warehouse" : info.status.toUpperCase()}</span></h6>
+                <h6 className='mb-25'>Pickup Status :<span className='highlight-pickup-status'>{info.pickup_status == true ? 'True' : 'False'}</span></h6>
+              </Col>
+              <Col xl='5'>
+                <h6 className='mb-25'>Warehouse Status :<span className='highlight-pickup-status'>{info.warehouse_status == true ? 'True' : 'False'}</span></h6>
+                <h6 className='mb-25'>Product type : {info.product_type.product_type}</h6>
+                <h6 className='mb-25'>Shipment type : {info.shipment_type.shipment_type}</h6>
+
+                <h6 className='mb-25'>Delivary Charge: {info?.delivary_charge}</h6>
+                <h6 className='mb-25'>Cash On Delivery Charge : {info?.cash_on_delivery_charge}</h6>
+                <h6 className='mb-25'>Collection Amount : {info?.amount_to_be_collected}</h6>
+                <h6 className='mb-25'>Total Amount : {Number(info?.amount_to_be_collected) + Number(info?.delivary_charge)}</h6>
+              </Col>
+            </Row>
+          </CardBody>
+
+          <ChangeStatusModal
+            statusModalState={statusModalState}
+            setStatusModalState={setStatusModalState}
+            orderInfo={selectedInfo}
+            fetchCreateOrderData={fetchCreateOrderData}
+          />
+
+          <StatusModal
+            statusModalState={statusModalState}
+            setStatusModalState={setStatusModalState}
+            updateStatusAction={updateStatusAction}
+            title={"Change Pricing Policy Status"}
+          >
+            <div className='demo-inline-spacing'>
+              <div className='form-check'>
+                <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "accepted" ? true : false} onChange={() => setSelectedStatus("accepted")} />
+                <Label className='form-check-label' for='ex1-active'>
+                  Accepted
+                </Label>
+              </div>
+              <div className='form-check'>
+                <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "pending" ? true : false} onChange={() => setSelectedStatus("pending")} />
+                <Label className='form-check-label' for='ex1-inactive'>
+                  Pending
+                </Label>
+              </div>
+              <div className='form-check'>
+                <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "delivered" ? true : false} onChange={() => setSelectedStatus("delivered")} />
+                <Label className='form-check-label' for='ex1-inactive'>
+                  Delivered
+                </Label>
+              </div>
+            </div>
+          </StatusModal>
+        </Card >
+
+    },
+  ]
+
+  useEffect(() => {
+    const _tableParams = tableParams
+    const _filters = { ...filterQuery }
+
+    if (_tableParams) {
+      _filters['page'] = _tableParams.pagination?.current
+      _filters['page_size'] = _tableParams.pagination?.pageSize
+    }
+
+    setFilterQuery(_filters)
+
+  }, [JSON.stringify(tableParams)])
+
+
+  useEffect(() => {
+    fetchCreateOrderData()
+  }, [JSON.stringify(filterQuery)])
+
 
   useEffect(() => {
     if (!statusModalState) {
@@ -117,52 +264,12 @@ const ListTable = () => {
     fetchCreateOrderData()
   }, [statusModalState])
 
-  const fetchSearchCreateOrderData = (searchTerm) => {
-    return useJwt
-      .axiosGet(getApi(PICKUP_RIDER_TASK_SEARCH_FILTER) + `?pickup_rider=${id}&search_query=${searchTerm}`)
-      .then((res) => {
-        return res.data
-      })
-      .catch((err) => console.log(err))
-  }
 
-  const handleSearch = debounce(e => {
-    console.log(e.target.value)
-    const searchTerm = e.target.value
-    if (searchTerm.length > 0) {
-      fetchSearchCreateOrderData(searchTerm)
-        .then(data => {
-          if (data?.length > 0) {
-            console.log('res', data)
-            setCreateOrder(data)
-          } else {
-            console.log("No data")
-          }
-        })
-    } else {
-      fetchCreateOrderData()
-    }
+  useEffect(() => {
+    fetchCreateOrderData()
+  }, [])
 
-  }, 300)
 
-  const clearData = () => {
-    setSelectedInfo(null)
-    setSelectedStatus(null)
-  }
-
-  function debounce(fn, time) {
-    let timeoutId
-    return wrapper
-    function wrapper(...args) {
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-      }
-      timeoutId = setTimeout(() => {
-        timeoutId = null
-        fn(...args)
-      }, time)
-    }
-  }
 
   return (
 
@@ -170,127 +277,10 @@ const ListTable = () => {
 
       <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
 
-      <CardText>
-        <div className="row justify-content-between">
-          <div className="col-lg-5">
-            <div className="d-flex align-items-center">
-
-            </div>
-          </div>
-          <div className="col-lg-5">
-            <div className="d-flex align-items-center ">
-              <input
-                placeholder="Search Order "
-                name="user_name"
-                type="text"
-                class="form-control"
-                onChange={handleSearch}
-              />
-              <Button.Ripple className="btn-icon ms-1" outline color="primary">
-                <Search size={16} />
-              </Button.Ripple>
-            </div>
-          </div>
-        </div>
-      </CardText>
-      <div className='invoice-title-card'>
-        {/* <h4> List Current Task </h4> */}
-
-
-      </div>
       <hr></hr>
-      {createOrder &&
-        createOrder.map((info) => (
-          <Card className='invoice-preview-card'>
-            <CardBody>
-              <Row >
-                <Col xl='9'>
-                  <h5 className='mb-25'><b>Parcel Id :{info?.parcel_id} </b> </h5>
-                  <h9 className='mb-25'>Created: {info.created_at}</h9>
-                </Col>
-                <Col xl='3'>
-                  <div className='button-wrapper'>
-                    <button className="action-view" type="primary" onClick={() => { setOrderId(info?.id), showOrderDetailsDrawer() }}>
-                      <EyeOutlined />
-                      View
-                    </button>
-                    <UncontrolledDropdown>
-                      <DropdownToggle
-                        className="icon-btn hide-arrow"
-                        color="transparent"
-                        size="sm"
-                        caret
-                      >
-                        <MoreVertical size={15} />
-                      </DropdownToggle>
-                      <DropdownMenu>
-                        {info.warehouse_status == false && <DropdownItem href="/" onClick={e => changeStatusAction(e, info)}>
-                          <Edit3 className="me-50" size={15} />{" "}
-                          <span className="align-middle">Receive Confirm</span>
-                        </DropdownItem>}
 
-                      </DropdownMenu>
-                    </UncontrolledDropdown>
-                  </div>
-                </Col>
-              </Row>
-              <Row className='mt-2' >
-                <Col xl='7'>
-                  <h6 className='mb-25'><b>Recipient Name :{info?.recipient_name}</b>  </h6>
-                  <h6 className='mb-25'>Phone Number : {info?.phone_number}</h6>
-                  <h6 className='mb-25'>Delivary Address : {info?.delivary_address}</h6>
-                  <h6 className='mb-25 '>Order Status : <span className='highlight-status'>{info.status === "in_warehouse" ? "In Warehouse" : info.status}</span></h6>
-                  <h6 className='mb-25'>Pickup Status :<span className='highlight-pickup-status'>{info.pickup_status == true ? 'True' : 'False'}</span></h6>
-                </Col>
-                <Col xl='5'>
-                  <h6 className='mb-25'>Warehouse Status :<span className='highlight-pickup-status'>{info.warehouse_status == true ? 'True' : 'False'}</span></h6>
-                  <h6 className='mb-25'>Product type : {info.product_type.product_type}</h6>
-                  <h6 className='mb-25'>Shipment type : {info.shipment_type.shipment_type}</h6>
+      <Table scroll={{ x: true }} columns={columns} dataSource={createOrder} onChange={handleTableChange} pagination={tableParams.pagination} />
 
-                  <h6 className='mb-25'>Delivary Charge: {info?.delivary_charge}</h6>
-                  <h6 className='mb-25'>Cash On Delivery Charge : {info?.cash_on_delivery_charge}</h6>
-                  <h6 className='mb-25'>Collection Amount : {info?.amount_to_be_collected}</h6>
-                  <h6 className='mb-25'>Total Amount : {Number(info?.amount_to_be_collected) + Number(info?.delivary_charge)}</h6>
-                </Col>
-              </Row>
-            </CardBody>
-
-            <ChangeStatusModal
-              statusModalState={statusModalState}
-              setStatusModalState={setStatusModalState}
-              orderInfo={selectedInfo}
-              fetchCreateOrderData={fetchCreateOrderData}
-            />
-
-            <StatusModal
-              statusModalState={statusModalState}
-              setStatusModalState={setStatusModalState}
-              updateStatusAction={updateStatusAction}
-              title={"Change Pricing Policy Status"}
-            >
-              <div className='demo-inline-spacing'>
-                <div className='form-check'>
-                  <Input type='radio' id='ex1-active' name='ex1' checked={selectedStatus == "accepted" ? true : false} onChange={() => setSelectedStatus("accepted")} />
-                  <Label className='form-check-label' for='ex1-active'>
-                    Accepted
-                  </Label>
-                </div>
-                <div className='form-check'>
-                  <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "pending" ? true : false} onChange={() => setSelectedStatus("pending")} />
-                  <Label className='form-check-label' for='ex1-inactive'>
-                    Pending
-                  </Label>
-                </div>
-                <div className='form-check'>
-                  <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "delivered" ? true : false} onChange={() => setSelectedStatus("delivered")} />
-                  <Label className='form-check-label' for='ex1-inactive'>
-                    Delivered
-                  </Label>
-                </div>
-              </div>
-            </StatusModal>
-          </Card >
-        ))}
     </>
 
   )

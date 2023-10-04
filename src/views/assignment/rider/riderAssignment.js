@@ -562,6 +562,7 @@ const RiderAssignmentList = () => {
   const fetchOrderData = () => {
     return useJwt.axiosGet(getApi(UNPICKUP_ORDER_LIST))
       .then((res) => {
+        console.log('UNPICKUP_ORDER_LIST', res?.data)
         setOrder(res?.data)
       }).catch((err) => {
         console.log(err)
@@ -657,14 +658,20 @@ const RiderAssignmentList = () => {
                 <Edit3 className="me-50" size={15} />{" "}
                 <span className="align-middle">Delivary</span>
               </Dropdown.Button>
-              <DropdownItem tag={Link} to={"/assignment/task/" + info.id} >
-                <Eye className="me-50" size={15} />{" "}
+
+
+              <Link to={"/assignment/task/" + info.id}>
+                {/* <Button> */}
+                  <Eye className="me-50" size={15} />{" "}
                 <span className="align-middle">Pickup Tasks</span>
-              </DropdownItem>
-              <Dropdown.Button tag={Link} to={"/assignment/delivery/" + info.id} >
+                {/* </Button> */}
+                
+              </Link>
+              <br></br>
+              <Link to={"/assignment/delivery/" + info.id}>
                 <Eye className="me-50" size={15} />{" "}
                 <span className="align-middle">Delivery Tasks</span>
-              </Dropdown.Button>
+              </Link>
 
             </Menu>
           }
@@ -684,12 +691,12 @@ const RiderAssignmentList = () => {
     },
   ]
 
+ 
 
   const columnsOrders = [
     {
       title: 'Address',
-      dataIndex: 'delivary_address',
-
+      dataIndex: 'pickup_status' == true ? 'delivary_address' :  ['pickup_address', 'street_address'],
     },
 
     {
