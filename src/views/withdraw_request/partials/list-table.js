@@ -246,7 +246,7 @@ const ListTable = () => {
       title: 'Action',
 
       render: (_, record) =>
-        record.withdraw_status === "Pending"  ? (
+        record.withdraw_status === "Pending" || record.withdraw_status === "Accept" ? (
           <Popover content={
             <span onClick={e => changeStatusAction(e, record)} className="align-middle">Change Status</span>
           } trigger="click">

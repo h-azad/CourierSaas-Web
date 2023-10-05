@@ -74,7 +74,7 @@ export const getHomeRouteForLoggedInUser = (userRole) => {
 
   if (userRole === "AGENT") return "/second-page"
   if (userRole === "MARCHANT") return "/marchant-dashboard"
-  if (userRole === "RIDER") return "/second-page"
+  if (userRole === "RIDER") return "/rider-dashboard"
   
 
   return DefaultRoute

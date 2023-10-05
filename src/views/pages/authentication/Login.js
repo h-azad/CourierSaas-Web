@@ -65,12 +65,13 @@ const ToastContent = ({ t, name, role }) => {
   )
 }
 
-// const defaultValues = {
-//   password: '123456',
-//   loginEmail: 'test@gmail.com'
-// }
+const defaultValues = {
+  password: '123456',
+  // loginEmail: 'test@gmail.com'
+}
 
 const Login = () => {
+  
 
   // localStorage.removeItem('domainName')
   const domainName = window.location.href.replace('3000/login', '8000')
@@ -142,11 +143,6 @@ const Login = () => {
       .axiosGet(getApi(PROFILE))
       .then((res) => {
         dispatch(handleProfileData(res?.data))
-        // setProfileInformation({
-        //   name: res?.data?.full_name,
-        //   email: res?.data?.email,
-        //   profile_picture: res?.data?.profile_picture
-        // })
       })
       .catch(err => console.log(err))
   }
@@ -157,23 +153,12 @@ const Login = () => {
       .then((res) => {
         if (res?.data?.role == null) {
           dispatch(handleProfileData(res?.data))
-          // console.log('res?.data?', res?.data)
-          // setProfileInformation({
-          //   name: res?.data?.name,
-          //   email: res?.data?.email,
-          //   profile_picture: res?.data?.profile_picture
-          // })
         } else {
           fetchProfileData()
         }
       })
       .catch(err => console.log(err))
   }
-
-
-  // useEffect(() => {
-  //   fetchUserData()
-  // }, [])
 
 
   useEffect(() => {
@@ -266,6 +251,7 @@ const Login = () => {
                     <Input
                       autoFocus
                       type='email'
+                      required={true}
                       placeholder='john@example.com'
                       invalid={errors.loginEmail && true}
                       {...field}
@@ -283,12 +269,12 @@ const Login = () => {
                   </Link>
                 </div>
                 <Controller
-                  // defaultValue={defaultValues.password}
+                  defaultValue={defaultValues.password}
                   id='password'
                   name='password'
                   control={control}
                   render={({ field }) => (
-                    <InputPasswordToggle className='input-group-merge' invalid={errors.password && true} {...field} />
+                    <InputPasswordToggle required={true} className='input-group-merge' invalid={errors.password && true} {...field} />
                   )}
                 />
               </div>
