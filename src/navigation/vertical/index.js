@@ -51,22 +51,6 @@ const adminMenu = [
 
     children: [
       {
-        id: 'order-index',
-        title: 'Index',
-        icon: <Circle size={12} />,
-        action: 'admin-pages',
-        resource: 'Order-read',
-        navLink: "/create_order/",
-      },
-      // {
-      //   id: 'order-add',
-      //   title: 'Add',
-      //   icon: <Circle size={12} />,
-      //   action: 'admin-pages',
-      //   resource: 'Order-write',
-      //   navLink: "/create_order/add",
-      // },
-      {
         id: 'order-add',
         title: 'Add',
         icon: <Circle size={12} />,
@@ -75,12 +59,45 @@ const adminMenu = [
         navLink: "/create_order/add-order",
       },
       {
-        id: 'return-order',
-        title: 'Return Order',
+        id: 'order-index',
+        title: 'Orders',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Order-read',
+        navLink: "/create_order/",
+      },
+      {
+        id: 'pickup-failed',
+        title: 'Pickup Failed',
         icon: <Circle size={12} />,
         action: 'admin-pages',
         resource: 'Order-write',
-        navLink: "/return-order",
+        navLink: "/pickup/failed/",
+      },
+      {
+        id: 'return-order-warehouse',
+        title: 'Return Warehouse',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Order-write',
+        navLink: "/return-order/warehouse/",
+      },
+      
+      {
+        id: 'return-order',
+        title: 'Returns',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Order-write',
+        navLink: "/return-order/",
+      },
+      {
+        id: 'hold-order',
+        title: 'Hold',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Order-write',
+        navLink: "/hold-order",
       }
 
     ]
@@ -607,7 +624,7 @@ const adminMenu = [
         navLink: "/pickup-report"
       },
       {
-        id: "admin-get-pickup-reports",
+        id: "admin-get-cancel-issue-reports",
         title: "Cancel Issue",
         // icon: <Truck size={20} />,
         icon: <Circle size={12} />,

@@ -3,6 +3,8 @@ import { useContext } from 'react'
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
 // ** Reactstrap Imports
 import { Row, Col } from 'reactstrap'
+
+
 import { TrendingUp, User, Box, DollarSign, CheckCircle, Users, Truck, CornerDownLeft } from 'react-feather'
 
 // ** Context
@@ -130,6 +132,14 @@ const Home = () => {
       <Row className='match-height'>
         <Col lg='4' md='12'>
           <Row className='match-height'>
+            <Col lg='12' md='6' xs='12'>
+              <StatsHorizontal
+                color="success"
+                statTitle="Wallet"
+                icon={<Box size={24} />}
+                renderStats={<h3 className="fw-bolder mb-75">{responseData?.wallet_balance}</h3>}
+              />
+            </Col>
             <Col lg='12' md='6' xs='12'>
               <Earnings success={colors.success.main} data={comparisonEarningData} />
             </Col>

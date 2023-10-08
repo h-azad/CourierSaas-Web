@@ -204,6 +204,9 @@ export const ORDER_STATUS_UPDATE = '/create-order/change-status/'
 export const ORDER_STATISTICS = "/api/user/order-statistics/"
 
 export const ORDER_RETURN = "/order-return/"
+export const ORDER_PICKUP_FAILED_LIST = "/order-pickup/failed"
+export const ORDER_WAREHOUSE_RETURN = "/order-warehouse/return"
+export const ORDER_HOLD = "/order-hold/"
 export const ORDER_INVOICE = "/order-invoice/"
 
 

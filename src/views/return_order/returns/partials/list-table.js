@@ -21,15 +21,17 @@ import {
   ORDER_RETURN,
   RIDER_ASSIGNMENT,
   DELIVERY_ASSIGNMENT,
-} from "../../../constants/apiUrls"
-import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
+  CREATE_ORDER_LIST,
+} from "../../../../constants/apiUrls"
+import ChangeStatusModal from "../../../create_order/partials/ChangeStatusModal"
 
-import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
+import OrderDetailsDrawer from "../../../../components/order/OrderDetailsDrawer"
 import * as qs from 'qs'
 
 import { Table } from "antd"
-import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
-
+import { GENERAL_ROW_SIZE } from "../../../../constants/tableConfig"
+import RiderDeliveryConfirmSwalAlert from "@src/components/RiderDeliveryConfirmSwalAlert"
+import toast from 'react-hot-toast'
 
 const CreateOrderList = () => {
   const [createOrder, setCreateOrder] = useState([])
@@ -66,9 +68,57 @@ const CreateOrderList = () => {
     setOpen(false)
   }
 
-  useEffect(() => {
-    fetchCreateOrderData()
-  }, [])
+
+
+  const orderReturn = (e, info) => {
+    e.preventDefault()
+    return RiderDeliveryConfirmSwalAlert(info?.delivary_address, info?.recipient_name, info?.phone_number, `Cancel Order ?`).then(
+      function (result) {
+        if (result.value) {
+          useJwt
+            .axiosPost(
+              getApi(`${CREATE_ORDER_LIST}${info.id}/order_return/`),
+              { details: info }
+            ) 
+            .then((res) => {
+              fetchCreateOrderData()
+              toast.success('Order Cancel Confirm')
+              
+            })
+            .catch((err) => console.log(err))
+        }
+      }
+    )
+  }
+
+
+
+  const orderHold = (e, info) => {
+    e.preventDefault()
+    return RiderDeliveryConfirmSwalAlert(info?.delivary_address, info?.recipient_name, info?.phone_number, `Hold Order ?`).then(
+      function (result) {
+        if (result.value) {
+          useJwt
+            .axiosPost(
+              getApi(`${CREATE_ORDER_LIST}${info.id}/order_hold/`),
+              { details: info }
+            )
+            .then((res) => {
+              fetchCreateOrderData()
+              toast.success('Order Hold Confirm')
+              
+            })
+            .catch((err) => console.log(err))
+        }
+      }
+    )
+  }
+
+
+
+
+
+
 
   const fetchCreateOrderData = () => {
 
@@ -142,9 +192,7 @@ const CreateOrderList = () => {
     setFilterQuery(filters)
   }
 
-  useEffect(() => {
-    handleSearchQuery(qs.stringify(filterQuery))
-  }, [filterQuery])
+  
 
   const paginationUpdate = (page) => {
     updateFilterQUery("page", page)
@@ -190,18 +238,7 @@ const CreateOrderList = () => {
 
 
 
-  function colorSwitch(status) {
-    switch (status) {
-      case 'active':
-        return 'green'
 
-      case 'inactive':
-        return 'red'
-
-      default:
-        return 'green'
-    }
-  }
 
   const columns = [
 
@@ -277,6 +314,13 @@ const CreateOrderList = () => {
                     {info.pickup_status == true ? "True" : "False"}
                   </span>
                 </h6>
+                <h6 className="mb-25">
+                  Reason :{" "}
+                  <span className="highlight-pickup-status">
+                    { info?.cancel_issue?.reason}
+                  </span>
+                </h6>
+                
               </Col>
               <Col xl="5">
                 <h6 className="mb-25">
@@ -354,6 +398,15 @@ const CreateOrderList = () => {
   useEffect(() => {
     fetchCreateOrderData()
   }, [JSON.stringify(filterQuery)])
+
+  useEffect(() => {
+    handleSearchQuery(qs.stringify(filterQuery))
+  }, [filterQuery])
+
+
+  useEffect(() => {
+    fetchCreateOrderData()
+  }, [])
 
   return (
     <Row>

@@ -135,6 +135,7 @@ const AddAdmin = () => {
                 name="admin_role"
                 control={control}
                 render={({ field }) => <Select
+                  required={true}
                   isClearable
                   className={classnames('react-select', { 'is-invalid': errors.admin_role && errors.admin_role.value && true })}
                   classNamePrefix='select'
@@ -159,6 +160,7 @@ const AddAdmin = () => {
                   name='name'
                   render={({ field }) => (
                     <Input
+                      required={true}
                       type='text'
                       placeholder='mr. X'
                       invalid={errors.name && true}
@@ -182,6 +184,7 @@ const AddAdmin = () => {
                   name='email'
                   render={({ field }) => (
                     <Input
+                      required={true}
                       type='email'
                       placeholder='@gmail.com'
                       invalid={errors.email && true}

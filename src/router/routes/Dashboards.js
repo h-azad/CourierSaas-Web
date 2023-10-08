@@ -98,11 +98,14 @@ import RouteList from '../../views/route/list'
 import AddRoute from '../../views/route/add'
 import EditRoute from '../../views/route/edit'
 import GetAdminCencelIssue from '../../views/reports/cancelIssue'
-import ReturnOrderList from '../../views/return_order/list'
+import ReturnWarehouseOrderList from '../../views/return_order/warehouse/list'
 import CurrentLocationSet from '../../views/rider/currentLocation/currentLocationSet'
 import GetCurrentLocationRider from '@src/views/rider/currentLocation/getRiderLocation'
 import AddOrder from '@src/views/create_order/add/add'
 import InvoicePreview from '@src/views/create_order/invoice/preview'
+import HoldOrderList from '@src/views/hold_order/list'
+import ReturnOrderList from '@src/views/return_order/returns/list'
+import PickupFailedList from '@src/views/return_order/cancelled/list'
 
 
 const Home = lazy(() => import("../../views/Home"))
@@ -473,9 +476,28 @@ const DashboardRoutes = [
   },
 
   {
-    path: "/return-order",
+    path: "/hold-order",
+    element: <HoldOrderList />
+  },
+
+  {
+    path: "/return-order/warehouse",
+    element: <ReturnWarehouseOrderList />
+  },
+
+  {
+    path: "/return-order/",
     element: <ReturnOrderList />
   },
+
+  {
+    path: "/pickup/failed/",
+    element: <PickupFailedList />
+  },
+
+
+  
+
 
   {
     path: "/payment_method",

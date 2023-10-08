@@ -13,10 +13,10 @@ import Select from "react-select"
 import { useForm, Controller } from 'react-hook-form'
 import classnames from 'classnames'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, MARCHANT_ADD, PAYMENT_METHOD_FORM_LIST, CITY_FORM_LIST,AREAS_LIST } from '@src/constants/apiUrls'
+import { getApi, MARCHANT_ADD, PAYMENT_METHOD_FORM_LIST, CITY_FORM_LIST, AREAS_LIST } from '@src/constants/apiUrls'
 import SwalAlert from "../../components/SwalAlert"
 import { useEffect, useState } from "react"
-import {identity } from "../../constants/data/identity"
+import { identity } from "../../constants/data/identity"
 import { AREAS_BY_CITY } from "../../constants/apiUrls"
 import React, { useRef } from "react"
 
@@ -42,27 +42,27 @@ const AddMerchants = () => {
     mode: 'onChange',
     defaultValues: {
       payment_method: {},
-      city: {}, 
+      city: {},
       area: {},
     }
   })
 
   useEffect(() => {
-    const subscription = watch((value, { name, type }) => { 
+    const subscription = watch((value, { name, type }) => {
       console.log(value, name, type)
-      if(name == 'city' && type=='change'){
+      if (name == 'city' && type == 'change') {
         resetField('area')
         fetchAreaData(value.city.value)
       }
     })
-    
+
     return () => subscription.unsubscribe()
   }, [watch])
 
   useEffect(() => {
     fetchPaymentmethodData()
     fetchCityData()
-  },[])
+  }, [])
 
   const fetchPaymentmethodData = () => {
     return useJwt
@@ -71,7 +71,7 @@ const AddMerchants = () => {
         let paymentmethodData = []
 
         res.data.map(data => {
-          paymentmethodData.push({value: data.id, label: data.payment_method_name})
+          paymentmethodData.push({ value: data.id, label: data.payment_method_name })
         })
 
         setSelectboxPaymentMethod(paymentmethodData)
@@ -87,7 +87,7 @@ const AddMerchants = () => {
         let cityData = []
 
         res.data.map(data => {
-          cityData.push({value: data.id, label: data.city_name})
+          cityData.push({ value: data.id, label: data.city_name })
         })
 
         setSelectboxCity(cityData)
@@ -104,7 +104,7 @@ const AddMerchants = () => {
         let areaData = []
 
         res.data.map(data => {
-          areaData.push({value: data.id, label: data.area_name})
+          areaData.push({ value: data.id, label: data.area_name })
         })
 
         setSelectboxArea(areaData)
@@ -118,59 +118,59 @@ const AddMerchants = () => {
 
     let isFormValid = true
 
-    if(!data.name) {
+    if (!data.name) {
       setError('name', { type: 'required', message: 'Full Name is required' })
       isFormValid = false
     }
-    if(!data.contact_no) {
+    if (!data.contact_no) {
       setError('contact_no', { type: 'required', message: 'Contact No is required' })
       isFormValid = false
     }
-    if(!data.contact_no_two) {
+    if (!data.contact_no_two) {
       setError('contact_no_two', { type: 'required', message: 'Contact No 2 is required' })
       isFormValid = false
     }
-    if(!data.identity) {
+    if (!data.identity) {
       setError('identity', { type: 'required', message: 'Identity is required' })
       isFormValid = false
     }
-    if(!data.identity_no) {
+    if (!data.identity_no) {
       setError('identity_no', { type: 'required', message: 'Identity No is required' })
       isFormValid = false
     }
-    if(!data.email) {
+    if (!data.email) {
       setError('email', { type: 'required', message: 'Email is required' })
       isFormValid = false
     }
-    if(!data.payment_method && data.payment_method.value ) {
+    if (!data.payment_method && data.payment_method.value) {
       setError('payment_method', { type: 'required', message: 'Payment method is required' })
       isFormValid = false
     }
-    if(!data.bank_name) {
+    if (!data.bank_name) {
       setError('bank_name', { type: 'required', message: 'Bank Name is required' })
       isFormValid = false
     }
-    if(!data.bank_account_name) {
+    if (!data.bank_account_name) {
       setError('bank_account_name', { type: 'required', message: ' Bank Account Name is required' })
       isFormValid = false
     }
-    if(!data.bank_account_num) {
+    if (!data.bank_account_num) {
       setError('bank_account_num', { type: 'required', message: 'Bank account number is required' })
       isFormValid = false
     }
-    if(!data.city && data.city.value) {
+    if (!data.city && data.city.value) {
       setError('city', { type: 'required', message: 'City is required' })
       isFormValid = false
     }
-    if(!data.area && data.area.value) {
+    if (!data.area && data.area.value) {
       setError('area', { type: 'required', message: ' Area is required' })
       isFormValid = false
     }
-    if(!data.business_name) {
+    if (!data.business_name) {
       setError('business_name', { type: 'required', message: ' Business name is required' })
       isFormValid = false
     }
-    if(!data.address) {
+    if (!data.address) {
       setError('address', { type: 'required', message: ' Address is required' })
       isFormValid = false
     }
@@ -178,29 +178,29 @@ const AddMerchants = () => {
     //   setError('pickup_address', { type: 'required', message: 'Pickup address is required' })
     //   isFormValid = false
     // }
-    if(!data.password) {
+    if (!data.password) {
       setError('password', { type: 'required', message: 'Password is required' })
       isFormValid = false
     }
-    if(!data.confirm_password) {
+    if (!data.confirm_password) {
       setError('confirm_password', { type: 'required', message: 'Confirm password is required' })
       isFormValid = false
     }
-    if(!isFormValid) {
+    if (!isFormValid) {
       return false
     }
 
 
     setData(data)
-    if (data.name !== null &&  data.contact_no !== null &&  data.contact_no_two !== null 
-      && data.identity !== null &&  data.identity_no !== null &&  data.email !== null
-      && data.payment_method.value !== null &&  data.bank_name !== null &&  data.bank_account_name !== null 
+    if (data.name !== null && data.contact_no !== null && data.contact_no_two !== null
+      && data.identity !== null && data.identity_no !== null && data.email !== null
+      && data.payment_method.value !== null && data.bank_name !== null && data.bank_account_name !== null
       && data.bank_account_num !== null && data.city.value !== null && data.area.value !== null
-      && data.business_name !== null &&  data.address !== null
-      && data.password !== null && data.confirm_password !== null ) {
+      && data.business_name !== null && data.address !== null
+      && data.password !== null && data.confirm_password !== null) {
 
 
-    // if (Object.values(data).every(field => field.length > 0)) {
+      // if (Object.values(data).every(field => field.length > 0)) {
       let formData = {
         name: data.name,
         contact_no: data.contact_no,
@@ -261,7 +261,7 @@ const AddMerchants = () => {
       </CardHeader>
 
       <CardBody>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-1'>
             <Label className='form-label' for='name'>
               Name
@@ -271,74 +271,75 @@ const AddMerchants = () => {
               control={control}
               id='name'
               name='name'
-              render={({ field }) => <Input placeholder='Bruce Wayne' invalid={errors.name && true} {...field} />}
+              render={({ field }) => <Input required={true} placeholder='Bruce Wayne' invalid={errors.name && true} {...field} />}
             />
             {errors && errors.name && <span className="invalid-feedback">{errors.name.message}</span>}
           </div>
           <div class="row">
             <div class="col-lg-6">
-            <div className='mb-1'>
-            <Label className='form-label' for='contact_no'>
-            Contact Number 
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='contact_no'
-              name='contact_no'
-              render={({ field }) => (
-                <Input
-                  type='text'
-                  placeholder='017XXXXXXXXX'
-                  invalid={errors.contact_no && true}
-                  {...field}
+              <div className='mb-1'>
+                <Label className='form-label' for='contact_no'>
+                  Contact Number
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='contact_no'
+                  name='contact_no'
+                  render={({ field }) => (
+                    <Input
+                      required={true}
+                      type='text'
+                      placeholder='017XXXXXXXXX'
+                      invalid={errors.contact_no && true}
+                      {...field}
+                    />
+
+                  )}
                 />
-                
-              )}
-            />
-            {errors && errors.contact_no && <span className="invalid-feedback">{errors.contact_no.message}</span>}
-          </div>
+                {errors && errors.contact_no && <span className="invalid-feedback">{errors.contact_no.message}</span>}
+              </div>
             </div>
             <div class="col-lg-6">
-            <div className='mb-1'>
-            <Label className='form-label' for='contact_no_two'>
-            Contact Number 2*
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='contact_no_two'
-              name='contact_no_two'
-              render={({ field }) => (
-                <Input
-                  type='text'
-                  placeholder='017XXXXXXXXX'
-                  invalid={errors.contact_no_two && true}
-                  {...field}
+              <div className='mb-1'>
+                <Label className='form-label' for='contact_no_two'>
+                  Contact Number 2*
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='contact_no_two'
+                  name='contact_no_two'
+                  render={({ field }) => (
+                    <Input
+                      type='text'
+                      placeholder='017XXXXXXXXX'
+                      invalid={errors.contact_no_two && true}
+                      {...field}
+                    />
+                  )}
                 />
-              )}
-            />
-            {errors && errors.contact_no_two && <span className="invalid-feedback">{errors.contact_no_two.message}</span>}
-          </div>
+                {errors && errors.contact_no_two && <span className="invalid-feedback">{errors.contact_no_two.message}</span>}
+              </div>
             </div>
-            
+
           </div>
           <div class="row">
             <div class="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='identity'>
-                Identity
+                  Identity
                 </Label>
                 <Controller
-                   id='identity'
-                   name='identity'
+                  id='identity'
+                  name='identity'
                   control={control}
-                  render={({ field }) => <Select 
+                  render={({ field }) => <Select
                     isClearable
-                    className={classnames('react-select', { 'is-invalid': errors.identity && true })} 
+                    className={classnames('react-select', { 'is-invalid': errors.identity && true })}
                     classNamePrefix='select'
-                    options={identity} 
-                    {...field} 
+                    options={identity}
+                    {...field}
                   />}
                 />
                 {errors && errors.identity && <span className="invalid-feedback">{errors.identity.message}</span>}
@@ -347,79 +348,80 @@ const AddMerchants = () => {
             <div class="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='identity_no'>
-                Identity No *
+                  Identity No *
                 </Label>
                 <Controller
                   defaultValue=''
                   control={control}
                   id='identity_no'
                   name='identity_no'
-                  render={({ field }) => <Input placeholder='1542****' invalid={errors.identity_no && true} {...field} />}
+                  render={({ field }) => <Input required={true} placeholder='1542****' invalid={errors.identity_no && true} {...field} />}
                 />
                 {errors && errors.identity_no && <span className="invalid-feedback">{errors.identity_no.message}</span>}
               </div>
             </div>
-            
+
           </div>
           <div class="row">
             <div class="col-lg-6">
-            <div className='mb-1'>
-            <Label className='form-label' for='email'>
-              Email
-            </Label>
-            <Controller
-              defaultValue=''
-              control={control}
-              id='email'
-              name='email'
-              render={({ field }) => (
-                <Input
-                  type='email'
-                  placeholder='bruce.wayne@email.com'
-                  invalid={errors.email && true}
-                  {...field}
+              <div className='mb-1'>
+                <Label className='form-label' for='email'>
+                  Email
+                </Label>
+                <Controller
+                  defaultValue=''
+                  control={control}
+                  id='email'
+                  name='email'
+                  render={({ field }) => (
+                    <Input
+                      required={true}
+                      type='email'
+                      placeholder='bruce.wayne@email.com'
+                      invalid={errors.email && true}
+                      {...field}
+                    />
+                  )}
                 />
-              )}
-            />
-            {errors && errors.email && <span className="invalid-feedback">{errors.email.message}</span>}
+                {errors && errors.email && <span className="invalid-feedback">{errors.email.message}</span>}
 
-          </div>
+              </div>
             </div>
             <div class="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='payment_method'>
-                Preferred Payment Method*
+                  Preferred Payment Method*
                 </Label>
                 <Controller
                   id="payment_method"
                   name="payment_method"
                   control={control}
-                  render={({ field }) => <Select 
+                  render={({ field }) => <Select
                     isClearable
-                    className={classnames('react-select', { 'is-invalid': errors.payment_method && errors.payment_method.value && true })} 
+                    className={classnames('react-select', { 'is-invalid': errors.payment_method && errors.payment_method.value && true })}
                     classNamePrefix='select'
-                    options={selectboxPaymentMethod} 
-                    {...field} 
+                    options={selectboxPaymentMethod}
+                    {...field}
                   />}
                 />
-            {errors && errors.payment_method && <span className="invalid-feedback">{errors.payment_method.message}</span>}
+                {errors && errors.payment_method && <span className="invalid-feedback">{errors.payment_method.message}</span>}
 
               </div>
             </div>
-            
+
           </div>
           <div class="row">
             <div class="col-lg-4">
               <div className='mb-1'>
                 <Label className='form-label' for='bank_name'>
-                Bank Name
+                  Bank Name
                 </Label>
                 <Controller
                   defaultValue=''
                   control={control}
                   id='bank_name'
                   name='bank_name'
-                  render={({ field }) => <Input placeholder='Bank Name' invalid={errors.bank_name && true} {...field} />}
+                  render={({ field }) => <Input required={true} placeholder='Bank Name' invalid={errors.bank_name && true} {...field} />}
                 />
                 {errors && errors.bank_name && <span className="invalid-feedback">{errors.bank_name.message}</span>}
               </div>
@@ -427,7 +429,7 @@ const AddMerchants = () => {
             <div class="col-lg-4">
               <div className='mb-1'>
                 <Label className='form-label' for='bank_account_name'>
-                Bank Account Name
+                  Bank Account Name
                 </Label>
                 <Controller
                   defaultValue='Savings'
@@ -442,7 +444,7 @@ const AddMerchants = () => {
             <div class="col-lg-4">
               <div className='mb-1'>
                 <Label className='form-label' for='bank_account_num'>
-                Account Number
+                  Account Number
                 </Label>
                 <Controller
                   defaultValue=''
@@ -457,49 +459,51 @@ const AddMerchants = () => {
           </div>
           <div class="row">
             <div class="col-lg-6">
-            <div className='mb-1'>
-            <Label className='form-label' for='city'>
-              City Name
-            </Label>
-            <Controller
+              <div className='mb-1'>
+                <Label className='form-label' for='city'>
+                  City Name
+                </Label>
+                <Controller
                   id="city"
                   name="city"
                   control={control}
-                  render={({ field }) => <Select 
+                  render={({ field }) => <Select
                     isClearable
-                    className={classnames('react-select', { 'is-invalid': errors.city && true })} 
+                    required={true}
+                    className={classnames('react-select', { 'is-invalid': errors.city && true })}
                     classNamePrefix='select'
-                    options={selectboxCity} 
-                    {...field} 
+                    options={selectboxCity}
+                    {...field}
                   />}
                 />
-            {errors && errors.city && <span className="invalid-feedback">{errors.city.message}</span>}
+                {errors && errors.city && <span className="invalid-feedback">{errors.city.message}</span>}
 
-          </div>
+              </div>
             </div>
             <div class="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='area'>
-                Area Name
+                  Area Name
                 </Label>
                 <Controller
                   id="area"
                   name="area"
                   control={control}
-                  render={({ field }) => <Select 
+                  render={({ field }) => <Select
+                    required={true}
                     isClearable
-                    className={classnames('react-select', { 'is-invalid': errors.area && true })} 
+                    className={classnames('react-select', { 'is-invalid': errors.area && true })}
                     classNamePrefix='select'
-                    options={selectboxArea} 
-                    {...field} 
+                    options={selectboxArea}
+                    {...field}
                   />}
                 />
                 {errors && errors.area && <span className="invalid-feedback">{errors.area.message}</span>}
 
               </div>
             </div>
-            
-          </div>        
+
+          </div>
           <div className='mb-1'>
             <Label className='form-label' for='business_name'>
               Business Name
@@ -519,6 +523,7 @@ const AddMerchants = () => {
               Address
             </Label>
             <Controller
+              required={true}
               defaultValue=''
               control={control}
               id='address'
@@ -545,42 +550,42 @@ const AddMerchants = () => {
 
           <div class="row">
             <div class="col-lg-6">
-            <div className='mb-1'>
-            <Label className='form-label' for='password'>
-              Password
-            </Label>
-            <input
-                className={`form-control  ${errors.password ? "is-invalid" : ""}`}
-                type="password"
-                {...register("password", {
-                  required: "You must specify a password",
-                  minLength: {
-                    value: 6,
-                    message: "Password must have at least 6 characters"
-                  }
-                })}
-                placeholder='******'
-                invalid={errors.password && true}
-          
-              />
-            {errors && errors.password && <span className="invalid-feedback">{errors.password.message}</span>}
+              <div className='mb-1'>
+                <Label className='form-label' for='password'>
+                  Password
+                </Label>
+                <input
+                  className={`form-control  ${errors.password ? "is-invalid" : ""}`}
+                  type="password"
+                  {...register("password", {
+                    required: "You must specify a password",
+                    minLength: {
+                      value: 6,
+                      message: "Password must have at least 6 characters"
+                    }
+                  })}
+                  placeholder='******'
+                  invalid={errors.password && true}
 
-          </div>
+                />
+                {errors && errors.password && <span className="invalid-feedback">{errors.password.message}</span>}
+
+              </div>
             </div>
             <div class="col-lg-6">
               <div className='mb-1'>
                 <Label className='form-label' for='confirm_password'>
-                Confirm Password
+                  Confirm Password
                 </Label>
                 <input
-                    className={`form-control  ${errors.confirm_password ? "is-invalid" : ""}`}
-                    type="password"
-                    placeholder='******'
-                    {...register("confirm_password", {
-                      required: "Confirm Password is required",
-                      validate: (value) => value === watch('password') || "Password not match"
-                    })}
-                  />
+                  className={`form-control  ${errors.confirm_password ? "is-invalid" : ""}`}
+                  type="password"
+                  placeholder='******'
+                  {...register("confirm_password", {
+                    required: "Confirm Password is required",
+                    validate: (value) => value === watch('password') || "Password not match"
+                  })}
+                />
                 {errors && errors.confirm_password && <span className="invalid-feedback" >{errors.confirm_password.message}</span>}
               </div>
             </div>

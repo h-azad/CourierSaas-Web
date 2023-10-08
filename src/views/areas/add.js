@@ -43,7 +43,7 @@ const AddAreas = () => {
 
   useEffect(() => {
     fetchCitiesData()
-  },[])
+  }, [])
 
   const fetchCitiesData = () => {
     return useJwt
@@ -53,7 +53,7 @@ const AddAreas = () => {
         let cityData = []
 
         res.data.map(data => {
-          cityData.push({value: data.id, label: data.city_name})
+          cityData.push({ value: data.id, label: data.city_name })
         })
 
         setSelectboxOptions(cityData)
@@ -66,7 +66,7 @@ const AddAreas = () => {
     setValue('city_name', city)
   }
 
-  
+
   const onSubmit = data => {
     // console.log("data", data)
     setData(data)
@@ -105,23 +105,24 @@ const AddAreas = () => {
       </CardHeader>
 
       <CardBody>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-1'>
-              <Label className='form-label' for='city_name'>
-                City Name
-              </Label>
-              <Controller
+            <Label className='form-label' for='city_name'>
+              City Name
+            </Label>
+            <Controller
               id="city_name"
               name="city_name"
-                  control={control}
-                  render={({ field }) => <Select 
-                    isClearable
-                    className={classnames('react-select', { 'is-invalid': data !== null && data.city_name === null })} 
-                    classNamePrefix='select'
-                    options={selectboxOptions} 
-                    {...field} 
-                  />}
-                />
+              control={control}
+              render={({ field }) => <Select
+                isClearable
+                required={true}
+                className={classnames('react-select', { 'is-invalid': data !== null && data.city_name === null })}
+                classNamePrefix='select'
+                options={selectboxOptions}
+                {...field}
+              />}
+            />
           </div>
           <div className='mb-1'>
             <Label className='form-label' for='area_name'>
@@ -132,7 +133,7 @@ const AddAreas = () => {
               control={control}
               id='area_name'
               name='area_name'
-              render={({ field }) => <Input placeholder='Mirpur' invalid={errors.area_name && true} {...field} />}
+              render={({ field }) => <Input placeholder='Mirpur' required={true} invalid={errors.area_name && true} {...field} />}
             />
           </div>
           <div className='d-flex'>
