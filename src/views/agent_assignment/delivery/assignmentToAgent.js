@@ -46,15 +46,11 @@ const AssignmentToAgent = () => {
   const [selectedOrderIds, setselectedOrderid] = useState([])
   const [agentID, setRiderID] = useState()
   const [assignType, setAssignType] = useState()
-  console.log('select', selectedOrderIds)
 
 
 
   const delivaryHandler = (e) => {
-    console.log("delivery type ")
-    console.log('agent id', agentID)
-    console.log('order id', selectedOrderIds)
-    
+
     e.preventDefault()
     useJwt
       .axiosPost(getApi(DELIVERY_ASSIGN_TO_AGENT + "/"), {
@@ -80,8 +76,6 @@ const AssignmentToAgent = () => {
     }
 
   }
-
-
 
 
   const deliveryAssign = (e, info) => {

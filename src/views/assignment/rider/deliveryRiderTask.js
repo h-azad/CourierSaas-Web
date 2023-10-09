@@ -31,6 +31,7 @@ import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 import * as qs from 'qs'
 import { Table, Tag } from "antd"
 
+import toast from 'react-hot-toast'
 
 const DeliveryRiderTask = () => {
   let { id } = useParams()
@@ -88,6 +89,7 @@ const DeliveryRiderTask = () => {
       .then((res) => {
         SwalAlert("Delivery Confirm")
         fetchCreateOrderData()
+        toast.success('Delivery Confirm Successfully!') 
       })
   }
 

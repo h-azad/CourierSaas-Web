@@ -156,7 +156,7 @@ const DelivaryView = ({ }) => {
                         info.warehouse_status &&
                         !info.delivery_status && (
                           <>
-                            <DropdownItem
+                            {/* <DropdownItem
                               href="/"
                               onClick={(e) =>
                                 deliveryCancelIssue(e, info)
@@ -166,8 +166,8 @@ const DelivaryView = ({ }) => {
                               <span className="align-middle">
                                 Cancel
                               </span>
-                            </DropdownItem>
-                            <DropdownItem
+                            </DropdownItem> */}
+                            {/* <DropdownItem
                               href="/"
                               onClick={(e) =>
                                 deliveryHoldIssue(e, info)
@@ -177,7 +177,7 @@ const DelivaryView = ({ }) => {
                               <span className="align-middle">
                                 Hold
                               </span>
-                            </DropdownItem>
+                            </DropdownItem> */}
                             <DropdownItem
                               href="/"
                               onClick={(e) =>
@@ -218,7 +218,7 @@ const DelivaryView = ({ }) => {
                 </h6>
                 <h6 className="mb-25 ">
                   Order Status :{" "}
-                  <span className="highlight-status">{info.status}</span>
+                  <span className="highlight-status">{info.status.toUpperCase()}</span>
                 </h6>
                 <h6 className="mb-25">
                   Pickup Status :

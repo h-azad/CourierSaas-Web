@@ -10,6 +10,7 @@ import {
 } from "@src/constants/apiUrls"
 import { useNavigate } from "react-router-dom"
 import SwalAlert from '@src/components/SwalAlert'
+import toast from 'react-hot-toast'
 
 import { Card, Col, Row, message } from 'antd'
 
@@ -54,6 +55,7 @@ const Overview = ({ overViewData }) => {
         .axiosPost(getApi(CREATE_ORDER_ADD), formData)
         .then((res) => {
           SwalAlert("Order Created Successfully")
+          toast.success('Order Created Successfully') 
           navigate("/create_order")
         })
         .catch((err) => console.log(err))

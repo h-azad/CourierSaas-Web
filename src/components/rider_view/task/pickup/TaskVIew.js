@@ -96,12 +96,55 @@ const PickupView = ({ orderInfo }) => {
   }
 
 
+  const clearData = () => {
+    setSelectedInfo(null)
+  }
+
+
+  const confirmPickup = (e, info) => {
+    e.preventDefault()
+    return RiderPickupConfirmSwalAlert(info?.pickup_address?.street_address, info?.marchant?.full_name, info?.pickup_address?.phone, `Confirm Pickup ?`).then(
+      function (result) {
+        if (result.value) {
+          useJwt
+            .axiosPost(getApi(`${RIDER_ASSIGNMENT}/${info.id}/confirm_pickup/`))
+            .then((res) => {
+              toast.success('Pickup Confirm Successfully!')
+              fetchPickupData()
+            })
+            .catch((err) => console.log(err))
+        }
+      }
+    )
+  }
+
+  const invoiceDownloadToPDF = (info) => {
+    return useJwt
+      .axiosGetFile(getApi(ORDER_INVOICE) + info.id + "/")
+      .then((res) => {
+        if (res.data) {
+          const url = window.URL.createObjectURL(new Blob([res.data]))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', `parcel ${info.recipient_name}.pdf`)
+          document.body.appendChild(link)
+          link.click()
+        }
+      })
+      .catch((err) => console.log(err))
+
+  }
+
+  const pickupCancelIssue = (e, info) => {
+    e.preventDefault()
+    setCancleModalState(true)
+    setSelectedInfo(info)
+  }
+
+
   const columns = [
-
     {
-
       render: (_, info) =>
-
         <Card className="invoice-preview-card">
           <CardBody>
             <Row>
@@ -261,50 +304,7 @@ const PickupView = ({ orderInfo }) => {
   }, [cancleModalState])
 
 
-  const clearData = () => {
-    setSelectedInfo(null)
-  }
 
-
-  const confirmPickup = (e, info) => {
-    e.preventDefault()
-    return RiderPickupConfirmSwalAlert(info?.pickup_address?.street_address, info?.marchant?.full_name, info?.pickup_address?.phone, `Confirm Pickup ?`).then(
-      function (result) {
-        if (result.value) {
-          useJwt
-            .axiosPost(getApi(`${RIDER_ASSIGNMENT}/${info.id}/confirm_pickup/`))
-            .then((res) => {
-              toast.success(res.data)
-              fetchPickupData()
-            })
-            .catch((err) => console.log(err))
-        }
-      }
-    )
-  }
-
-  const invoiceDownloadToPDF = (info) => {
-    return useJwt
-      .axiosGetFile(getApi(ORDER_INVOICE) + info.id + "/")
-      .then((res) => {
-        if (res.data) {
-          const url = window.URL.createObjectURL(new Blob([res.data]))
-          const link = document.createElement('a')
-          link.href = url
-          link.setAttribute('download', `parcel ${info.recipient_name}.pdf`)
-          document.body.appendChild(link)
-          link.click()
-        }
-      })
-      .catch((err) => console.log(err))
-
-  }
-
-  const pickupCancelIssue = (e, info) => {
-    e.preventDefault()
-    setCancleModalState(true)
-    setSelectedInfo(info)
-  }
 
 
 

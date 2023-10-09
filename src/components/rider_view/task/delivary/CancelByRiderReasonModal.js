@@ -17,8 +17,6 @@ function CancelByRiderReasonModal({ cancelModalState, setCancelModalState, taskI
         useJwt
             .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${taskInfo?.id}/cancel_by_rider/`, formData)
             .then((res) => {
-                toast.success(res.data)
-                
                 toast.success('Cancelled Successfully!')
                 setCancelModalState(false)
                 fetchDelivaryData()

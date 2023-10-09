@@ -8,11 +8,11 @@ import useJwt from '@src/auth/jwt/useJwt'
 import ListTable from "./partials/list-table"
 import { Home, Box, Truck, CornerDownLeft } from 'react-feather'
 
-import toast from 'react-hot-toast'
-
 import { getApi, ORDER_STATISTICS } from "@src/constants/apiUrls"
 
-function ReturnWarehouseOrderList() {
+import toast from 'react-hot-toast'
+
+function ReturnOrderToMarcahntLits() {
   const [orderStatistics, setOrderStatistics] = useState({
     pending_orders: 0,
     in_warehouse_orders: 0,
@@ -90,4 +90,4 @@ function ReturnWarehouseOrderList() {
   )
 }
 
-export default ReturnWarehouseOrderList
+export default ReturnOrderToMarcahntLits

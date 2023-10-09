@@ -293,18 +293,17 @@ const ReturnView = ({ }) => {
   }
 
   const confirmReturn = (e, info) => {
-    console.log('info data', info)
     e.preventDefault()
     return SwalConfirm(`Confirm Return`).then(
       function (result) {
         if (result.value) {
           useJwt
             .axiosGet(
-              getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/return_order_confirm/`),
+              getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/return_to_marchant/`),
               // { details: info }
             )
             .then((res) => {
-              toast.success(res.data)
+              toast.success('Return To Marchant Successfully!')
               fetchReturnOrderData()
             })
             .catch((err) => console.log(err))

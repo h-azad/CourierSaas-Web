@@ -9,6 +9,7 @@ import {
   MARCHANT_CREATE_ORDER,
 } from "@src/constants/apiUrls"
 import { useNavigate } from "react-router-dom"
+import toast from 'react-hot-toast'
 import SwalAlert from '@src/components/SwalAlert'
 
 import { Card, Col, Row, message } from 'antd'
@@ -51,7 +52,8 @@ const Overview = ({ overViewData }) => {
       useJwt
         .axiosPost(getApi(MARCHANT_CREATE_ORDER), formData)
         .then((res) => {
-          SwalAlert("Parcel Added Successfully")
+          // SwalAlert("Parcel Added Successfully")
+          toast.success('Order Created Successfully') 
           navigate("/marchant-orders")
         })
         .catch((err) => console.log(err))

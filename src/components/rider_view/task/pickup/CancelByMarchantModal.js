@@ -23,13 +23,13 @@ function CancelByMarchantModal({ cancelByMarchantModalState, setCancelByMarchant
         useJwt
             .axiosPost(getApi(RIDER_ASSIGNMENT) + `/${taskInfo?.id}/cancel_by_marchant/`, formData)
             .then((res) => {
-                toast.success('Cancelled Successfully!')
                 setCancelByMarchantModalState(false)
                 fetchPickupData()
+                toast.success('Cancelled Successfully!')
             })
             .catch((err) => {
-                toast.error('Cancle Failed!')
                 setCancelByMarchantModalState(false)
+                toast.error('Cancle Failed!')
             })
     }
 

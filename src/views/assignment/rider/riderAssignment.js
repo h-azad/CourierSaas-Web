@@ -425,6 +425,8 @@ import { Table, Tag, Menu, Dropdown } from "antd"
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
+import toast from 'react-hot-toast'
+
 const RiderAssignmentList = () => {
   const [rider, setRider] = useState([])
   const [statusModalState, setStatusModalState] = useState(false)
@@ -488,6 +490,7 @@ const RiderAssignmentList = () => {
         selectedOrderIds: selectedOrderIds
       })
       .then((res) => {
+        toast.success('Rider Assignment Successfully!') 
         setStatusModalState(false)
       })
     //   .finally(() => fetchRiderData())

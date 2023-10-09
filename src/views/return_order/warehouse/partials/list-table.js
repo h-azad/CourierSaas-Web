@@ -82,9 +82,8 @@ const CreateOrderList = () => {
               { details: info }
             ) 
             .then((res) => {
+              toast.success('Order Return Confirm')
               fetchCreateOrderData()
-              toast.success('Order Cancel Confirm')
-              
             })
             .catch((err) => console.log(err))
         }
@@ -105,9 +104,9 @@ const CreateOrderList = () => {
               { details: info }
             )
             .then((res) => {
-              fetchCreateOrderData()
               toast.success('Order Hold Confirm')
-              
+              fetchCreateOrderData()
+
             })
             .catch((err) => console.log(err))
         }

@@ -33,7 +33,7 @@ import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 import * as qs from 'qs'
 import { Table, Tag } from "antd"
 
-
+import toast from 'react-hot-toast'
 
 const ListTable = () => {
   let { id } = useParams()
@@ -97,6 +97,7 @@ const ListTable = () => {
       })
       .then((res) => {
         SwalAlert("Receive Confirm")
+        toast.success('Received Confirm!') 
         fetchCreateOrderData()
       })
   }

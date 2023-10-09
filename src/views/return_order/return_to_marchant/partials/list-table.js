@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { MoreVertical } from "react-feather"
-import { DatePicker, Input, Typography, Pagination } from "antd"
+import { DatePicker, Input, Typography } from "antd"
 import {
   // Table,
   UncontrolledDropdown,
@@ -18,18 +18,18 @@ import { useEffect, useState, useRef } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
-  ORDER_HOLD,
+  RETURN_TO_MARCHANT,
   RIDER_ASSIGNMENT,
   DELIVERY_ASSIGNMENT,
-} from "../../../constants/apiUrls"
-import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
+} from "../../../../constants/apiUrls"
+import ChangeStatusModal from "../../../create_order/partials/ChangeStatusModal"
 
-import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
+import OrderDetailsDrawer from "../../../../components/order/OrderDetailsDrawer"
 import * as qs from 'qs'
 
 import { Table } from "antd"
-import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
-
+import { GENERAL_ROW_SIZE } from "../../../../constants/tableConfig"
+import RiderPickupConfirmSwalAlert from "@src/components/RiderPickupConfirmSwalAlert"
 import toast from 'react-hot-toast'
 
 const CreateOrderList = () => {
@@ -38,8 +38,7 @@ const CreateOrderList = () => {
   const [selectedInfo, setSelectedInfo] = useState(null)
   const [selectedDate, setSelectedDate] = useState(null)
   const datePickerRef = useRef(null)
-  const [orderCount, setOrderCount] = useState(0)
-  // const [filterQuery, setFilterQuery] = useState({})
+
   const [orderid, setOrderId] = useState(0)
   const [open, setOpen] = useState(false)
 
@@ -67,15 +66,41 @@ const CreateOrderList = () => {
     setOpen(false)
   }
 
-  useEffect(() => {
-    fetchCreateOrderData()
-  }, [])
+
+
+
+
+
+  const comfirmReturn = (e, info) => {
+    e.preventDefault()
+    return RiderPickupConfirmSwalAlert(info?.pickup_address?.street_address, info?.marchant?.full_name, info?.pickup_address?.phone, `Return Confirm ?`).then(
+      function (result) {
+        if (result.value) {
+          useJwt
+            .axiosGet(
+              getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/return_to_marchant_complete/`),
+            )
+            .then((res) => {
+              fetchCreateOrderData()
+              toast.success('Order Return Confirm Successfully')
+              
+            })
+            .catch((err) => console.log(err))
+        }
+      }
+    )
+  }
+
+
+
+
+
+
 
   const fetchCreateOrderData = () => {
 
     return useJwt
-      // .axiosGet(getApi(ORDER_HOLD) + `?page=${pageNumber}`)
-      .axiosGet(getApi(ORDER_HOLD) + `?${qs.stringify(filterQuery)}`)
+      .axiosGet(getApi(RETURN_TO_MARCHANT) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
         setCreateOrder(res.data.results)
         updatePagination({
@@ -116,7 +141,7 @@ const CreateOrderList = () => {
 
   const handleSearchQuery = searchTerm => {
     return useJwt
-      .axiosGet(getApi(ORDER_HOLD) + '?' + searchTerm)
+      .axiosGet(getApi(RETURN_TO_MARCHANT) + '?' + searchTerm)
       .then((res) => {
         console.log(res.data)
         if (res.data?.results) {
@@ -143,9 +168,7 @@ const CreateOrderList = () => {
     setFilterQuery(filters)
   }
 
-  useEffect(() => {
-    handleSearchQuery(qs.stringify(filterQuery))
-  }, [filterQuery])
+  
 
   const paginationUpdate = (page) => {
     updateFilterQUery("page", page)
@@ -162,20 +185,16 @@ const CreateOrderList = () => {
   }
 
 
+
+
   const assignHandler = (e) => {
     e.preventDefault()
     useJwt
-      .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${selectedInfo.id}/delivery_assign_to_rider/`, { orderIdInFo: orderIdInFo, selectedRiderIds: selectedRiderIds })
+      .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${selectedInfo.id}/return_order/`, { orderIdInFo: orderIdInFo, selectedRiderIds: selectedRiderIds })
       .then((res) => {
         setStatusModalState(false)
         fetchCreateOrderData()
       })
-      .then((res) => {
-        toast.success('Rider Assignment Successfully!') 
-        fetchCreateOrderData()
-        setStatusModalState(false)
-      })
-
     //   .finally(() => fetchRiderData())
   }
   const handleSelectedRiderId = (e) => {
@@ -198,18 +217,7 @@ const CreateOrderList = () => {
 
 
 
-  function colorSwitch(status) {
-    switch (status) {
-      case 'active':
-        return 'green'
 
-      case 'inactive':
-        return 'red'
-
-      default:
-        return 'green'
-    }
-  }
 
   const columns = [
 
@@ -250,8 +258,8 @@ const CreateOrderList = () => {
                     </DropdownToggle>
                     <DropdownMenu>
 
-                      <DropdownItem href="/" onClick={e => riderAssign(e, info)}>
-                        <span className="align-middle">Rider Assign</span>
+                      <DropdownItem href="/" onClick={e => comfirmReturn(e, info)}>
+                        <span className="align-middle">Return Comfirm</span>
                       </DropdownItem>
 
                     </DropdownMenu>
@@ -285,6 +293,13 @@ const CreateOrderList = () => {
                     {info.pickup_status == true ? "True" : "False"}
                   </span>
                 </h6>
+                <h6 className="mb-25">
+                  Reason :{" "}
+                  <span className="highlight-pickup-status">
+                    { info?.cancel_issue?.reason}
+                  </span>
+                </h6>
+                
               </Col>
               <Col xl="5">
                 <h6 className="mb-25">
@@ -363,6 +378,15 @@ const CreateOrderList = () => {
     fetchCreateOrderData()
   }, [JSON.stringify(filterQuery)])
 
+  useEffect(() => {
+    handleSearchQuery(qs.stringify(filterQuery))
+  }, [filterQuery])
+
+
+  useEffect(() => {
+    fetchCreateOrderData()
+  }, [])
+
   return (
     <Row>
       <Col sm="4">
@@ -375,7 +399,7 @@ const CreateOrderList = () => {
               </div>
 
               <div className=" mt-2">
-                <h6>Search Hold Date</h6>
+                <h6>Search Return Date</h6>
                 <DatePicker
                   ref={datePickerRef}
                   style={{
@@ -405,21 +429,7 @@ const CreateOrderList = () => {
             <hr></hr>
 
             <Table scroll={{ x: true }} columns={columns} dataSource={createOrder} onChange={handleTableChange} pagination={tableParams.pagination} />
-            <ChangeStatusModal
-              statusModalState={statusModalState}
-              setStatusModalState={setStatusModalState}
-              orderInfo={selectedInfo}
-              fetchCreateOrderData={fetchCreateOrderData}
-            />
-            <Modal isOpen={statusModalState} toggle={() => setStatusModalState(!statusModalState)} className='modal-dialog-centered'>
-              <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Rider Assign</ModalHeader>
-              <ModalBody>
-                <Table scroll={{ x: true }} columns={columns2} dataSource={riders} onClick={(e) => { handleSelectedRiderId(e) }} />
-              </ModalBody>
-              <ModalFooter>
-                <Button color='primary' onClick={assignHandler}>Assign</Button>
-              </ModalFooter>
-            </Modal>
+                  
             <>
               <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
             </>

@@ -28,13 +28,13 @@ function PickupStatusModal({ statusModalState, setStatusModalState, taskInfo, fe
         useJwt
             .axiosPost(getApi(RIDER_ASSIGNMENT) + `/${taskInfo?.id}/return_to_reverso_ride/`, formData)
             .then((res) => {
-                toast.success('Delivary Status Updated Successfully!')
                 setStatusModalState(false)
                 fetchCurrentTaskData()
+                toast.success('Delivary Status Updated Successfully!')
             })
             .catch(err => {
-                toast.success('Delivary Status Updated Failed!')
                 setStatusModalState(false)
+                toast.success('Delivary Status Updated Failed!')
             })
         return false
 

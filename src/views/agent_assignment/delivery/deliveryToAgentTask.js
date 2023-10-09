@@ -66,8 +66,6 @@ const DeliveryToAgentTask = () => {
 
   const updateStatusAction = (e) => {
     e.preventDefault()
-    console.log("selectedInfo", selectedInfo)
-    console.log("selectedStatus", selectedStatus)
     useJwt
       .axiosPatch(getApi(CREATE_ORDER_EDIT + selectedInfo.id + '/'), {
         status: "in_warehouse",

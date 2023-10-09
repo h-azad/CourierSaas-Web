@@ -1,9 +1,8 @@
-import { Button, message, Steps, theme } from 'antd'
+import { Steps } from 'antd'
 import React, {useEffect, useState} from 'react'
 import ParcelInfo from './ParcelInfo'
 import RecipientInfo from './RecipientInfo'
 import ParcelItems from './ParcelItems'
-import Shipment from './Shipment'
 import Overview from './Overview'
 
 
@@ -125,14 +124,7 @@ const AddOrder = () => {
   }
 
   const steps = [
-    // {
-    //   title: 'Parcel Info',
-    //   content: <ParcelInfo parcellInfoPropsData={parcellInfoPropsData} />,
-    // },
-    // {
-    //   title: 'Parcel Items',
-    //   content: <ParcelItems parcellItemPropsData={parcellItemPropsData} />,
-    // },
+
     {
       title: 'Recipient Info',
       content: <RecipientInfo recipienInfoPropsData={recipienInfoPropsData} />,
@@ -151,14 +143,6 @@ const AddOrder = () => {
       content: <Overview overViewData={overViewData} />,
     },
 
-    // {
-    //   title: 'Last',
-    //   content: <Shipment />,
-    // },
-    // {
-    //   title: 'Last',
-    //   content: <Overview />,
-    // },
   ]
 
 

@@ -129,11 +129,11 @@ const VerifySSOLogin = () => {
   ]
 
   //n
-  useEffect(() => {
-    if (isUserLoggedIn()) {
-      navigate('/home')
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (isUserLoggedIn()) {
+  //     navigate('/home')
+  //   }
+  // }, [])
 
 
   return (

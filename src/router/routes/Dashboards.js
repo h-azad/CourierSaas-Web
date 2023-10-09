@@ -106,6 +106,7 @@ import InvoicePreview from '@src/views/create_order/invoice/preview'
 import HoldOrderList from '@src/views/hold_order/list'
 import ReturnOrderList from '@src/views/return_order/returns/list'
 import PickupFailedList from '@src/views/return_order/cancelled/list'
+import ReturnOrderToMarcahntLits from '@src/views/return_order/return_to_marchant/list'
 
 
 const Home = lazy(() => import("../../views/Home"))
@@ -488,6 +489,10 @@ const DashboardRoutes = [
   {
     path: "/return-order/",
     element: <ReturnOrderList />
+  },
+  {
+    path: "/return-to/marchant",
+    element: <ReturnOrderToMarcahntLits />
   },
 
   {

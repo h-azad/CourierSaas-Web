@@ -27,7 +27,7 @@ import {
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
-
+import toast from 'react-hot-toast'
 
 const RiderAssignmentList = () => {
   const [rider, setRider] = useState([])
@@ -66,6 +66,7 @@ const RiderAssignmentList = () => {
         selectedOrderIds: selectedOrderIds
       })
       .then((res) => {
+        toast.success('Rider Assignment Successfully!') 
         setStatusModalState(false)
       })
     //   .finally(() => fetchRiderData())
