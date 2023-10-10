@@ -12,25 +12,26 @@ import useJwt from "@src/auth/jwt/useJwt"
 
 import OrderDetails from './OrderDetails'
 
-const OrderDetailsDrawer = ({ orderID, open, onCloseOrderDetailsDrawer }) => {
+const OrderDetailsDrawer = ({ orderid, open, onCloseOrderDetailsDrawer }) => {
   const [createOrderInfo, setCreateOrderInfo] = useState(null)
   const [active, setActive] = useState('1')
 
-  console.log('Yser open this page', orderID)
+  console.log('Yser open this page', orderid)
   const fetchCreateOrderDetailsData = () => {
     return useJwt
-      .axiosGet(getApi(CREATE_ORDER_DETAILS) + orderID + "/")
+      .axiosGet(getApi(CREATE_ORDER_DETAILS) + orderid + "/")
       .then((res) => {
         setCreateOrderInfo(res.data)
-        console.log('response data')
         return res.data
       })
       .catch(err => console.log(err))
   }
 
   useEffect(() => {
-    fetchCreateOrderDetailsData()
-  }, [orderID])
+    if (orderid !== undefined){
+      fetchCreateOrderDetailsData()
+    }
+  }, [orderid])
 
   const toggleTab = tab => {
     if (active !== tab) {

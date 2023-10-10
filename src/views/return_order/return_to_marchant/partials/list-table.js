@@ -2,7 +2,6 @@ import { Link } from "react-router-dom"
 import { MoreVertical } from "react-feather"
 import { DatePicker, Input, Typography } from "antd"
 import {
-  // Table,
   UncontrolledDropdown,
   DropdownMenu,
   DropdownItem,
@@ -12,17 +11,14 @@ import {
   CardBody,
   Row,
   Col,
-  Modal, ModalHeader, ModalBody, ModalFooter
 } from "reactstrap"
 import { useEffect, useState, useRef } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
   RETURN_TO_MARCHANT,
-  RIDER_ASSIGNMENT,
   DELIVERY_ASSIGNMENT,
 } from "../../../../constants/apiUrls"
-import ChangeStatusModal from "../../../create_order/partials/ChangeStatusModal"
 
 import OrderDetailsDrawer from "../../../../components/order/OrderDetailsDrawer"
 import * as qs from 'qs'
@@ -33,18 +29,17 @@ import RiderPickupConfirmSwalAlert from "@src/components/RiderPickupConfirmSwalA
 import toast from 'react-hot-toast'
 
 const CreateOrderList = () => {
+  const { Search } = Input
   const [createOrder, setCreateOrder] = useState([])
-  const [statusModalState, setStatusModalState] = useState(false)
-  const [selectedInfo, setSelectedInfo] = useState(null)
   const [selectedDate, setSelectedDate] = useState(null)
   const datePickerRef = useRef(null)
+  const [orderID, setorderID] = useState("")
+  const [receipientName, setReceipientName] = useState("")
+  const [phoneNumber, setphoneNumber] = useState("")
 
-  const [orderid, setOrderId] = useState(0)
+  const [orderid, setOrderId] = useState()
   const [open, setOpen] = useState(false)
 
-  const [riders, setRiders] = useState([])
-  const [selectedRiderIds, setSelectedRiderId] = useState([])
-  const [orderIdInFo, setOrderIdInFo] = useState()
 
   const [tableParams, setTableParams] = useState({
     pagination: {
@@ -67,10 +62,6 @@ const CreateOrderList = () => {
   }
 
 
-
-
-
-
   const comfirmReturn = (e, info) => {
     e.preventDefault()
     return RiderPickupConfirmSwalAlert(info?.pickup_address?.street_address, info?.marchant?.full_name, info?.pickup_address?.phone, `Return Confirm ?`).then(
@@ -83,17 +74,13 @@ const CreateOrderList = () => {
             .then((res) => {
               fetchCreateOrderData()
               toast.success('Order Return Confirm Successfully')
-              
+
             })
             .catch((err) => console.log(err))
         }
       }
     )
   }
-
-
-
-
 
 
 
@@ -112,6 +99,8 @@ const CreateOrderList = () => {
       .catch((err) => console.log(err))
   }
 
+
+
   const handleTableChange = (pagination, filters, sorter) => {
     setTableParams({
       pagination,
@@ -124,34 +113,15 @@ const CreateOrderList = () => {
     }
   }
 
+
+
   const updatePagination = (info) => {
     const _tableParams = { ...tableParams }
-
     _tableParams.pagination = info
-
     setTableParams(_tableParams)
   }
 
 
-  const clearFilter = () => {
-    fetchCreateOrderData()
-    setSelectedDate(null)
-    setFilterQuery({})
-  }
-
-  const handleSearchQuery = searchTerm => {
-    return useJwt
-      .axiosGet(getApi(RETURN_TO_MARCHANT) + '?' + searchTerm)
-      .then((res) => {
-        console.log(res.data)
-        if (res.data?.results) {
-          setCreateOrder(res.data.results)
-          setOrderCount(res.data.count)
-        }
-        return res.data
-      })
-      .catch((err) => console.log(err))
-  }
 
   function updateFilterQUery(term, value) {
     let filters = { ...filterQuery }
@@ -164,59 +134,18 @@ const CreateOrderList = () => {
     } else {
       filters.hasOwnProperty(term) && delete filters[term]
     }
-    console.log('filter', filters)
     setFilterQuery(filters)
   }
 
-  
 
-  const paginationUpdate = (page) => {
-    updateFilterQUery("page", page)
+  const clearFilter = () => {
+    setorderID('')
+    setReceipientName('')
+    setphoneNumber('')
+    fetchCreateOrderData()
+    setSelectedDate(null)
+    setFilterQuery({})
   }
-
-
-  const riderAssign = (e, info) => {
-    e.preventDefault()
-    fetchRiderData()
-    setSelectedRiderId()
-    setOrderIdInFo(info.id)
-    setStatusModalState(true)
-    setSelectedInfo(info)
-  }
-
-
-
-
-  const assignHandler = (e) => {
-    e.preventDefault()
-    useJwt
-      .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${selectedInfo.id}/return_order/`, { orderIdInFo: orderIdInFo, selectedRiderIds: selectedRiderIds })
-      .then((res) => {
-        setStatusModalState(false)
-        fetchCreateOrderData()
-      })
-    //   .finally(() => fetchRiderData())
-  }
-  const handleSelectedRiderId = (e) => {
-    const { value, checked } = e.target
-    if (checked) {
-      setSelectedRiderId(value)
-    }
-  }
-
-
-  const fetchRiderData = () => {
-    return useJwt.axiosGet(getApi(RIDER_ASSIGNMENT))
-      .then((res) => {
-        console.log('response data', res?.data)
-        setRiders(res?.data)
-      }).catch((err) => {
-        console.log(err)
-      })
-  }
-
-
-
 
 
   const columns = [
@@ -296,10 +225,10 @@ const CreateOrderList = () => {
                 <h6 className="mb-25">
                   Reason :{" "}
                   <span className="highlight-pickup-status">
-                    { info?.cancel_issue?.reason}
+                    {info?.cancel_issue?.reason}
                   </span>
                 </h6>
-                
+
               </Col>
               <Col xl="5">
                 <h6 className="mb-25">
@@ -337,27 +266,6 @@ const CreateOrderList = () => {
     },
   ]
 
-  const columns2 = [
-    {
-      title: 'Rider',
-      dataIndex: 'full_name',
-    },
-    {
-      title: 'Phone',
-      // dataIndex: 'account_wallet',
-      dataIndex: 'contact_no'
-    },
-
-    {
-      title: 'Actions',
-
-      render: (_, record) =>
-        <td>
-          <Input type='checkbox' value={record.id} onClick={(e) => { handleSelectedRiderId(e) }} name="order_id" id='remember-me' />
-        </td>
-
-    },
-  ]
 
 
   useEffect(() => {
@@ -367,25 +275,17 @@ const CreateOrderList = () => {
     if (_tableParams) {
       _filters['page'] = _tableParams.pagination?.current
       _filters['page_size'] = _tableParams.pagination?.pageSize
-      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
     }
 
     setFilterQuery(_filters)
 
   }, [JSON.stringify(tableParams)])
 
+
   useEffect(() => {
     fetchCreateOrderData()
   }, [JSON.stringify(filterQuery)])
 
-  useEffect(() => {
-    handleSearchQuery(qs.stringify(filterQuery))
-  }, [filterQuery])
-
-
-  useEffect(() => {
-    fetchCreateOrderData()
-  }, [])
 
   return (
     <Row>
@@ -396,6 +296,40 @@ const CreateOrderList = () => {
               <div className="invoice-title-card">
                 <h3>Filter : </h3>
                 <Button type="primary" color="primary" onClick={clearFilter}>Clear</Button>
+              </div>
+
+              <div className=" mt-2">
+                <h6>Search Order ID </h6>
+                <Search
+                  placeholder="eg. ODR23031301d6"
+                  onChange={(e) => {
+                    updateFilterQUery("parcel_id", e.target.value)
+                    setorderID(e.target.value)
+                  }}
+                  value={orderID}
+                />
+              </div>
+              <div className=" mt-2">
+                <h6>Search Receipient Name</h6>
+                <Search
+                  placeholder="eg. Jhon Doe"
+                  onChange={(e) => {
+                    updateFilterQUery("recipient_name", e.target.value)
+                    setReceipientName(e.target.value)
+                  }}
+                  value={receipientName}
+                />
+              </div>
+              <div className=" mt-2">
+                <h6>Phone Number </h6>
+                <Search
+                  placeholder="eg. 01793912259"
+                  onChange={(e) => {
+                    updateFilterQUery("phone_number", e.target.value)
+                    setphoneNumber(e.target.value)
+                  }}
+                  value={phoneNumber}
+                />
               </div>
 
               <div className=" mt-2">
@@ -429,9 +363,9 @@ const CreateOrderList = () => {
             <hr></hr>
 
             <Table scroll={{ x: true }} columns={columns} dataSource={createOrder} onChange={handleTableChange} pagination={tableParams.pagination} />
-                  
+
             <>
-              <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
+              <OrderDetailsDrawer open={open} orderid={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
             </>
           </CardBody>
         </Card>

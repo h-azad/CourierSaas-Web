@@ -42,7 +42,7 @@ const CreateOrderList = () => {
   const datePickerRef = useRef(null)
   const [orderCount, setOrderCount] = useState(0)
   // const [filterQuery, setFilterQuery] = useState({})
-  const [orderid, setOrderId] = useState(0)
+  const [orderid, setOrderId] = useState()
   const [open, setOpen] = useState(false)
 
   const [riders, setRiders] = useState([])
@@ -583,7 +583,7 @@ const CreateOrderList = () => {
             </Modal>
 
             <>
-              <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
+              <OrderDetailsDrawer open={open} orderid={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
             </>
           </CardBody>
         </Card>

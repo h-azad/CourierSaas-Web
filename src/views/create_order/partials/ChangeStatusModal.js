@@ -6,22 +6,11 @@ import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, ORDER_STATUS_UPDATE } from "@src/constants/apiUrls"
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-
+import { OrderStatusOptions } from '@src/components/orderRelatedData'
 
 function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, fetchCreateOrderData }) {
   const [selectedOption, setSelectedOption] = useState()
-  let statusOptions = [
-    { value: "pending", label: "Pending" },
-    { value: "accepted", label: "Accepted" },
-    { value: "pickedup", label: "Picked Up" },
-    { value: "in_warehouse", label: "In Warehouse" },
-    { value: "shipped", label: "Shipped" },
-    { value: "delivered", label: "Delivered" },
-    { value: "hold", label: "Hold" },
-    { value: "returned", label: "Returned" },
-    { value: "cancelled", label: "Cancelled" },
-    { value: "completed", label: "Completed" },
-  ]
+  const [error, setError] = useState(false)
 
   const updateStatusAction = (e) => {
     e.preventDefault()
@@ -32,9 +21,15 @@ function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, f
     useJwt
       .axiosPatch(getApi(ORDER_STATUS_UPDATE) + `${orderInfo.id}/`, formData)
       .then((res) => {
-        toast.success('Order Status Updated Successfully!')
-        setStatusModalState(false)
-        fetchCreateOrderData()
+        if (res?.data?.error == true){
+          toast.error(res?.data?.message)
+          setError(res?.data?.message)
+          setStatusModalState(true)
+        }else{
+          toast.success(res?.data?.message)
+          setStatusModalState(false)
+          fetchCreateOrderData()
+        }
       })
       .catch(err => {
         toast.success('Order Status Updated Failed!')
@@ -51,6 +46,8 @@ function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, f
   return (
     <Modal isOpen={statusModalState} toggle={() => setStatusModalState(!statusModalState)} className='modal-dialog-centered'>
       <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Update Order Status</ModalHeader>
+      
+      {error && <ModalHeader><p className='text-danger'>{error}</p></ModalHeader>}
       <ModalBody>
         <Select
           id="status"
@@ -58,7 +55,7 @@ function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, f
           onChange={changeOrderStatusAction}
           className={classnames('react-select')}
           classNamePrefix='select'
-          options={statusOptions}
+          options={OrderStatusOptions}
         />
       </ModalBody>
       <ModalFooter>

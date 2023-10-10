@@ -1,15 +1,27 @@
 export const OrderStatusOptions = [
   { value: "pending", label: "Pending" },
+  { value: "failed_pickup", label: "Failed Pickup" },
   { value: "accepted", label: "Accepted" },
   { value: "pickedup", label: "Picked Up" },
   { value: "in_warehouse", label: "In Warehouse" },
   { value: "shipped", label: "Shipped" },
   { value: "delivered", label: "Delivered" },
+  { value: "completed", label: "Completed" },
+
+  { value: "returned to warehouse", label: "Returned Warehouse" },
   { value: "hold", label: "Hold" },
   { value: "returned", label: "Returned" },
-  { value: "cancelled", label: "Cancelled" },
-  { value: "completed", label: "Completed" },
+  { value: "returned assign to driver", label: "Returned Assign Driver" },
+  { value: "returned to marchant", label: "Returned To Marchant" },
+  { value: "returned compleate", label: "Returned Compleate" },
+  
+
+  // { value: "cancelled", label: "Cancelled" },
+  // { value: "completed", label: "Completed" },
 ]
+
+
+
 
 
 export function colorSwitch(status) {

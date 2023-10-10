@@ -12,7 +12,7 @@ import OrderDetailsDrawer from '../../order/OrderDetailsDrawer'
 import { Pagination } from 'antd'
 
 const CurrentTaskView = ({ currentTaskData }) => {
-  const [orderid, setOrderId] = useState(0)
+  const [orderid, setOrderId] = useState()
   const [open, setOpen] = useState(false)
   const showOrderDetailsDrawer = () => {
     setOpen(true)
@@ -27,7 +27,7 @@ const CurrentTaskView = ({ currentTaskData }) => {
       <h4> List Current Task </h4>
     </div>
     <hr></hr>
-    <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
+      <OrderDetailsDrawer open={open} orderid={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
 
     {currentTaskData.currentTask &&
       currentTaskData.currentTask.map((info) => (

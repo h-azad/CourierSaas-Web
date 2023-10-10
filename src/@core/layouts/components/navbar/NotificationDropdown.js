@@ -28,7 +28,7 @@ import Pusher from 'pusher-js'
 const NotificationDropdown = () => {
 
   const [notificationData, setNotificationData] = useState([])
-  const [orderid, setOrderId] = useState(0)
+  const [orderid, setOrderId] = useState()
 
   const [open, setOpen] = useState(false)
   const showOrderDetailsDrawer = () => {
@@ -166,7 +166,7 @@ const NotificationDropdown = () => {
         </DropdownMenu>
       </UncontrolledDropdown>
 
-      <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
+      <OrderDetailsDrawer open={open} orderid={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
     </>
 
 

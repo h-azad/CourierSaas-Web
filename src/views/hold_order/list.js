@@ -11,36 +11,36 @@ import { Home, Box, Truck, CornerDownLeft } from 'react-feather'
 import { getApi, ORDER_STATISTICS } from "@src/constants/apiUrls"
 
 function HoldOrderList() {
-  const [orderStatistics, setOrderStatistics] = useState({
-    pending_orders: 0,
-    in_warehouse_orders: 0,
-    shipped_orders: 0,
-    return_orders: 0
-  })
+  // const [orderStatistics, setOrderStatistics] = useState({
+  //   pending_orders: 0,
+  //   in_warehouse_orders: 0,
+  //   shipped_orders: 0,
+  //   return_orders: 0
+  // })
 
-  const fetchOrderStatisticsData = () => {
-    return useJwt
-      .axiosGet(getApi(ORDER_STATISTICS))
-      .then((res) => {
-        setOrderStatistics(
-          {
-            pending_orders: res.data.pending_orders,
-            in_warehouse_orders: res.data.in_warehouse_orders,
-            shipped_orders: res.data.shipped_orders,
-            return_orders: res.data.return_orders,
-          })
-      })
-      .catch((err) => console.log(err))
-  }
+  // const fetchOrderStatisticsData = () => {
+  //   return useJwt
+  //     .axiosGet(getApi(ORDER_STATISTICS))
+  //     .then((res) => {
+  //       setOrderStatistics(
+  //         {
+  //           pending_orders: res.data.pending_orders,
+  //           in_warehouse_orders: res.data.in_warehouse_orders,
+  //           shipped_orders: res.data.shipped_orders,
+  //           return_orders: res.data.return_orders,
+  //         })
+  //     })
+  //     .catch((err) => console.log(err))
+  // }
 
 
-  useEffect(() => {
-    fetchOrderStatisticsData()
-  }, [])
+  // useEffect(() => {
+  //   fetchOrderStatisticsData()
+  // }, [])
 
   return (
     <Fragment>
-      <Row>
+      {/* <Row>
         <Col lg="3" sm="6">
           <StatsHorizontal
             color="danger"
@@ -73,7 +73,7 @@ function HoldOrderList() {
             renderStats={<h3 className="fw-bolder mb-75">{orderStatistics?.return_orders}</h3>}
           />
         </Col>
-      </Row>
+      </Row> */}
 
       {/* <Row>
         <Col sm="12">

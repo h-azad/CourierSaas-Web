@@ -27,7 +27,7 @@ const OrderView = ({ currentOrderData }) => {
   const [statusModalState, setStatusModalState] = useState(false)
   const [selectedInfo, setSelectedInfo] = useState(null)
 
-  const [orderid, setOrderId] = useState(0)
+  const [orderid, setOrderId] = useState()
   const [open, setOpen] = useState(false)
   const showOrderDetailsDrawer = () => {
     setOpen(true)
@@ -67,7 +67,7 @@ const OrderView = ({ currentOrderData }) => {
 
   return (
     <>
-      <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
+      <OrderDetailsDrawer open={open} orderid={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
 
       <div className="invoice-title-card">
         <h3> Orders </h3>

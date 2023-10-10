@@ -25,6 +25,12 @@ const StatsCard = ({ cols, responseData }) => {
       icon: <CheckCircle size={24} />
     },
     {
+      title: responseData.pickup_orders,
+      subtitle: 'Picked',
+      color: 'light-info',
+      icon: <Box size={24} />
+    },
+    {
       title: responseData.in_warehouse_orders,
       subtitle: 'WireHouse',
       color: 'light-success',
@@ -44,27 +50,77 @@ const StatsCard = ({ cols, responseData }) => {
       icon: <CheckCircle size={24} />
     },
     {
-      title: responseData.pickup_failed_orders,
-      subtitle: 'Failed Pickup',
+      title: responseData.total_hold,
+      subtitle: 'Hold',
+      color: 'light-info',
+      icon: <Box size={24} />
+      // icon: <User size={24} />
+
+    },
+    {
+      title: responseData.return_to_warehouse_orders,
+      subtitle: 'Return Warehouse',
       color: 'light-primary',
       // icon: <TrendingUp size={24} />
       icon: <CheckCircle size={24} />
     },
     {
-      title: responseData.delivery_failed_orders,
-      subtitle: 'Failed Delivery',
+      title: responseData.return_orders,
+      subtitle: 'Returns Order',
       color: 'light-success',
       icon: <CornerDownLeft size={24} />
     },
     
     {
-      title: responseData.return_orders,
-      subtitle: 'Returned',
+      title: responseData.returned_assign_to_driver,
+      subtitle: 'Returned Assign Driver',
       color: 'light-info',
       icon: <Box size={24} />
       // icon: <User size={24} />
       
     },
+    {
+      title: responseData.returned_to_marchant,
+      subtitle: 'Returned Marchant',
+      color: 'light-info',
+      icon: <Box size={24} />
+      // icon: <User size={24} />
+
+    },
+    {
+      title: responseData.returned_compleate,
+      subtitle: 'Returned Compleate',
+      color: 'light-info',
+      icon: <Box size={24} />
+      // icon: <User size={24} />
+
+    },
+    
+    // {
+    //   title: responseData.return_orders,
+    //   subtitle: 'Returned',
+    //   color: 'light-info',
+    //   icon: <Box size={24} />
+    //   // icon: <User size={24} />
+
+    // },
+    // {
+    //   title: responseData.return_orders,
+    //   subtitle: 'Returned',
+    //   color: 'light-info',
+    //   icon: <Box size={24} />
+    //   // icon: <User size={24} />
+
+    // },
+    // {
+    //   title: responseData.return_orders,
+    //   subtitle: 'Returned',
+    //   color: 'light-info',
+    //   icon: <Box size={24} />
+    //   // icon: <User size={24} />
+
+    // },
+    
   ]
 
   const renderData = () => {

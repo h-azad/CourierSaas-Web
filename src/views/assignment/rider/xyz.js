@@ -56,7 +56,7 @@ const RiderAssignmentList = () => {
     ordering: 'full_name'
   })
 
-  const [orderid, setOrderId] = useState(0)
+  const [orderid, setOrderId] = useState()
   const [open, setOpen] = useState(false)
 
   const showOrderDetailsDrawer = () => {
@@ -380,7 +380,7 @@ const RiderAssignmentList = () => {
         <ModalFooter>
           <Button color='primary' onClick={assignType === "pickup" ? updateStatusAction : delivaryHandler}>Assign</Button>
         </ModalFooter>
-        <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
+        <OrderDetailsDrawer open={open} orderid={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
       </Modal>
     </>
   )

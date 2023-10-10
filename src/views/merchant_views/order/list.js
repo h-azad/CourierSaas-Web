@@ -208,7 +208,7 @@ const MerchantOrdersList = () => {
   const [selectedDate, setSelectedDate] = useState(null)
   const datePickerRef = useRef(null)
   const [selectedValue, setSelectedValue] = useState('')
-  const [orderid, setOrderId] = useState(0)
+  const [orderid, setOrderId] = useState()
   const [open, setOpen] = useState(false)
 
   const showOrderDetailsDrawer = () => {
@@ -607,7 +607,7 @@ const MerchantOrdersList = () => {
               fetchCreateOrderData={fetchCreateOrderData}
             />
             <>
-              <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
+              <OrderDetailsDrawer open={open} orderid={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
             </>
           </CardBody>
         </Card>

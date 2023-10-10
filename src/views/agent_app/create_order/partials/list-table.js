@@ -39,7 +39,7 @@ const CreateOrderList = () => {
   const datePickerRef = useRef(null)
   const [selectedValue, setSelectedValue] = useState('')
 
-  const [orderid, setOrderId] = useState(0)
+  const [orderid, setOrderId] = useState()
   const [open, setOpen] = useState(false)
   const showOrderDetailsDrawer = () => {
     setOpen(true)
@@ -136,7 +136,7 @@ const CreateOrderList = () => {
   return (
     
     <Row>
-          <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
+      <OrderDetailsDrawer open={open} orderid={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
 
       <Col sm="4">
         <Card title="Bordered">

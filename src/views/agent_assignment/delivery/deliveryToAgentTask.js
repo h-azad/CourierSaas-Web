@@ -38,7 +38,7 @@ const DeliveryToAgentTask = () => {
   const [selectedInfo, setSelectedInfo] = useState(null)
   let { id } = useParams()
 
-  const [orderid, setOrderId] = useState(0)
+  const [orderid, setOrderId] = useState()
   const [open, setOpen] = useState(false)
   const showOrderDetailsDrawer = () => {
     setOpen(true)
@@ -159,7 +159,7 @@ const DeliveryToAgentTask = () => {
   return (
 
     <>
-      <OrderDetailsDrawer open={open} orderID={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
+      <OrderDetailsDrawer open={open} orderid={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
 
       <CardText>
         <div className="row justify-content-between">
