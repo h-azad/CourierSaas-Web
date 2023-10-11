@@ -1,20 +1,17 @@
 // ** React Imports
 //n
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 
 // import { useContext } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
 // ** Custom Hooks
-import { useSkin } from '@hooks/useSkin'
-//n
-import { isUserLoggedIn } from '@utils/'
+
 
 // ** Third Party Components
 import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
-import { useForm } from 'react-hook-form'
 import { Coffee, X } from 'react-feather'
 
 // ** Actions
@@ -37,8 +34,7 @@ import '@styles/react/pages/page-authentication.scss'
 
 import axios from 'axios'
 
-import { Space, Spin, Alert } from 'antd'
-import { LoadingOutlined } from '@ant-design/icons'
+import { Spin } from 'antd'
 
 
 const ToastContent = ({ t, name, role }) => {
@@ -61,17 +57,11 @@ const ToastContent = ({ t, name, role }) => {
 
 const VerifySSOLogin = () => {
 
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const abilityCtx = useContext(AbilityContext)
 
-    const bearerToken = searchParams.get('bearer')
-    const authtoken = searchParams.get('token')
 
-    if (bearerToken && authtoken) {
-      ssoVerifyLogin(bearerToken, authtoken)
-    }
-
-  }, [])
 
   const ssoVerifyLogin = async (bearerToken, authtoken) => {
     localStorage.removeItem('domainName')
@@ -104,36 +94,20 @@ const VerifySSOLogin = () => {
       .catch(err => setErrors(err.response.data.errors.non_field_errors))
   }
 
-  const [error, setErrors] = useState()
-  const { skin } = useSkin()
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const abilityCtx = useContext(AbilityContext)
-  const {
-    control,
-    setError,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({})
-  const illustration = skin === 'dark' ? 'login-v2-dark.svg' : 'login-v2.svg',
-    source = require(`@src/assets/images/pages/${illustration}`).default
-  const dummyAbility = [
-    {
-      action: 'read',
-      subject: 'ACL'
-    },
-    {
-      action: 'read',
-      subject: 'Auth'
-    }
-  ]
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
 
-  //n
-  // useEffect(() => {
-  //   if (isUserLoggedIn()) {
-  //     navigate('/home')
-  //   }
-  // }, [])
+    const bearerToken = searchParams.get('bearer')
+    const authtoken = searchParams.get('token')
+
+    if (bearerToken && authtoken) {
+      ssoVerifyLogin(bearerToken, authtoken)
+    }
+
+  }, [])
+
+
+
 
 
   return (
