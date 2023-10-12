@@ -61,8 +61,6 @@ const VerifySSOLogin = () => {
   const navigate = useNavigate()
   const abilityCtx = useContext(AbilityContext)
 
-
-
   const ssoVerifyLogin = async (bearerToken, authtoken) => {
     localStorage.removeItem('domainName')
 

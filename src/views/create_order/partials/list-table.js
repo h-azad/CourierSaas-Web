@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import Select from "react-select"
 import classNames from "classnames"
-import { MoreVertical, Edit, Trash, Edit3, Book } from "react-feather"
+import { MoreVertical, Edit, Trash, Edit3, Book, Navigation } from "react-feather"
 import { Checkbox, DatePicker, Input, Typography, Drawer, Pagination } from "antd"
 import {
   UncontrolledDropdown,
@@ -21,6 +21,7 @@ import {
   CREATE_ORDER_LIST,
   CREATE_ORDER_DELETE,
   ORDER_INVOICE,
+  ORDER_INVOICE_SEND_TO_MERCHANT,
 } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
@@ -32,6 +33,8 @@ import * as qs from 'qs'
 import { OrderStatusOptions, colorSwitch } from '../../../components/orderRelatedData'
 import { Table, Tag } from "antd"
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
+
+import toast from 'react-hot-toast'
 
 import { handlePDFQuery } from "@src/components/reportRelatedData"
 
@@ -100,12 +103,31 @@ const CreateOrderList = () => {
             .axiosDelete(getApi(CREATE_ORDER_DELETE + id + "/"))
             .then((res) => {
               SwalAlert("Deleted Successfully")
+              toast.success("Deleted Successfully")
             })
             .finally(() => fetchCreateOrderData())
         }
       }
     )
   }
+
+  const sendInvoice = (e, id) => {
+    e.preventDefault()
+    return SwalConfirm(`Do you send invoice to merchant!`, "Send").then(
+      
+      function (result) {
+        if (result.value) {
+          useJwt
+            .axiosGet(getApi(ORDER_INVOICE_SEND_TO_MERCHANT + id + "/"))
+            .then((res) => {
+              toast.success("Send Successfully")
+            }).catch((err) => toast.error(`Send Failed ${err}`))
+        }
+      }
+    )
+  }
+
+  
 
   const changeStatusAction = (e, info) => {
     e.preventDefault()
@@ -221,10 +243,16 @@ const CreateOrderList = () => {
                       {/* <Link to={"/create_order/invoice/" + info.id}> */}
                         <DropdownItem onClick={() =>invoiceDownloadToPDF(info)}>
                           <Book className="me-50" size={15} />{" "}
-                          <span className="align-middle">Invoice</span>
+                          <span className="align-middle">Download Invoice</span>
                         </DropdownItem>
                     
-
+                      <DropdownItem
+                        href="/"
+                        onClick={(e) => sendInvoice(e, info.id)}
+                      >
+                        <Navigation className="me-50" size={15} />{" "}
+                        <span className="align-middle">Send Invoice</span>
+                      </DropdownItem>
 
                       <DropdownItem
                         href={"/create_order/edit/" + info.id}

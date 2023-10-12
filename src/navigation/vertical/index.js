@@ -449,6 +449,14 @@ const adminMenu = [
         action: 'admin-pages',
         resource: 'Route-write',
         navLink: "/route/add",
+      },
+      {
+        id: 'set-rider',
+        title: 'Set Rider',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Route-write',
+        navLink: "/route/set-rider",
       }
     ]
   },

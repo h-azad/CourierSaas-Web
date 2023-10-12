@@ -16,7 +16,7 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, ROUTE, ROUTE_SEARCH } from "../../../constants/apiUrls"
+import { getApi, ROUTE, ROUTE_SEARCH, RIDER_ROUTE } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
@@ -65,15 +65,13 @@ const ListTable = () => {
 
   }
 
-  useEffect(() => {
-    fetchRouteData()
-  }, [])
+
 
 
   const fetchRouteData = () => {
     return useJwt
       // .axiosGet(getApi(ROUTE))
-      .axiosGet(getApi(ROUTE) + `?${qs.stringify(filterQuery)}`)
+      .axiosGet(getApi(RIDER_ROUTE) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
         setRoute(res?.data?.results)
         updatePagination({
@@ -185,45 +183,46 @@ const ListTable = () => {
 
       render: (_, record) =>
 
-      <tr key={record.id}>
-      <td>
-        <Descriptions>
-          <Descriptions.Item label="Title">{record.title}</Descriptions.Item>
-          <Descriptions.Item label="Start Time">{record.start_time}</Descriptions.Item>
-          <Descriptions.Item label="Start Location">{record.start_location}</Descriptions.Item>
-          <Descriptions.Item label="Areas">
-            {JSON.parse(record.area).map((data)=>(
-              <ul>
-                <li> {data.label}</li>
-              </ul>
-            ))}
-          </Descriptions.Item>
-        </Descriptions>
-      </td>
+        <tr key={record.id}>
+          <td>
+            <Descriptions>
+              <Descriptions.Item label="Title">{record?.route?.title}</Descriptions.Item>
+              <Descriptions.Item label="Start Time">{record.route?.start_time}</Descriptions.Item>
+              <Descriptions.Item label="Start Location">{record.route?.start_location}</Descriptions.Item>
+              <Descriptions.Item label="Rider">{record?.rider?.full_name}</Descriptions.Item>
+              <Descriptions.Item label="Areas">
+                {JSON.parse(record?.route?.area).map((data) => (
+                  <ul>
+                    <li> {data.label}</li>
+                  </ul>
+                ))}
+              </Descriptions.Item>
+            </Descriptions>
+          </td>
 
-      <td>
-        <UncontrolledDropdown>
-          <DropdownToggle
-            className="icon-btn hide-arrow"
-            color="transparent"
-            size="sm"
-            caret
-          >
-            <MoreVertical size={15} />
-          </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem href={"/route/edit/" + record.id}>
-              <Edit className="me-50" size={15} />{" "}
-              <span className="align-middle">Edit</span>
-            </DropdownItem>
-            <DropdownItem href="/" onClick={e => deleteAction(e, record.id)}>
-              <Trash className="me-50" size={15} />{" "}
-              <span className="align-middle">Delete</span>
-            </DropdownItem>
-          </DropdownMenu>
-        </UncontrolledDropdown>
-      </td>
-    </tr>
+          <td>
+            <UncontrolledDropdown>
+              <DropdownToggle
+                className="icon-btn hide-arrow"
+                color="transparent"
+                size="sm"
+                caret
+              >
+                <MoreVertical size={15} />
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem href={"/route/edit/" + record.id}>
+                  <Edit className="me-50" size={15} />{" "}
+                  <span className="align-middle">Edit</span>
+                </DropdownItem>
+                <DropdownItem href="/" onClick={e => deleteAction(e, record.id)}>
+                  <Trash className="me-50" size={15} />{" "}
+                  <span className="align-middle">Delete</span>
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </td>
+        </tr>
 
     },
   ]
@@ -245,6 +244,10 @@ const ListTable = () => {
   useEffect(() => {
     fetchRouteData()
   }, [JSON.stringify(filterQuery)])
+
+  // useEffect(() => {
+  //   fetchRouteData()
+  // }, [])
 
 
   return (

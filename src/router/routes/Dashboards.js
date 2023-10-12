@@ -107,6 +107,7 @@ import HoldOrderList from '@src/views/hold_order/list'
 import ReturnOrderList from '@src/views/return_order/returns/list'
 import PickupFailedList from '@src/views/return_order/cancelled/list'
 import ReturnOrderToMarcahntLits from '@src/views/return_order/return_to_marchant/list'
+import SetRiderInRoute from '@src/views/route/setRider/setRider'
 
 
 const Home = lazy(() => import("../../views/Home"))
@@ -406,6 +407,11 @@ const DashboardRoutes = [
     path: "/route/edit/:id",
     element: <EditRoute />
   },
+  {
+    path: "/route/set-rider",
+    element: <SetRiderInRoute />
+  },
+  
 
   {
     path: "/setting",
