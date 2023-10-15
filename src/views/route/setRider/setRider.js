@@ -73,9 +73,9 @@ const SetRiderInRoute = () => {
         .then((res) => {
           SwalAlert("Rider Set Route Successfully")
           toast.success('Rider Set Route Successfully')
-          navigate("/route/")
+          navigate("/route/rider-route")
         })
-        .catch(err => toast.error(`Rider Set Route ${err}`))
+        .catch(err => toast.error(`Rider Set Route ${err?.response?.data?.non_field_errors[0]}`))
     }
   }
 

@@ -108,6 +108,8 @@ import ReturnOrderList from '@src/views/return_order/returns/list'
 import PickupFailedList from '@src/views/return_order/cancelled/list'
 import ReturnOrderToMarcahntLits from '@src/views/return_order/return_to_marchant/list'
 import SetRiderInRoute from '@src/views/route/setRider/setRider'
+import RiderRouteList from '@src/views/route/setRider/riderRouteList'
+import MarchantAndRiderDistance from '@src/views/create_order/marchantAndRiderDistance/marchantAndRiderDistance'
 
 
 const Home = lazy(() => import("../../views/Home"))
@@ -410,6 +412,14 @@ const DashboardRoutes = [
   {
     path: "/route/set-rider",
     element: <SetRiderInRoute />
+  },
+  {
+    path: "/route/rider-route",
+    element: <RiderRouteList/>
+  },
+  {
+    path: "/distance/rider",
+    element: <MarchantAndRiderDistance />
   },
   
 

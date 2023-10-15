@@ -38,6 +38,7 @@
     "file-saver": "^2.0.5",
     "flatpickr": "^4.6.13",
     "google-map-react": "^2.2.1",
+    "google-maps-react": "^2.0.6",
     "google-maps-react-markers": "^1.4.2",
     "history": "^5.3.0",
     "html-to-draftjs": "1.5.0",

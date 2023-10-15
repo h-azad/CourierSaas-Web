@@ -451,13 +451,21 @@ const adminMenu = [
         navLink: "/route/add",
       },
       {
+        id: 'rider-route',
+        title: 'Rider Route',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Route-write',
+        navLink: "/route/rider-route",
+      },
+      {
         id: 'set-rider',
         title: 'Set Rider',
         icon: <Circle size={12} />,
         action: 'admin-pages',
         resource: 'Route-write',
         navLink: "/route/set-rider",
-      }
+      },
     ]
   },
 
