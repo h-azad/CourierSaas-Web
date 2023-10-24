@@ -52,7 +52,7 @@ const Overview = ({ overViewData }) => {
       useJwt
         .axiosPost(getApi(MARCHANT_CREATE_ORDER), formData)
         .then((res) => {
-          // SwalAlert("Parcel Added Successfully")
+          SwalAlert("Parcel Added Successfully")
           toast.success('Order Created Successfully') 
           navigate("/marchant-orders")
         })

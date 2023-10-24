@@ -2,7 +2,7 @@
 
 import { Row, Col } from 'reactstrap'
 import React, { useState, useEffect } from 'react'
-import { Drawer } from 'antd'
+import { Drawer, Button } from 'antd'
 
 import {
   getApi,
@@ -11,12 +11,14 @@ import {
 import useJwt from "@src/auth/jwt/useJwt"
 
 import OrderDetails from './OrderDetails'
+import SwalConfirm from '../SwalConfirm'
+import toast from 'react-hot-toast'
+import SwalAlert from '../SwalAlert'
 
 const OrderDetailsDrawer = ({ orderid, open, onCloseOrderDetailsDrawer }) => {
   const [createOrderInfo, setCreateOrderInfo] = useState(null)
   const [active, setActive] = useState('1')
 
-  console.log('Yser open this page', orderid)
   const fetchCreateOrderDetailsData = () => {
     return useJwt
       .axiosGet(getApi(CREATE_ORDER_DETAILS) + orderid + "/")
@@ -27,8 +29,26 @@ const OrderDetailsDrawer = ({ orderid, open, onCloseOrderDetailsDrawer }) => {
       .catch(err => console.log(err))
   }
 
+
+  const acceptOrder = (e, id) => {
+    e.preventDefault()
+    return SwalConfirm(`Are you sure accept order!`, "Accept").then(
+      function (result) {
+        if (result.value) {
+          useJwt
+            // .axiosDelete(getApi(CREATE_ORDER_DELETE + id + "/"))
+            .axiosGet(getApi(`${CREATE_ORDER_DETAILS}${id}/assign_order/`))
+            .then((res) => {
+              SwalAlert("Order Assing Successfully")
+              toast.success("Order Assign Successfully")
+            })
+        }
+      }
+    )
+  }
+
   useEffect(() => {
-    if (orderid !== undefined){
+    if (orderid !== undefined) {
       fetchCreateOrderDetailsData()
     }
   }, [orderid])
@@ -43,6 +63,7 @@ const OrderDetailsDrawer = ({ orderid, open, onCloseOrderDetailsDrawer }) => {
     <>
       <Drawer size="large" title="Order Details" placement="right" onClose={onCloseOrderDetailsDrawer} open={open}>
         <div className='app-user-view'>
+          <Button type="primary" onClick={(e) => { acceptOrder(e, createOrderInfo?.id) }}>Accept</Button>
           {createOrderInfo &&
             <Row>
               <Col xl='12' lg='12' xs={{ order: 0 }} md={{ order: 1, size: 7 }}>
