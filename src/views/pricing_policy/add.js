@@ -182,7 +182,7 @@ const AddPricingPolicy = () => {
               control={control}
               id='delivary_charge'
               name='delivary_charge'
-              render={({ field }) => <Input type="number" placeholder='' invalid={errors.delivary_charge && true} {...field} />}
+              render={({ field }) => <Input type="number" min={0} placeholder='' invalid={errors.delivary_charge && true} {...field} />}
             />
             {errors && errors.delivary_charge && <span>{errors.delivary_charge.message}</span>}
           </div>
@@ -198,7 +198,7 @@ const AddPricingPolicy = () => {
                   control={control}
                   id='min_dimention'
                   name='min_dimention'
-                  render={({ field }) => <Input type="number" placeholder='' invalid={errors.min_dimention && true} {...field} />}
+                  render={({ field }) => <Input type="number" min={0} placeholder='' invalid={errors.min_dimention && true} {...field} />}
                 />
                 {errors && errors.min_dimention && <span>{errors.min_dimention.message}</span>}
               </div>
@@ -213,7 +213,7 @@ const AddPricingPolicy = () => {
                   control={control}
                   id='max_dimention'
                   name='max_dimention'
-                  render={({ field }) => <Input type="number" placeholder='' invalid={errors.max_dimention && true} {...field} />}
+                  render={({ field }) => <Input type="number" min={0} placeholder='' invalid={errors.max_dimention && true} {...field} />}
                 />
                 {errors && errors.max_dimention && <span>{errors.max_dimention.message}</span>}
               </div>
@@ -228,7 +228,7 @@ const AddPricingPolicy = () => {
                   control={control}
                   id='max_weight'
                   name='max_weight'
-                  render={({ field }) => <Input type="number" placeholder='' invalid={errors.max_weight && true} {...field} />}
+                  render={({ field }) => <Input type="number" min={0} placeholder='' invalid={errors.max_weight && true} {...field} />}
                 />
                 {errors && errors.max_weight && <span>{errors.max_weight.message}</span>}
               </div>
@@ -243,7 +243,7 @@ const AddPricingPolicy = () => {
               control={control}
               id='additional_charge'
               name='additional_charge'
-              render={({ field }) => <Input type="number" placeholder='' invalid={errors.additional_charge && true} {...field} />}
+              render={({ field }) => <Input type="number" min={0} placeholder='' invalid={errors.additional_charge && true} {...field} />}
             />
             {errors && errors.additional_charge && <span>{errors.additional_charge.message}</span>}
           </div>
@@ -256,7 +256,7 @@ const AddPricingPolicy = () => {
               control={control}
               id='per_dimention'
               name='per_dimention'
-              render={({ field }) => <Input type="number" placeholder='' invalid={errors.per_dimention && true} {...field} />}
+              render={({ field }) => <Input type="number" min={0} placeholder='' invalid={errors.per_dimention && true} {...field} />}
             />
             {errors && errors.per_dimention && <span>{errors.per_dimention.message}</span>}
           </div>
@@ -271,7 +271,7 @@ const AddPricingPolicy = () => {
               control={control}
               id='cod_charge'
               name='cod_charge'
-              render={({ field }) => <Input placeholder='' type="number"
+              render={({ field }) => <Input placeholder='' type="number" min={0}
                 invalid={errors.cod_charge && true} {...field} />}
             />
             {errors && errors.cod_charge && <span>{errors.cod_charge.message}</span>}

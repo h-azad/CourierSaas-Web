@@ -12,13 +12,13 @@ const containerStyle = {
 }
 
 
-export default function Form1({ setCoordinate, setStarTime, setTitle, setStartLocation, next }) {
+export default function RouteInformation({ setCoordinate, routeData, setStarTime, setTitle, setStartLocation, next }) {
   const [map, setMap] = useState(null)
   const { setError, handleSubmit, control, formState: { errors } } = useForm()
   const [value, setValue] = useState(null)
 
   const onChange = (time, timeString) => {
-    setStarTime(timeString)
+    setStarTime(time)
   }
 
   const onSubmit = data => {
@@ -40,12 +40,21 @@ export default function Form1({ setCoordinate, setStarTime, setTitle, setStartLo
     if (data.start_time !== null && data.route_title !== null && data.start_location !== null) {
       setTitle(data.route_title)
       setStartLocation(value.label)
-      console.log('map value', map)
       setCoordinate(JSON.stringify(map))
       next()
     }
 
   }
+
+
+  useEffect(() => {
+    if (routeData) {
+      setValue('start_time', routeData?.start_time)
+      setValue('route_title', routeData?.title)
+      setValue('start_location', routeData?.start_location)
+    }
+  }, [routeData])
+
 
   useEffect(() => {
     if (value) {

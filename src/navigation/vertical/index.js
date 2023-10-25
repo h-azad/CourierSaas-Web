@@ -434,22 +434,57 @@ const adminMenu = [
     icon: <MapPin size={20} />,
 
     children: [
+
       {
-        id: 'route-index',
-        title: 'Index',
-        icon: <Circle size={12} />,
-        action: 'admin-pages',
-        resource: 'Route-read',
-        navLink: "/route/",
+        id: "_route",
+        title: "Routes",
+        children:[
+          {
+            id: 'route-index',
+            title: 'Index',
+            icon: <Circle size={12} />,
+            action: 'admin-pages',
+            resource: 'Route-read',
+            navLink: "/route/",
+          },
+          {
+            id: 'route-add',
+            title: 'Add',
+            icon: <Circle size={12} />,
+            action: 'admin-pages',
+            resource: 'Route-write',
+            navLink: "/route/add/",
+          },
+        ]
       },
+
+
       {
-        id: 'route-add',
-        title: 'Add',
-        icon: <Circle size={12} />,
-        action: 'admin-pages',
-        resource: 'Route-write',
-        navLink: "/route/add",
+        id: "_route-area",
+        title: "Route Area",
+        children: [
+          {
+            id: 'route-area',
+            title: 'Route Area',
+            icon: <Circle size={12} />,
+            action: 'admin-pages',
+            resource: 'Route-write',
+            navLink: "/route/area/",
+          },
+
+          {
+            id: 'set-route-area',
+            title: 'Set Route Area',
+            icon: <Circle size={12} />,
+            action: 'admin-pages',
+            resource: 'Route-write',
+            navLink: "/route/set-area/",
+          },
+        ]
       },
+      
+      
+
       {
         id: 'rider-route',
         title: 'Rider Route',
@@ -458,6 +493,9 @@ const adminMenu = [
         resource: 'Route-write',
         navLink: "/route/rider-route",
       },
+
+      
+      
       {
         id: 'set-rider',
         title: 'Set Rider',

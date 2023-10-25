@@ -1,16 +1,18 @@
 import { Link } from "react-router-dom"
 import { MoreVertical, Edit, Trash, Search } from "react-feather"
 import {
+
   UncontrolledDropdown,
   DropdownMenu,
   DropdownItem,
   DropdownToggle,
   Button,
   CardText,
+
 } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, ROUTE } from "../../../constants/apiUrls"
+import { getApi, ROUTE_AREA } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import { Descriptions } from 'antd'
@@ -19,10 +21,8 @@ import { Table } from "antd"
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
-const ListTable = () => {
+const RouteAreaList = () => {
   const [route, setRoute] = useState([])
-
-
 
   const [tableParams, setTableParams] = useState({
     pagination: {
@@ -34,6 +34,7 @@ const ListTable = () => {
   const [filterQuery, setFilterQuery] = useState({
     page: 1,
     page_size: GENERAL_ROW_SIZE,
+    // ordering: '-created_at'
   })
 
 
@@ -43,7 +44,7 @@ const ListTable = () => {
       if (result.value) {
 
         useJwt
-          .axiosDelete(getApi(ROUTE + id + '/'))
+          .axiosDelete(getApi(ROUTE_AREA + id + '/'))
           .then((res) => {
             SwalAlert("Deleted Successfully")
           })
@@ -59,7 +60,8 @@ const ListTable = () => {
 
   const fetchRouteData = () => {
     return useJwt
-      .axiosGet(getApi(ROUTE) + `?${qs.stringify(filterQuery)}`)
+      // .axiosGet(getApi(ROUTE))
+      .axiosGet(getApi(ROUTE_AREA) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
         setRoute(res?.data?.results)
         updatePagination({
@@ -67,8 +69,9 @@ const ListTable = () => {
           pageSize: res?.data?.page_size,
           total: res?.data?.count,
         })
+        // return res.data
       })
-      .catch(err => console.log(err))
+      .catch(err => setRoute([]))
   }
 
 
@@ -108,8 +111,6 @@ const ListTable = () => {
 
 
 
-
-
   const columns = [
 
     {
@@ -119,9 +120,17 @@ const ListTable = () => {
         <tr key={record.id}>
           <td>
             <Descriptions>
-              <Descriptions.Item label="Title">{record?.title}</Descriptions.Item>
-              <Descriptions.Item label="Start Time">{record?.start_time}</Descriptions.Item>
-              <Descriptions.Item label="Start Location">{record?.start_location}</Descriptions.Item>
+              <Descriptions.Item label="Title">{record?.route?.title}</Descriptions.Item>
+              <Descriptions.Item label="Start Time">{record.route?.start_time}</Descriptions.Item>
+              <Descriptions.Item label="Start Location">{record.route?.start_location}</Descriptions.Item>
+              <Descriptions.Item label="Rider">{record?.rider?.full_name}</Descriptions.Item>
+              {/* <Descriptions.Item label="Areas">
+                {JSON.parse(record?.route?.area).map((data) => (
+                  <ul>
+                    <li> {data?.label}</li>
+                  </ul>
+                ))}
+              </Descriptions.Item> */}
             </Descriptions>
           </td>
 
@@ -166,9 +175,13 @@ const ListTable = () => {
 
   }, [JSON.stringify(tableParams)])
 
+  // useEffect(() => {
+  //   fetchRouteData()
+  // }, [JSON.stringify(filterQuery)])
+
   useEffect(() => {
     fetchRouteData()
-  }, [JSON.stringify(filterQuery)])
+  }, [])
 
 
 
@@ -178,8 +191,8 @@ const ListTable = () => {
         <div className="row justify-content-between">
           <div className="col-lg-5">
             <div className="d-flex align-items-center">
-              <Link to={'/route/add'}>
-                <Button.Ripple color="primary">Add Route</Button.Ripple>
+              <Link to={'/route/set-rider'}>
+                <Button.Ripple color="primary">Set Rider</Button.Ripple>
               </Link>
             </div>
           </div>
@@ -203,8 +216,57 @@ const ListTable = () => {
 
       <Table scroll={{ x: true }} columns={columns} dataSource={route} onChange={handleTableChange} pagination={tableParams.pagination} />
 
+      {/* <Table bordered>
+        <thead>
+
+        </thead>
+        <tbody>
+          {route &&
+            route.map((info) => (
+              <tr key={info.id}>
+                <td>
+                  <Descriptions>
+                    <Descriptions.Item label="Title">{info.title}</Descriptions.Item>
+                    <Descriptions.Item label="Start Time">{info.start_time}</Descriptions.Item>
+                    <Descriptions.Item label="Start Location">{info.start_location}</Descriptions.Item>
+                    <Descriptions.Item label="Areas">
+                      {JSON.parse(info.area).map((data)=>(
+                        <ul>
+                          <li> {data.label}</li>
+                        </ul>
+                      ))}
+                    </Descriptions.Item>
+                  </Descriptions>
+                </td>
+
+                <td>
+                  <UncontrolledDropdown>
+                    <DropdownToggle
+                      className="icon-btn hide-arrow"
+                      color="transparent"
+                      size="sm"
+                      caret
+                    >
+                      <MoreVertical size={15} />
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      <DropdownItem href={"/route/edit/" + info.id}>
+                        <Edit className="me-50" size={15} />{" "}
+                        <span className="align-middle">Edit</span>
+                      </DropdownItem>
+                      <DropdownItem href="/" onClick={e => deleteAction(e, info.id)}>
+                        <Trash className="me-50" size={15} />{" "}
+                        <span className="align-middle">Delete</span>
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </Table> */}
     </>
   )
 }
 
-export default ListTable
+export default RouteAreaList

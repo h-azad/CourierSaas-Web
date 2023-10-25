@@ -124,13 +124,13 @@ const RiderRouteList = () => {
               <Descriptions.Item label="Start Time">{record.route?.start_time}</Descriptions.Item>
               <Descriptions.Item label="Start Location">{record.route?.start_location}</Descriptions.Item>
               <Descriptions.Item label="Rider">{record?.rider?.full_name}</Descriptions.Item>
-              <Descriptions.Item label="Areas">
+              {/* <Descriptions.Item label="Areas">
                 {JSON.parse(record?.route?.area).map((data) => (
                   <ul>
                     <li> {data?.label}</li>
                   </ul>
                 ))}
-              </Descriptions.Item>
+              </Descriptions.Item> */}
             </Descriptions>
           </td>
 

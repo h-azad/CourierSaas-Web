@@ -6,7 +6,7 @@ import Select from "react-select"
 import { Input, Radio, Space } from 'antd'
 
 
-export default function Form3({setRouteFinishing, SubmitDataHandler}) {
+export default function Finished({setRouteFinishing, SubmitDataHandler}) {
   const [value, setValue] = useState()
   const onChange = (e) => {
     setValue(e.target.value)

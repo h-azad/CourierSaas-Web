@@ -96,7 +96,7 @@ import AddAdminRole from '../../views/admin/role/AddAdminRole'
 import EditAdminRole from '../../views/admin/role/EditAdminRole'
 import RouteList from '../../views/route/list'
 import AddRoute from '../../views/route/add'
-import EditRoute from '../../views/route/edit'
+import EditRoute from '../../views/route/edit/edit'
 import GetAdminCencelIssue from '../../views/reports/cancelIssue'
 import ReturnWarehouseOrderList from '../../views/return_order/warehouse/list'
 import CurrentLocationSet from '../../views/rider/currentLocation/currentLocationSet'
@@ -110,6 +110,8 @@ import ReturnOrderToMarcahntLits from '@src/views/return_order/return_to_marchan
 import SetRiderInRoute from '@src/views/route/setRider/setRider'
 import RiderRouteList from '@src/views/route/setRider/riderRouteList'
 import MarchantAndRiderDistance from '@src/views/create_order/marchantAndRiderDistance/marchantAndRiderDistance'
+import SetAreaToRoute from '@src/views/route/setArea/setArea'
+import RouteAreaList from '@src/views/route/setArea/routeAreaList'
 
 
 const Home = lazy(() => import("../../views/Home"))
@@ -408,6 +410,16 @@ const DashboardRoutes = [
   {
     path: "/route/edit/:id",
     element: <EditRoute />
+  },
+
+  {
+    path: "/route/area",
+    element: <RouteAreaList />
+  },
+  
+  {
+    path: "/route/set-area",
+    element: <SetAreaToRoute />
   },
   {
     path: "/route/set-rider",

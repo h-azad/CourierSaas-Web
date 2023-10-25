@@ -9,13 +9,17 @@ import {
 import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, ROUTE } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
-import SwalAlert from "../../components/SwalAlert"
+import SwalAlert from "../../../components/SwalAlert"
 import { useNavigate, useParams } from "react-router-dom"
 
 import { Steps } from 'antd'
-import Form1 from "./edit/form1"
-import Form2 from "./edit/form2"
-import Form3 from "./edit/form3"
+
+
+import RouteInformation from "./routeInformation"
+import Finished from "./finished"
+
+import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'
 
 
 const EditRoute = () => {
@@ -26,8 +30,6 @@ const EditRoute = () => {
   const [startLocation, setStartLocation] = useState()
   const [coordinate, setCoordinate] = useState()
 
-  const [city, setCity] = useState()
-  const [areas, setAreas] = useState([])
   const [routeFinishing, setRouteFinishing] = useState()
 
   let { id } = useParams()
@@ -43,11 +45,9 @@ const EditRoute = () => {
   }
 
   const formData = new FormData()
-  formData.append('start_time', startTime)
+  formData.append('start_time', dayjs(startTime, { strict: false }).format("THH:mm:ss"))
   formData.append('title', title)
   formData.append('start_location', startLocation)
-  formData.append('city', city)
-  formData.append('area', areas)
   formData.append('finishing', routeFinishing)
   formData.append('coordinate', coordinate)
 
@@ -70,15 +70,11 @@ const EditRoute = () => {
   const steps = [
     {
       title: 'Route Information',
-      content: <Form1 setCoordinate={setCoordinate} routeData={routeData} setStarTime={setStarTime} setTitle={setTitle} setStartLocation={setStartLocation} next={next} />,
-    },
-    {
-      title: 'Route',
-      content: <Form2 routeData={routeData} setCity={setCity} setAreas={setAreas} next={next} prev={prev} />,
+      content: <RouteInformation setCoordinate={setCoordinate} routeData={routeData} setStarTime={setStarTime} setTitle={setTitle} setStartLocation={setStartLocation} next={next} />,
     },
     {
       title: 'Finishing',
-      content: <Form3 routeData={routeData} setRouteFinishing={setRouteFinishing} SubmitDataHandler={SubmitDataHandler} />,
+      content: <Finished routeData={routeData} setRouteFinishing={setRouteFinishing} SubmitDataHandler={SubmitDataHandler} />,
     },
   ]
 

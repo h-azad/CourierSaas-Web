@@ -142,6 +142,7 @@ export const AREAS_FORM_LIST = "/area/form-list/"
 
 
 export const ROUTE = "/api/route/"
+export const ROUTE_AREA = "/api/route-area/"
 export const ROUTE_SEARCH = '/search-route/'
 
 export const RIDER_ROUTE = '/api/rider-route/'
