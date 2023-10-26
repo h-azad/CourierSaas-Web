@@ -122,6 +122,13 @@ const ListTable = () => {
               <Descriptions.Item label="Title">{record?.title}</Descriptions.Item>
               <Descriptions.Item label="Start Time">{record?.start_time}</Descriptions.Item>
               <Descriptions.Item label="Start Location">{record?.start_location}</Descriptions.Item>
+              <Descriptions.Item label="Areas">
+                {record?.route_area.map((data, index) => (
+                  <ul key={index}>
+                    <li> {data?.area?.area_name}</li>
+                  </ul>
+                ))}
+              </Descriptions.Item>
             </Descriptions>
           </td>
 

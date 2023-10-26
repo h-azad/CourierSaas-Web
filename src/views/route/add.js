@@ -17,15 +17,32 @@ import 'dayjs/locale/zh-cn'
 import { Steps } from 'antd'
 import RouteInformation from "./routeInformation"
 import Finished from "./finished"
+import RouteArea from "./routeArea"
 
 
 
 const AddRoute = () => {
   const [current, setCurrent] = useState(0)
-  const [startTime, setStarTime] = useState()
+  const [startTime, setStartTime] = useState()
+  console.log("startTime", startTime)
   const [title, setTitle] = useState()
   const [startLocation, setStartLocation] = useState()
   const [coordinate, setCoordinate] = useState()
+
+  const [selectCity, setSelectCity] = useState([])
+  const [selectArea, setSelectArea] = useState([])
+
+  const [fromValue, setFromValue] = useState({
+    startTime:'',
+
+  })
+
+  const [city, setCity] = useState()
+  const [area, setArea] = useState()
+
+  console.log('city', city)
+  console.log('area', area)
+  
   const navigate = useNavigate()
 
   const [routeFinishing, setRouteFinishing] = useState()
@@ -38,13 +55,18 @@ const AddRoute = () => {
   }
 
 
+
   const SubmitDataHandler = () => {
     const formData = new FormData()
-    formData.append('start_time', dayjs(startTime, { strict: false }).format("THH:mm:ss"))
+    formData.append('start_time', startTime)
     formData.append('title', title)
     formData.append('start_location', startLocation)
     formData.append('finishing', routeFinishing)
     formData.append('coordinate', coordinate)
+    formData.append('city', city)
+    formData.append('area', JSON.stringify(area))
+
+
     return useJwt
       // .axiosPost(getApi(ROUTE), formData, headers)
       .axiosPost(getApi(ROUTE), formData)
@@ -62,7 +84,7 @@ const AddRoute = () => {
     // stepsData: stepsData,
     setCoordinate: setCoordinate,
     coordinate: coordinate,
-    setStarTime: setStarTime,
+    setStartTime: setStartTime,
     startTime: startTime,
     setTitle: setTitle,
     title: title,
@@ -72,6 +94,19 @@ const AddRoute = () => {
   }
 
 
+  const routeAreaData = {
+    setCity: setCity,
+    setSelectCity: setSelectCity,
+    selectCity: selectCity,
+
+    setSelectArea: setSelectArea,
+    selectArea: selectArea,
+    city: city,
+    setArea: setArea,
+    area: area,
+    next: next,
+    prev: prev,
+  }
   
   const finishedData = {
     setRouteFinishing: setRouteFinishing,
@@ -98,6 +133,10 @@ const AddRoute = () => {
     {
       title: 'Route Information',
       content: <RouteInformation routeInformationData={routeInformationData} />,
+    },
+    {
+      title: 'Route Areas',
+      content: <RouteArea routeAreaData={routeAreaData} />,
     },
     {
       title: 'Finishing',

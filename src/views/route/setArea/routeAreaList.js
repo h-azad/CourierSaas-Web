@@ -123,14 +123,14 @@ const RouteAreaList = () => {
               <Descriptions.Item label="Title">{record?.route?.title}</Descriptions.Item>
               <Descriptions.Item label="Start Time">{record.route?.start_time}</Descriptions.Item>
               <Descriptions.Item label="Start Location">{record.route?.start_location}</Descriptions.Item>
-              <Descriptions.Item label="Rider">{record?.rider?.full_name}</Descriptions.Item>
-              {/* <Descriptions.Item label="Areas">
-                {JSON.parse(record?.route?.area).map((data) => (
-                  <ul>
-                    <li> {data?.label}</li>
+              {/* <Descriptions.Item label="Areas">{record?.rider?.full_name}</Descriptions.Item> */}
+              <Descriptions.Item label="Areas">
+                {record?.area.map((data, index) => (
+                  <ul key={index}>
+                    <li> {data?.area?.area_name}</li>
                   </ul>
                 ))}
-              </Descriptions.Item> */}
+              </Descriptions.Item>
             </Descriptions>
           </td>
 
@@ -175,13 +175,13 @@ const RouteAreaList = () => {
 
   }, [JSON.stringify(tableParams)])
 
-  // useEffect(() => {
-  //   fetchRouteData()
-  // }, [JSON.stringify(filterQuery)])
-
   useEffect(() => {
     fetchRouteData()
-  }, [])
+  }, [JSON.stringify(filterQuery)])
+
+  // useEffect(() => {
+  //   fetchRouteData()
+  // }, [])
 
 
 
@@ -192,7 +192,7 @@ const RouteAreaList = () => {
           <div className="col-lg-5">
             <div className="d-flex align-items-center">
               <Link to={'/route/set-rider'}>
-                <Button.Ripple color="primary">Set Rider</Button.Ripple>
+                <Button.Ripple color="primary">Set Area</Button.Ripple>
               </Link>
             </div>
           </div>
@@ -203,7 +203,6 @@ const RouteAreaList = () => {
                 name="user_name"
                 type="text"
                 class="form-control"
-                // onChange={handleSearch}
                 onChange={(e) => { updateFilterQUery('search', e.target.value) }}
               />
               <Button.Ripple className="btn-icon ms-1" outline color="primary">
@@ -216,55 +215,7 @@ const RouteAreaList = () => {
 
       <Table scroll={{ x: true }} columns={columns} dataSource={route} onChange={handleTableChange} pagination={tableParams.pagination} />
 
-      {/* <Table bordered>
-        <thead>
 
-        </thead>
-        <tbody>
-          {route &&
-            route.map((info) => (
-              <tr key={info.id}>
-                <td>
-                  <Descriptions>
-                    <Descriptions.Item label="Title">{info.title}</Descriptions.Item>
-                    <Descriptions.Item label="Start Time">{info.start_time}</Descriptions.Item>
-                    <Descriptions.Item label="Start Location">{info.start_location}</Descriptions.Item>
-                    <Descriptions.Item label="Areas">
-                      {JSON.parse(info.area).map((data)=>(
-                        <ul>
-                          <li> {data.label}</li>
-                        </ul>
-                      ))}
-                    </Descriptions.Item>
-                  </Descriptions>
-                </td>
-
-                <td>
-                  <UncontrolledDropdown>
-                    <DropdownToggle
-                      className="icon-btn hide-arrow"
-                      color="transparent"
-                      size="sm"
-                      caret
-                    >
-                      <MoreVertical size={15} />
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      <DropdownItem href={"/route/edit/" + info.id}>
-                        <Edit className="me-50" size={15} />{" "}
-                        <span className="align-middle">Edit</span>
-                      </DropdownItem>
-                      <DropdownItem href="/" onClick={e => deleteAction(e, info.id)}>
-                        <Trash className="me-50" size={15} />{" "}
-                        <span className="align-middle">Delete</span>
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </UncontrolledDropdown>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </Table> */}
     </>
   )
 }

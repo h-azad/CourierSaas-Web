@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react'
-import { useForm, Controller } from 'react-hook-form'
-import { Input, Label, Card, CardBody, Button, Form } from "reactstrap"
-import { TimePicker } from 'antd'
+import { Button } from "reactstrap"
+import { Form, Input, TimePicker, Col, Row } from 'antd'
 import { useState } from 'react'
 import { GoogleMap, Marker } from '@react-google-maps/api'
 import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
+
+import dayjs from 'dayjs'
+import moment from 'moment/moment'
+const format = 'H:mm'
 
 const containerStyle = {
   width: '100%',
@@ -12,43 +15,26 @@ const containerStyle = {
 }
 
 
-// export default function RouteInformation({ setCoordinate, setStarTime, setTitle, setStartLocation, next }) {
 export default function RouteInformation({ routeInformationData }) {
   const [map, setMap] = useState(null)
-  const { setError, handleSubmit, control, formState: { errors } } = useForm()
+  const [form] = Form.useForm()
   const [value, setValue] = useState(null)
 
-  const onChange = (time, timeString) => {
-    routeInformationData?.setStarTime(time)
-  }
 
-  const onSubmit = data => {
-    let isFormValid = true
-    if (!data.start_time) {
-      setError('start_time', { type: 'required', message: 'start_time is required' })
-      isFormValid = false
-    }
-    if (!data.route_title) {
-      setError('route_title', { type: 'required', message: ' route_title is required' })
-      isFormValid = false
-    }
-
-    if (!data.start_location) {
-      setError('start_location', { type: 'required', message: ' start_location is required' })
-      isFormValid = false
-    }
-
-    if (data.start_time !== null && data.route_title !== null && data.start_location !== null) {
-      routeInformationData?.setTitle(data.route_title)
-      routeInformationData?.setStartLocation(value.label)
-      routeInformationData?.setCoordinate(JSON.stringify(map))
-      routeInformationData?.next()
-    }
-
+  const onFinish = (data) => {
+    const formattedEventDate = dayjs(data?.start_time).format(format)
+    routeInformationData?.setStartTime(formattedEventDate)
+    routeInformationData?.setTitle(data.route_title)
+    // routeInformationData?.setStartLocation(value.label)
+    routeInformationData?.setCoordinate(JSON.stringify(map))
+    routeInformationData?.next()
   }
 
   useEffect(() => {
     if (value) {
+
+      routeInformationData?.setStartLocation(value?.label)
+
       geocodeByAddress(value.label)
         .then(results => getLatLng(results[0]))
         .then(({ lat, lng }) => {
@@ -58,86 +44,118 @@ export default function RouteInformation({ routeInformationData }) {
     }
   }, [value])
 
+  useEffect(() => {
+    // if (routeInformationData?.startTime != null) {
+    //   form.setFieldValue("start_time", dayjs(routeInformationData?.startTime).format(format) )
+    // }
+    form.setFieldValue("route_title", routeInformationData?.title)
+
+
+  }, [])
+
 
 
   return (
-    <Card>
-      <CardBody>
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <div class="row">
-            <div class="col-lg-6">
-              <div className='mb-1'>
-                <Label className='form-label' for='start_time'>
-                  Start Time
-                </Label>
-                <TimePicker className='col-lg-12 col-md-12 col-sm-12 col-' name='start_time' size="large" use12Hours format="h:mm A" onChange={onChange} />
-                {errors && errors.start_time && <span className="invalid-feedback">{errors.start_time.message}</span>}
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div className='mb-1'>
-                <Label className='form-label' for='route_title'>
-                  Route Title
-                </Label>
-                <Controller
-                  control={control}
-                  id='route_title'
-                  name='route_title'
-                  defaultValue={routeInformationData?.title}
-                  render={({ field }) => (
-                    <Input
-                      // required={true}
-                      type='text'
-                      placeholder='Route No..1'
-                      invalid={errors.route_title && true}
-                      {...field}
-                    />
-                  )}
-                />
-                {errors && errors.route_title && <span className="invalid-feedback">{errors.route_title.message}</span>}
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div className='col-md-6'>
-              <Label className='form-label' for='route_title'>
-                Start Location
-              </Label>
-              <GooglePlacesAutocomplete
-                apiKey='AIzaSyA_bi6febAzWK5EPN8cWv986ATCRxhK-ac'
-                selectProps={{
-                  value,
-                  onChange: setValue,
-                  isClearable: true,
-                  placeholder: "Mirpur DOHS, Dhaka, Bangladesh",
-                }}
-              />
 
-              <div className='d-flex mt-2'>
-                <Button className='me-1' color='primary' type='submit'>
-                  Next
-                </Button>
+    <Row>
+      <Col span={24}>
+        <Form form={form} name="basic"
+          labelCol={{
+            span: 8,
+          }}
+          wrapperCol={{
+            span: 16,
+          }}
+          style={{
+            maxWidth: 600,
+          }}
+          initialValues={{
+            remember: true,
+          }}
+          onFinish={onFinish}
+          // onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item
+
+            label="Start Time"
+            name="start_time"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your Start Time!',
+              },
+            ]}
+          >
+            <TimePicker style={{ width: '100%' }} use12Hours format={format} />
+          </Form.Item>
+
+
+          <Form.Item
+            label="Route Title"
+            name="route_title"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your Route Title',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Row>
+            <Col span={12}>
+              <Form.Item
+                label="Start Location"
+                name="route_title"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your Route Title',
+                  },
+                ]}
+              >
+                <GooglePlacesAutocomplete
+                  apiKey='AIzaSyA_bi6febAzWK5EPN8cWv986ATCRxhK-ac'
+                  selectProps={{
+                    value,
+                    onChange: setValue,
+                    isClearable: true,
+                    placeholder: "Mirpur DOHS, Dhaka, Bangladesh",
+                  }}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <div>
+                {map && (
+                  <GoogleMap
+                    mapContainerStyle={containerStyle}
+                    center={map}
+                    zoom={15}
+                    
+                  >
+                    <Marker
+                      position={map}
+                      animation="bounce"
+                    />
+                  </GoogleMap>
+                )}
               </div>
-            </div>
-            <div className='col-md-6'>
-              {map && (
-                <GoogleMap
-                  mapContainerStyle={containerStyle}
-                  center={map}
-                  zoom={15}
-                >
-                  { /* Child components, such as markers, info windows, etc. */}
-                  <Marker
-                    position={map}
-                    // label={value.value.structured_formatting.main_text}
-                    animation="bounce"
-                  />
-                </GoogleMap>
-              )}
-            </div>
-          </div>
+
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Button className='me-1' color='primary' type='submit'>
+                Next
+              </Button>
+            </Col>
+          </Row>
         </Form>
-      </CardBody>
-    </Card>
+      </Col>
+    </Row>
+
   )
 }
