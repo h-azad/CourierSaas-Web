@@ -186,7 +186,7 @@ const RiderRouteList = () => {
         <div className="row justify-content-between">
           <div className="col-lg-5">
             <div className="d-flex align-items-center">
-              <Link to={'/route/set-rider'}>
+              <Link to={'/set-route-rider'}>
                 <Button.Ripple color="primary">Set Rider</Button.Ripple>
               </Link>
             </div>

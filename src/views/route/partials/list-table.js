@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash, Search } from "react-feather"
+import { MoreVertical, Edit, Trash, Search, ArrowLeft } from "react-feather"
 import {
   UncontrolledDropdown,
   DropdownMenu,
@@ -7,10 +7,11 @@ import {
   DropdownToggle,
   Button,
   CardText,
+  Modal, ModalHeader, ModalBody, ModalFooter
 } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, ROUTE } from "../../../constants/apiUrls"
+import { getApi, ROUTE, UNRIDER_ROUTE } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import { Descriptions } from 'antd'
@@ -21,6 +22,7 @@ import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
 const ListTable = () => {
   const [route, setRoute] = useState([])
+  const [statusModalState, setStatusModalState] = useState(false)
 
 
 
@@ -107,6 +109,43 @@ const ListTable = () => {
   }
 
 
+  const fetchUnAssignData = () => {
+    // return useJwt.axiosGet(getApi(`${ROUTE}un_assign_rider/${1}`))
+    return useJwt.axiosGet(getApi(`${ROUTE}assign_rider/`))
+      .then((res) => {
+        console.log(res.data)
+        setOrder(res.data)
+      }).catch((err) => {
+        console.log(err)
+      })
+  }
+
+
+  const RouteRiderAssign = (e, info) => {
+    e.preventDefault()
+    fetchUnAssignData()
+    setStatusModalState(true)
+
+  }
+
+
+  // const delivaryHandler = (e) => {
+
+  //   e.preventDefault()
+  //   useJwt
+  //     .axiosPost(getApi(DELIVERY_ASSIGNMENT + "/"), {
+  //       riderId: riderId,
+  //       selectedOrderIds: selectedOrderIds
+  //     })
+  //     .then((res) => {
+  //       setStatusModalState(false)
+  //     })
+  //   //   .finally(() => fetchRiderData())
+  // }
+
+ 
+
+
 
 
 
@@ -130,6 +169,16 @@ const ListTable = () => {
                 ))}
               </Descriptions.Item>
             </Descriptions>
+            
+            <Descriptions>
+              <Descriptions.Item label="Rider">
+                {record?.rider.map((riderData, index) => (
+                  <ul key={index}>
+                    <li> {riderData?.rider?.full_name}</li>
+                  </ul>
+                ))}
+              </Descriptions.Item>
+            </Descriptions>
           </td>
 
           <td>
@@ -147,6 +196,12 @@ const ListTable = () => {
                   <Edit className="me-50" size={15} />{" "}
                   <span className="align-middle">Edit</span>
                 </DropdownItem>
+
+                <DropdownItem href="/" onClick={e => RouteRiderAssign(e, record.id)}>
+                  <ArrowLeft className="me-50" size={15} />{" "}
+                  <span className="align-middle">Assign Rider</span>
+                </DropdownItem>
+
                 <DropdownItem href="/" onClick={e => deleteAction(e, record.id)}>
                   <Trash className="me-50" size={15} />{" "}
                   <span className="align-middle">Delete</span>
@@ -207,9 +262,25 @@ const ListTable = () => {
           </div>
         </div>
       </CardText>
+      <div className="table-responsive">
+        <Table scroll={{ x: true }} columns={columns} dataSource={route} onChange={handleTableChange} pagination={tableParams.pagination} />
+      </div>
 
-      <Table scroll={{ x: true }} columns={columns} dataSource={route} onChange={handleTableChange} pagination={tableParams.pagination} />
 
+      <Modal isOpen={statusModalState} toggle={() => setStatusModalState(!statusModalState)} className='modal-dialog-centered'>
+        <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>{'Rider Assign'}</ModalHeader>
+        <ModalBody>
+          {/* <div class="table-responsive">
+            {orders &&
+              <Table scroll={{ x: true }} columns={columnsOrders} dataSource={orders} onChange={handleTableChange} pagination={false} />
+            }
+          </div> */}
+        </ModalBody>
+        <ModalFooter>
+          {/* <Button color='primary' loading={loadings[1]} onClick={delivaryHandler}>Assign</Button> */}
+          {/* <Button color='primary' onClick={delivaryHandler}>Assign</Button> */}
+        </ModalFooter>
+      </Modal>
     </>
   )
 }

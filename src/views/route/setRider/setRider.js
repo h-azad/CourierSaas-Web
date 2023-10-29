@@ -25,6 +25,7 @@ const SetRiderInRoute = () => {
 
   const [selectRoute, setSelectRoute] = useState([])
   const [selectRider, setSelectRider] = useState([])
+  const [error, setError] = useState()
 
 
   const navigate = useNavigate()
@@ -87,10 +88,10 @@ const SetRiderInRoute = () => {
 
   const handleChange = (value) => {
     // fetchAreaData(value)
-    
+
 
     useJwt
-      .axiosGet(getApi(RIDER_ROUTE)+ `?route=${value}`)
+      .axiosGet(getApi(RIDER_ROUTE) + `?route=${value}`)
       .then((res) => {
         console.log('response rider route', res)
         // SwalAlert("Rider Set Route Successfully")
@@ -111,9 +112,9 @@ const SetRiderInRoute = () => {
       .then((res) => {
         SwalAlert("Rider Set Route Successfully")
         toast.success('Rider Set Route Successfully')
-        navigate("/route/rider-route")
+        navigate("/rider-route")
       })
-      .catch(err => toast.error(`Rider Set Route ${err?.response?.data?.non_field_errors[0]}`))
+      .catch(err => { toast.error(`Rider Set Route ${err?.response?.data?.non_field_errors[0]}`), setError(err?.response?.data?.non_field_errors[0]) })
 
     // routeAreaData?.setCity(data.city)
     // routeAreaData?.setArea(data.area)
@@ -186,6 +187,14 @@ const SetRiderInRoute = () => {
       </CardHeader>
 
       <CardBody>
+        <div>
+          {error &&
+            <>
+              <h3 className="text-danger">{error}</h3>
+              <h3 className="text-danger">Rider Already Exit</h3>
+            </>
+          }
+        </div>
         <Form
           form={form}
           name="basic"
@@ -241,7 +250,7 @@ const SetRiderInRoute = () => {
           >
 
             <Select
-              mode="multiple"
+              // mode="multiple"
               allowClear
               style={{
                 width: '100%',

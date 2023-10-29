@@ -422,11 +422,11 @@ const DashboardRoutes = [
     element: <SetAreaToRoute />
   },
   {
-    path: "/route/set-rider",
+    path: "/set-route-rider",
     element: <SetRiderInRoute />
   },
   {
-    path: "/route/rider-route",
+    path: "/rider-route",
     element: <RiderRouteList/>
   },
   {

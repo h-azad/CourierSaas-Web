@@ -458,52 +458,58 @@ const adminMenu = [
         ]
       },
 
-
       {
-        id: "_route-area",
-        title: "Route Area",
+        id: "rider-route",
+        title: "Rider Routes",
         children: [
           {
-            id: 'route-area',
-            title: 'Route Area',
+            id: 'rider-route-index',
+            title: 'Rider Route',
             icon: <Circle size={12} />,
             action: 'admin-pages',
             resource: 'Route-write',
-            navLink: "/route/area/",
+            navLink: "/rider-route",
           },
 
           {
-            id: 'set-route-area',
-            title: 'Set Route Area',
+            id: 'set-rider',
+            title: 'Set Rider',
             icon: <Circle size={12} />,
             action: 'admin-pages',
             resource: 'Route-write',
-            navLink: "/route/set-area/",
+            navLink: "/set-route-rider",
           },
         ]
       },
+
+
+      // {
+      //   id: "_route-area",
+      //   title: "Route Area",
+      //   children: [
+      //     {
+      //       id: 'route-area',
+      //       title: 'Route Area',
+      //       icon: <Circle size={12} />,
+      //       action: 'admin-pages',
+      //       resource: 'Route-write',
+      //       navLink: "/route/area/",
+      //     },
+
+      //     {
+      //       id: 'set-route-area',
+      //       title: 'Set Route Area',
+      //       icon: <Circle size={12} />,
+      //       action: 'admin-pages',
+      //       resource: 'Route-write',
+      //       navLink: "/route/set-area/",
+      //     },
+      //   ]
+      // },
       
       
 
-      {
-        id: 'rider-route',
-        title: 'Rider Route',
-        icon: <Circle size={12} />,
-        action: 'admin-pages',
-        resource: 'Route-write',
-        navLink: "/route/rider-route",
-      },
-
       
-      
-      {
-        id: 'set-rider',
-        title: 'Set Rider',
-        icon: <Circle size={12} />,
-        action: 'admin-pages',
-        resource: 'Route-write',
-        navLink: "/route/set-rider",
-      },
     ]
   },
 

@@ -143,9 +143,11 @@ export const AREAS_FORM_LIST = "/area/form-list/"
 
 export const ROUTE = "/api/route/"
 export const ROUTE_AREA = "/api/route-area/"
+export const UNRIDER_ROUTE = '/api/unroute/rider/'
 export const ROUTE_SEARCH = '/search-route/'
 
 export const RIDER_ROUTE = '/api/rider-route/'
+
 export const ROUTE_FORM_LIST = '/route/form-list/'
 
 // export const AREAS_FILTER_BY_CITY = '/filter-by-city/'
