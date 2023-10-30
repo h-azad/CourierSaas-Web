@@ -513,20 +513,63 @@ const adminMenu = [
     ]
   },
 
-  {
-    header: 'Settings',
-    action: 'admin-pages',
-    resource: 'setting',
-  },
+  // {
+  //   header: 'Settings',
+  //   action: 'admin-pages',
+  //   resource: 'setting',
+  // },
 
   {
-    id: "company-setting",
-    title: "Company Setting",
-    icon: <Archive size={20} />,
+    id: "Setting",
+    title: "Setting",
     action: 'admin-pages',
-    resource: 'company-setting',
-    navLink: "/setting"
+    resource: 'setting',
+    icon: <Archive size={20} />,
+
+    children: [
+
+      {
+        id: "application-setting",
+        title: "Application Setting",
+        children: [
+          {
+            id: 'application-setting-index',
+            title: 'Index',
+            icon: <Circle size={12} />,
+            action: 'admin-pages',
+            resource: 'setting',
+            navLink: "/setting/application/",
+          },
+          {
+            id: "application-setting-create",
+            title: "Create",
+            icon: <Circle size={20} />,
+            action: 'admin-pages',
+            resource: 'company-setting',
+            navLink: "/setting/application/create/"
+          },
+        ]
+      },
+
+      {
+        id: "company-setting",
+        title: "Company Setting",
+        children: [
+          {
+            id: "company-setting",
+            title: "Company Setting",
+            icon: <Circle size={20} />,
+            action: 'admin-pages',
+            resource: 'company-setting',
+            navLink: "/setting/"
+          },
+        ]
+      },
+
+    ]
   },
+
+  
 
   {
     id: "shipment_type",

@@ -332,6 +332,7 @@ export const USER_LOCATION = '/api/user/user-location/'
 //Create Organization
 export const CREATE_ORGANIZATION = "/api/user/create-tanent"
 export const COMPANY_SETTING = '/api/company-setting/'
+export const APPLICATION_SETTING = '/api/application/setting/'
 
 export const getApi = (api) => {
     console.log(api)

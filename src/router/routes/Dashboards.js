@@ -112,6 +112,7 @@ import RiderRouteList from '@src/views/route/setRider/riderRouteList'
 import MarchantAndRiderDistance from '@src/views/create_order/marchantAndRiderDistance/marchantAndRiderDistance'
 import SetAreaToRoute from '@src/views/route/setArea/setArea'
 import RouteAreaList from '@src/views/route/setArea/routeAreaList'
+import CreateApplicationSetting from '@src/views/application_setting_app/application_setting/createApplicationSetting'
 
 
 const Home = lazy(() => import("../../views/Home"))
@@ -436,9 +437,15 @@ const DashboardRoutes = [
   
 
   {
-    path: "/setting",
+    path: "/setting/",
     element: <SettingComponent/>
   },
+
+  {
+    path: "/setting/application/create/",
+    element: <CreateApplicationSetting />
+  },
+
   {
     path: "/setting/password",
     element: <UserChangePassword/>
