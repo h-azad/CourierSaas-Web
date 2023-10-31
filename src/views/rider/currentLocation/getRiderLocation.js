@@ -11,6 +11,7 @@ import {
   CardTitle,
   CardBody,
 } from "reactstrap"
+import { googleKey } from "@src/configs/google_key"
 
 const styles = {
   markerStyle: {
@@ -32,6 +33,7 @@ const styles = {
 const GetCurrentLocationRider = () => {
   const [selectLocationData, setSelectLocationData] = useState([])
   const [activeMarker, setActiveMarker] = useState()
+
 
   const fetchLocationData = () => {
     return useJwt
@@ -55,6 +57,7 @@ const GetCurrentLocationRider = () => {
     fetchLocationData()
   }, [])
 
+  console.log('geti rider location', googleKey())
 
   return (
 
@@ -113,7 +116,7 @@ const MapComponent = ({ data, activeMarker, updateActive }) => {
   return (
     <div style={{ height: "500px", width: "100%" }}>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyA_bi6febAzWK5EPN8cWv986ATCRxhK-ac" }}
+        bootstrapURLKeys={{ key: googleKey() }}
         defaultCenter={center}
         defaultZoom={7}
       >

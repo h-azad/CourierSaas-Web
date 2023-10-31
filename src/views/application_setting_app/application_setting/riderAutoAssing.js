@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react'
-import { Button, Checkbox, Form, Input } from 'antd'
+import React, { useEffect } from 'react'
+import { Button, Checkbox, Form, Select } from 'antd'
 
 
-const GoogleKey = ({ propsData }) => {
+const RiderAutoAssign = ({ propsData }) => {
 
   const [form] = Form.useForm()
 
@@ -18,15 +18,10 @@ const GoogleKey = ({ propsData }) => {
   }
 
 
-  useEffect(() => {
-    if (propsData) {
-      form.setFieldValue("google_key", propsData?.googleKey)
-    }
-  }, [])
 
   return (
     <Form
-    form={form}
+      form={form}
       name="Google Key Setting"
       labelCol={{
         span: 8,
@@ -44,12 +39,18 @@ const GoogleKey = ({ propsData }) => {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
-      <Form.Item
-        label="Google Key"
-        name="google_key"
+      <Form.Item label="Automatic Picked Order Assing To Rider" name="picked_auto_assign">
+        <Select defaultValue={propsData?.pickupAutoAssingToRider} onChange={(e) => { propsData.SetPickupAutoAssingToRider(e) }} placeholder="select your Rider Auto Assign">
+          <Option value={true}>Active</Option>
+          <Option value={false}>InActive</Option>
+        </Select>
+      </Form.Item>
 
-      >
-        <Input onChange={(e) => { propsData.setGoogleKey(e.target.value) }} />
+      <Form.Item label="Automatic Delivery Order Assing To Rider" name="delivery_auto_assign">
+        <Select defaultValue={propsData?.deliveryAutoAssingToRider} onChange={(e) => { propsData.SetDeliveryAutoAssingToRider(e) }} placeholder="select your Rider Auto Assign">
+          <Option value={true}>Active</Option>
+          <Option value={false}>InActive</Option>
+        </Select>
       </Form.Item>
 
       <Form.Item
@@ -79,4 +80,4 @@ const GoogleKey = ({ propsData }) => {
 }
 
 
-export default GoogleKey
+export default RiderAutoAssign

@@ -9,7 +9,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import {
   getApi,
   GET_USER,
-  PROFILE
+  PROFILE,
+  APPLICATION_SETTING
 } from "@src/constants/apiUrls"
 
 // ** Custom Hooks
@@ -25,7 +26,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { Facebook, Twitter, Mail, GitHub, HelpCircle, Coffee, X } from 'react-feather'
 
 // ** Actions
-import { handleLogin, handleProfileData } from '@store/authentication'
+import { handleLogin, handleProfileData, handleApplicationData } from '@store/authentication'
 
 // ** Context
 import { AbilityContext } from '@src/utility/context/Can'
@@ -122,6 +123,7 @@ const Login = () => {
             <ToastContent t={t} role={data.role || 'admin'} name={data.name || 'John Doe'} />
           ))
           fetchUserData()
+          fetchApplicationData()
         })
         .catch(err => setErrors(err.response.data.errors.non_field_errors))
     } else {
@@ -137,6 +139,14 @@ const Login = () => {
   //n
 
 
+  const fetchApplicationData = () => {
+    return useJwt
+      .axiosGet(getApi(APPLICATION_SETTING))
+      .then((res) => {
+        dispatch(handleApplicationData(res?.data[0]))
+      })
+      .catch(err => console.log(err))
+  }
 
   const fetchProfileData = () => {
     return useJwt

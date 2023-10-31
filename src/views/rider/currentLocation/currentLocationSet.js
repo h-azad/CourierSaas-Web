@@ -25,10 +25,10 @@ import { GoogleMap, Marker } from '@react-google-maps/api'
 import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
 
 import axios from "axios"
+import { googleKey } from "@src/configs/google_key"
 
 const CurrentLocationSet = () => {
 
-  console.log("Hello Joy")
 
   const [latitude, setLatitude] = useState("")
   const [longitude, setLongitude] = useState("")
@@ -51,7 +51,7 @@ const CurrentLocationSet = () => {
 
   const getMyLocation = async () => {
 
-    const GOOGLE_API_KEY = "AIzaSyA_bi6febAzWK5EPN8cWv986ATCRxhK-ac"
+    const GOOGLE_API_KEY = googleKey()
 
     if (window.navigator && window.navigator.geolocation) {
       const location = window.navigator.geolocation
@@ -100,8 +100,8 @@ const CurrentLocationSet = () => {
 
  
 
-  console.log('latitude', latitude)
-  console.log('longitude', longitude)
+  // console.log('latitude', latitude)
+  // console.log('longitude', longitude)
 
 
   return (

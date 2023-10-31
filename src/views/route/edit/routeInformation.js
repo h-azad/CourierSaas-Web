@@ -5,6 +5,7 @@ import { TimePicker } from 'antd'
 import { useState } from 'react'
 import { GoogleMap, Marker } from '@react-google-maps/api'
 import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
+import { googleKey } from "@src/configs/google_key"
 
 const containerStyle = {
   width: '100%',
@@ -112,7 +113,7 @@ export default function RouteInformation({ setCoordinate, routeData, setStarTime
                 Start Location
               </Label>
               <GooglePlacesAutocomplete
-                apiKey='AIzaSyA_bi6febAzWK5EPN8cWv986ATCRxhK-ac'
+                apiKey={googleKey}
                 selectProps={{
                   value,
                   onChange: setValue,

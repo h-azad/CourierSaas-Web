@@ -4,6 +4,7 @@ import { Input, Label, Card, CardHeader, CardTitle, CardBody, Button, Form } fro
 import { Space, TimePicker } from 'antd'
 import { GoogleMap, Marker } from '@react-google-maps/api'
 import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
+import { googleKey } from "@src/configs/google_key"
 
 export default function Form1({ setCoordinate, routeData, setStarTime, setTitle, setStartLocation, next }) {
   const [map, setMap] = useState(null)
@@ -111,7 +112,7 @@ export default function Form1({ setCoordinate, routeData, setStarTime, setTitle,
                 Start Location
               </Label>
               <GooglePlacesAutocomplete
-                apiKey='AIzaSyA_bi6febAzWK5EPN8cWv986ATCRxhK-ac'
+                apiKey={googleKey()}
                 selectProps={{
                   value,
                   onChange: setValueMap,

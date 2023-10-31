@@ -1,52 +1,35 @@
 import React, { useEffect } from 'react'
 import { Button, Checkbox, Form, Input, Select } from 'antd'
 
-import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, APPLICATION_SETTING } from '@src/constants/apiUrls'
-import SwalAlert from '@src/components/SwalAlert'
 
-
-const PusherSetting = ({ pusherProps }) => {
+const PusherSetting = ({ propsData }) => {
 
   const [form] = Form.useForm()
 
   const onFinish = (values) => {
-
-    let formData = new FormData()
-    formData.append('app_id', values.app_id)
-    formData.append('key', values.key)
-    formData.append('secret', values.secret)
-    formData.append('cluster', values.cluster)
-    formData.append('ssl', values.ssl)
-
-    return useJwt
-      .axiosPost(getApi(APPLICATION_SETTING), formData)
-      .then((res) => {
-        SwalAlert("Application Create Successfully")
-      })
-      .catch(err => console.log(err))
+    propsData.onSubmit()
   }
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo)
   }
-  
+
 
   useEffect(() => {
-    if (pusherProps) {
-
-      form.setFieldValue("app_id", pusherProps?.appID)
-      form.setFieldValue("key", pusherProps?.key)
-      form.setFieldValue("secret", pusherProps?.secret)
-      form.setFieldValue("cluster", pusherProps?.cluster)
-      form.setFieldValue("ssl", pusherProps?.ssl)
+    if (propsData) {
+      console.log('propsData?.ssl', propsData?.ssl)
+      form.setFieldValue("app_id", propsData?.appID)
+      form.setFieldValue("key", propsData?.key)
+      form.setFieldValue("secret", propsData?.secret)
+      form.setFieldValue("cluster", propsData?.cluster)
+      // form.setFieldValue("ssl", propsData?.ssl)
 
     }
-  }, [pusherProps])
+  }, [])
 
-  return(
+  return (
     <Form
-    form={form}
+      form={form}
       name="Pusher Setting"
       labelCol={{
         span: 8,
@@ -67,72 +50,35 @@ const PusherSetting = ({ pusherProps }) => {
       <Form.Item
         label="App ID"
         name="app_id"
-      // rules={[
-      //   {
-      //     required: true,
-      //     message: 'Please input your app id!',
-      //   },
-      // ]}
       >
-        <Input />
+        <Input onChange={(e) => { propsData.setAppID(e.target.value) }} />
       </Form.Item>
 
       <Form.Item
         label="Key"
         name="key"
-      // rules={[
-      //   {
-      //     required: true,
-      //     message: 'Please input your key!',
-      //   },
-      // ]}
       >
-        <Input />
+        <Input onChange={(e) => { propsData.setKey(e.target.value) }} />
       </Form.Item>
 
       <Form.Item
         label="Secret"
         name="secret"
-      // rules={[
-      //   {
-      //     required: true,
-      //     message: 'Please input your secret!',
-      //   },
-      // ]}
       >
-        <Input />
+        <Input onChange={(e) => { propsData.setSecret(e.target.value) }} />
       </Form.Item>
 
       <Form.Item
         label="Cluster"
         name="cluster"
-      // rules={[
-      //   {
-      //     required: true,
-      //     message: 'Please input your cluster!',
-      //   },
-      // ]}
       >
-        <Input />
+        <Input onChange={(e) => { propsData.setCluster(e.target.value) }} />
       </Form.Item>
 
-      {/* <Form.Item
-        label="SSL"
-        name="ssl"
-      // rules={[
-      //   {
-      //     required: true,
-      //     message: 'Please input your ssl!',
-      //   },
-      // ]}
-      >
-        <Input />
-      </Form.Item> */}
-
       <Form.Item label="SSL" name="ssl">
-        <Select placeholder="select your SSL">
-          <Option value="True">Active</Option>
-          <Option value="False">InActive</Option>
+        <Select defaultValue={propsData?.ssl} onChange={(e) => { propsData.setSSL(e) }} placeholder="select your SSL">
+          <Option value={true}>Active</Option>
+          <Option value={false}>InActive</Option>
         </Select>
       </Form.Item>
 
