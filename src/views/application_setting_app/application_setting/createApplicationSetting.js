@@ -11,9 +11,14 @@ import GoogleKey from './googleKey'
 import RiderAutoAssign from './riderAutoAssing'
 import ApplicationLogo from './applicationLogo'
 
+import { handleApplicationData } from '@src/redux/authentication'
+import { useDispatch } from 'react-redux'
+
+
 
 
 const CreateApplicationSetting = () => {
+  const dispatch = useDispatch()
   const [applicationID, setApplicationID] = useState('')
   const [emailHost, setEmailHost] = useState('')
   const [emailHostUser, setEmailHostUser] = useState('')
@@ -60,6 +65,7 @@ const CreateApplicationSetting = () => {
     return useJwt
       .axiosPost(getApi(APPLICATION_SETTING), formData)
       .then((res) => {
+        fetchApplicationData()
         SwalAlert("Application Create Successfully")
       })
       .catch(err => console.log(err))
@@ -101,6 +107,14 @@ const CreateApplicationSetting = () => {
   }
 
 
+  const fetchApplicationData = () => {
+    return useJwt
+      .axiosGet(getApi(APPLICATION_SETTING))
+      .then((res) => {
+        dispatch(handleApplicationData(res?.data[0]))
+      })
+      .catch(err => console.log(err))
+  }
 
  
 

@@ -7,7 +7,7 @@ import ReportHead from "./ReportHead"
 import React from 'react'
 import * as qs from 'qs'
 import { Table, Tag } from "antd"
-import { colorSwitch, OrderStatusOptions } from "../../../components/orderRelatedData"
+import { colorSwitch, MarchantOrderStatusOptions } from "../../../components/orderRelatedData"
 import { handlePDFQuery, handleSearchQuery } from "../../../components/reportRelatedData"
 
 import { GENERAL_ROW_SIZE } from '../../../constants/tableConfig'
@@ -64,7 +64,7 @@ const OrderReport = () => {
 
 		updateFilterQUery: updateFilterQUery,
 		filterQuery: filterQuery,
-		statusOptions: OrderStatusOptions,
+		statusOptions: MarchantOrderStatusOptions,
 		fetchDefalutData: fetchDefalutData,
 
 		selectOptionKey: "status",

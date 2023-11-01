@@ -14,7 +14,7 @@ import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, RIDER_SEARCH_CREATE_ORDER_FILTER, ORDER_STATISTICS } from "../../../constants/apiUrls"
 
 import * as qs from 'qs'
-import { OrderStatusOptions, colorSwitch } from '../../../components/orderRelatedData'
+import { RiderOrderStatusOptions, colorSwitch } from '../../../components/orderRelatedData'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 import { Checkbox, DatePicker, Input, Typography, Tag, Table } from "antd"
 import {
@@ -255,7 +255,7 @@ function CurrentTaskList() {
                     updateFilterQUery('status', e?.value)
                     setOrderStatus(e)
                   }}
-                  options={OrderStatusOptions}
+                  options={RiderOrderStatusOptions}
                   value={orderStatus}
                 />
               </div>

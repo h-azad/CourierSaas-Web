@@ -7,7 +7,7 @@ import React from 'react'
 import { Table, Tag } from "antd"
 import * as qs from 'qs'
 
-import { colorSwitch, OrderStatusOptions } from "../../components/orderRelatedData"
+import { colorSwitch, AdminOrderStatusOptions } from "../../components/orderRelatedData"
 import { handlePDFQuery, handleSearchQuery } from "../../components/reportRelatedData"
 
 import { GENERAL_ROW_SIZE } from "../../constants/tableConfig"
@@ -99,7 +99,7 @@ const AdminOrderReport = () => {
 		getDataApiUrl: ADMIN_GET_ORDER_REPORT_APIVIEW,
 		fetchReportPDF: ADMIN_GET_ORDER_REPORT_GENERATE_PDF_APIVIEW,
 		
-		statusOptions: OrderStatusOptions,
+		statusOptions: AdminOrderStatusOptions,
 		selectboxData: selectboxMarchant,
 		selectboxRider: selectboxRider,
 

@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from "react-redux"
 
 
 
-
 // export const _applicationData = localStorage.getItem(__applicationData)
 
 export const googleKey = () => {

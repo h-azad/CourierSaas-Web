@@ -30,7 +30,7 @@ import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
 import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
 import * as qs from 'qs'
 
-import { OrderStatusOptions, colorSwitch } from '../../../components/orderRelatedData'
+import { AdminOrderStatusOptions, colorSwitch } from '../../../components/orderRelatedData'
 import { Table, Tag } from "antd"
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
@@ -384,7 +384,7 @@ const CreateOrderList = () => {
                     updateFilterQUery('status', e?.value)
                     setOrderStatus(e)
                   }}
-                  options={OrderStatusOptions}
+                  options={AdminOrderStatusOptions}
                   value={orderStatus}
                 />
               </div>

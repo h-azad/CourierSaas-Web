@@ -1,5 +1,7 @@
 import React from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import { Button } from 'antd'
+
 import Select from "react-select"
 import classnames from 'classnames'
 import useJwt from '@src/auth/jwt/useJwt'
@@ -12,8 +14,30 @@ function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, f
   const [selectedOption, setSelectedOption] = useState()
   const [error, setError] = useState(false)
 
+  const [loadings, setLoadings] = useState([])
+
+  const enterLoading = (index) => {
+    if (index === true) {
+      setLoadings((prevLoadings) => {
+        const newLoadings = [...prevLoadings]
+        newLoadings[1] = true
+        return newLoadings
+      })
+    } else {
+      setLoadings((prevLoadings) => {
+        const newLoadings = [...prevLoadings]
+        newLoadings[1] = false
+        return newLoadings
+      })
+    }
+  }
+
+
+
   const updateStatusAction = (e) => {
     e.preventDefault()
+    enterLoading(true)
+    console.log('clicked')
     const formData = {
       'status': selectedOption,
       'previous_status': orderInfo.status
@@ -22,16 +46,19 @@ function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, f
       .axiosPatch(getApi(ORDER_STATUS_UPDATE) + `${orderInfo.id}/`, formData)
       .then((res) => {
         if (res?.data?.error == true){
+          enterLoading(false)
           toast.error(res?.data?.message)
           setError(res?.data?.message)
           setStatusModalState(true)
         }else{
           toast.success(res?.data?.message)
+          enterLoading(false)
           setStatusModalState(false)
           fetchCreateOrderData()
         }
       })
       .catch(err => {
+        enterLoading(false)
         toast.success('Order Status Updated Failed!')
         setStatusModalState(false)
       })
@@ -59,7 +86,17 @@ function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, f
         />
       </ModalBody>
       <ModalFooter>
-        <Button color='primary' onClick={updateStatusAction}>Update</Button>
+
+        <Button
+          type="primary"
+          // icon={<PoweroffOutlined />}
+          loading={loadings[1]}
+          onClick={updateStatusAction }
+        >
+          Update
+        </Button>
+
+        {/* <Button color='primary' onClick={updateStatusAction}>Update</Button> */}
       </ModalFooter>
     </Modal>
   )

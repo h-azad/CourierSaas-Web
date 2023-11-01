@@ -75,7 +75,7 @@ const CreateOrderList = () => {
 
   const orderReturn = (e, info) => {
     e.preventDefault()
-    return RiderDeliveryConfirmSwalAlert(info?.delivary_address, info?.recipient_name, info?.phone_number, `Cancel Order ?`).then(
+    return RiderDeliveryConfirmSwalAlert(info?.delivary_address, info?.recipient_name, info?.phone_number, `Return Order ?`).then(
       function (result) {
         if (result.value) {
           useJwt

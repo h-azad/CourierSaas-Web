@@ -192,7 +192,7 @@ import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
 import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
 import * as qs from 'qs'
 
-import { OrderStatusOptions, colorSwitch } from '../../../components/orderRelatedData'
+import { MarchantOrderStatusOptions, colorSwitch } from '../../../components/orderRelatedData'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
 
@@ -515,7 +515,7 @@ const MerchantOrdersList = () => {
                     updateFilterQUery('status', e?.value)
                     setOrderStatus(e)
                   }}
-                  options={OrderStatusOptions}
+                  options={MarchantOrderStatusOptions}
                   value={orderStatus}
                 />
               </div>

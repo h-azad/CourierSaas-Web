@@ -15,9 +15,17 @@ import SwalConfirm from '../SwalConfirm'
 import toast from 'react-hot-toast'
 import SwalAlert from '../SwalAlert'
 
+import { useDispatch, useSelector } from "react-redux"
+
+
+
 const OrderDetailsDrawer = ({ orderid, open, onCloseOrderDetailsDrawer }) => {
   const [createOrderInfo, setCreateOrderInfo] = useState(null)
   const [active, setActive] = useState('1')
+
+  const { userData: _userData } = useSelector((state) => state.authentication)
+  const { applicationData: _applicationData } = useSelector((state) => state.authentication)
+
 
   const fetchCreateOrderDetailsData = () => {
     return useJwt
@@ -63,7 +71,12 @@ const OrderDetailsDrawer = ({ orderid, open, onCloseOrderDetailsDrawer }) => {
     <>
       <Drawer size="large" title="Order Details" placement="right" onClose={onCloseOrderDetailsDrawer} open={open}>
         <div className='app-user-view'>
-          <Button type="primary" onClick={(e) => { acceptOrder(e, createOrderInfo?.id) }}>Accept</Button>
+          {/* {_userData.role == null && _userData?.is_admin == true && createOrderInfo?.status == 'pending' && _applicationData?.pickup_auto_assing_to_rider == true ?
+            <Button type="primary" onClick={(e) => { acceptOrder(e, createOrderInfo?.id) }}>Accept</Button> :
+            null
+    
+          } */}
+          
           {createOrderInfo &&
             <Row>
               <Col xl='12' lg='12' xs={{ order: 0 }} md={{ order: 1, size: 7 }}>
