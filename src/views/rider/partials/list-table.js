@@ -22,7 +22,7 @@ import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
 
-import { Table, Tag } from "antd"
+import { Table, Tag, Button as AntdButton } from "antd"
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
@@ -181,7 +181,8 @@ const ListTable = () => {
       title: 'Status',
       dataIndex: 'status',
       render: (text, record) => (
-        <Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
+        <AntdButton type="primary">{text.toUpperCase()}</AntdButton>
+        // <Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
       ),
     },
     {

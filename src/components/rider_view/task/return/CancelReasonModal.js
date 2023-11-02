@@ -4,12 +4,29 @@ import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, DELIVERY_ASSIGNMENT } from "@src/constants/apiUrls"
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { Input, Radio, Select } from 'antd'
+import { Input, Radio, Select, Button as AntdButton } from 'antd'
 const { TextArea } = Input
 
 function CancelReasonModal({ cancelModalState, setCancelModalState, taskInfo }) {
     const [reason, setReason] = useState()
     const [value, setChekedValue] = useState()
+    const [loadings, setLoadings] = useState([])
+
+    const enterLoading = (index) => {
+        if (index === true) {
+            setLoadings((prevLoadings) => {
+                const newLoadings = [...prevLoadings]
+                newLoadings[1] = true
+                return newLoadings
+            })
+        } else {
+            setLoadings((prevLoadings) => {
+                const newLoadings = [...prevLoadings]
+                newLoadings[1] = false
+                return newLoadings
+            })
+        }
+    }
 
     const onChange = (e) => {
         setChekedValue(e.target.value)
@@ -18,17 +35,20 @@ function CancelReasonModal({ cancelModalState, setCancelModalState, taskInfo }) 
 
     const cancelByRiderAction = (e) => {
         e.preventDefault()
+        enterLoading(true)
         const formData = {
             'reason': reason
         }
         useJwt
             .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${taskInfo?.id}/return_order_cancel/`, formData)
             .then((res) => {
+                enterLoading(false)
                 toast.success('Cancelled Successfully!')
                 setCancelModalState(false)
                 fetchCurrentTaskData()
             })
             .catch((err) => {
+                enterLoading(false)
                 toast.error('Cancle Failed!')
                 setCancelModalState(false)
             })
@@ -49,34 +69,11 @@ function CancelReasonModal({ cancelModalState, setCancelModalState, taskInfo }) 
                 <Radio value={'Location Not Found'}>Location Not Found</Radio>
                 <Radio value={3}>C</Radio>
                 <Radio value={4}>D</Radio>
-                {/* <Select
-                    showSearch
-                    placeholder="Select a person"
-                    optionFilterProp="children"
-                    // onChange={onChange}
-                    // onSearch={onSearch}
-                    filterOption={(input, option) =>
-                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                    }
-                    options={[
-                        {
-                            value: 'Cancel',
-                            label: 'Cancel',
-                        },
-                        {
-                            value: 'Return',
-                            label: 'Return',
-                        },
-                        {
-                            value: 'Hold',
-                            label: 'Hold',
-                        },
-                    ]}
-                /> */}
             </Radio.Group>
 
             <ModalFooter>
-                <Button color='primary' onClick={cancelByRiderAction}>Submit</Button>
+                <AntdButton type="primary" loading={loadings[1]} onClick={cancelByRiderAction}>Assign</AntdButton>
+                {/* <Button color='primary' onClick={cancelByRiderAction}>Submit</Button> */}
             </ModalFooter>
         </Modal>
     )

@@ -23,13 +23,14 @@ import {
   RIDER_SEARCH_FILTER,
   UNDELIVERY_ORDER_LIST,
   DELIVERY_ASSIGNMENT,
+  CREATE_ORDER_LIST,
 } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 
 import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
 
-import { Table, Tag, Menu, Dropdown } from "antd"
+import { Table, Tag, Menu, Dropdown, Button as AntdButton } from "antd"
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
@@ -70,6 +71,24 @@ const RiderAssignmentList = () => {
   }
 
 
+  
+
+  const enterLoading = (index) => {
+    if (index === true) {
+      setLoadings((prevLoadings) => {
+        const newLoadings = [...prevLoadings]
+        newLoadings[1] = true
+        return newLoadings
+      })
+    } else {
+      setLoadings((prevLoadings) => {
+        const newLoadings = [...prevLoadings]
+        newLoadings[1] = false
+        return newLoadings
+      })
+    }
+  }
+
 
 
   const deleteAction = (e, id) => {
@@ -89,21 +108,7 @@ const RiderAssignmentList = () => {
     )
   }
 
-  const enterLoading = (index) => {
-    if (index === true) {
-      setLoadings((prevLoadings) => {
-        const newLoadings = [...prevLoadings]
-        newLoadings[1] = true
-        return newLoadings
-      })
-    } else {
-      setLoadings((prevLoadings) => {
-        const newLoadings = [...prevLoadings]
-        newLoadings[1] = false
-        return newLoadings
-      })
-    }
-  }
+  
 
 
   const updateStatusAction = (e) => {
@@ -124,14 +129,16 @@ const RiderAssignmentList = () => {
 
 
   const delivaryHandler = (e) => {
-
     e.preventDefault()
+    enterLoading(true)
     useJwt
       .axiosPost(getApi(DELIVERY_ASSIGNMENT + "/"), {
         riderId: riderId,
         selectedOrderIds: selectedOrderIds
       })
       .then((res) => {
+        enterLoading(false)
+        toast.success('Rider Assignment Successfully!')
         setStatusModalState(false)
       })
     //   .finally(() => fetchRiderData())
@@ -207,6 +214,26 @@ const RiderAssignmentList = () => {
           console.log(err)
         })
     }
+
+
+  const filterUnPickupOrderData = (value) => {
+    return useJwt
+      .axiosGet(getApi(UNPICKUP_ORDER_LIST) + `?parcel_id=${value}`)
+      .then((res) => {
+        setOrder(res.data)
+      })
+      .catch((err) => console.log(err))
+  }
+
+
+  const filterUnDeliveryOrderData = (value) => {
+    return useJwt
+      .axiosGet(getApi(UNDELIVERY_ORDER_LIST) + `?parcel_id=${value}`)
+      .then((res) => {
+        setOrder(res.data)
+      })
+      .catch((err) => console.log(err))
+  }
 
 
   const handleTableChange = (pagination, filters, sorter) => {
@@ -324,13 +351,12 @@ const RiderAssignmentList = () => {
 
   const columnsOrders = [
     {
-      title: 'Address',
-      dataIndex: 'pickup_status' == true ? 'delivary_address' :  ['pickup_address', 'street_address'],
-    },
-
-    {
       title: 'Parcel ID',
       dataIndex: 'parcel_id',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'pickup_status' == true ? 'delivary_address' :  ['pickup_address', 'street_address'],
     },
     {
       title: 'Action',
@@ -409,19 +435,34 @@ const RiderAssignmentList = () => {
         <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>{assignType === "pickup" ? 'Pickup Assign' : 'Delivery Assign'}</ModalHeader>
         <ModalBody>
           <div class="table-responsive">
+            <div className="d-flex align-items-center ">
+              <input
+                placeholder="Search Order ID"
+                name="user_name"
+                type="text"
+                class="form-control"
+                // value=""
+                onChange={(e) => { assignType === "pickup" ? filterUnPickupOrderData(e.target.value) : filterUnDeliveryOrderData(e.target.value) }}
+              />
+              <Button.Ripple className="btn-icon ms-1" outline color="primary">
+                <Search size={16} />
+              </Button.Ripple>
+            </div>
+            
             {orders &&
               <Table scroll={{ x: true }} columns={columnsOrders} dataSource={orders} onChange={handleTableChange} pagination={false} />
             }
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button color='primary' loading={loadings[1]} onClick={assignType === "pickup" ? updateStatusAction : delivaryHandler}>Assign</Button>
+          <AntdButton type="primary" loading={loadings[1]} onClick={assignType === "pickup" ? updateStatusAction : delivaryHandler}>Assign</AntdButton>
         </ModalFooter>
         <OrderDetailsDrawer open={open} orderid={orderid} showOrderDetailsDrawer={showOrderDetailsDrawer} onCloseOrderDetailsDrawer={onCloseOrderDetailsDrawer} />
       </Modal>
     </>
   )
 }
+
 
 export default RiderAssignmentList
 

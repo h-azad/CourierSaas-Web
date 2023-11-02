@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
-import { MoreVertical } from "react-feather"
-import { DatePicker, Input, Typography } from "antd"
+import { MoreVertical, Search as IconSearch } from "react-feather"
+import { DatePicker, Input, Typography, Button as AntdButton } from "antd"
 import {
   UncontrolledDropdown,
   DropdownMenu,
@@ -48,6 +48,8 @@ const CreateOrderList = () => {
   const [selectedRiderIds, setSelectedRiderId] = useState([])
   const [orderIdInFo, setOrderIdInFo] = useState()
 
+  const [loadings, setLoadings] = useState([])
+
   const [tableParams, setTableParams] = useState({
     pagination: {
       current: 1,
@@ -66,6 +68,23 @@ const CreateOrderList = () => {
   }
   const onCloseOrderDetailsDrawer = () => {
     setOpen(false)
+  }
+
+
+  const enterLoading = (index) => {
+    if (index === true) {
+      setLoadings((prevLoadings) => {
+        const newLoadings = [...prevLoadings]
+        newLoadings[1] = true
+        return newLoadings
+      })
+    } else {
+      setLoadings((prevLoadings) => {
+        const newLoadings = [...prevLoadings]
+        newLoadings[1] = false
+        return newLoadings
+      })
+    }
   }
 
 
@@ -116,8 +135,8 @@ const CreateOrderList = () => {
     setFilterQuery(filters)
   }
 
-  const fetchRiderData = () => {
-    return useJwt.axiosGet(getApi(RIDER_ASSIGNMENT))
+  const fetchRiderData = (value) => {
+    return useJwt.axiosGet(getApi(RIDER_ASSIGNMENT + `?search=${value}`))
       .then((res) => {
         setRiders(res?.data)
       }).catch((err) => {
@@ -138,7 +157,7 @@ const CreateOrderList = () => {
 
   const riderAssign = (e, info) => {
     e.preventDefault()
-    fetchRiderData()
+    fetchRiderData('')
     setSelectedRiderId()
     setOrderIdInFo(info.id)
     setStatusModalState(true)
@@ -147,14 +166,21 @@ const CreateOrderList = () => {
 
   const assignHandler = (e) => {
     e.preventDefault()
+    enterLoading(true)
     useJwt
       .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${selectedInfo.id}/return_order/`, { orderIdInFo: orderIdInFo, selectedRiderIds: selectedRiderIds })
       .then((res) => {
+        enterLoading(false)
         setStatusModalState(false)
         toast.success('Order Rider Assignment Successfully!')
         fetchCreateOrderData()
+        
+      }).catch((error)=>{
+        enterLoading(false)
       })
   }
+
+
   const handleSelectedRiderId = (e) => {
     const { value, checked } = e.target
     if (checked) {
@@ -411,12 +437,26 @@ const CreateOrderList = () => {
             <Modal isOpen={statusModalState} toggle={() => setStatusModalState(!statusModalState)} className='modal-dialog-centered'>
               <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Rider Assign</ModalHeader>
               <ModalBody>
-
-                <Table scroll={{ x: true }} columns={columns2} dataSource={riders} onClick={(e) => { handleSelectedRiderId(e) }} />
-
+                <div class="table-responsive">
+                  <div className="d-flex align-items-center ">
+                    <input
+                      placeholder="Search Order ID"
+                      name="user_name"
+                      type="text"
+                      class="form-control"
+                      // value=""
+                      onChange={(e) => { fetchRiderData(e.target.value) }}
+                    />
+                    <Button.Ripple className="btn-icon ms-1" outline color="primary">
+                      <IconSearch size={16} />
+                    </Button.Ripple>
+                  </div>
+                  <Table scroll={{ x: true }} columns={columns2} dataSource={riders} onClick={(e) => { handleSelectedRiderId(e) }} />
+                </div>
               </ModalBody>
               <ModalFooter>
-                <Button color='primary' onClick={assignHandler}>Assign</Button>
+                <AntdButton type="primary" loading={loadings[1]} onClick={assignHandler}>Assign</AntdButton>
+                {/* <Button color='primary' onClick={assignHandler}>Assign</Button> */}
               </ModalFooter>
             </Modal>
 

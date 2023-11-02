@@ -35,7 +35,7 @@ const Transections = () => {
   const [filterQuery, setFilterQuery] = useState({
     page: 1,
     page_size: GENERAL_ROW_SIZE,
-    ordering: '-created_at'
+    // ordering: '-created_at'
   })
 
 
@@ -193,7 +193,7 @@ const Transections = () => {
     if (_tableParams) {
       _filters['page'] = _tableParams.pagination?.current
       _filters['page_size'] = _tableParams.pagination?.pageSize
-      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+      // _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
     }
 
     setFilterQuery(_filters)

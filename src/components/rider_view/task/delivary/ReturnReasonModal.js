@@ -4,40 +4,58 @@ import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, DELIVERY_ASSIGNMENT } from "@src/constants/apiUrls"
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { Input, Radio, Select, DatePicker, Space  } from 'antd'
+import { Input, Radio, Button as AntdButton  } from 'antd'
 const { TextArea } = Input
 
 function ReturnReasonModal({ returnModalState, setReturnModalState, taskInfo, fetchDelivaryData}) {
     const [reason, setReason] = useState()
     const [value, setChekedValue] = useState()
+    const [loadings, setLoadings] = useState([])
 
     const onChange = (e) => {
         setChekedValue(e.target.value)
         setReason(e.target.value)
     }
 
+    const enterLoading = (index) => {
+        if (index === true) {
+            setLoadings((prevLoadings) => {
+                const newLoadings = [...prevLoadings]
+                newLoadings[1] = true
+                return newLoadings
+            })
+        } else {
+            setLoadings((prevLoadings) => {
+                const newLoadings = [...prevLoadings]
+                newLoadings[1] = false
+                return newLoadings
+            })
+        }
+    }
+
     const returnByRiderAction = (e) => {
         e.preventDefault()
+
         const formData = {
             'reason': reason,
         }
+
+        enterLoading(true)
         useJwt
             .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${taskInfo?.id}/return_to_warehouse/`, formData)
             .then((res) => {
                 toast.success('Return Successfully!')
                 setReturnModalState(false)
                 fetchDelivaryData()
+                enterLoading(false)
             })
             .catch((err) => {
                 toast.error('Return Failed!')
                 setReturnModalState(false)
+                enterLoading(false)
             })
     }
 
-    const onChangeDate = (date, dateString) => {
-      console.log(date, dateString)
-      setHoldDate(dateString)
-    }
 
     return (
         <Modal isOpen={returnModalState} toggle={() => setReturnModalState(!returnModalState)} className='modal-dialog-centered'>
@@ -58,7 +76,8 @@ function ReturnReasonModal({ returnModalState, setReturnModalState, taskInfo, fe
             </Radio.Group>
 
             <ModalFooter>
-                <Button color='primary' onClick={returnByRiderAction}>Submit</Button>
+                <AntdButton type="primary" loading={loadings[1]} onClick={returnByRiderAction}>Submit</AntdButton>
+                {/* <Button color='primary' onClick={returnByRiderAction}>Submit</Button> */}
             </ModalFooter>
         </Modal>
     )
