@@ -21,7 +21,8 @@ import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
 
-import { Table, Tag } from "antd"
+import { Table, Tag, Dropdown } from "antd"
+import { DownOutlined } from '@ant-design/icons'
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
@@ -205,6 +206,31 @@ const ListTable = () => {
     }
   }
 
+  const renderDropDownItems = (info) => {
+    const item = [
+      {
+        key: '2',
+        label: (
+          <Link to={"/shipment_type/edit/" + info.id}><Edit className="me-20" size={15} />{" "}Edit</Link>
+        ),
+      },
+      {
+        key: '3',
+        label: (
+          <a href='/' onClick={(e) => deleteAction(e, info.id)}><Trash className="me-20" size={15} />{" "}Delete</a>
+        ),
+      },
+      {
+        key: '4',
+        label: (
+          <a href="/" onClick={e => changeStatusAction(e, info)}><Edit3 className="me-20" size={15} />{" "}Change Status</a>
+        ),
+      },
+    ]
+
+    return item
+  }
+
   const columns = [
     {
       title: 'Shipment Type',
@@ -226,30 +252,41 @@ const ListTable = () => {
 
       render: (_, record) =>
 
-        <UncontrolledDropdown>
-          <DropdownToggle
-            className="icon-btn hide-arrow"
-            color="transparent"
-            size="sm"
-            caret
-          >
-            <MoreVertical size={15} />
-          </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem href={"/shipment_type/edit/" + record.id}>
-              <Edit className="me-50" size={15} />{" "}
-              <span className="align-middle">Edit</span>
-            </DropdownItem>
-            <DropdownItem onClick={e => deleteAction(e, record.id)}>
-              <Trash className="me-50" size={15} />{" "}
-              <span className="align-middle">Delete</span>
-            </DropdownItem>
-            <DropdownItem href="/" onClick={e => changeStatusAction(e, record)}>
-              <Edit3 className="me-50" size={15} />{" "}
-              <span className="align-middle">Change Status</span>
-            </DropdownItem>
-          </DropdownMenu>
-        </UncontrolledDropdown>
+        <Dropdown
+          menu={{
+            items: renderDropDownItems(record)
+          }}
+          trigger={['click']}
+        >
+          <a onClick={(e) => e.preventDefault()} href="">
+            More <DownOutlined />
+          </a>
+        </Dropdown>
+
+        // <UncontrolledDropdown>
+        //   <DropdownToggle
+        //     className="icon-btn hide-arrow"
+        //     color="transparent"
+        //     size="sm"
+        //     caret
+        //   >
+        //     <MoreVertical size={15} />
+        //   </DropdownToggle>
+        //   <DropdownMenu>
+        //     <DropdownItem href={"/shipment_type/edit/" + record.id}>
+        //       <Edit className="me-50" size={15} />{" "}
+        //       <span className="align-middle">Edit</span>
+        //     </DropdownItem>
+        //     <DropdownItem onClick={e => deleteAction(e, record.id)}>
+        //       <Trash className="me-50" size={15} />{" "}
+        //       <span className="align-middle">Delete</span>
+        //     </DropdownItem>
+        //     <DropdownItem href="/" onClick={e => changeStatusAction(e, record)}>
+        //       <Edit3 className="me-50" size={15} />{" "}
+        //       <span className="align-middle">Change Status</span>
+        //     </DropdownItem>
+        //   </DropdownMenu>
+        // </UncontrolledDropdown>
 
     },
   ]

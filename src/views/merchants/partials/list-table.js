@@ -22,8 +22,8 @@ import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
 
-
-import { Table, Tag, Menu, Dropdown } from "antd"
+import { DownOutlined } from '@ant-design/icons'
+import { Table, Tag, Menu, Dropdown, Draw } from "antd"
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
@@ -153,7 +153,36 @@ const ListTable = () => {
     }
   }
 
+  const renderDropDownItems = (info) => {
+    const it = [
+      {
+        key: '1',
+        label: (
+          <Link to={"/merchants/view/" + info.id}><Eye className="me-20" size={15} />{" "}View</Link>
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <Link to={"/merchants/edit/" + info.id}><Edit className="me-20" size={15} />{" "}Edit</Link>
+        ),
+      },
+      {
+        key: '3',
+        label: (
+          <a href='/' onClick={(e) => deleteAction(e, info.id)}><Trash className="me-20" size={15} />{" "}Delete</a>
+        ),
+      },
+      {
+        key: '4',
+        label: (
+          <a href="/" onClick={e => changeStatusAction(e, info)}><Edit3 className="me-20" size={15} />{" "}Change Status</a>
+        ),
+      },
+    ]
 
+    return it
+  }
 
   const columns = [
     {
@@ -185,48 +214,95 @@ const ListTable = () => {
       title: 'Action',
       render: (_, info) => (
 
-        <Dropdown
-          overlay={
-            <Menu>
-              <Link to={"/merchants/view/" + info.id}>
-                <Eye className="me-50" size={15} />{" "}
-                <span className="align-middle">View</span>
-              </Link>
-              <br></br>
-              <Link to={"/merchants/edit/" + info.id}>
-                <Edit className="me-50" size={15} />{" "}
-                <span className="align-middle">Edit</span>
-              </Link>
+        <>
+          <Dropdown
+            menu={{
+              items: renderDropDownItems(info)
+            }}
+            trigger={['click']}
+          >
+            <a onClick={(e) => e.preventDefault()} href="">
+              More <DownOutlined />
+            </a>
+          </Dropdown>
+        </>
+        // <div className="pt-3 pb-3">
+        //   <UncontrolledDropdown>
+        //     <DropdownToggle
+        //       className="icon-btn hide-arrow"
+        //       color="transparent"
+        //       size="sm"
+        //       caret
+        //     >
+        //       <MoreVertical size={15} />
+        //     </DropdownToggle>
+        //     <DropdownMenu>
+        //       <DropdownItem href={"/merchants/view/" + info.id} >
+        //         <Eye className="me-50" size={15} />{" "}
+        //         <span className="align-middle">View</span>
+        //       </DropdownItem>
+        //       <DropdownItem href={"/merchants/edit/" + info.id}>
+        //         <Edit className="me-50" size={15} />{" "}
+        //         <span className="align-middle">Edit</span>
+        //       </DropdownItem>
+        //       <DropdownItem
+        //         href="/"
+        //         onClick={(e) => deleteAction(e, info.id)}
+        //       >
+        //         <Trash className="me-50" size={15} />{" "}
+        //         <span className="align-middle">Delete</span>
+        //       </DropdownItem>
+        //       <DropdownItem href="/" onClick={e => changeStatusAction(e, info)}>
+        //         <Edit3 className="me-50" size={15} />{" "}
+        //         <span className="align-middle">Change Status</span>
+        //       </DropdownItem>
+        //     </DropdownMenu>
+        //   </UncontrolledDropdown>
+        // </div>
+
+
+        // <Dropdown
+        //   overlay={
+        //     <Menu>
+        //       <Link to={"/merchants/view/" + info.id}>
+        //         <Eye className="me-50" size={15} />{" "}
+        //         <span className="align-middle">View</span>
+        //       </Link>
+        //       <br></br>
+        //       <Link to={"/merchants/edit/" + info.id}>
+        //         <Edit className="me-50" size={15} />{" "}
+        //         <span className="align-middle">Edit</span>
+        //       </Link>
               
-              <DropdownItem
-                href="/"
-                onClick={(e) => deleteAction(e, info.id)}
-              >
-                <Trash className="me-50" size={15} />{" "}
-                <span className="align-middle">Delete</span>
-              </DropdownItem>
+        //       <DropdownItem
+        //         href="/"
+        //         onClick={(e) => deleteAction(e, info.id)}
+        //       >
+        //         <Trash className="me-50" size={15} />{" "}
+        //         <span className="align-middle">Delete</span>
+        //       </DropdownItem>
 
-              <DropdownItem onClick={e => changeStatusAction(e, info)}>
-                <Edit3 className="me-50" size={15} />{" "}
-                <span className="align-middle">Change Status</span>
-              </DropdownItem>
+        //       <DropdownItem onClick={e => changeStatusAction(e, info)}>
+        //         <Edit3 className="me-50" size={15} />{" "}
+        //         <span className="align-middle">Change Status</span>
+        //       </DropdownItem>
 
 
-            </Menu>
-          }
-        >
-          <UncontrolledDropdown>
-            <DropdownToggle
-              className="icon-btn hide-arrow"
-              color="transparent"
-              size="sm"
-              caret
-            >
-              <MoreVertical size={15} />
-            </DropdownToggle>
+        //     </Menu>
+        //   }
+        // >
+        //   <UncontrolledDropdown>
+        //     <DropdownToggle
+        //       className="icon-btn hide-arrow"
+        //       color="transparent"
+        //       size="sm"
+        //       caret
+        //     >
+        //       <MoreVertical size={15} />
+        //     </DropdownToggle>
 
-          </UncontrolledDropdown>
-        </Dropdown>
+        //   </UncontrolledDropdown>
+        // </Dropdown>
 
       )
 

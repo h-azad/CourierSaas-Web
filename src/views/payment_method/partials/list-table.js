@@ -21,8 +21,8 @@ import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
 
-
-import { Table, Tag } from "antd"
+import { Table, Tag, Dropdown } from "antd"
+import { DownOutlined } from '@ant-design/icons'
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
@@ -203,6 +203,38 @@ const ListTable = () => {
     }
   }
 
+  const renderDropDownItems = (info) => {
+    const item = [
+      // {
+      //   key: '1',
+      //   label: (
+      //     <Link to={"/pricing_policy/view/" + info.id}><Eye className="me-20" size={15} />{" "}View</Link>
+      //   ),
+      // },
+      {
+        key: '2',
+        label: (
+          <Link to={"/payment_method/edit/" + info.id}><Edit className="me-20" size={15} />{" "}Edit</Link>
+        ),
+      },
+      {
+        key: '3',
+        label: (
+          <a href='/' onClick={(e) => deleteAction(e, info.id)}><Trash className="me-20" size={15} />{" "}Delete</a>
+        ),
+      },
+      {
+        key: '4',
+        label: (
+          <a href="/" onClick={e => changeStatusAction(e, info)}><Edit3 className="me-20" size={15} />{" "}Change Status</a>
+        ),
+      },
+    ]
+
+    return item
+  }
+
+
   const columns = [
     {
       title: 'Name',
@@ -224,8 +256,18 @@ const ListTable = () => {
 
       render: (_, info) =>
 
-      <td>
-      <UncontrolledDropdown>
+        <td>
+          <Dropdown
+            menu={{
+              items: renderDropDownItems(info)
+            }}
+            trigger={['click']}
+          >
+            <a onClick={(e) => e.preventDefault()} href="">
+              More <DownOutlined />
+            </a>
+          </Dropdown>
+          {/* <UncontrolledDropdown>
         <DropdownToggle
           className="icon-btn hide-arrow"
           color="transparent"
@@ -248,8 +290,8 @@ const ListTable = () => {
             <span className="align-middle">Change Status</span>
           </DropdownItem>
         </DropdownMenu>
-      </UncontrolledDropdown>
-    </td>
+      </UncontrolledDropdown> */}
+        </td>
 
     },
   ]
@@ -284,20 +326,20 @@ const ListTable = () => {
             </div>
           </div>
           <div className="col-lg-5">
-              <div className="d-flex align-items-center ">
-                <input
-                  placeholder="Search Shipment"
-                  name="user_name"
-                  type="text"
-                  class="form-control"
-                  // onChange={handleSearch}
-                  onChange={(e) => { updateFilterQUery('search', e.target.value) }}
-                />
-                <Button.Ripple className="btn-icon ms-1" outline color="primary">
-                  <Search size={16} />
-                </Button.Ripple>
-              </div>
+            <div className="d-flex align-items-center ">
+              <input
+                placeholder="Search Shipment"
+                name="user_name"
+                type="text"
+                class="form-control"
+                // onChange={handleSearch}
+                onChange={(e) => { updateFilterQUery('search', e.target.value) }}
+              />
+              <Button.Ripple className="btn-icon ms-1" outline color="primary">
+                <Search size={16} />
+              </Button.Ripple>
             </div>
+          </div>
         </div>
       </CardText>
 

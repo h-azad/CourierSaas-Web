@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash, Search, Edit3, Eye } from "react-feather"
+import { MoreVertical, Edit, Trash, Search, Edit3, Truck, Check } from "react-feather"
 import {
   UncontrolledDropdown,
   DropdownMenu,
@@ -31,6 +31,10 @@ import SwalConfirm from "../../../components/SwalConfirm"
 import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
 
 import { Table, Tag, Menu, Dropdown, Button as AntdButton } from "antd"
+import { DownOutlined } from '@ant-design/icons'
+import { TbTruck } from 'react-icons/tb'
+import { TfiTruck } from 'react-icons/tfi'
+
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
@@ -269,6 +273,38 @@ const RiderAssignmentList = () => {
     setFilterQuery(filters)
   }
 
+  
+
+  const renderDropDownItems = (info) => {
+    const item = [
+      {
+        key: '1',
+        label: (
+          <a onClick={e => changeStatusAction(e, info)}><TfiTruck className="me-20" size={16} />{" "}Pickup</a>
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <a onClick={e => deliveryAssign(e, info)} ><TbTruck className="me-20" size={18} />{" "}Delivary</a>
+        ),
+      },
+      {
+        key: '3',
+        label: (
+          <Link to={"/assignment/task/" + info.id}><Check className="me-20" size={15} />{" "}Pickup Tasks</Link>
+        ),
+      },
+      {
+        key: '4',
+        label: (
+          <Link to={"/assignment/delivery/" + info.id}><Check className="me-20" size={15} />{" "}Delivery Tasks</Link>
+        ),
+      },
+    ]
+
+    return item
+  }
 
 
   const columns = [
@@ -303,47 +339,94 @@ const RiderAssignmentList = () => {
       render: (_, info) =>
 
         <Dropdown
-          overlay={
-            <Menu>
-
-              <Dropdown.Button onClick={e => changeStatusAction(e, info)}>
-                <Edit3 className="me-50" size={15} />{" "}
-                <span className="align-middle">Pickup</span>
-              </Dropdown.Button>
-              <Dropdown.Button href="/" onClick={e => deliveryAssign(e, info)}>
-                <Edit3 className="me-50" size={15} />{" "}
-                <span className="align-middle">Delivary</span>
-              </Dropdown.Button>
-
-
-              <Link to={"/assignment/task/" + info.id}>
-                {/* <Button> */}
-                  <Eye className="me-50" size={15} />{" "}
-                <span className="align-middle">Pickup Tasks</span>
-                {/* </Button> */}
-                
-              </Link>
-              <br></br>
-              <Link to={"/assignment/delivery/" + info.id}>
-                <Eye className="me-50" size={15} />{" "}
-                <span className="align-middle">Delivery Tasks</span>
-              </Link>
-
-            </Menu>
-          }
+          menu={{
+            items: renderDropDownItems(info)
+          }}
+          trigger={['click']}
         >
-          <UncontrolledDropdown>
-            <DropdownToggle
-              className="icon-btn hide-arrow"
-              color="transparent"
-              size="sm"
-              caret
-            >
-              <MoreVertical size={15} />
-            </DropdownToggle>
-
-          </UncontrolledDropdown>
+          <a onClick={(e) => e.preventDefault()} href="">
+            More <DownOutlined />
+          </a>
         </Dropdown>
+
+
+        // <div className="p-3">
+        //   <UncontrolledDropdown>
+        //     <DropdownToggle
+        //       className="icon-btn hide-arrow"
+        //       color="transparent"
+        //       size="sm"
+        //       caret
+        //     >
+        //       <MoreVertical size={15} />
+        //     </DropdownToggle>
+        //     <DropdownMenu>
+        //       <DropdownItem href="/" onClick={e => changeStatusAction(e, info)} >
+        //         <Edit3 className="me-50" size={15} />{" "}
+        //         <span className="align-middle">Pickup</span>
+        //       </DropdownItem>
+
+        //       <DropdownItem href="/" onClick={e => deliveryAssign(e, info)}>
+        //         <Edit3 className="me-50" size={15} />{" "}
+        //         <span className="align-middle">Delivary</span>
+        //       </DropdownItem>
+
+        //       <DropdownItem href={" /assignment/task/" + info.id} >
+        //         <Eye className="me-50" size={15} />{" "}
+        //         <span className="align-middle">Pickup Tasks</span>
+        //       </DropdownItem>
+
+        //       <DropdownItem href={"/assignment/delivery/" + info.id}>
+        //           <Eye className="me-50" size={15} />{" "}
+        //           <span className="align-middle">Delivery Tasks</span>
+        //       </DropdownItem>
+        //     </DropdownMenu>
+        //   </UncontrolledDropdown>
+        // </div>
+
+
+        // <Dropdown
+        //   overlay={
+        //     <Menu>
+
+        //       <Dropdown.Button onClick={e => changeStatusAction(e, info)}>
+                // <Edit3 className="me-50" size={15} />{" "}
+                // <span className="align-middle">Pickup</span>
+        //       </Dropdown.Button>
+        //       <Dropdown.Button href="/" onClick={e => deliveryAssign(e, info)}>
+        //         <Edit3 className="me-50" size={15} />{" "}
+        //         <span className="align-middle">Delivary</span>
+        //       </Dropdown.Button>
+
+
+        //       <Link to={"/assignment/task/" + info.id}>
+        //         {/* <Button> */}
+                //   <Eye className="me-50" size={15} />{" "}
+                // <span className="align-middle">Pickup Tasks</span>
+        //         {/* </Button> */}
+                
+        //       </Link>
+        //       <br></br>
+              // <Link to={"/assignment/delivery/" + info.id}>
+              //   <Eye className="me-50" size={15} />{" "}
+              //   <span className="align-middle">Delivery Tasks</span>
+              // </Link>
+
+        //     </Menu>
+        //   }
+        // >
+        //   <UncontrolledDropdown>
+        //     <DropdownToggle
+        //       className="icon-btn hide-arrow"
+        //       color="transparent"
+        //       size="sm"
+        //       caret
+        //     >
+        //       <MoreVertical size={15} />
+        //     </DropdownToggle>
+
+        //   </UncontrolledDropdown>
+        // </Dropdown>
     },
   ]
 

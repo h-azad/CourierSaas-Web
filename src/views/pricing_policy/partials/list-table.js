@@ -21,7 +21,8 @@ import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
 
-import { Table, Tag } from "antd"
+import { Table, Tag, Dropdown } from "antd"
+import { DownOutlined } from '@ant-design/icons'
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
@@ -204,6 +205,37 @@ const ListTable = () => {
     }
   }
 
+  const renderDropDownItems = (info) => {
+    const item = [
+      {
+        key: '1',
+        label: (
+          <Link to={"/pricing_policy/view/" + info.id}><Eye className="me-20" size={15} />{" "}View</Link>
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <Link to={"/pricing_policy/edit/" + info.id}><Edit className="me-20" size={15} />{" "}Edit</Link>
+        ),
+      },
+      {
+        key: '3',
+        label: (
+          <a href='/' onClick={(e) => deleteAction(e, info.id)}><Trash className="me-20" size={15} />{" "}Delete</a>
+        ),
+      },
+      {
+        key: '4',
+        label: (
+          <a href="/" onClick={e => changeStatusAction(e, info)}><Edit3 className="me-20" size={15} />{" "}Change Status</a>
+        ),
+      },
+    ]
+
+    return item
+  }
+
   const columns = [
     {
       title: 'Policy Title',
@@ -236,7 +268,19 @@ const ListTable = () => {
       render: (_, info) =>
 
         <td>
-          <UncontrolledDropdown>
+
+          <Dropdown
+            menu={{
+              items: renderDropDownItems(info)
+            }}
+            trigger={['click']}
+          >
+            <a onClick={(e) => e.preventDefault()} href="">
+              More <DownOutlined />
+            </a>
+          </Dropdown>
+
+          {/* <UncontrolledDropdown>
             <DropdownToggle
               className="icon-btn hide-arrow"
               color="transparent"
@@ -263,7 +307,7 @@ const ListTable = () => {
                 <span className="align-middle">Change Status</span>
               </DropdownItem>
             </DropdownMenu>
-          </UncontrolledDropdown>
+          </UncontrolledDropdown> */}
         </td>
 
     },

@@ -15,9 +15,9 @@ import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, RIDER_ROUTE } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
-import { Descriptions } from 'antd'
 
-import { Table } from "antd"
+import { Table, Tag, Dropdown, Descriptions } from "antd"
+import { DownOutlined } from '@ant-design/icons'
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
@@ -109,7 +109,30 @@ const RiderRouteList = () => {
     setFilterQuery(filters)
   }
 
+  const renderDropDownItems = (info) => {
+    const item = [
+      {
+        key: '2',
+        label: (
+          <Link to={"/route/edit/" + info.id}><Edit className="me-20" size={15} />{" "}Edit</Link>
+        ),
+      },
+      // {
+      //   key: '3',
+      //   label: (
+      //     <a href='/' onClick={e => RouteRiderAssign(e, info.i)}><ArrowLeft className="me-20" size={15} />{" "}Assign Rider</a>
+      //   ),
+      // },
+      {
+        key: '4',
+        label: (
+          <a href="/" onClick={e => deleteAction(e, info.id)}><Trash className="me-20" size={15} />{" "}Delete</a>
+        ),
+      },
+    ]
 
+    return item
+  }
 
   const columns = [
 
@@ -135,7 +158,19 @@ const RiderRouteList = () => {
           </td>
 
           <td>
-            <UncontrolledDropdown>
+
+            <Dropdown
+              menu={{
+                items: renderDropDownItems(record)
+              }}
+              trigger={['click']}
+            >
+              <a onClick={(e) => e.preventDefault()} href="">
+                More <DownOutlined />
+              </a>
+            </Dropdown>
+
+            {/* <UncontrolledDropdown>
               <DropdownToggle
                 className="icon-btn hide-arrow"
                 color="transparent"
@@ -154,7 +189,7 @@ const RiderRouteList = () => {
                   <span className="align-middle">Delete</span>
                 </DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown>
+            </UncontrolledDropdown> */}
           </td>
         </tr>
 

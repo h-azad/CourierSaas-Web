@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash, Search, ArrowLeft } from "react-feather"
+import { MoreVertical, Edit, Trash, Search, ArrowLeft, Edit3 } from "react-feather"
 import {
   UncontrolledDropdown,
   DropdownMenu,
@@ -14,9 +14,11 @@ import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, ROUTE, UNRIDER_ROUTE } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
-import { Descriptions } from 'antd'
 
-import { Table } from "antd"
+
+import { Descriptions, Table, Tag, Dropdown } from "antd"
+import { DownOutlined } from '@ant-design/icons'
+
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
@@ -145,7 +147,30 @@ const ListTable = () => {
 
  
 
+  const renderDropDownItems = (info) => {
+    const item = [
+      {
+        key: '2',
+        label: (
+          <Link to={"/route/edit/" + info.id}><Edit className="me-20" size={15} />{" "}Edit</Link>
+        ),
+      },
+      // {
+      //   key: '3',
+      //   label: (
+      //     <a href='/' onClick={e => RouteRiderAssign(e, info.i)}><ArrowLeft className="me-20" size={15} />{" "}Assign Rider</a>
+      //   ),
+      // },
+      {
+        key: '4',
+        label: (
+          <a href="/" onClick={e => deleteAction(e, info.id)}><Trash className="me-20" size={15} />{" "}Delete</a>
+        ),
+      },
+    ]
 
+    return item
+  }
 
 
 
@@ -182,7 +207,19 @@ const ListTable = () => {
           </td>
 
           <td>
-            <UncontrolledDropdown>
+
+            <Dropdown
+              menu={{
+                items: renderDropDownItems(record)
+              }}
+              trigger={['click']}
+            >
+              <a onClick={(e) => e.preventDefault()} href="">
+                More <DownOutlined />
+              </a>
+            </Dropdown>
+
+            {/* <UncontrolledDropdown>
               <DropdownToggle
                 className="icon-btn hide-arrow"
                 color="transparent"
@@ -207,7 +244,7 @@ const ListTable = () => {
                   <span className="align-middle">Delete</span>
                 </DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown>
+            </UncontrolledDropdown> */}
           </td>
         </tr>
 

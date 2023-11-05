@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash,Search, Edit3  } from "react-feather"
+import { MoreVertical, Edit, Trash, Search, Edit3 } from "react-feather"
 import {
   // Table,
   Badge,
@@ -21,7 +21,8 @@ import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
 
-import { Table, Tag } from "antd"
+import { Table, Tag, Dropdown } from "antd"
+import { DownOutlined } from '@ant-design/icons'
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
@@ -48,15 +49,15 @@ const AdminList = () => {
     e.preventDefault()
     return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
       if (result.value) {
-      useJwt
-        .axiosDelete(getApi(ADMIN_DELETE+id+'/'))
-        .then((res) => {
-          SwalAlert("Deleted Successfully")
-        })
-        .finally(() => fetchadminData())
+        useJwt
+          .axiosDelete(getApi(ADMIN_DELETE + id + '/'))
+          .then((res) => {
+            SwalAlert("Deleted Successfully")
+          })
+          .finally(() => fetchadminData())
       }
     })
-   
+
   }
 
 
@@ -73,7 +74,7 @@ const AdminList = () => {
         })
       })
       .catch(err => console.log(err))
-  }  
+  }
 
 
 
@@ -112,6 +113,29 @@ const AdminList = () => {
   }
 
 
+
+  const renderDropDownItems = (info) => {
+    const item = [
+
+      {
+        key: '2',
+        label: (
+          <Link to={"/admin/edit/" + info.id}><Edit className="me-20" size={15} />{" "}Edit</Link>
+        ),
+      },
+      {
+        key: '3',
+        label: (
+          <a href='/' onClick={(e) => deleteAction(e, info.id)}><Trash className="me-20" size={15} />{" "}Delete</a>
+        ),
+      },
+
+    ]
+
+    return item
+  }
+
+
   const columns = [
     {
       title: 'Full Name',
@@ -136,26 +160,42 @@ const AdminList = () => {
     {
       title: 'Action',
       render: (_, info) =>
-        <UncontrolledDropdown>
-          <DropdownToggle
-            className="icon-btn hide-arrow"
-            color="transparent"
-            size="sm"
-            caret
-          >
-            <MoreVertical size={15} />
-          </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem href={"/admin/edit/" + admin.id}>
-              <Edit className="me-50" size={15} />{" "}
-              <span className="align-middle">Edit</span>
-            </DropdownItem>
-            <DropdownItem href="/" onClick={e => deleteAction(e, admin.id)}>
-              <Trash className="me-50" size={15} />{" "}
-              <span className="align-middle">Delete</span>
-            </DropdownItem>
-          </DropdownMenu>
-        </UncontrolledDropdown>
+
+        <Dropdown
+          menu={{
+            items: renderDropDownItems(info)
+          }}
+          trigger={['click']}
+        >
+          <a onClick={(e) => e.preventDefault()} href="">
+            More <DownOutlined />
+          </a>
+        </Dropdown>
+
+
+      // <div className="p-3">
+      //     <UncontrolledDropdown>
+      //       <DropdownToggle
+      //         className="icon-btn hide-arrow"
+      //         color="transparent"
+      //         size="sm"
+      //         caret
+      //       >
+      //         <MoreVertical size={15} />
+      //       </DropdownToggle>
+      //       <DropdownMenu>
+      //         <DropdownItem href={"/admin/edit/" + info.id}>
+      //           <Edit className="me-50" size={15} />{" "}
+      //           <span className="align-middle">Edit</span>
+      //         </DropdownItem>
+      //         <DropdownItem href="/" onClick={e => deleteAction(e, info.id)}>
+      //           <Trash className="me-50" size={15} />{" "}
+      //           <span className="align-middle">Delete</span>
+      //         </DropdownItem>
+      //       </DropdownMenu>
+      //     </UncontrolledDropdown>
+      // </div>
+
     },
   ]
 
@@ -184,16 +224,16 @@ const AdminList = () => {
   return (
     <>
       <CardText>
-          <div className="row justify-content-between">
-            <div className="col-lg-5">
-              <div className="d-flex align-items-center">
-                <Link to={'/admin/add'}>
-                  <Button.Ripple color="primary">Add Admin</Button.Ripple>
-                </Link>
-              </div>
+        <div className="row justify-content-between">
+          <div className="col-lg-5">
+            <div className="d-flex align-items-center">
+              <Link to={'/admin/add'}>
+                <Button.Ripple color="primary">Add Admin</Button.Ripple>
+              </Link>
             </div>
-            <div className="col-lg-5">
-              {/* <div className="d-flex align-items-center ">
+          </div>
+          <div className="col-lg-5">
+            {/* <div className="d-flex align-items-center ">
                 <input
                   placeholder="Search Admin"
                   name="marchant_name"
@@ -205,9 +245,9 @@ const AdminList = () => {
                   <Search size={16} />
                 </Button.Ripple>
               </div> */}
-            </div>
           </div>
-        </CardText>
+        </div>
+      </CardText>
       <Table scroll={{ x: true }} columns={columns} dataSource={admin} onChange={handleTableChange} pagination={tableParams.pagination} />
       {/* <Table bordered>
         <thead>
