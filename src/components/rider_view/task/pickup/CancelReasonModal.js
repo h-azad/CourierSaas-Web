@@ -24,14 +24,9 @@ function CancelReasonModal({ cancleModalState, setCancleModalState, taskInfo }) 
         useJwt
             .axiosPost(getApi(RIDER_ASSIGNMENT) + `/${taskInfo?.id}/cancel_pickup/`, formData)
             .then((res) => {   
-
-                console.log('Hello Joy pick up cancel')
-
                 // fetchCurrentTaskData()
                 toast.success('Cancelled Successfully!')   
                 setCancleModalState(false)
-                
-                
             })
             .catch((err) => {
                 toast.error('Cancle Failed!')

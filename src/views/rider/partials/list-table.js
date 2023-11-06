@@ -26,6 +26,7 @@ import { Table, Tag, Button as AntdButton, Dropdown } from "antd"
 import { DownOutlined } from '@ant-design/icons'
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
+import toast from 'react-hot-toast'
 
 const ListTable = () => {
   const [rider, setRider] = useState([])
@@ -72,6 +73,10 @@ const ListTable = () => {
             .axiosDelete(getApi(RIDER_DELETE + id + "/"))
             .then((res) => {
               SwalAlert("Deleted Successfully")
+              toast.success('Deleted Successfully!') 
+            }).catch((error)=>{
+              toast.error(error?.message)
+              toast.error("Rider Delete Not Possible")
             })
             .finally(() => fetchRiderData())
         }
@@ -84,7 +89,7 @@ const ListTable = () => {
   const updateStatusAction = (e) => {
     e.preventDefault()
     useJwt
-      .axiosPatch(getApi(RIDER_UPDATE_STATUS) + "/" + selectedInfo.id + "/", selectedStatus === 'active' ? { status: selectedStatus, get_user_id: selectedInfo.user_id } : { status: selectedStatus })
+      .axiosPatch(getApi(RIDER_UPDATE_STATUS) + "/" + selectedInfo.id + "/", selectedStatus === 'active' ? { status: selectedStatus, is_active: true } : { status: selectedStatus, is_active: false })
       .then((res) => {
         setStatusModalState(false)
       })

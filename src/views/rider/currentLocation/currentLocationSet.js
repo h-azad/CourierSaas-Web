@@ -37,7 +37,7 @@ const CurrentLocationSet = () => {
   const [locationName, setLocationName] = useState()
   const [locationInfo, setlocationInfo] = useState()
 
-  
+  const GOOGLE_API_KEY = googleKey()
 
   const updateLocation = (_formData) => {
 
@@ -49,9 +49,9 @@ const CurrentLocationSet = () => {
       .catch(err => console.log(err))
   }
 
-  const getMyLocation = async () => {
+  const getMyLocation = async () => {    
 
-    const GOOGLE_API_KEY = googleKey()
+    // console.log('GOOGLE_API_KEY', GOOGLE_API_KEY)
 
     if (window.navigator && window.navigator.geolocation) {
       const location = window.navigator.geolocation
@@ -67,7 +67,7 @@ const CurrentLocationSet = () => {
           const data = await response.json()
           if (data.results.length > 0) {
             const locationName = data.results[0].formatted_address
-            setLocationName(locationName)
+            // setLocationName(locationName)
 
             var formData = new FormData()
             formData.append('last_latitude', latitude)

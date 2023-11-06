@@ -237,7 +237,13 @@ const AddMerchants = () => {
           SwalAlert("Marchant Added Successfully")
           navigate("/merchants")
         })
-        .catch(err => console.log(err))
+        // .catch(err => console.log(err))
+        .catch(err => {
+          err?.response?.data?.message.startsWith('duplicate key value violates unique constraint "account_user_email_key"' ?
+            setError('email', { message: 'This email already exists' }) :
+            null
+          )
+        })
 
     }
     // else {

@@ -39,15 +39,18 @@ const EditAdmin = () => {
     useJwt
       .axiosGet(getApi(ADMIN_DETAILS) + id + "/")
       .then((res) => {
-        setValue("name", res.data.name)
-        if (res.data.admin_role=='Admin'){
-          setValue('admin_role', { value: 'Admin', label: 'Admin' })
-        }else if (res.data.admin_role=='Manager'){
-          setValue('admin_role', { value: 'Manager', label: 'Manager' })
-        }else{
-          setValue('admin_role', { value: 'Dispatcher', label: 'Dispatcher'})
-        }
-        return res.data
+        console.log('response data', res?.data)
+        setValue("admin_role", { value: res?.data?.admin_role?.id, label: res?.data?.admin_role?.name})
+        setValue("name", res?.data?.name)
+
+        // if (res.data.admin_role=='Admin'){
+        //   setValue('admin_role', { value: 'Admin', label: 'Admin' })
+        // }else if (res.data.admin_role=='Manager'){
+        //   setValue('admin_role', { value: res?.data.id, label: 'Manager' })
+        // }else{
+        //   setValue('admin_role', { value: 'Dispatcher', label: 'Dispatcher'})
+        // }
+        // return res.data
       })
       .catch(err => console.log(err))
   }, [])

@@ -25,6 +25,7 @@ import { Table, Tag, Dropdown } from "antd"
 import { DownOutlined } from '@ant-design/icons'
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
+import toast from 'react-hot-toast'
 
 const AdminList = () => {
   const [admin, setAdmin] = useState([])
@@ -53,6 +54,10 @@ const AdminList = () => {
           .axiosDelete(getApi(ADMIN_DELETE + id + '/'))
           .then((res) => {
             SwalAlert("Deleted Successfully")
+            toast.success('Deleted Successfully!') 
+          }).catch((error)=>{
+            toast.error(error?.message)
+            toast.error("Admin Delete Not Possible")
           })
           .finally(() => fetchadminData())
       }
@@ -154,7 +159,7 @@ const AdminList = () => {
       title: 'Admin Role',
       dataIndex: 'admin_role',
       render: (text, record) => (
-        <Tag>{text.toUpperCase()}</Tag>
+        <Tag>{record?.admin_role?.name.toUpperCase()}</Tag>
       ),
     },
     {

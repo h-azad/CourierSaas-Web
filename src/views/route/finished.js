@@ -30,7 +30,7 @@ export default function Finished({ finishedData }) {
           <Button className='me-1' onClick={finishedData?.prev}>
             Prev
           </Button>
-          <Button className='me-1' onClick={(e) => { finishedData?.SubmitDataHandler(), console.log('hello') }}>
+          <Button className='me-1' onClick={(e) => { finishedData?.SubmitDataHandler() }}>
             Done
           </Button>
         </div>

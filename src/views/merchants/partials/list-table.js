@@ -27,6 +27,7 @@ import { Table, Tag, Menu, Dropdown, Draw } from "antd"
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
+import toast from 'react-hot-toast'
 
 const ListTable = () => {
   const [merchants, setMerchants] = useState([])
@@ -70,6 +71,10 @@ const ListTable = () => {
             .axiosDelete(getApi(MARCHANT_DELETE + id + "/"))
             .then((res) => {
               SwalAlert("Deleted Successfully")
+              toast.success('Deleted Successfully!') 
+            }).catch((error)=>{
+              toast.error(error?.message)
+              toast.error("Marchant Delete Not Possible")
             })
             .finally(() => fetchMerchantsData())
         }
@@ -80,7 +85,7 @@ const ListTable = () => {
   const updateStatusAction = (e) => {
     e.preventDefault()
     useJwt
-      .axiosPatch(getApi(MARCHANT_UPDATE_STATUS) + "/" + selectedInfo.id + '/', selectedStatus === 'approved' ? { status: selectedStatus, get_user_id: selectedInfo.user_id } : { status: selectedStatus })
+      .axiosPatch(getApi(MARCHANT_UPDATE_STATUS) + "/" + selectedInfo.id + '/', selectedStatus === 'approved' ? { status: selectedStatus, is_active: true } : { status: selectedStatus, is_active: false })
       .then((res) => {
         setStatusModalState(false)
       })
