@@ -36,7 +36,7 @@ const CreateApplicationSetting = () => {
   const [pickupAutoAssingToRider, SetPickupAutoAssingToRider] = useState(false)
   const [deliveryAutoAssingToRider, SetDeliveryAutoAssingToRider] = useState(false)
 
-  const [applicationLogo, setApplicationLogo] = useState([])
+  const [applicationLogo, setApplicationLogo] = useState()
 
   const onSubmit = () => {
 
@@ -59,7 +59,6 @@ const CreateApplicationSetting = () => {
     formData.append('pickup_auto_assing_to_rider', pickupAutoAssingToRider)
     formData.append('delivery_auto_assing_to_rider', deliveryAutoAssingToRider)
 
-    // formData.append("application_logo", applicationLogo[0].originFileObj)
     formData.append("application_logo", applicationLogo)
 
     return useJwt
@@ -118,7 +117,6 @@ const CreateApplicationSetting = () => {
 
  
 
-  // console.log(' applicationLogo[0].originFileObj', applicationLogo[0]?.originFileObj)
 
   const fetchApplicationSettingData = () => {
 

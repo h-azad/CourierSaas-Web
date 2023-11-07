@@ -45,7 +45,7 @@ const ListTable = () => {
   const [filterQuery, setFilterQuery] = useState({
     page: 1,
     page_size: GENERAL_ROW_SIZE,
-    ordering: '-created_at'
+    // ordering: '-created_at'
   })
 
 
@@ -107,7 +107,6 @@ const ListTable = () => {
       // .axiosGet(getApi(ACCOUNT_WALLET_LIST))
       .axiosGet(getApi(ACCOUNT_WALLET_LIST) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
-        console.log("res", res)
         setAccountWallet(res?.data?.results)
         updatePagination({
           current: res?.data?.page_number,
@@ -209,8 +208,8 @@ const ListTable = () => {
       title: 'Account Name',
       dataIndex: 'account_name',
 
-      sorter: true,
-      defaultSortOrder: 'descend'
+      // sorter: true,
+      // defaultSortOrder: 'descend'
     },
     {
       title: 'Account Role',
@@ -235,7 +234,7 @@ const ListTable = () => {
     if (_tableParams) {
       _filters['page'] = _tableParams.pagination?.current
       _filters['page_size'] = _tableParams.pagination?.pageSize
-      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+      // _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
     }
 
     setFilterQuery(_filters)

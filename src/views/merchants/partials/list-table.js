@@ -45,7 +45,7 @@ const ListTable = () => {
   const [filterQuery, setFilterQuery] = useState({
     page: 1,
     page_size: GENERAL_ROW_SIZE,
-    ordering: 'full_name'
+    // ordering: 'full_name'
   })
 
 
@@ -135,6 +135,10 @@ const ListTable = () => {
   const updateFilterQUery = (term, value) => {
     let filters = { ...filterQuery }
 
+    if (term != 'page') {
+      filters['page'] = 1
+    }
+
     if (value) {
       filters[term] = value
     } else {
@@ -193,8 +197,8 @@ const ListTable = () => {
     {
       title: 'Full Name',
       dataIndex: 'full_name',
-      sorter: true,
-      defaultSortOrder: 'ascend'
+      // sorter: true,
+      // defaultSortOrder: 'ascend'
 
     },
 
@@ -212,7 +216,8 @@ const ListTable = () => {
       title: 'Status',
       dataIndex: 'status',
       render: (text, record) => (
-        <Tag>{text.toUpperCase()}</Tag>
+        // <Tag>{text.toUpperCase()}</Tag>
+        <Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
       ),
     },
     {
@@ -323,7 +328,7 @@ const ListTable = () => {
     if (_tableParams) {
       _filters['page'] = _tableParams.pagination?.current
       _filters['page_size'] = _tableParams.pagination?.pageSize
-      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+      // _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
     }
 
     setFilterQuery(_filters)

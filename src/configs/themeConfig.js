@@ -1,10 +1,15 @@
 // You can customize the template with the help of this file
 
+
 //Template config options
+
+
+
 const themeConfig = {
   app: {
-    appName: "DailyCourier",
-    appLogoImage: require("@src/assets/images/logo/logo.svg").default
+    appName: "UpdateTech",
+    // appLogoImage: applicationLogo()
+    appLogoImage: "http://user1010.localhost:8000/media/logo/applicationlogo/download.jpg"
   },
   layout: {
     isRTL: false,

@@ -221,7 +221,7 @@ const Transections = () => {
                 class="form-control"
                 // value=""
                 // onChange={fetchTransectionsData}
-                onChange={(e)=>{updateFilterQUery('search', e.target.value)}}
+                onChange={(e) => { updateFilterQUery('transection_id', e.target.value)}}
                 // onChange={handleSearch}
               />
               <Button.Ripple className="btn-icon ms-1" outline color="primary">
