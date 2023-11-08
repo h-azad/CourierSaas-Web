@@ -23,17 +23,22 @@ const ApplicationLogo = ({ propsData }) => {
 
   const onSubmit = async (values) => {
 
-
-    // if (values?.application_logo) {
-    //   propsData?.setApplicationLogo(values?.application_logo[0].originFileObj)
-    //   // formData.append("application_logo", values?.application_logo[0].originFileObj)
-    // }
     propsData.onSubmit()
 
   }
 
   return <>
 
+    <Upload defaultFileList={[
+      {
+        uid: '-1',
+        name: 'default.jpg',
+        status: 'done',
+        url: propsData?.currentApplicationLogo, // Replace with the URL of your default image
+      },
+    ]} listType="picture-card">
+
+    </Upload>
     <Form
       name="basic"
       style={{
@@ -46,8 +51,9 @@ const ApplicationLogo = ({ propsData }) => {
       encType='multipart/form-data'
       autoComplete="off"
     >
-
+      
       <Form.Item label="left Image" valuePropName="fileList" name='application_logo' getValueFromEvent={normFile}>
+        
         <Upload listType="picture-card">
           <div>
             <PlusOutlined />

@@ -16,11 +16,10 @@ import { GENERAL_ROW_SIZE } from "../../constants/tableConfig"
 const AdminGetTransectionReport = () => {
   const [transections, setTransections] = useState([])
   const [selectBoxUser, setSelectBoxUser] = useState([])
-  // const [filterQuery, setFilterQuery] = useState({})
 
   const [tableParams, setTableParams] = useState({
     pagination: {
-      current: GENERAL_ROW_SIZE	,
+      current: GENERAL_ROW_SIZE,
       pageSize: 2,
     },
   })
@@ -32,16 +31,19 @@ const AdminGetTransectionReport = () => {
   })
 
 
+
   const fetchDefalutData = () => {
-		return useJwt.axiosGet(getApi(ADMIN_GET_TRANSECTION_REPORT_APIVIEW))
-			.then((res) => {
-				setTransections(res?.data?.results)
-				setFilterQuery({})
-			}).catch((err) => {
-				setTransections([])
-				setFilterQuery({})
-			})
-	}
+    return useJwt.axiosGet(getApi(ADMIN_GET_TRANSECTION_REPORT_APIVIEW))
+      .then((res) => {
+        setTransections(res?.data?.results)
+        setFilterQuery({})
+      }).catch((err) => {
+        setTransections([])
+        setFilterQuery({})
+      })
+  }
+
+
 
   const fetchUserData = () => {
     return useJwt
@@ -59,29 +61,35 @@ const AdminGetTransectionReport = () => {
       .catch((err) => console.log(err))
   }
 
- 
+
 
   const statusOptions = [
     { value: "Cash-Out", label: "Cash-Out" },
     { value: "Cash-In", label: "Cash-In" },
   ]
 
-  function colorSwitch(status) {
-		switch (status) {
-			case 'Cash-Out':
-				return 'yellow'
-	
-			case 'Cash-In':
-				return 'green'
 
-			default:
-				return 'orange'
-		}
-	}
+  function colorSwitch(status) {
+    switch (status) {
+      case 'Cash-Out':
+        return 'yellow'
+
+      case 'Cash-In':
+        return 'green'
+
+      default:
+        return 'orange'
+    }
+  }
+
 
 
   function updateFilterQUery(term, value) {
     let filters = { ...filterQuery }
+
+    if (term != 'page') {
+      filters['page'] = 1
+    }
 
     if (value) {
       filters[term] = value
@@ -92,13 +100,14 @@ const AdminGetTransectionReport = () => {
   }
 
 
+
   const propsData = {
     handleSearchQuery: handleSearchQuery,
     handlePDFQuery: handlePDFQuery,
     fetchDefalutData: fetchDefalutData,
 
     getDataApiUrl: ADMIN_GET_TRANSECTION_REPORT_APIVIEW,
-		fetchReportPDF: ADMIN_GET_TRANSECTION_REPORT_GENERATE_PDF_APIVIEW,
+    fetchReportPDF: ADMIN_GET_TRANSECTION_REPORT_GENERATE_PDF_APIVIEW,
 
     updateFilterQUery: updateFilterQUery,
     filterQuery: filterQuery,
@@ -115,44 +124,44 @@ const AdminGetTransectionReport = () => {
 
   }
 
+
+
   const columns = [
     {
       title: 'Transactions ID',
       dataIndex: 'transection_id',
     },
-		{
-			title: 'Date',
-			dataIndex: 'created_at',
+    {
+      title: 'Date',
+      dataIndex: 'created_at',
 
-			sorter: {
-				compare: (a, b) => a.created_at - b.created_at,
-				multiple: 2,
-			},
-		},
-		{
-			title: 'Account Name',
-			dataIndex: 'user_name',
+      sorter: {
+        compare: (a, b) => a.created_at - b.created_at,
+        multiple: 2,
+      },
+    },
+    {
+      title: 'Account Name',
+      dataIndex: 'user_name',
 
-		},
-		
-		{
-			title: 'Amount',
-			dataIndex: 'amount',
-		},
-		{
-			title: 'Type',
-			dataIndex: 'type',
-			render: (text, record) => (
-				<Tag color={colorSwitch(record.type)}>{text.toUpperCase()}</Tag>
-			),
-		},
-		{
-			title: 'Remark',
-			dataIndex: 'remark',
-		},
-	]
+    },
 
-
+    {
+      title: 'Amount',
+      dataIndex: 'amount',
+    },
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      render: (text, record) => (
+        <Tag color={colorSwitch(record.type)}>{text.toUpperCase()}</Tag>
+      ),
+    },
+    {
+      title: 'Remark',
+      dataIndex: 'remark',
+    },
+  ]
 
 
   const handleTableChange = (pagination, filters, sorter) => {
@@ -166,7 +175,9 @@ const AdminGetTransectionReport = () => {
     }
   }
 
-	const updatePagination = (info) => {
+
+
+  const updatePagination = (info) => {
     const _tableParams = { ...tableParams }
 
     _tableParams.pagination = info
@@ -174,30 +185,29 @@ const AdminGetTransectionReport = () => {
     setTableParams(_tableParams)
   }
 
-  useEffect(() => {
-    fetchUserData()
-  }, [])
+
 
   useEffect(() => {
     handleSearchQuery(ADMIN_GET_TRANSECTION_REPORT_APIVIEW, qs.stringify(filterQuery))
-			.then(res => {
-				if (res?.results?.length > 0) {
-					setTransections(res?.results)
+      .then(res => {
+        if (res?.results?.length > 0) {
+          setTransections(res?.results)
           updatePagination({
-						current: res?.page_number,
-						pageSize: res?.page_size,
-						total: res?.count,
-					})
-				} else {
-					setTransections([])
+            current: res?.page_number,
+            pageSize: res?.page_size,
+            total: res?.count,
+          })
+        } else {
+          setTransections([])
           updatePagination({
-						current: 1,
-						pageSize: GENERAL_ROW_SIZE,
-						total: 0,
-					})
-				}
-			})
+            current: 1,
+            pageSize: GENERAL_ROW_SIZE,
+            total: 0,
+          })
+        }
+      })
   }, [filterQuery])
+
 
   useEffect(() => {
     const _tableParams = tableParams
@@ -213,40 +223,16 @@ const AdminGetTransectionReport = () => {
 
   }, [JSON.stringify(tableParams)])
 
+
+
+  useEffect(() => {
+    fetchUserData()
+  }, [])
+
   return (
     <>
       <ReportHead propsData={propsData} />
       <Table scroll={{ x: true }} columns={columns} dataSource={transections} onChange={handleTableChange} pagination={tableParams.pagination} />
-      {/* <div id="my-table" class="table-responsive">
-        <Table bordered>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Account</th>
-              <th>Transactions ID</th>
-              <th>Amount</th>
-              <th>Type</th>
-              <th>Remark</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transections &&
-              transections.map((info) => (
-                <tr key={info.id}>
-                  <td>{info?.created_at}</td>
-                  <td>
-                    <span className="align-middle fw-bold">{info?.user_name}</span>
-                  </td>
-                  <td>{info?.transection_id}</td>
-                  <td>{info?.amount}</td>
-                  <td>{info?.type}</td>
-                  <td>{info?.remark}</td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
-        <Pagination onChange={paginationUpdate} defaultCurrent={defaultPage} total={transactionCount} defaultPageSize={50} />
-      </div> */}
     </>
   )
 }

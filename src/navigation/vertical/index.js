@@ -532,17 +532,17 @@ const adminMenu = [
         id: "application-setting",
         title: "Application Setting",
         children: [
-          {
-            id: 'application-setting-index',
-            title: 'Index',
-            icon: <Circle size={12} />,
-            action: 'admin-pages',
-            resource: 'setting',
-            navLink: "/setting/application/",
-          },
+          // {
+          //   id: 'application-setting-index',
+          //   title: 'Index',
+          //   icon: <Circle size={12} />,
+          //   action: 'admin-pages',
+          //   resource: 'setting',
+          //   navLink: "/setting/application/",
+          // },
           {
             id: "application-setting-create",
-            title: "Create",
+            title: "Application Setting",
             icon: <Circle size={20} />,
             action: 'admin-pages',
             resource: 'company-setting',

@@ -17,17 +17,16 @@ const AdminOrderReport = () => {
 	const [selectboxMarchant, setSelectboxMarchant] = useState([])
 	const [selectboxRider, setSelectboxRider] = useState([])
 	const [tableParams, setTableParams] = useState({
-    pagination: {
-      current: GENERAL_ROW_SIZE	,
-      pageSize: 2,
-    },
-  })
+		pagination: {
+			current: GENERAL_ROW_SIZE,
+			pageSize: 2,
+		},
+	})
 	const [filterQuery, setFilterQuery] = useState({
-    page: 1,
-    page_size: GENERAL_ROW_SIZE,
-    ordering: '-created_at'
-  })
-	// const [filterQuery, setFilterQuery] = useState({})
+		page: 1,
+		page_size: GENERAL_ROW_SIZE,
+		ordering: '-created_at'
+	})
 
 
 	const fetchDefalutData = () => {
@@ -40,6 +39,7 @@ const AdminOrderReport = () => {
 				setFilterQuery({})
 			})
 	}
+
 
 	const fetchMarchantData = () => {
 		return useJwt
@@ -57,6 +57,8 @@ const AdminOrderReport = () => {
 			.catch((err) => console.log(err))
 	}
 
+
+
 	const fetchRiderData = () => {
 		return useJwt
 			.axiosGet(getApi(RIDER_LIST))
@@ -73,13 +75,16 @@ const AdminOrderReport = () => {
 			.catch((err) => console.log(err))
 	}
 
-	
+
 
 
 	function updateFilterQUery(term, value) {
 		let filters = { ...filterQuery }
 
-
+		if (term != 'page') {
+			filters['page'] = 1
+		}
+		
 		if (value) {
 			filters[term] = value
 		} else {
@@ -87,6 +92,8 @@ const AdminOrderReport = () => {
 		}
 		setFilterQuery(filters)
 	}
+
+
 
 	const propsData = {
 		handleSearchQuery: handleSearchQuery,
@@ -98,7 +105,7 @@ const AdminOrderReport = () => {
 
 		getDataApiUrl: ADMIN_GET_ORDER_REPORT_APIVIEW,
 		fetchReportPDF: ADMIN_GET_ORDER_REPORT_GENERATE_PDF_APIVIEW,
-		
+
 		statusOptions: AdminOrderStatusOptions,
 		selectboxData: selectboxMarchant,
 		selectboxRider: selectboxRider,
@@ -112,8 +119,6 @@ const AdminOrderReport = () => {
 		isOrderPageIsRider: true
 
 	}
-
-	
 
 
 
@@ -143,7 +148,7 @@ const AdminOrderReport = () => {
 				record?.delivary_rider?.full_name ? record?.delivary_rider?.full_name : 'N/A'
 			),
 		},
-		
+
 		{
 			title: 'Delivery Charge',
 			dataIndex: 'delivary_charge',
@@ -174,6 +179,30 @@ const AdminOrderReport = () => {
 	]
 
 
+
+	const handleTableChange = (pagination, filters, sorter) => {
+		setTableParams({
+			pagination,
+			filters,
+			sorter,
+		})
+		if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+			setData([])
+		}
+	}
+
+
+
+	const updatePagination = (info) => {
+		const _tableParams = { ...tableParams }
+
+		_tableParams.pagination = info
+
+		setTableParams(_tableParams)
+	}
+
+
+
 	useEffect(() => {
 		handleSearchQuery(ADMIN_GET_ORDER_REPORT_APIVIEW, qs.stringify(filterQuery))
 			.then(res => {
@@ -195,51 +224,28 @@ const AdminOrderReport = () => {
 			})
 	}, [filterQuery])
 
-	const handleTableChange = (pagination, filters, sorter) => {
-    setTableParams({
-      pagination,
-      filters,
-      sorter,
-    })
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-      setData([])
-    }
-  }
 
-	const updatePagination = (info) => {
-    const _tableParams = { ...tableParams }
 
-    _tableParams.pagination = info
+	useEffect(() => {
+		const _tableParams = tableParams
+		const _filters = { ...filterQuery }
 
-    setTableParams(_tableParams)
-  }
+		if (_tableParams) {
+			_filters['page'] = _tableParams.pagination?.current
+			_filters['page_size'] = _tableParams.pagination?.pageSize
+			_filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+		}
+
+		setFilterQuery(_filters)
+
+	}, [JSON.stringify(tableParams)])
+
+
 
 	useEffect(() => {
 		fetchMarchantData()
 		fetchRiderData()
 	}, [])
-
-
-	useEffect(() => {
-    const _tableParams = tableParams
-    const _filters = { ...filterQuery }
-
-    if (_tableParams) {
-      _filters['page'] = _tableParams.pagination?.current
-      _filters['page_size'] = _tableParams.pagination?.pageSize
-      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
-    }
-
-    setFilterQuery(_filters)
-
-  }, [JSON.stringify(tableParams)])
-
-  // useEffect(() => {
-  //   handleSearchQuery()
-  // }, [JSON.stringify(filterQuery)])
-
-
-	
 
 
 	return (

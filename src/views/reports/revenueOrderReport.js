@@ -40,6 +40,10 @@ const AdminOrderRevenueReport = () => {
 	function updateFilterQUery(term, value) {
     let filters = { ...filterQuery }
 
+		if (term != 'page') {
+			filters['page'] = 1
+		}
+
     if (value) {
       filters[term] = value
     } else {

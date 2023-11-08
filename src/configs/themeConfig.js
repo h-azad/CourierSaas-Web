@@ -1,15 +1,22 @@
 // You can customize the template with the help of this file
 
 
+import { getApplicationSettingData } from './applicationSettingData'
+
+
 //Template config options
 
 
+// export const _applicationData = localStorage.getItem(__applicationData)
+
 
 const themeConfig = {
+
+
   app: {
-    appName: "UpdateTech",
-    // appLogoImage: applicationLogo()
-    appLogoImage: "http://user1010.localhost:8000/media/logo/applicationlogo/download.jpg"
+    // appName: 'UpdateTech',
+    appLogoImage: getApplicationSettingData()?.application_logo
+    // appLogoImage: "http://user1010.localhost:8000/media/logo/applicationlogo/download.jpg"
   },
   layout: {
     isRTL: false,

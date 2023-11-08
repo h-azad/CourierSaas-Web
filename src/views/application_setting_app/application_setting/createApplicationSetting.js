@@ -36,7 +36,8 @@ const CreateApplicationSetting = () => {
   const [pickupAutoAssingToRider, SetPickupAutoAssingToRider] = useState(false)
   const [deliveryAutoAssingToRider, SetDeliveryAutoAssingToRider] = useState(false)
 
-  const [applicationLogo, setApplicationLogo] = useState()
+  const [applicationLogo, setApplicationLogo] = useState('')
+  const [currentApplicationLogo, setCurrentApplicationLogo] = useState()
 
   const onSubmit = () => {
 
@@ -102,6 +103,8 @@ const CreateApplicationSetting = () => {
     setApplicationLogo: setApplicationLogo,
     applicationLogo: applicationLogo,
 
+    currentApplicationLogo: currentApplicationLogo,
+
     onSubmit: onSubmit
   }
 
@@ -141,6 +144,8 @@ const CreateApplicationSetting = () => {
 
         SetPickupAutoAssingToRider(res?.data[0]?.pickup_auto_assing_to_rider)
         SetDeliveryAutoAssingToRider(res?.data[0]?.delivery_auto_assing_to_rider)
+
+        setCurrentApplicationLogo(res?.data[0]?.application_logo)
       })
       .catch((err) => console.log(err))
   }
