@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom'
 // API URL
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, FORGOT_PASSWORD } from '@src/constants/apiUrls'
+import { getApi, FORGOT_PASSWORD, APPLICATION_SETTING } from '@src/constants/apiUrls'
 
 // ** Icons Imports
 import { ChevronLeft } from 'react-feather'
@@ -12,9 +12,10 @@ import { Card, CardBody, CardTitle, CardText, Form, Label, Input, Button } from 
 
 // ** Styles
 import '@styles/react/pages/page-authentication.scss'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 const ForgotPasswordBasic = () => {
   const [email, setEmail] = useState(null)
+  const [applicationLogo, setApplicationLogo] = useState()
   const [responseSuccessMessage, setResponseSuccessMessage] = useState()
   const [responseErrorMessage, setResponseErrorMessage] = useState()
 
@@ -26,9 +27,24 @@ const ForgotPasswordBasic = () => {
           setResponseSuccessMessage(res.data.msg)
           setResponseErrorMessage()
         })
-        .catch(err => setResponseErrorMessage("Sorry This Email Dose Not Exit"), setResponseSuccessMessage())
+        .catch(err => { setResponseErrorMessage("Sorry This Email Dose Not Exit"), setResponseSuccessMessage() , console.log(err)})
     }
   }
+
+  const fetchApplicationLogo = () => {
+    return useJwt
+      .axiosGet(getApi(APPLICATION_SETTING))
+      .then((res) => {
+        setApplicationLogo(res?.data[0]?.application_logo)
+      })
+      .catch(err => console.log(err))
+  }
+
+  useEffect(() => {
+
+    fetchApplicationLogo()
+
+  }, [])
 
   return (
     <div className='auth-wrapper auth-basic px-2'>
@@ -36,7 +52,12 @@ const ForgotPasswordBasic = () => {
         <Card className='mb-0'>
           <CardBody>
             <Link className='brand-logo' to='/' onClick={e => e.preventDefault()}>
-              <svg viewBox='0 0 139 95' version='1.1' height='28'>
+
+              {applicationLogo &&
+                <img style={{ height: '60px', width: '200px', objectFit: "contain", objectPosition: "top center" }} src={applicationLogo} />
+              }
+
+              {/* <svg viewBox='0 0 139 95' version='1.1' height='28'>
                 <defs>
                   <linearGradient x1='100%' y1='10.5120544%' x2='50%' y2='89.4879456%' id='linearGradient-1'>
                     <stop stopColor='#000000' offset='0%'></stop>
@@ -84,7 +105,7 @@ const ForgotPasswordBasic = () => {
                   </g>
                 </g>
               </svg>
-              <h2 className='brand-text text-primary ms-1'>Vuexy</h2>
+              <h2 className='brand-text text-primary ms-1'>Vuexy</h2> */}
             </Link>
             <CardTitle tag='h4' className='mb-1'>
               {responseSuccessMessage && <h3 style={{ color: "#198754" }}>{responseSuccessMessage}</h3>}

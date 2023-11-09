@@ -7,11 +7,7 @@ import { getApplicationSettingData } from './applicationSettingData'
 //Template config options
 
 
-// export const _applicationData = localStorage.getItem(__applicationData)
-
-
 const themeConfig = {
-
 
   app: {
     // appName: 'UpdateTech',

@@ -73,14 +73,9 @@ const defaultValues = {
 }
 
 const Login = () => {
-  
-
-  // localStorage.removeItem('domainName')
-  const domainName = window.location.href.replace('3000/login', '8000')
-  localStorage.setItem('domainName', domainName)
-  console.log('domainName', domainName)
 
   const [error, setErrors] = useState()
+  const [applicationLogo, setApplicationLogo] = useState()
   const [reload, setReload] = useState(true)
   const { skin } = useSkin()
   const dispatch = useDispatch()
@@ -104,6 +99,8 @@ const Login = () => {
       subject: 'Auth'
     }
   ]
+
+
   const onSubmit = data => {
     if (Object.values(data).every(field => field.length > 0)) {
       const formData = { email: data.loginEmail, password: data.password }
@@ -149,6 +146,16 @@ const Login = () => {
       .catch(err => console.log(err))
   }
 
+
+  const fetchApplicationLogo = () => {
+    return useJwt
+      .axiosGet(getApi(APPLICATION_SETTING))
+      .then((res) => {
+        setApplicationLogo(res?.data[0]?.application_logo)
+      })
+      .catch(err => console.log(err))
+  }
+
   const fetchProfileData = () => {
     return useJwt
       .axiosGet(getApi(PROFILE))
@@ -176,13 +183,21 @@ const Login = () => {
     if (isUserLoggedIn()) {
       navigate('/home')
     }
+
+    fetchApplicationLogo()
+
   }, [])
 
   return (
     <div className='auth-wrapper auth-cover'>
       <Row className='auth-inner m-0'>
         <Link className='brand-logo' to='/' onClick={e => e.preventDefault()}>
-          <svg viewBox='0 0 139 95' version='1.1' height='28'>
+          {applicationLogo && 
+            <img style={{ height: '60px', width: '200px', objectFit: "contain", objectPosition: "top center" }} src={applicationLogo} />
+          }
+
+
+          {/* <svg viewBox='0 0 139 95' version='1.1' height='28'>
             <defs>
               <linearGradient x1='100%' y1='10.5120544%' x2='50%' y2='89.4879456%' id='linearGradient-1'>
                 <stop stopColor='#000000' offset='0%'></stop>
@@ -230,7 +245,7 @@ const Login = () => {
               </g>
             </g>
           </svg>
-          <h2 className='brand-text text-primary ms-1'>Courier</h2>
+          <h2 className='brand-text text-primary ms-1'>Courier Tech</h2> */}
         </Link>
         <Col className='d-none d-lg-flex align-items-center p-5' lg='8' sm='12'>
           <div className='w-100 d-lg-flex align-items-center justify-content-center px-5'>
