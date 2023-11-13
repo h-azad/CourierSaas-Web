@@ -19,6 +19,7 @@ import { useEffect, useState } from "react"
 import { identity } from "../../constants/data/identity"
 import { AREAS_BY_CITY } from "../../constants/apiUrls"
 import React, { useRef } from "react"
+import toast from 'react-hot-toast'
 
 
 const AddMerchants = () => {
@@ -26,6 +27,7 @@ const AddMerchants = () => {
   const [selectboxCity, setSelectboxCity] = useState([])
   const [selectboxArea, setSelectboxArea] = useState([])
   const [data, setData] = useState(null)
+  const [responseError, setResponseError] = useState()
 
 
   const navigate = useNavigate()
@@ -233,16 +235,17 @@ const AddMerchants = () => {
         .axiosPost(getApi(MARCHANT_ADD), formData, headers)
 
         .then((res) => {
-          console.log("res", res.data)
           SwalAlert("Marchant Added Successfully")
+          toast.success("Marchant Added Successfully")
           navigate("/merchants")
         })
-        // .catch(err => console.log(err))
         .catch(err => {
-          err?.response?.data?.message.startsWith('duplicate key value violates unique constraint "account_user_email_key"' ?
-            setError('email', { message: 'This email already exists' }) :
-            null
-          )
+          toast.error(err?.response?.data?.message)
+          setResponseError(err?.response?.data?.message)
+          // err?.response?.data?.message.startsWith('duplicate key value violates unique constraint "account_user_email_key"' ?
+          //   setError('email', { message: 'This email already exists' }) :
+          //   setError(err)
+          // )
         })
 
     }
@@ -267,6 +270,8 @@ const AddMerchants = () => {
       </CardHeader>
 
       <CardBody>
+        {responseError && <h3 style={{color: 'red'}}>{responseError}</h3>}
+        
         <Form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-1'>
             <Label className='form-label' for='name'>
