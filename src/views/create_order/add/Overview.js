@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Button,
 } from "reactstrap"
@@ -16,9 +16,9 @@ import { Card, Col, Row, message } from 'antd'
 
 const Overview = ({ overViewData }) => {
   const navigate = useNavigate()
+  const [responseError, setResponseError] = useState()
 
   const onSubmitOrder = () => {
-    console.log('onSubmit clicked')
     if (
       overViewData.marchant.value !== null &&
       overViewData.recipientName !== null &&
@@ -58,70 +58,78 @@ const Overview = ({ overViewData }) => {
           toast.success('Order Created Successfully') 
           navigate("/create_order")
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          toast.error(err?.response?.data?.message),
+          setResponseError(err?.response?.data?.message)
+        })
     }
   }
 
 
 
   return (
-    <Row gutter={16}>
-      <Col span={8}>
-        <Card title="Recipient Info" bordered={false}>
-          <p><span style={{ fontWeight: 'bold' }}>Recipient Name</span> : {overViewData?.recipientName}</p>
-          <p><span style={{ fontWeight: 'bold' }}>Phone</span> : {overViewData?.phoneNumber}</p>
-          <p><span style={{ fontWeight: 'bold' }}>Delivery Address</span> : {overViewData?.delivaryAddress}</p>
-        </Card>
-      </Col>
-      <Col span={8}>
-        <Card title="Parcel Info" bordered={false}>
-          <p><span style={{ fontWeight: 'bold' }}>Marchant</span> : {overViewData?.marchant?.label}</p>
-          <p><span style={{ fontWeight: 'bold' }}>Order Type</span> : {overViewData?.orderType?.label}</p>
-          <p><span style={{ fontWeight: 'bold' }}>Product Type</span> : {overViewData?.productTypeData?.label}</p>
-          <p><span style={{ fontWeight: 'bold' }}>Percel Type</span> : {overViewData?.percellTypeData?.label}</p>
-          <p><span style={{ fontWeight: 'bold' }}>Shipment Type</span> : {overViewData?.shipmentData?.label}</p>
-          <p><span style={{ fontWeight: 'bold' }}>City</span> : {overViewData?.city?.label}</p>
-          <p><span style={{ fontWeight: 'bold' }}>Area</span> : {overViewData?.area?.label}</p>
-          <p><span style={{ fontWeight: 'bold' }}>Collected Amount</span> : {overViewData?.amountCollected}</p>
-          <p><span style={{ fontWeight: 'bold' }}>Delivery Charge</span> : {overViewData?.deliveryCharge}</p>
-          <p><span style={{ fontWeight: 'bold' }}>Total</span> : { Number(overViewData?.amountCollected) +  Number(overViewData?.deliveryCharge)} </p>
+    <>
+    {responseError && <h3 style={{ color: 'red' }}>{responseError}</h3>}
 
-        </Card>
-      </Col>
-      <Col span={8}>
-        <Card title="Parcel Item" bordered={false}>
-          {overViewData.parcelItems.map((item, index) => (
-            <div key={index}>
-              <p><span style={{ fontWeight: 'bold' }}>Product Details</span> : {item?.item_details}</p>
-              <p><span style={{ fontWeight: 'bold' }}>Quantity</span> : {item?.item_quantity}</p>
-            </div>
-          ))}
-        </Card>
-      </Col>
-      <Col>
-        <div className="d-flex">
+      <Row gutter={16}>
+        <Col span={8}>
+          <Card title="Recipient Info" bordered={false}>
+            <p><span style={{ fontWeight: 'bold' }}>Recipient Name</span> : {overViewData?.recipientName}</p>
+            <p><span style={{ fontWeight: 'bold' }}>Phone</span> : {overViewData?.phoneNumber}</p>
+            <p><span style={{ fontWeight: 'bold' }}>Delivery Address</span> : {overViewData?.delivaryAddress}</p>
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card title="Parcel Info" bordered={false}>
+            <p><span style={{ fontWeight: 'bold' }}>Marchant</span> : {overViewData?.marchant?.label}</p>
+            <p><span style={{ fontWeight: 'bold' }}>Order Type</span> : {overViewData?.orderType?.label}</p>
+            <p><span style={{ fontWeight: 'bold' }}>Product Type</span> : {overViewData?.productTypeData?.label}</p>
+            <p><span style={{ fontWeight: 'bold' }}>Percel Type</span> : {overViewData?.percellTypeData?.label}</p>
+            <p><span style={{ fontWeight: 'bold' }}>Shipment Type</span> : {overViewData?.shipmentData?.label}</p>
+            <p><span style={{ fontWeight: 'bold' }}>City</span> : {overViewData?.city?.label}</p>
+            <p><span style={{ fontWeight: 'bold' }}>Area</span> : {overViewData?.area?.label}</p>
+            <p><span style={{ fontWeight: 'bold' }}>Collected Amount</span> : {overViewData?.amountCollected}</p>
+            <p><span style={{ fontWeight: 'bold' }}>Delivery Charge</span> : {overViewData?.deliveryCharge}</p>
+            <p><span style={{ fontWeight: 'bold' }}>Total</span> : {Number(overViewData?.amountCollected) + Number(overViewData?.deliveryCharge)} </p>
 
-          {overViewData.currentStep > 0 && (
-            <Button className="me-1" color="primary"
-              style={{
-                margin: '0 8px',
-              }}
-              onClick={() => overViewData.prev()}
-            >
-              Previous
-            </Button>
-          )}
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card title="Parcel Item" bordered={false}>
+            {overViewData.parcelItems.map((item, index) => (
+              <div key={index}>
+                <p><span style={{ fontWeight: 'bold' }}>Product Details</span> : {item?.item_details}</p>
+                <p><span style={{ fontWeight: 'bold' }}>Quantity</span> : {item?.item_quantity}</p>
+              </div>
+            ))}
+          </Card>
+        </Col>
+        <Col>
+          <div className="d-flex">
 
-          {overViewData.currentStep === overViewData?.stepsData?.length - 1 && (
-            <Button className="me-1" color="primary" type="submit"
-              // onClick={() => {onSubmitOrder, message.success('Processing complete!')}}>
-              onClick={onSubmitOrder}>
-              Done
-            </Button>
-          )}
-        </div>
-      </Col>
-    </Row>
+            {overViewData.currentStep > 0 && (
+              <Button className="me-1" color="primary"
+                style={{
+                  margin: '0 8px',
+                }}
+                onClick={() => overViewData.prev()}
+              >
+                Previous
+              </Button>
+            )}
+
+            {overViewData.currentStep === overViewData?.stepsData?.length - 1 && (
+              <Button className="me-1" color="primary" type="submit"
+                // onClick={() => {onSubmitOrder, message.success('Processing complete!')}}>
+                onClick={onSubmitOrder}>
+                Done
+              </Button>
+            )}
+          </div>
+        </Col>
+      </Row>
+    </>
+    
   )
 }
 export default Overview

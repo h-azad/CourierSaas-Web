@@ -59,7 +59,6 @@ const AddOrder = () => {
     currentStep: currentStep,
     stepsData: stepsData,
 
-
     setMarchant: setMarchant,
     marchant: marchant,
     setCity: setCity,

@@ -17,11 +17,13 @@ import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, ADMIN_ADD, ADMIN_ROLE } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
+import toast from 'react-hot-toast'
 
 const AddAdmin = () => {
   const [data, setData] = useState(null)
   const navigate = useNavigate()
   const [adminRoleData, setAdminRoleData] = useState([])
+  const [responseError, setResponseError] = useState()
   const {
     control,
     setError,
@@ -111,9 +113,13 @@ const AddAdmin = () => {
         .axiosPost(getApi(ADMIN_ADD), formData)
         .then((res) => {
           SwalAlert("Admin Added Successfully")
+          toast.success('Admin Added Successfully') 
           navigate("/admin")
         })
-        .catch(err => console.log(err))
+        .catch((err) => {
+          toast.error(err?.response?.data?.message),
+          setResponseError(err?.response?.data?.message)
+        })
     }
   }
 
@@ -124,6 +130,7 @@ const AddAdmin = () => {
       </CardHeader>
 
       <CardBody>
+        {responseError && <h3 style={{ color: 'red' }}>{responseError}</h3>}
         <Form onSubmit={handleSubmit(onSubmit)}>
           <div class="">
             <div className='mb-1'>

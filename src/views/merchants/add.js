@@ -51,7 +51,6 @@ const AddMerchants = () => {
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
-      console.log(value, name, type)
       if (name == 'city' && type == 'change') {
         resetField('area')
         fetchAreaData(value.city.value)
@@ -116,7 +115,6 @@ const AddMerchants = () => {
   }
 
   const onSubmit = data => {
-    console.log("data", data)
 
     let isFormValid = true
 
@@ -224,7 +222,6 @@ const AddMerchants = () => {
         status: 'approved',
         is_active: true
       }
-      console.log("formData", formData)
       // return false
       const headers = {
         headers: {
@@ -261,7 +258,6 @@ const AddMerchants = () => {
     // }
   }
 
-  // console.log("errors", errors)
 
   return (
     <Card>

@@ -13,6 +13,7 @@ import { OrderStatusOptions } from '@src/components/orderRelatedData'
 function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, fetchCreateOrderData }) {
   const [selectedOption, setSelectedOption] = useState()
   const [error, setError] = useState(false)
+  const [responseError, setResponseError] = useState()
 
   const [loadings, setLoadings] = useState([])
 
@@ -37,7 +38,6 @@ function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, f
   const updateStatusAction = (e) => {
     e.preventDefault()
     enterLoading(true)
-    console.log('clicked')
     const formData = {
       'status': selectedOption,
       'previous_status': orderInfo.status
@@ -59,8 +59,10 @@ function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, f
       })
       .catch(err => {
         enterLoading(false)
-        toast.success('Order Status Updated Failed!')
-        setStatusModalState(false)
+        toast.error('Order Status Updated Failed!')
+        err?.response?.data?.message ? toast.error(err?.response?.data?.message) : setStatusModalState(true)
+        setResponseError(err?.response?.data?.message)
+
       })
     return false
 
@@ -73,6 +75,7 @@ function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, f
   return (
     <Modal isOpen={statusModalState} toggle={() => setStatusModalState(!statusModalState)} className='modal-dialog-centered'>
       <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Update Order Status</ModalHeader>
+      {responseError && <h3 style={{ color: 'red' }}>{responseError}</h3>}
       
       {error && <ModalHeader><p className='text-danger'>{error}</p></ModalHeader>}
       <ModalBody>
