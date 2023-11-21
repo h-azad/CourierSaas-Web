@@ -187,13 +187,13 @@ const Home = () => {
 
     series: [{
       name: 'Order',
-      data: perWeekData?.weeks_order_data
+      data: perWeekData?.weeks_order_data.reverse()
     }, {
       name: 'Delivery',
-      data: perWeekData?.weeks_complete_delivery
+      data: perWeekData?.weeks_complete_delivery.reverse()
     }, {
       name: 'Cancelled',
-      data: perWeekData?.weeks_order_cancelled
+      data: perWeekData?.weeks_order_cancelled.reverse()
     }],
     options: {
       chart: {
@@ -216,7 +216,7 @@ const Home = () => {
         colors: ['transparent']
       },
       xaxis: {
-        categories: perWeekData?.weeks_day,
+        categories: perWeekData?.weeks_day.reverse(),
       },
       yaxis: {
         title: {

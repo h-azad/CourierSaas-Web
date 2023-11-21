@@ -8,6 +8,9 @@ export const RIDER_NOTIFICATION_LIST = '/rider_app/rider-notification/list'
 
 
 // Manage Merchant API's 
+export const HUB = '/api/hub'
+
+
 export const MARCHANT_ADD = '/manage-user/create-merchant'
 export const MARCHANT_EDIT = '/manage-user/merchant/'
 export const MARCHANT_LIST = '/manage-user/merchant'

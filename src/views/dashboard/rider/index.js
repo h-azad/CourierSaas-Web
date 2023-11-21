@@ -2,7 +2,7 @@
 import { useContext } from 'react'
 
 // ** Icons Imports
-import { List } from 'react-feather'
+import { List, Truck, Box, Home as IconHome, CornerDownLeft } from 'react-feather'
 
 // ** Custom Components
 import Avatar from '@components/avatar'

@@ -149,12 +149,72 @@ const adminMenu = [
   // },
 
 
+
+  {
+    header: 'Hub',
+    action: 'admin-pages',
+    resource: 'Staff-read',
+  },
+
+
+  {
+    id: "hub",
+    title: "Hub",
+    icon: <Users size={20} />,
+
+    children: [
+      {
+        id: 'Hub-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Staff-read',
+        navLink: "/hub/",
+      },
+      {
+        id: 'Hub-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Staff-write',
+        navLink: "/hub/add",
+      }
+    ]
+  },
+
+  {
+    id: "hub-admin",
+    title: "Hub Admin",
+    icon: <Users size={20} />,
+
+    children: [
+      {
+        id: 'hub-admin-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Staff-read',
+        navLink: "/hub/admin/",
+      },
+      {
+        id: 'hub-admin-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Staff-write',
+        navLink: "/hub/admin/add",
+      }
+    ]
+  },
+
+
+  
+
   {
     header: 'Accounts',
     action: 'admin-pages',
     resource: 'Staff-read',
   },
-
 
   {
     id: "admin",

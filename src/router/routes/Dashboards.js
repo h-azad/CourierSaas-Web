@@ -113,6 +113,12 @@ import MarchantAndRiderDistance from '@src/views/create_order/marchantAndRiderDi
 import SetAreaToRoute from '@src/views/route/setArea/setArea'
 import RouteAreaList from '@src/views/route/setArea/routeAreaList'
 import CreateApplicationSetting from '@src/views/application_setting_app/application_setting/createApplicationSetting'
+import AddHub from '@src/views/hub_app/hub/create'
+import HubList from '@src/views/hub_app/hub'
+import EditHub from '@src/views/hub_app/hub/edit'
+import HubAdminCreate from '@src/views/hub_app/admin/create'
+import HubAdminList from '@src/views/hub_app/admin'
+import HubAdminEdit from '@src/views/hub_app/admin/edit'
 
 
 const Home = lazy(() => import("../../views/Home"))
@@ -302,6 +308,36 @@ const DashboardRoutes = [
   },
 
  
+  {
+    path: "/hub",
+    element: <HubList />
+  },
+
+  {
+    path: "/hub/add",
+    element: <AddHub />
+  },
+
+  {
+    path: "/hub/edit/:id",
+    element: <EditHub />
+  },
+
+  {
+    path: "/hub/admin/",
+    element: <HubAdminList />
+  },
+
+  {
+    path: "/hub/admin/add",
+    element: <HubAdminCreate />
+  },
+
+  {
+    path: "/hub/admin/edit/:id",
+    element: <HubAdminEdit />
+  },
+  
   {
     path: "/merchants",
     element: <MerchantList />
