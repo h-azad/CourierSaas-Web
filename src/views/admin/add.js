@@ -55,7 +55,6 @@ const AddAdmin = () => {
 
   const onSubmit = data => {
     let isFormValid = true
-    console.log('data is ', data)
 
     if (!data.name) {
       setError("name", {
@@ -169,7 +168,7 @@ const AddAdmin = () => {
                     <Input
                       required={true}
                       type='text'
-                      placeholder='mr. X'
+                      placeholder='Bruce Wayne'
                       invalid={errors.name && true}
                       {...field}
                     />
