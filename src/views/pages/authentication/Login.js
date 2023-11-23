@@ -116,7 +116,7 @@ const Login = () => {
           const data = { ...res.data.info, accessToken: res.data.token.access, refreshToken: res.data.token.refresh }
           dispatch(handleLogin(data))
           abilityCtx.update(res.data.info.ability)
-          navigate(getHomeRouteForLoggedInUser(data.role))
+          navigate(getHomeRouteForLoggedInUser(data))
           toast(t => (
             <ToastContent t={t} role={data.role || 'admin'} name={data.name || 'John Doe'} />
           ))
