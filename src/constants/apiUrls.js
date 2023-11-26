@@ -339,6 +339,5 @@ export const COMPANY_SETTING = '/api/company-setting/'
 export const APPLICATION_SETTING = '/api/application/setting/'
 
 export const getApi = (api) => {
-    console.log(api)
     return BASE_API + api
 }

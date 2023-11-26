@@ -121,12 +121,6 @@ const adminMenu = [
         ]
       },
 
-
-      
-      
-      
-      
-
     ]
   },
 
@@ -1322,4 +1316,762 @@ const agentMenu = [
 
 
 
-export default [...adminMenu, ...marchantMenu, ...riderMenu, ...agentMenu]
+
+// const hubMenu = [
+//   {
+//     id: "hub-dashboard",
+//     title: "Dashboard",
+//     icon: <Home size={20} />,
+//     action: 'hub-pages',
+//     resource: 'hub-dashboard',
+//     navLink: "/hub/admin-dashboard"
+//   },
+
+//   {
+//     header: 'Orders',
+//     action: 'hub-pages',
+//     resource: 'Order-read',
+//   },
+
+//   {
+//     id: "create_order",
+//     title: "Order Manage",
+//     icon: <Gift size={20} />,
+
+//     children: [
+//       {
+//         id: 'order-add',
+//         title: 'Add',
+//         icon: <Circle size={12} />,
+//         action: 'hub-pages',
+//         resource: 'Order-write',
+//         navLink: "/create_order/add-order",
+//       },
+//       {
+//         id: 'order-index',
+//         title: 'Orders',
+//         icon: <Circle size={12} />,
+//         action: 'hub-pages',
+//         resource: 'Order-read',
+//         navLink: "/create_order/",
+//       },
+//       {
+//         id: 'pickup-failed',
+//         title: 'Pickup Failed',
+//         icon: <Circle size={12} />,
+//         action: 'hub-pages',
+//         resource: 'Order-write',
+//         navLink: "/pickup/failed/",
+//       },
+
+
+//       {
+//         id: "return-order-nav",
+//         title: "Return",
+//         icon: <Circle size={20} />,
+
+//         children: [
+
+//           {
+//             id: 'return-order-warehouse',
+//             title: 'Warehouse',
+//             icon: <Circle size={12} />,
+//             action: 'hub-pages',
+//             resource: 'Order-write',
+//             navLink: "/return-order/warehouse/",
+//           },
+
+//           {
+//             id: 'hold-order',
+//             title: 'Hold',
+//             icon: <Circle size={12} />,
+//             action: 'hub-pages',
+//             resource: 'Order-write',
+//             navLink: "/hold-order",
+//           },
+
+//           {
+//             id: 'return-order',
+//             title: 'Returns',
+//             icon: <Circle size={12} />,
+//             action: 'hub-pages',
+//             resource: 'Order-write',
+//             navLink: "/return-order/",
+//           },
+
+//           {
+//             id: 'return-order-marchant',
+//             title: 'To Marchant',
+//             icon: <Circle size={12} />,
+//             action: 'hub-pages',
+//             resource: 'Order-write',
+//             navLink: "/return-to/marchant",
+//           },
+//         ]
+//       },
+
+//     ]
+//   },
+
+// ]
+
+
+
+
+const hubMenu = [
+  {
+    id: "home",
+    title: "Dashboard",
+    icon: <Home size={20} />,
+    action: 'hub-pages',
+    resource: 'hub-dashboard',
+    navLink: "/hub/admin-dashboard"
+  },
+
+
+  {
+    header: 'Orders',
+    action: 'hub-pages',
+    resource: 'Order-read',
+  },
+
+  {
+    id: "create_order",
+    title: "Order Manage",
+    icon: <Gift size={20} />,
+
+    children: [
+      {
+        id: 'order-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Order-write',
+        navLink: "/create_order/add-order",
+      },
+      {
+        id: 'order-index',
+        title: 'Orders',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Order-read',
+        navLink: "/create_order/",
+      },
+      {
+        id: 'pickup-failed',
+        title: 'Pickup Failed',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Order-write',
+        navLink: "/pickup/failed/",
+      },
+
+
+      {
+        id: "return-order-nav",
+        title: "Return",
+        icon: <Circle size={20} />,
+
+        children: [
+
+          {
+            id: 'return-order-warehouse',
+            title: 'Warehouse',
+            icon: <Circle size={12} />,
+            action: 'hub-pages',
+            resource: 'Order-write',
+            navLink: "/return-order/warehouse/",
+          },
+
+          {
+            id: 'hold-order',
+            title: 'Hold',
+            icon: <Circle size={12} />,
+            action: 'hub-pages',
+            resource: 'Order-write',
+            navLink: "/hold-order",
+          },
+
+          {
+            id: 'return-order',
+            title: 'Returns',
+            icon: <Circle size={12} />,
+            action: 'hub-pages',
+            resource: 'Order-write',
+            navLink: "/return-order/",
+          },
+
+          {
+            id: 'return-order-marchant',
+            title: 'To Marchant',
+            icon: <Circle size={12} />,
+            action: 'hub-pages',
+            resource: 'Order-write',
+            navLink: "/return-to/marchant",
+          },
+        ]
+      },
+
+    ]
+  },
+
+  {
+    id: "assignment",
+    title: "Assignment",
+    icon: <CornerUpRight size={20} />,
+    action: 'hub-pages',
+    resource: 'Assignment-read',
+    navLink: "/assignment"
+  },
+
+
+  {
+    header: 'Accounts',
+    action: 'hub-pages',
+    resource: 'Staff-read',
+  },
+
+  {
+    id: "admin",
+    title: "Staff Users",
+    icon: <Users size={20} />,
+
+    children: [
+      {
+        id: 'staff-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Staff-read',
+        navLink: "/admin/",
+      },
+      {
+        id: 'staff-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Staff-write',
+        navLink: "/admin/add",
+      }
+    ]
+  },
+
+  {
+    id: "merchants",
+    title: "Merchants",
+    icon: <Users size={20} />,
+
+    children: [
+      {
+        id: 'marchant-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Marchant-read',
+        navLink: "/merchants/",
+      },
+      {
+        id: 'marchant-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Marchant-write',
+        navLink: "merchants/add",
+      }
+    ]
+  },
+
+  {
+    id: "rider",
+    title: "Rider",
+    icon: <User size={20} />,
+
+    children: [
+      {
+        id: 'rider-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Rider-read',
+        navLink: "/rider/",
+      },
+      {
+        id: 'rider-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Rider-write',
+        navLink: "/rider/add",
+      },
+
+      {
+        id: 'rider-get-location',
+        title: 'Current Locations',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Rider-write',
+        navLink: "/rider/locations-list",
+      }
+    ]
+  },
+
+
+  {
+    header: 'Accounts Wallet',
+    action: 'hub-pages',
+    resource: 'Account Wallet-read',
+  },
+  {
+    id: "account_wallet",
+    title: "Account Wallet",
+    icon: <CreditCard size={20} />,
+    action: 'hub-pages',
+    resource: 'Account Wallet-read',
+    navLink: "/account-wallet"
+  },
+
+  {
+    id: "withdraw_request",
+    title: "Withdraw Request",
+    icon: <Navigation size={20} />,
+
+    children: [
+      {
+        id: 'withdraw-request-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Withdraw Request-read',
+        navLink: "/withdraw-request/",
+      },
+      {
+        id: 'withdraw-request-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Withdraw Request-write',
+        navLink: "/withdraw-request/add",
+      }
+    ]
+  },
+
+
+  {
+    id: "transactions",
+    title: "Transactions",
+    icon: <Send size={20} />,
+    action: 'hub-pages',
+    resource: 'Transactions-read',
+    navLink: "/transactions"
+  },
+
+  {
+    id: "wallet_adjustment",
+    title: "Wallet Adjustment",
+    icon: <Plus size={20} />,
+
+    children: [
+      {
+        id: 'wallet-adjustment-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Wallet Adjustment-read',
+        navLink: "/wallet-adjustment/",
+      },
+      {
+        id: 'wallet-adjustment-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Account Wallet-write',
+        navLink: "/wallet-adjustment/add",
+      }
+    ]
+  },
+
+  {
+    header: 'Locations',
+    action: 'hub-pages',
+    resource: 'Cities-read',
+  },
+
+  {
+    id: "cities",
+    title: "Cities",
+    icon: <Map size={20} />,
+
+    children: [
+      {
+        id: 'cities-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Cities-read',
+        navLink: "/cities/",
+      },
+      {
+        id: 'cities-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Cities-write',
+        navLink: "/cities/add",
+      }
+    ]
+  },
+
+  {
+    id: "areas",
+    title: "Areas",
+    icon: <MapPin size={20} />,
+
+    children: [
+      {
+        id: 'areas-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Areas-read',
+        navLink: "/areas/",
+      },
+      {
+        id: 'areas-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Areas-write',
+        navLink: "/areas/add",
+      }
+    ]
+  },
+
+  {
+    id: "route",
+    title: "Route",
+    icon: <MapPin size={20} />,
+
+    children: [
+
+      {
+        id: "_route",
+        title: "Routes",
+        children: [
+          {
+            id: 'route-index',
+            title: 'Index',
+            icon: <Circle size={12} />,
+            action: 'hub-pages',
+            resource: 'Route-read',
+            navLink: "/route/",
+          },
+          {
+            id: 'route-add',
+            title: 'Add',
+            icon: <Circle size={12} />,
+            action: 'hub-pages',
+            resource: 'Route-write',
+            navLink: "/route/add/",
+          },
+        ]
+      },
+
+      {
+        id: "rider-route",
+        title: "Rider Routes",
+        children: [
+          {
+            id: 'rider-route-index',
+            title: 'Rider Route',
+            icon: <Circle size={12} />,
+            action: 'hub-pages',
+            resource: 'Route-write',
+            navLink: "/rider-route",
+          },
+
+          {
+            id: 'set-rider',
+            title: 'Set Rider',
+            icon: <Circle size={12} />,
+            action: 'hub-pages',
+            resource: 'Route-write',
+            navLink: "/set-route-rider",
+          },
+        ]
+      },
+
+    ]
+  },
+
+
+  {
+    id: "Setting",
+    title: "Setting",
+    action: 'hub-pages',
+    resource: 'setting',
+    icon: <Archive size={20} />,
+
+    children: [
+
+      {
+        id: "application-setting",
+        title: "Application Setting",
+        children: [
+
+          {
+            id: "application-setting-create",
+            title: "Application Setting",
+            icon: <Circle size={20} />,
+            action: 'hub-pages',
+            resource: 'company-setting',
+            navLink: "/setting/application/create/"
+          },
+        ]
+      },
+
+      {
+        id: "company-setting",
+        title: "Company Setting",
+        children: [
+          {
+            id: "company-setting",
+            title: "Company Setting",
+            icon: <Circle size={20} />,
+            action: 'hub-pages',
+            resource: 'company-setting',
+            navLink: "/setting/"
+          },
+        ]
+      },
+
+    ]
+  },
+
+
+
+  {
+    id: "shipment_type",
+    title: "Shipment Type",
+    icon: <Truck size={20} />,
+
+    children: [
+      {
+        id: 'shipment-type-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Shipment Type-read',
+        navLink: "/shipment_type/",
+      },
+      {
+        id: 'shipment-type-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Shipment Type-write',
+        navLink: "/shipment_type/add",
+      }
+    ]
+  },
+
+  {
+    id: "product-type",
+    title: "Product Type",
+    icon: <ShoppingCart size={20} />,
+
+    children: [
+      {
+        id: 'product-type-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Product Type-read',
+        navLink: "/product_type/",
+      },
+      {
+        id: 'product-type-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Product Type-write',
+        navLink: "/product_type/add",
+      }
+    ]
+  },
+
+  {
+    id: "pricing-policy",
+    title: "Pricing Policy",
+    icon: <Filter size={20} />,
+
+    children: [
+      {
+        id: 'pricing-policy-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Pricing Policy-read',
+        navLink: "/pricing_policy/",
+      },
+      {
+        id: 'pricing-policy-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Pricing Policy-write',
+        navLink: "/pricing_policy/add",
+      }
+    ]
+  },
+
+  {
+    id: "payment-method",
+    title: "Payment Method",
+    icon: <Send size={20} />,
+
+    children: [
+      {
+        id: 'payment-method-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Payment Method-read',
+        navLink: "/payment_method/",
+      },
+      {
+        id: 'payment-method-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Payment Method-write',
+        navLink: "/payment_method/add",
+      }
+    ]
+  },
+
+  {
+    id: "admin-role",
+    title: "Admin Role",
+    icon: <User size={20} />,
+
+    children: [
+      {
+        id: 'admin-role-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Admin Role-read',
+        navLink: "/admin-role/",
+      },
+      {
+        id: 'admin-role-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Admin Role-write',
+        navLink: "/admin-role/add",
+      }
+    ]
+  },
+
+  {
+    id: "permissions",
+    title: "Permission",
+    icon: <Unlock size={20} />,
+    action: 'hub-pages',
+    resource: 'Permission-read',
+    navLink: "/permission"
+  },
+
+  {
+    header: 'Reports',
+    action: 'hub-pages',
+    resource: 'report',
+  },
+
+  {
+    id: "reports",
+    title: "Reports",
+    icon: <User size={20} />,
+
+    children: [
+      {
+        id: "order-reports",
+        title: "Orders",
+        // icon: <Gift size={20} />,
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Order Report-read',
+        navLink: "/order/report"
+      },
+      {
+        id: "admin-get-transactions-reports",
+        title: "Transaction",
+        // icon: <Send size={20} />,
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Transaction Report-read',
+        navLink: "/transactions-report"
+      },
+      {
+        id: "admin-get-withdraw-request-reports",
+        title: "Withdraw Request",
+        // icon: <Meh size={20} />,
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Withdraw Request Report-read',
+        navLink: "/withdraw-request-report"
+      },
+      {
+        id: "admin-get-pickup-reports",
+        title: "Pickup",
+        // icon: <Truck size={20} />,
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Pickup Report-read',
+        navLink: "/pickup-report"
+      },
+      {
+        id: "admin-get-cancel-issue-reports",
+        title: "Cancel Issue",
+        // icon: <Truck size={20} />,
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Pickup Report-read',
+        navLink: "/cancel-issue/report"
+      },
+
+      {
+        id: "admin-get-delivery-reports",
+        title: "Delivery",
+        // icon: <Truck size={20} />,
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Delivery Report-read',
+        navLink: "/delivery-report"
+      },
+      {
+        id: "admin-get-delivery-collection-reports",
+        title: "Collection",
+        // icon: <ArrowDownRight size={20} />,
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Collection Report-read',
+        navLink: "/delivery-collection-report"
+      },
+
+      {
+        id: "admin-get-revenue-report",
+        title: "Revenue",
+        // icon: <TrendingDown size={20} />,
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Revenue Report-read',
+        navLink: "/revenue-report"
+      },
+    ]
+  },
+]
+
+
+export default [...adminMenu, ...marchantMenu, ...riderMenu, ...agentMenu, ...hubMenu]

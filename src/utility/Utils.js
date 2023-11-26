@@ -66,8 +66,6 @@ export const getUserData = () => JSON.parse(localStorage.getItem("userData"))
  */
 export const getHomeRouteForLoggedInUser = (user) => {
 
-  console.log('user login ', user)
-
   const _user = getUserData()
   
   if (user?.role === null && user?.hub_admin === false) return DefaultRoute
@@ -75,6 +73,8 @@ export const getHomeRouteForLoggedInUser = (user) => {
   if (user?.role === "AGENT") return "/second-page"
   if (user?.role === "MARCHANT") return "/marchant-dashboard"
   if (user?.role === "RIDER") return "/rider-dashboard"
+
+  if (user?.role === null && user?.hub_admin === true) return "/hub/admin-dashboard"
   
 
   return DefaultRoute

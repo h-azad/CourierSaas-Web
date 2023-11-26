@@ -117,8 +117,10 @@ import AddHub from '@src/views/hub_app/hub/create'
 import HubList from '@src/views/hub_app/hub'
 import EditHub from '@src/views/hub_app/hub/edit'
 import HubAdminCreate from '@src/views/hub_app/admin/create'
-import HubAdminList from '@src/views/hub_app/admin'
 import HubAdminEdit from '@src/views/hub_app/admin/edit'
+import HubAdminList from '@src/views/hub_app/admin'
+import HubAdminDashboard from '@src/views/dashboard/hub_admin/hubAdminDashboard'
+import HubAdminCreateMerchant from '@src/views/merchants/hubAdmin/hubAdminCreateMarchant'
 
 
 const Home = lazy(() => import("../../views/Home"))
@@ -613,4 +615,20 @@ const AgentRoutes = [
 
 ]
 
-export default [...DashboardRoutes, ...RiderRoutes, ...AgentRoutes]
+
+
+
+const HubRoute = [
+  {
+    path: "/hub/admin-dashboard",
+    element: <HubAdminDashboard />
+  },
+
+  {
+    path: "/merchants/add",
+    element: <HubAdminCreateMerchant />
+  },
+
+]
+
+export default [...DashboardRoutes, ...RiderRoutes, ...AgentRoutes, ...HubRoute]

@@ -4,9 +4,8 @@ import { apiBaseUrl } from "../../../configs/apiConfig"
 export default {
   loginEndpoint: apiBaseUrl + "/api/user/login/",
   // loginEndpoint: "http://localhost:8000" + "/api/user/login/",
-  registerEndpoint: "http://localhost:8000" + "/api/user/register/",
-  createOrganizationEndpoint:
-    "http://localhost:8000" + "/api/user/create-tanent",
+  registerEndpoint: apiBaseUrl + "/api/user/register/",
+  createOrganizationEndpoint: apiBaseUrl + "/api/user/create-tanent",
   refreshEndpoint: "/jwt/refresh-token",
   logoutEndpoint: "/jwt/logout",
 
