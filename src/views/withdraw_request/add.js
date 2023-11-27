@@ -22,12 +22,14 @@ import {
 } from "@src/constants/apiUrls"
 import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
+import toast from 'react-hot-toast'
 
 const AddAreas = () => {
   const [data, setData] = useState(null)
   const [selectboxWithdrawRequest, setSelectboxWithdrawRequest] = useState([])
   const [balance, setBalance] = useState()
   const [withdrawBalance, setWithdrawBalance] = useState()
+  const [err, setErr] = useState()
 
   const navigate = useNavigate()
   const {
@@ -58,7 +60,6 @@ const AddAreas = () => {
         let data = value
         let id = data?.withdraw_request?.value
         // setAccountWallet()
-        console.log(id)
         if (id) {
           getMerchantBalance(id)
         }
@@ -89,7 +90,6 @@ const AddAreas = () => {
   }
 
   useEffect(() => {
-    console.log(withdrawBalance)
   }, [withdrawBalance])
 
 
@@ -99,10 +99,8 @@ const AddAreas = () => {
       .axiosGet(getApi(ACCOUNT_WALLET_FORM_LIST) + '?request-location=form')
     
       .then((res) => {
-        console.log("res", res.data)
         let withdrawRequest = []
         res.data.map((data) => {
-          console.log('console data', data)
           withdrawRequest.push({
             value: data.id,
             label: data.account_name,
@@ -133,11 +131,20 @@ const AddAreas = () => {
       isFormValid = false
     }
 
+    if (!data.current_balance < 0) {
+      setError("Insufficient Balance", {
+        type: "required",
+        message: "Insufficient Balance",
+      })
+      isFormValid = false
+    }
+
+    // current_balance
+
     if (!isFormValid) {
       return false
     }
 
-    console.log("data", data)
     setData(data)
     if (data.withdraw_request !== null && data.withdrawbalance !== null) {
       let formData = {
@@ -149,14 +156,17 @@ const AddAreas = () => {
         withdraw_status: "Complete"
 
       }
-      console.log("formdata", formData)
       useJwt
         .axiosPost(getApi(WITHDRAW_REQUEST_ADD), formData)
         .then((res) => {
-          SwalAlert("Area Added Successfully")
+          SwalAlert("Withdraw Request Successfully Added")
+          toast.success('Withdraw Request Successfully Done')
           navigate("/withdraw-request")
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          toast.error(err?.response?.data?.errors?.non_field_errors[0]), 
+          setErr(err?.response?.data?.errors?.non_field_errors[0])
+        })
     }
   }
 
@@ -254,7 +264,7 @@ const AddAreas = () => {
                       readOnly={true}
                       type="number"
                       placeholder="Current Balance"
-                      invalid={errors.balance && true || balance < Number(withdrawBalance)}
+                      invalid={errors.current_balance && true || balance < Number(withdrawBalance)}
                       {...field}
                     />
                   )}

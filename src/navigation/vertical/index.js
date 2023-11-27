@@ -1804,150 +1804,150 @@ const hubMenu = [
   },
 
 
-  {
-    id: "Setting",
-    title: "Setting",
-    action: 'hub-pages',
-    resource: 'setting',
-    icon: <Archive size={20} />,
+  // {
+  //   id: "Setting",
+  //   title: "Setting",
+  //   action: 'hub-pages',
+  //   resource: 'setting',
+  //   icon: <Archive size={20} />,
 
-    children: [
+  //   children: [
 
-      {
-        id: "application-setting",
-        title: "Application Setting",
-        children: [
+  //     {
+  //       id: "application-setting",
+  //       title: "Application Setting",
+  //       children: [
 
-          {
-            id: "application-setting-create",
-            title: "Application Setting",
-            icon: <Circle size={20} />,
-            action: 'hub-pages',
-            resource: 'company-setting',
-            navLink: "/setting/application/create/"
-          },
-        ]
-      },
+  //         {
+  //           id: "application-setting-create",
+  //           title: "Application Setting",
+  //           icon: <Circle size={20} />,
+  //           action: 'hub-pages',
+  //           resource: 'company-setting',
+  //           navLink: "/setting/application/create/"
+  //         },
+  //       ]
+  //     },
 
-      {
-        id: "company-setting",
-        title: "Company Setting",
-        children: [
-          {
-            id: "company-setting",
-            title: "Company Setting",
-            icon: <Circle size={20} />,
-            action: 'hub-pages',
-            resource: 'company-setting',
-            navLink: "/setting/"
-          },
-        ]
-      },
+  //     {
+  //       id: "company-setting",
+  //       title: "Company Setting",
+  //       children: [
+  //         {
+  //           id: "company-setting",
+  //           title: "Company Setting",
+  //           icon: <Circle size={20} />,
+  //           action: 'hub-pages',
+  //           resource: 'company-setting',
+  //           navLink: "/setting/"
+  //         },
+  //       ]
+  //     },
 
-    ]
-  },
+  //   ]
+  // },
 
 
 
-  {
-    id: "shipment_type",
-    title: "Shipment Type",
-    icon: <Truck size={20} />,
+  // {
+  //   id: "shipment_type",
+  //   title: "Shipment Type",
+  //   icon: <Truck size={20} />,
 
-    children: [
-      {
-        id: 'shipment-type-index',
-        title: 'Index',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Shipment Type-read',
-        navLink: "/shipment_type/",
-      },
-      {
-        id: 'shipment-type-add',
-        title: 'Add',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Shipment Type-write',
-        navLink: "/shipment_type/add",
-      }
-    ]
-  },
+  //   children: [
+  //     {
+  //       id: 'shipment-type-index',
+  //       title: 'Index',
+  //       icon: <Circle size={12} />,
+  //       action: 'hub-pages',
+  //       resource: 'Shipment Type-read',
+  //       navLink: "/shipment_type/",
+  //     },
+  //     {
+  //       id: 'shipment-type-add',
+  //       title: 'Add',
+  //       icon: <Circle size={12} />,
+  //       action: 'hub-pages',
+  //       resource: 'Shipment Type-write',
+  //       navLink: "/shipment_type/add",
+  //     }
+  //   ]
+  // },
 
-  {
-    id: "product-type",
-    title: "Product Type",
-    icon: <ShoppingCart size={20} />,
+  // {
+  //   id: "product-type",
+  //   title: "Product Type",
+  //   icon: <ShoppingCart size={20} />,
 
-    children: [
-      {
-        id: 'product-type-index',
-        title: 'Index',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Product Type-read',
-        navLink: "/product_type/",
-      },
-      {
-        id: 'product-type-add',
-        title: 'Add',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Product Type-write',
-        navLink: "/product_type/add",
-      }
-    ]
-  },
+  //   children: [
+  //     {
+  //       id: 'product-type-index',
+  //       title: 'Index',
+  //       icon: <Circle size={12} />,
+  //       action: 'hub-pages',
+  //       resource: 'Product Type-read',
+  //       navLink: "/product_type/",
+  //     },
+  //     {
+  //       id: 'product-type-add',
+  //       title: 'Add',
+  //       icon: <Circle size={12} />,
+  //       action: 'hub-pages',
+  //       resource: 'Product Type-write',
+  //       navLink: "/product_type/add",
+  //     }
+  //   ]
+  // },
 
-  {
-    id: "pricing-policy",
-    title: "Pricing Policy",
-    icon: <Filter size={20} />,
+  // {
+  //   id: "pricing-policy",
+  //   title: "Pricing Policy",
+  //   icon: <Filter size={20} />,
 
-    children: [
-      {
-        id: 'pricing-policy-index',
-        title: 'Index',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Pricing Policy-read',
-        navLink: "/pricing_policy/",
-      },
-      {
-        id: 'pricing-policy-add',
-        title: 'Add',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Pricing Policy-write',
-        navLink: "/pricing_policy/add",
-      }
-    ]
-  },
+  //   children: [
+  //     {
+  //       id: 'pricing-policy-index',
+  //       title: 'Index',
+  //       icon: <Circle size={12} />,
+  //       action: 'hub-pages',
+  //       resource: 'Pricing Policy-read',
+  //       navLink: "/pricing_policy/",
+  //     },
+  //     {
+  //       id: 'pricing-policy-add',
+  //       title: 'Add',
+  //       icon: <Circle size={12} />,
+  //       action: 'hub-pages',
+  //       resource: 'Pricing Policy-write',
+  //       navLink: "/pricing_policy/add",
+  //     }
+  //   ]
+  // },
 
-  {
-    id: "payment-method",
-    title: "Payment Method",
-    icon: <Send size={20} />,
+  // {
+  //   id: "payment-method",
+  //   title: "Payment Method",
+  //   icon: <Send size={20} />,
 
-    children: [
-      {
-        id: 'payment-method-index',
-        title: 'Index',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Payment Method-read',
-        navLink: "/payment_method/",
-      },
-      {
-        id: 'payment-method-add',
-        title: 'Add',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Payment Method-write',
-        navLink: "/payment_method/add",
-      }
-    ]
-  },
+  //   children: [
+  //     {
+  //       id: 'payment-method-index',
+  //       title: 'Index',
+  //       icon: <Circle size={12} />,
+  //       action: 'hub-pages',
+  //       resource: 'Payment Method-read',
+  //       navLink: "/payment_method/",
+  //     },
+  //     {
+  //       id: 'payment-method-add',
+  //       title: 'Add',
+  //       icon: <Circle size={12} />,
+  //       action: 'hub-pages',
+  //       resource: 'Payment Method-write',
+  //       navLink: "/payment_method/add",
+  //     }
+  //   ]
+  // },
 
   {
     id: "admin-role",

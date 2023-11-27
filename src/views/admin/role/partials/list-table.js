@@ -65,7 +65,7 @@ const AdminList = () => {
             <div className="col-lg-5">
               <div className="d-flex align-items-center">
                 <Link to={'/admin-role/add'}>
-                  <Button.Ripple color="primary">Add adminRole</Button.Ripple>
+                  <Button.Ripple color="primary">Add Admin Role</Button.Ripple>
                 </Link>
               </div>
             </div>

@@ -111,6 +111,7 @@ const AddAdmin = () => {
       useJwt
         .axiosPost(getApi(ADMIN_ADD), formData)
         .then((res) => {
+          console.log('response data', res)
           SwalAlert("Admin Added Successfully")
           toast.success('Admin Added Successfully') 
           navigate("/admin")

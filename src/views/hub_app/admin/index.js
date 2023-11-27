@@ -199,8 +199,8 @@ const HubAdminList = () => {
         <div className="row justify-content-between">
           <div className="col-lg-5">
             <div className="d-flex align-items-center">
-              <Link to={"/hub/add"}>
-                <Button.Ripple color="primary">Add Hub</Button.Ripple>
+              <Link to={"/hub/admin/add"}>
+                <Button.Ripple color="primary">Add Hub Admin</Button.Ripple>
               </Link>
             </div>
           </div>

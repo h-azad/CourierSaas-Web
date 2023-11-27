@@ -46,16 +46,13 @@ const AddWalletAdjustment = () => {
 
     },
   })
-  useEffect(() => {
-    fetchCityData()
-  }, [])
+  
 
-  const fetchCityData = () => {
+  const fetchAccountWalletFormList = () => {
     return useJwt
-      .axiosGet(getApi(ACCOUNT_WALLET_FORM_LIST) + '?request-location=form')
+      .axiosGet(getApi(ACCOUNT_WALLET_FORM_LIST))
       .then((res) => {
         let walletAccount = []
-        // console.log('res.data', res)
         res.data.map((data) => {
           walletAccount.push({ value: data.id, label: data.account_name })
         })
@@ -67,7 +64,6 @@ const AddWalletAdjustment = () => {
 
 
   const onSubmit = (data) => {
-    console.log("from data", data)
 
     let isFormValid = true
 
@@ -118,6 +114,9 @@ const AddWalletAdjustment = () => {
       }
   }
 
+  useEffect(() => {
+    fetchAccountWalletFormList()
+  }, [])
 
   return (
     <Card>
