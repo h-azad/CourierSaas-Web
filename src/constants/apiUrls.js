@@ -219,6 +219,7 @@ export const ORDER_WAREHOUSE_RETURN = "/order-warehouse/return"
 export const RETURN_TO_MARCHANT = "/return-to/marchant"
 export const ORDER_HOLD = "/order-hold/"
 export const ORDER_INVOICE = "/order-invoice/"
+export const SHIPPING_LEBEL = "/shipping-label/"
 export const ORDER_INVOICE_SEND_TO_MERCHANT = "/order-invoice/send/"
 
 

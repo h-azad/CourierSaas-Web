@@ -21,6 +21,7 @@ import {
   CREATE_ORDER_LIST,
   CREATE_ORDER_DELETE,
   ORDER_INVOICE,
+  SHIPPING_LEBEL,
   ORDER_INVOICE_SEND_TO_MERCHANT,
 } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
@@ -90,9 +91,24 @@ const CreateOrderList = () => {
         }
       })
       .catch((err) => console.log(err))
-
   }
 
+
+  const ShippingLebelDownloadToPDF = (info) => {
+    return useJwt
+      .axiosGetFile(getApi(SHIPPING_LEBEL) + info.id + "/")
+      .then((res) => {
+        if (res.data) {
+          const url = window.URL.createObjectURL(new Blob([res.data]))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', `Shipping lebel ${info.recipient_name}.pdf`)
+          document.body.appendChild(link)
+          link.click()
+        }
+      })
+      .catch((err) => console.log(err))
+  }
 
   const deleteAction = (e, id) => {
     e.preventDefault()
@@ -244,6 +260,11 @@ const CreateOrderList = () => {
                         <DropdownItem onClick={() =>invoiceDownloadToPDF(info)}>
                           <Book className="me-50" size={15} />{" "}
                           <span className="align-middle">Download Invoice</span>
+                        </DropdownItem>
+
+                      <DropdownItem onClick={() => ShippingLebelDownloadToPDF(info)}>
+                          <Book className="me-50" size={15} />{" "}
+                          <span className="align-middle">Download Shipping Lebel</span>
                         </DropdownItem>
                     
                       <DropdownItem
