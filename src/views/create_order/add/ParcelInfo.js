@@ -252,6 +252,7 @@ const AddOrder = ({ parcellInfoPropsData }) => {
       parcellInfoPropsData.setArea(data.delivary_area)
       parcellInfoPropsData.setAmountCollected(data.amount_to_be_collected)
       parcellInfoPropsData.setDeliveryCharge(data.delivary_charge)
+      parcellInfoPropsData.setDeliveryInstruction(data.delivery_instruction)
 
 
       parcellInfoPropsData.setOrderType(data.order_type)
@@ -589,6 +590,35 @@ const AddOrder = ({ parcellInfoPropsData }) => {
                 )}
               </div>
             </div>
+
+            <div class="col-lg-6">
+              <div className="mb-1">
+                <Label className="form-label" for="delivery_instruction">
+                  Delivery Instruction
+                </Label>
+                <Controller
+                  defaultValue={parcellInfoPropsData?.deliveryInstruction}
+                  key={delivaryCharge}
+                  control={control}
+                  id="delivery_instruction"
+                  name="delivery_instruction"
+                  render={({ field }) => (
+                    <Input
+                      type='textarea'
+                      placeholder=""
+                      invalid={errors.delivery_instruction && true}
+                      {...field}
+                    />
+                  )}
+                />
+                {errors && errors.delivery_instruction && (
+                  <span className="invalid-feedback">
+                    {errors.delivery_instruction.message}
+                  </span>
+                )}
+              </div>
+            </div>
+
           </div>
           
 

@@ -23,6 +23,8 @@ const AddOrder = () => {
   const [amountCollected, setAmountCollected] = useState()
   const [deliveryCharge, setDeliveryCharge] = useState()
 
+  const [deliveryInstruction, setDeliveryInstruction] = useState()
+
   const [productTypeData, setProductTypeData] = useState()
   const [percellTypeData, setPricingPolicyData] = useState()
   const [shipmentData, setShipmentTypeData] = useState()
@@ -69,6 +71,8 @@ const AddOrder = () => {
     amountCollected: amountCollected,
     setDeliveryCharge: setDeliveryCharge,
     deliveryCharge: deliveryCharge,
+    setDeliveryInstruction: setDeliveryInstruction,
+    deliveryInstruction: deliveryInstruction,
     setOrderType: setOrderType,
     orderType: orderType,
     setProductTypeData: setProductTypeData,
@@ -110,6 +114,7 @@ const AddOrder = () => {
     area: area,
     amountCollected: amountCollected,
     deliveryCharge: deliveryCharge,
+    deliveryInstruction: deliveryInstruction,
     orderType: orderType,
     productTypeData: productTypeData,
     percellTypeData: percellTypeData,
@@ -123,7 +128,10 @@ const AddOrder = () => {
   }
 
   const steps = [
-
+    // {
+    //   title: 'Parcel Info',
+    //   content: <ParcelInfo parcellInfoPropsData={parcellInfoPropsData} />,
+    // },
     {
       title: 'Recipient Info',
       content: <RecipientInfo recipienInfoPropsData={recipienInfoPropsData} />,
@@ -153,6 +161,7 @@ const AddOrder = () => {
 
 
   useEffect(() => { setStepsData(steps) }, [])
+  console.log('deliveryInstruction', deliveryInstruction)
 
   return (
     <>
