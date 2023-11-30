@@ -161,7 +161,6 @@ const AddOrder = () => {
 
 
   useEffect(() => { setStepsData(steps) }, [])
-  console.log('deliveryInstruction', deliveryInstruction)
 
   return (
     <>

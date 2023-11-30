@@ -254,7 +254,6 @@ const AddOrder = ({ parcellInfoPropsData }) => {
       parcellInfoPropsData.setDeliveryCharge(data.delivary_charge)
       parcellInfoPropsData.setDeliveryInstruction(data.delivery_instruction)
 
-
       parcellInfoPropsData.setOrderType(data.order_type)
       parcellInfoPropsData.setProductTypeData(data.product_type)
       parcellInfoPropsData.setPricingPolicyData(data.pricing_policy)

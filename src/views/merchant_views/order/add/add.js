@@ -23,6 +23,8 @@ const AddOrderMarchant = () => {
   const [amountCollected, setAmountCollected] = useState()
   const [deliveryCharge, setDeliveryCharge] = useState()
 
+  const [deliveryInstruction, setDeliveryInstruction] = useState()
+
   const [productTypeData, setProductTypeData] = useState()
   const [percellTypeData, setPricingPolicyData] = useState()
   const [shipmentData, setShipmentTypeData] = useState()
@@ -59,6 +61,8 @@ const AddOrderMarchant = () => {
     currentStep: currentStep,
     stepsData: stepsData,
 
+    deliveryInstruction: deliveryInstruction,
+    setDeliveryInstruction: setDeliveryInstruction,
 
     setCity: setCity,
     city: city,
@@ -104,6 +108,8 @@ const AddOrderMarchant = () => {
     phoneNumber: phoneNumber,
     delivaryAddress: delivaryAddress,
 
+    deliveryInstruction: deliveryInstruction,
+
     city: city,
     area: area,
     amountCollected: amountCollected,
@@ -121,14 +127,7 @@ const AddOrderMarchant = () => {
   }
 
   const steps = [
-    // {
-    //   title: 'Parcel Info',
-    //   content: <ParcelInfo parcellInfoPropsData={parcellInfoPropsData} />,
-    // },
-    // {
-    //   title: 'Parcel Items',
-    //   content: <ParcelItems parcellItemPropsData={parcellItemPropsData} />,
-    // },
+
     {
       title: 'Recipient Info',
       content: <RecipientInfo recipienInfoPropsData={recipienInfoPropsData} />,

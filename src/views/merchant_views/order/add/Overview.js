@@ -43,6 +43,7 @@ const Overview = ({ overViewData }) => {
         pricing_policy: overViewData.percellTypeData.value,
         shipment_type: overViewData.shipmentData.value,
         delivary_charge: overViewData.deliveryCharge,
+        delivery_instruction: overViewData.deliveryInstruction,
         order_type: overViewData.orderType.value,
         parcel_items: overViewData.parcelItems,
       }
@@ -81,6 +82,7 @@ const Overview = ({ overViewData }) => {
           <p><span style={{ fontWeight: 'bold' }}>Area</span> : {overViewData?.area?.label}</p>
           <p><span style={{ fontWeight: 'bold' }}>Collected Amount</span> : {overViewData?.amountCollected}</p>
           <p><span style={{ fontWeight: 'bold' }}>Delivery Charge</span> : {overViewData?.deliveryCharge}</p>
+          <p><span style={{ fontWeight: 'bold' }}>Delivery Instruction</span> : {overViewData?.deliveryInstruction}</p>
           <p><span style={{ fontWeight: 'bold' }}>Total</span> : { Number(overViewData?.amountCollected) +  Number(overViewData?.deliveryCharge)} </p>
 
         </Card>
