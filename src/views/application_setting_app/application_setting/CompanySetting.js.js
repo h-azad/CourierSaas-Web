@@ -1,10 +1,27 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Checkbox, Form, Input, TimePicker, Select } from 'antd'
 
 const { RangePicker } = TimePicker
 
+
 const CompanySetting = ({ propsData }) => {
+
   const [form] = Form.useForm()
+  const [selectedValues, setSelectedValues] = useState([])
+
+
+
+  const handleSelectChange = (values) => {
+    setSelectedValues(values)
+
+  }
+
+
+  function onSelectTime(value, valueString) {
+    // propsData?.setOfficeTime(valueString)
+    // console.log('value string', valueString)
+  }
+
 
   const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
   const options = []
@@ -17,6 +34,8 @@ const CompanySetting = ({ propsData }) => {
       label: value,
     })
   }
+
+
 
   const onFinish = (values) => {
     propsData.onSubmit()
@@ -32,15 +51,23 @@ const CompanySetting = ({ propsData }) => {
       form.setFieldValue("email", propsData?.email)
       form.setFieldValue("google_map", propsData?.googleMap)
       form.setFieldValue("weekends", propsData?.weekends)
-      form.setFieldValue("office_time", propsData?.officeTime)
+      // form.setFieldValue("office_time", propsData?.officeTime)
       form.setFieldValue("address", propsData?.address)
 
     }
   }, [propsData])
 
+
+
+  useEffect(() => {
+    propsData?.setWeekends(selectedValues)
+  }, [selectedValues])
+
+
+
   return (
     <Form
-      name="Host Email Setting"
+      name="Application Setting"
       form={form}
       labelCol={{
         span: 8,
@@ -55,7 +82,6 @@ const CompanySetting = ({ propsData }) => {
         remember: true,
       }}
       onFinish={onFinish}
-      // onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
       <Form.Item
@@ -118,30 +144,28 @@ const CompanySetting = ({ propsData }) => {
       >
         <Select
           mode="multiple"
-          // size={size}
           placeholder="Please select"
-          // defaultValue={['a10', 'c12']}
-          // onChange={handleChange}
+          onChange={handleSelectChange}
           style={{
             width: '100%',
           }}
           options={options}
-          
-        />
+          value={selectedValues}
 
+        />
       </Form.Item>
 
       <Form.Item
         label="Office Time"
         name="office_time"
-        // rules={[
-        //   {
-        //     required: true,
-        //   },
-        // ]}
+      // rules={[
+      //   {
+      //     required: true,
+      //   },
+      // ]}
       >
         {/* <Input onChange={(e) => { propsData.SetEmailPort(e.target.value) }} /> */}
-        <RangePicker use12Hours />
+        <RangePicker use12Hours onChange={onSelectTime} />
       </Form.Item>
 
       <Form.Item

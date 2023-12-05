@@ -15,35 +15,39 @@ import CompanySetting from './CompanySetting.js'
 
 
 const CreateApplicationSetting = () => {
+
   const dispatch = useDispatch()
   const [applicationID, setApplicationID] = useState('')
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
+  const [weekends, setWeekends] = useState('')
+  const [officeTime, setOfficeTime] = useState('')
   const [googleMap, setGoogleMap] = useState('')
   const [address, setAddress] = useState('')
-  // const [googleMap, setGoogleMap] = useState('')
-  
+
   const [applicationLogo, setApplicationLogo] = useState('')
   const [currentApplicationLogo, setCurrentApplicationLogo] = useState()
 
+
+
+
   const onSubmit = () => {
 
-    console.log('name', name)
-
     let formData = new FormData()
-    
+
     formData.append('id', applicationID)
-    
+
     formData.append('name', name)
     formData.append('phone', phone)
     formData.append('email', email)
     formData.append('google_map', googleMap)
     formData.append('address', address)
+    formData.append('weekends', JSON.stringify(weekends))
+
+    // formData.append("office_time", officeTime)
 
     formData.append("application_logo", applicationLogo)
-
-    console.log('form data', formData)
 
     return useJwt
       .axiosPost(getApi(APPLICATION_SETTING), formData)
@@ -54,6 +58,9 @@ const CreateApplicationSetting = () => {
       .catch(err => console.log(err))
   }
 
+
+
+
   const propsData = {
     setName: setName,
     name: name,
@@ -61,6 +68,12 @@ const CreateApplicationSetting = () => {
     phone: phone,
     setEmail: setEmail,
     email: email,
+    setWeekends: setWeekends,
+    weekends: weekends,
+
+    setOfficeTime: setOfficeTime,
+    officeTime: officeTime,
+
     setGoogleMap: setGoogleMap,
     googleMap: googleMap,
     setAddress: setAddress,
@@ -75,6 +88,7 @@ const CreateApplicationSetting = () => {
   }
 
 
+
   const fetchApplicationData = () => {
     return useJwt
       .axiosGet(getApi(APPLICATION_SETTING))
@@ -84,13 +98,14 @@ const CreateApplicationSetting = () => {
       .catch(err => console.log(err))
   }
 
- 
+
+
   const fetchApplicationSettingData = () => {
 
     return useJwt
       .axiosGet(getApi(APPLICATION_SETTING))
       .then((res) => {
-        // setGoogleKey(Response)
+
         setApplicationID(res?.data[0]?.id)
 
         setName(res?.data[0]?.name)
@@ -98,15 +113,19 @@ const CreateApplicationSetting = () => {
         setEmail(res?.data[0]?.email)
         setGoogleMap(res?.data[0]?.google_map)
         setAddress(res?.data[0]?.address)
-
+        setWeekends(res?.data[0]?.weekends)
         setCurrentApplicationLogo(res?.data[0]?.application_logo)
       })
       .catch((err) => console.log(err))
   }
 
+
+
   useEffect(() => {
     fetchApplicationSettingData()
   }, [])
+
+
 
   return (
     <>
@@ -125,13 +144,6 @@ const CreateApplicationSetting = () => {
               key: 'company-logo',
               children: <ApplicationLogo propsData={propsData} />,
             },
-
-            // {
-            //   label: `Company Setting`,
-            //   key: 'company-setting',
-            //   children: <EditCompanySetting />,
-            // },
-
           ]
         }
       />
