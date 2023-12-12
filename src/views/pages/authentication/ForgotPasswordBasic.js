@@ -8,26 +8,40 @@ import { getApi, FORGOT_PASSWORD, APPLICATION_SETTING } from '@src/constants/api
 import { ChevronLeft } from 'react-feather'
 
 // ** Reactstrap Imports
-import { Card, CardBody, CardTitle, CardText, Form, Label, Input, Button } from 'reactstrap'
+import { Card, CardBody, CardTitle, CardText, Form, Label, Input } from 'reactstrap'
+
+import { Button } from 'antd'
 
 // ** Styles
 import '@styles/react/pages/page-authentication.scss'
 import { useState, useEffect } from 'react'
 const ForgotPasswordBasic = () => {
-  const [email, setEmail] = useState(null)
+  const [loadings, setLoadings] = useState([])
+  const [email, setEmail] = useState()
   const [applicationLogo, setApplicationLogo] = useState()
   const [responseSuccessMessage, setResponseSuccessMessage] = useState()
   const [responseErrorMessage, setResponseErrorMessage] = useState()
 
+
+  const host = `${window.location.protocol}${window.location.hostname}:${window.location.port}`
+
+
   const forgotPassword = () => {
     if (email !== null) {
+
+      const formData = new FormData()
+      formData.append('email', email)
+      formData.append('host', host)
+      enterLoading(true)
+
       useJwt
-        .axiosPost(getApi(FORGOT_PASSWORD), {email: email})
+        .axiosPost(getApi(FORGOT_PASSWORD), formData)
         .then((res) => {
+          enterLoading(false)
           setResponseSuccessMessage(res.data.msg)
           setResponseErrorMessage()
         })
-        .catch(err => { setResponseErrorMessage("Sorry This Email Dose Not Exit"), setResponseSuccessMessage() , console.log(err)})
+        .catch(err => { setResponseErrorMessage("Sorry This Email Dose Not Exit"), setResponseSuccessMessage(), console.log(err), enterLoading(false) })
     }
   }
 
@@ -39,6 +53,24 @@ const ForgotPasswordBasic = () => {
       })
       .catch(err => console.log(err))
   }
+
+
+  const enterLoading = (index) => {
+    if (index === true) {
+      setLoadings((prevLoadings) => {
+        const newLoadings = [...prevLoadings]
+        newLoadings[1] = true
+        return newLoadings
+      })
+    } else {
+      setLoadings((prevLoadings) => {
+        const newLoadings = [...prevLoadings]
+        newLoadings[1] = false
+        return newLoadings
+      })
+    }
+  }
+
 
   useEffect(() => {
 
@@ -122,9 +154,13 @@ const ForgotPasswordBasic = () => {
                 </Label>
                 <Input type='email' onChange={(e) => { setEmail(e.target.value) }} id='login-email' placeholder='john@example.com' autoFocus />
               </div>
-              <Button disabled={email===null? true: false} color='primary' block>
-                Send reset link
-              </Button>
+              {/* <Button disabled={email===undefined? true: false} color='primary' block>
+                
+              </Button> */}
+
+              <Button htmlType="submit" type="primary" loading={loadings[1]} disabled={email ? false : true} style={{ width: '100%' }}>Send reset link</Button>
+
+
             </Form>
             <p className='text-center mt-2'>
               <Link to='/login'>

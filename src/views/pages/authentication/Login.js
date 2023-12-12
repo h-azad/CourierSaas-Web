@@ -141,7 +141,11 @@ const Login = () => {
     return useJwt
       .axiosGet(getApi(APPLICATION_SETTING))
       .then((res) => {
-        dispatch(handleApplicationData(res?.data[0]))
+        if (res?.data.length > 0){
+          dispatch(handleApplicationData(res?.data[0]))          
+        }else{
+          return true
+        }
       })
       .catch(err => console.log(err))
   }

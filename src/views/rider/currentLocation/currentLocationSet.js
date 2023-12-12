@@ -25,7 +25,7 @@ import { GoogleMap, Marker } from '@react-google-maps/api'
 import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
 
 import axios from "axios"
-import { googleKey } from "@src/configs/google_key"
+import {googleKey} from "@src/configs/google_key"
 
 const CurrentLocationSet = () => {
 
@@ -37,7 +37,7 @@ const CurrentLocationSet = () => {
   const [locationName, setLocationName] = useState()
   const [locationInfo, setlocationInfo] = useState()
 
-  const GOOGLE_API_KEY = googleKey()
+  const GOOGLE_API_KEY = googleKey
 
   const updateLocation = (_formData) => {
 

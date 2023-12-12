@@ -5,7 +5,7 @@ import { TimePicker } from 'antd'
 import { useState } from 'react'
 import { GoogleMap, Marker } from '@react-google-maps/api'
 import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
-import { googleKey } from "@src/configs/google_key"
+import {googleKey} from "@src/configs/google_key"
 
 const containerStyle = {
   width: '100%',

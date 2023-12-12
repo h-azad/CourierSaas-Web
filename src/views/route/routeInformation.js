@@ -4,7 +4,7 @@ import { Form, Input, TimePicker, Col, Row } from 'antd'
 import { useState } from 'react'
 import { GoogleMap, Marker } from '@react-google-maps/api'
 import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete'
-import { googleKey } from "@src/configs/google_key"
+import  {googleKey}  from "@src/configs/google_key"
 import dayjs from 'dayjs'
 import moment from 'moment/moment'
 const format = 'H:mm'
@@ -52,6 +52,8 @@ export default function RouteInformation({ routeInformationData }) {
 
 
   }, [])
+
+  console.log('GOOGLE_MAP_API_KEY', googleKey)
 
 
   return (
@@ -116,8 +118,7 @@ export default function RouteInformation({ routeInformationData }) {
                 ]}
               >
                 <GooglePlacesAutocomplete
-                  // apiKey='AIzaSyA_bi6febAzWK5EPN8cWv986ATCRxhK-ac'
-                  apiKey={googleKey()}
+                  apiKey={googleKey}
                   selectProps={{
                     value,
                     onChange: setValue,
