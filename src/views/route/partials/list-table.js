@@ -21,6 +21,7 @@ import { DownOutlined } from '@ant-design/icons'
 
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
+import { isHubAdmin } from "@src/configs/isHubAdmin"
 
 const ListTable = () => {
   const [route, setRoute] = useState([])
@@ -145,7 +146,7 @@ const ListTable = () => {
   //   //   .finally(() => fetchRiderData())
   // }
 
- 
+
 
   const renderDropDownItems = (info) => {
     const item = [
@@ -194,7 +195,7 @@ const ListTable = () => {
                 ))}
               </Descriptions.Item>
             </Descriptions>
-            
+
             <Descriptions>
               <Descriptions.Item label="Rider">
                 {record?.rider.map((riderData, index) => (
@@ -277,9 +278,11 @@ const ListTable = () => {
         <div className="row justify-content-between">
           <div className="col-lg-5">
             <div className="d-flex align-items-center">
-              <Link to={'/route/add'}>
-                <Button.Ripple color="primary">Add Route</Button.Ripple>
-              </Link>
+              {isHubAdmin() ? null :
+                <Link to={'/route/add'}>
+                  <Button.Ripple color="primary">Add Route</Button.Ripple>
+                </Link>
+              }
             </div>
           </div>
           <div className="col-lg-5">

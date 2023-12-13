@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash, Search, Edit3, Truck, Check } from "react-feather"
+import { MoreVertical, Edit, Trash, Search, Edit3, Truck, Check, DollarSign } from "react-feather"
 import {
   UncontrolledDropdown,
   DropdownMenu,
@@ -299,6 +299,13 @@ const RiderAssignmentList = () => {
         key: '4',
         label: (
           <Link to={"/assignment/delivery/" + info.id}><Check className="me-20" size={15} />{" "}Delivery Tasks</Link>
+        ),
+      },
+
+      {
+        key: '5',
+        label: (
+          <Link to={"/assignment/pending-cod/collection/" + info.id}><DollarSign className="me-20" size={15} />{" "}Collection</Link>
         ),
       },
     ]

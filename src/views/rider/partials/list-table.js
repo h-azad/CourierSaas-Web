@@ -28,6 +28,10 @@ import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 import toast from 'react-hot-toast'
 
+import { isHubAdmin } from "@src/configs/isHubAdmin"
+
+
+
 const ListTable = () => {
   const [rider, setRider] = useState([])
   const [statusModalState, setStatusModalState] = useState(false)
@@ -56,6 +60,7 @@ const ListTable = () => {
     setSelectedInfo(info)
   }
 
+
   const clearData = () => {
     setSelectedInfo(null)
     setSelectedStatus(null)
@@ -73,8 +78,8 @@ const ListTable = () => {
             .axiosDelete(getApi(RIDER_DELETE + id + "/"))
             .then((res) => {
               SwalAlert("Deleted Successfully")
-              toast.success('Deleted Successfully!') 
-            }).catch((error)=>{
+              toast.success('Deleted Successfully!')
+            }).catch((error) => {
               toast.error(error?.message)
               toast.error("Rider Delete Not Possible")
             })
@@ -285,15 +290,18 @@ const ListTable = () => {
     fetchRiderData()
   }, [statusModalState])
 
+
   return (
     <>
       <CardText>
         <div className="row justify-content-between">
           <div className="col-lg-5">
             <div className="d-flex align-items-center">
-              <Link to={"/rider/add"}>
-                <Button.Ripple color="primary">Add Rider</Button.Ripple>
-              </Link>
+              {isHubAdmin() ? null :
+                <Link to={"/rider/add"}>
+                  <Button.Ripple color="primary">Add Rider</Button.Ripple>
+                </Link>
+              }
             </div>
           </div>
           <div className="col-lg-5">

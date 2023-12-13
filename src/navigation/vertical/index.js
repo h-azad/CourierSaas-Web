@@ -123,15 +123,34 @@ const adminMenu = [
 
     ]
   },
+  
+
+  // {
+  //   id: "assignment",
+  //   title: "Assignment",
+  //   icon: <CornerUpRight size={20} />,
+  //   action: 'admin-pages',
+  //   resource: 'Assignment-read',
+  //   navLink: "/assignment"
+  // },
 
   {
     id: "assignment",
-    title: "Assignment",
-    icon: <CornerUpRight size={20} />,
+    title: "Rider",
+    icon: <Users size={20} />,
     action: 'admin-pages',
     resource: 'Assignment-read',
     navLink: "/assignment"
   },
+
+  // {
+  //   id: "cod-collection",
+  //   title: "COD Amount",
+  //   icon: <DollarSign size={20} />,
+  //   action: 'admin-pages',
+  //   resource: 'Assignment-read',
+  //   navLink: "/cod-amount"
+  // },
 
   // {
   //   id: "agent-assignment",
@@ -1531,30 +1550,30 @@ const hubMenu = [
     resource: 'Staff-read',
   },
 
-  {
-    id: "admin",
-    title: "Staff Users",
-    icon: <Users size={20} />,
+  // {
+  //   id: "admin",
+  //   title: "Staff Users",
+  //   icon: <Users size={20} />,
 
-    children: [
-      {
-        id: 'staff-index',
-        title: 'Index',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Staff-read',
-        navLink: "/admin/",
-      },
-      {
-        id: 'staff-add',
-        title: 'Add',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Staff-write',
-        navLink: "/admin/add",
-      }
-    ]
-  },
+  //   children: [
+  //     {
+  //       id: 'staff-index',
+  //       title: 'Index',
+  //       icon: <Circle size={12} />,
+  //       action: 'hub-pages',
+  //       resource: 'Staff-read',
+  //       navLink: "/admin/",
+  //     },
+  //     {
+  //       id: 'staff-add',
+  //       title: 'Add',
+  //       icon: <Circle size={12} />,
+  //       action: 'hub-pages',
+  //       resource: 'Staff-write',
+  //       navLink: "/admin/add",
+  //     }
+  //   ]
+  // },
 
   {
     id: "merchants",
@@ -1595,14 +1614,14 @@ const hubMenu = [
         resource: 'Rider-read',
         navLink: "/rider/",
       },
-      {
-        id: 'rider-add',
-        title: 'Add',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Rider-write',
-        navLink: "/rider/add",
-      },
+      // {
+      //   id: 'rider-add',
+      //   title: 'Add',
+      //   icon: <Circle size={12} />,
+      //   action: 'hub-pages',
+      //   resource: 'Rider-write',
+      //   navLink: "/rider/add",
+      // },
 
       {
         id: 'rider-get-location',
@@ -1710,14 +1729,14 @@ const hubMenu = [
         resource: 'Cities-read',
         navLink: "/cities/",
       },
-      {
-        id: 'cities-add',
-        title: 'Add',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Cities-write',
-        navLink: "/cities/add",
-      }
+      // {
+      //   id: 'cities-add',
+      //   title: 'Add',
+      //   icon: <Circle size={12} />,
+      //   action: 'hub-pages',
+      //   resource: 'Cities-write',
+      //   navLink: "/cities/add",
+      // }
     ]
   },
 
@@ -1735,14 +1754,14 @@ const hubMenu = [
         resource: 'Areas-read',
         navLink: "/areas/",
       },
-      {
-        id: 'areas-add',
-        title: 'Add',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Areas-write',
-        navLink: "/areas/add",
-      }
+      // {
+      //   id: 'areas-add',
+      //   title: 'Add',
+      //   icon: <Circle size={12} />,
+      //   action: 'hub-pages',
+      //   resource: 'Areas-write',
+      //   navLink: "/areas/add",
+      // }
     ]
   },
 
@@ -1765,40 +1784,40 @@ const hubMenu = [
             resource: 'Route-read',
             navLink: "/route/",
           },
-          {
-            id: 'route-add',
-            title: 'Add',
-            icon: <Circle size={12} />,
-            action: 'hub-pages',
-            resource: 'Route-write',
-            navLink: "/route/add/",
-          },
+          // {
+          //   id: 'route-add',
+          //   title: 'Add',
+          //   icon: <Circle size={12} />,
+          //   action: 'hub-pages',
+          //   resource: 'Route-write',
+          //   navLink: "/route/add/",
+          // },
         ]
       },
 
-      {
-        id: "rider-route",
-        title: "Rider Routes",
-        children: [
-          {
-            id: 'rider-route-index',
-            title: 'Rider Route',
-            icon: <Circle size={12} />,
-            action: 'hub-pages',
-            resource: 'Route-write',
-            navLink: "/rider-route",
-          },
+      // {
+      //   id: "rider-route",
+      //   title: "Rider Routes",
+      //   children: [
+      //     {
+      //       id: 'rider-route-index',
+      //       title: 'Rider Route',
+      //       icon: <Circle size={12} />,
+      //       action: 'hub-pages',
+      //       resource: 'Route-write',
+      //       navLink: "/rider-route",
+      //     },
 
-          {
-            id: 'set-rider',
-            title: 'Set Rider',
-            icon: <Circle size={12} />,
-            action: 'hub-pages',
-            resource: 'Route-write',
-            navLink: "/set-route-rider",
-          },
-        ]
-      },
+      //     {
+      //       id: 'set-rider',
+      //       title: 'Set Rider',
+      //       icon: <Circle size={12} />,
+      //       action: 'hub-pages',
+      //       resource: 'Route-write',
+      //       navLink: "/set-route-rider",
+      //     },
+      //   ]
+      // },
 
     ]
   },
@@ -1949,39 +1968,39 @@ const hubMenu = [
   //   ]
   // },
 
-  {
-    id: "admin-role",
-    title: "Admin Role",
-    icon: <User size={20} />,
+  // {
+  //   id: "admin-role",
+  //   title: "Admin Role",
+  //   icon: <User size={20} />,
 
-    children: [
-      {
-        id: 'admin-role-index',
-        title: 'Index',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Admin Role-read',
-        navLink: "/admin-role/",
-      },
-      {
-        id: 'admin-role-add',
-        title: 'Add',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Admin Role-write',
-        navLink: "/admin-role/add",
-      }
-    ]
-  },
+  //   children: [
+  //     {
+  //       id: 'admin-role-index',
+  //       title: 'Index',
+  //       icon: <Circle size={12} />,
+  //       action: 'hub-pages',
+  //       resource: 'Admin Role-read',
+  //       navLink: "/admin-role/",
+  //     },
+  //     {
+  //       id: 'admin-role-add',
+  //       title: 'Add',
+  //       icon: <Circle size={12} />,
+  //       action: 'hub-pages',
+  //       resource: 'Admin Role-write',
+  //       navLink: "/admin-role/add",
+  //     }
+  //   ]
+  // },
 
-  {
-    id: "permissions",
-    title: "Permission",
-    icon: <Unlock size={20} />,
-    action: 'hub-pages',
-    resource: 'Permission-read',
-    navLink: "/permission"
-  },
+  // {
+  //   id: "permissions",
+  //   title: "Permission",
+  //   icon: <Unlock size={20} />,
+  //   action: 'hub-pages',
+  //   resource: 'Permission-read',
+  //   navLink: "/permission"
+  // },
 
   {
     header: 'Reports',

@@ -25,6 +25,7 @@ import { Table, Tag, Dropdown } from "antd"
 import { DownOutlined } from '@ant-design/icons'
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
+import { isHubAdmin } from "@src/configs/isHubAdmin"
 
 
 const ListTable = () => {
@@ -314,9 +315,11 @@ const ListTable = () => {
         <div className="row justify-content-between">
           <div className="col-lg-5">
             <div className="d-flex align-items-center">
-              <Link to={"/cities/add"}>
-                <Button.Ripple color="primary">Add City</Button.Ripple>
-              </Link>
+              {isHubAdmin() ? null :
+                <Link to={"/cities/add"}>
+                  <Button.Ripple color="primary">Add City</Button.Ripple>
+                </Link>
+              }
             </div>
           </div>
           <div className="col-lg-5">

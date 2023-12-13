@@ -25,6 +25,7 @@ import { Table, Tag, Dropdown } from "antd"
 import { DownOutlined } from '@ant-design/icons'
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
+import { isHubAdmin } from "@src/configs/isHubAdmin"
 
 const ListTable = () => {
   const [areas, setAreas] = useState([])
@@ -268,30 +269,30 @@ const ListTable = () => {
           </a>
         </Dropdown>
 
-        // <UncontrolledDropdown>
-        //   <DropdownToggle
-        //     className="icon-btn hide-arrow"
-        //     color="transparent"
-        //     size="sm"
-        //     caret
-        //   >
-        //     <MoreVertical size={15} />
-        //   </DropdownToggle>
-        //   <DropdownMenu>
-        //     <DropdownItem href={"/areas/edit/" + record.id}>
-        //       <Edit className="me-50" size={15} />{" "}
-        //       <span className="align-middle">Edit</span>
-        //     </DropdownItem>
-        //     <DropdownItem href="/" onClick={e => deleteAction(e, record.id)}>
-        //       <Trash className="me-50" size={15} />{" "}
-        //       <span className="align-middle">Delete</span>
-        //     </DropdownItem>
-        //     <DropdownItem href="/" onClick={e => changeStatusAction(e, record)}>
-        //       <Edit3 className="me-50" size={15} />{" "}
-        //       <span className="align-middle">Change Status</span>
-        //     </DropdownItem>
-        //   </DropdownMenu>
-        // </UncontrolledDropdown>
+      // <UncontrolledDropdown>
+      //   <DropdownToggle
+      //     className="icon-btn hide-arrow"
+      //     color="transparent"
+      //     size="sm"
+      //     caret
+      //   >
+      //     <MoreVertical size={15} />
+      //   </DropdownToggle>
+      //   <DropdownMenu>
+      //     <DropdownItem href={"/areas/edit/" + record.id}>
+      //       <Edit className="me-50" size={15} />{" "}
+      //       <span className="align-middle">Edit</span>
+      //     </DropdownItem>
+      //     <DropdownItem href="/" onClick={e => deleteAction(e, record.id)}>
+      //       <Trash className="me-50" size={15} />{" "}
+      //       <span className="align-middle">Delete</span>
+      //     </DropdownItem>
+      //     <DropdownItem href="/" onClick={e => changeStatusAction(e, record)}>
+      //       <Edit3 className="me-50" size={15} />{" "}
+      //       <span className="align-middle">Change Status</span>
+      //     </DropdownItem>
+      //   </DropdownMenu>
+      // </UncontrolledDropdown>
 
     },
   ]
@@ -324,9 +325,11 @@ const ListTable = () => {
         <div className="row justify-content-between">
           <div className="col-lg-5">
             <div className="d-flex align-items-center">
-              <Link to={'/areas/add'}>
-                <Button.Ripple color="primary">Add Area</Button.Ripple>
-              </Link>
+              {isHubAdmin() ? null :
+                <Link to={'/areas/add'}>
+                  <Button.Ripple color="primary">Add Area</Button.Ripple>
+                </Link>
+              }
             </div>
           </div>
           <div className="col-lg-5">

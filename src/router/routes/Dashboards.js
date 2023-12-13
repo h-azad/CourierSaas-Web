@@ -121,6 +121,7 @@ import HubAdminEdit from '@src/views/hub_app/admin/edit'
 import HubAdminList from '@src/views/hub_app/admin'
 import HubAdminDashboard from '@src/views/dashboard/hub_admin/hubAdminDashboard'
 import HubAdminCreateMerchant from '@src/views/merchants/hubAdmin/hubAdminCreateMarchant'
+import PendingCODCollectionList from '@src/views/assignment/adminCODCollection/PendingCODCollectionList'
 
 
 const Home = lazy(() => import("../../views/Home"))
@@ -213,6 +214,11 @@ const DashboardRoutes = [
   {
     path: "/assignment/delivery/:id",
     element: <DeliveryRiderTask />
+  },
+
+  {
+    path: "/assignment/pending-cod/collection/:id",
+    element: <PendingCODCollectionList />
   },
 
   {
