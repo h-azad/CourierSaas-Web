@@ -81,6 +81,8 @@ export const DELIVERY_RIDER_TASK = '/rider_app/delivery-rider-task'
 export const DELIVERY_RIDER_TASK_SEARCH_FILTER = '/rider_app/delivery-rider-task-search-filter/'
 export const RIDER_TASK_SEARCH_FILTER = '/rider_app/rider-task-serach-filter/'
 
+export const PENDING_COD = '/rider_app/pending-cod/collection/'
+
 
 
 

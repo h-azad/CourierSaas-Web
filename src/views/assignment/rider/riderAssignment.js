@@ -45,6 +45,9 @@ const RiderAssignmentList = () => {
   const [statusModalState, setStatusModalState] = useState(false)
   const [orders, setOrder] = useState([])
 
+  const [orderid, setOrderId] = useState()
+  const [open, setOpen] = useState(false)
+
   const [selectedOrderIds, setselectedOrderid] = useState([])
   const [riderId, setRiderId] = useState()
   const [assignType, setAssignType] = useState()
@@ -63,8 +66,7 @@ const RiderAssignmentList = () => {
     ordering: 'full_name'
   })
 
-  const [orderid, setOrderId] = useState()
-  const [open, setOpen] = useState(false)
+  
 
   const showOrderDetailsDrawer = () => {
     setOpen(true)
