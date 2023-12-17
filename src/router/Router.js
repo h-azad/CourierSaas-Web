@@ -63,7 +63,8 @@ const Router = () => {
     },
 
     {
-      path: "/reset-password/:uid/:token/",
+      // path: "/reset-password/:uid/:token/",
+      path: "/reset-password/",
       index: true,
       element: < ResetPasswordBasic/>,
     },

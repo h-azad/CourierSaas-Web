@@ -237,43 +237,41 @@ const PendingCODCollectionList = () => {
 
   return (
     <>
-    
-        <div className="row justify-content-between">
-          <div className="col-lg-5">
-            <div className="d-flex align-items-center gap-2">
-       
-           
-            
-                  <p style={{margin:"0"}}>
-                    Total: {sumAmount}
-              </p>
-              
-            
-            
-                <AntdButton disabled={selectedorderID.length === 0 ? true : false} onClick={ConfirmAmountCollection} type="primary">Collection Confirm</AntdButton>
-         
-            </div>
+
+      <div className="row justify-content-between">
+        <div className="col-lg-5">
+          <div className="d-flex align-items-center gap-2">
+
+            <p style={{ margin: "0" }}>
+              Total: {sumAmount}
+            </p>
+
+
+
+            <AntdButton disabled={selectedorderID.length === 0 ? true : false} onClick={ConfirmAmountCollection} type="primary">Collection Confirm</AntdButton>
+
           </div>
-          <div className="col-lg-5">
-            <div className="d-flex align-items-center ">
-              <input
-                placeholder="Search Rider"
-                name="user_name"
-                type="text"
-                class="form-control"
-                // value=""
-                // onChange={handleSearch}
-                onChange={(e) => { updateFilterQUery('search', e.target.value) }}
-              />
-              <Button.Ripple className="btn-icon ms-1" outline color="primary">
-                <Search size={16} />
-              </Button.Ripple>
-            </div>
-          </div>
-          {/* <Table scroll={{ x: true }} columns={columns} dataSource={order} /> */}
-          <Table scroll={{ x: true }} columns={columns} dataSource={order} onChange={handleTableChange} pagination={tableParams.pagination} />
         </div>
-  
+        <div className="col-lg-5">
+          <div className="d-flex align-items-center ">
+            <input
+              placeholder="Search Rider"
+              name="user_name"
+              type="text"
+              class="form-control"
+              // value=""
+              // onChange={handleSearch}
+              onChange={(e) => { updateFilterQUery('search', e.target.value) }}
+            />
+            <Button.Ripple className="btn-icon ms-1" outline color="primary">
+              <Search size={16} />
+            </Button.Ripple>
+          </div>
+        </div>
+        {/* <Table scroll={{ x: true }} columns={columns} dataSource={order} /> */}
+        <Table scroll={{ x: true }} columns={columns} dataSource={order} onChange={handleTableChange} pagination={tableParams.pagination} />
+      </div>
+
 
     </>
   )

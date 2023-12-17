@@ -1,5 +1,7 @@
 // ** React Imports
 import { Link, useParams } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
+
 
 // ** Icons Imports
 import { ChevronLeft } from 'react-feather'
@@ -18,7 +20,13 @@ import useJwt from '@src/auth/jwt/useJwt'
 import { getApi, RESET_PASSWORD } from '@src/constants/apiUrls'
 
 const ResetPasswordBasic = () => {
-  let { uid, token } = useParams()
+
+  const location = useLocation()
+
+  const searchParams = new URLSearchParams(location.search)
+
+  const uid = searchParams.get('uid')
+  const token = searchParams.get('token')
 
   const [password, setPassword] = useState(null)
   const [password2, setPassword2] = useState(null)
@@ -29,7 +37,7 @@ const ResetPasswordBasic = () => {
     if (password === password2) {
       if (password >= 6) {
         useJwt
-          .axiosPost(getApi(RESET_PASSWORD + `${uid.slice(4)}/${token.slice(6)}/`), { password: password, password2: password2 })
+          .axiosPost(getApi(RESET_PASSWORD + `${uid}/${token}/`), { password: password, password2: password2 })
           .then((res) => {
             setResponseSuccessMessage(res.data.msg)
             setResponseErrorMessage()
