@@ -27,6 +27,8 @@ import { Table, Tag, Menu, Dropdown, Draw } from "antd"
 import * as qs from 'qs'
 import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
 
+import { isHubAdmin } from "@src/configs/isHubAdmin"
+
 import toast from 'react-hot-toast'
 
 const ListTable = () => {
@@ -356,9 +358,14 @@ const ListTable = () => {
         <div className="row justify-content-between">
           <div className="col-lg-5">
             <div className="d-flex align-items-center">
-              <Link to={"/merchants/add"}>
-                <Button.Ripple color="primary">Add Merchant</Button.Ripple>
-              </Link>
+
+              {isHubAdmin() ? null :
+                <Link to={"/merchants/add"}>
+                  <Button.Ripple color="primary">Add Merchant</Button.Ripple>
+                </Link>
+              }
+
+              
             </div>
           </div>
           <div className="col-lg-5">

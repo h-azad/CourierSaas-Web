@@ -181,7 +181,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'Staff-read',
+        resource: 'Hub-read',
         navLink: "/hub/",
       },
       {
@@ -189,8 +189,8 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'Staff-write',
-        navLink: "/hub/add",
+        resource: 'Hub-write',
+        navLink: "/hub/add/",
       }
     ]
   },
@@ -206,7 +206,7 @@ const adminMenu = [
         title: 'Index',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'Staff-read',
+        resource: 'HubAdmin-read',
         navLink: "/hub/admin/",
       },
       {
@@ -214,8 +214,8 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'Staff-write',
-        navLink: "/hub/admin/add",
+        resource: 'HubAdmin-write',
+        navLink: "/hub/admin/add/",
       }
     ]
   },
@@ -314,7 +314,7 @@ const adminMenu = [
         title: 'Current Locations',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'Rider-write',
+        resource: 'Rider Location-read',
         navLink: "/rider/locations-list",
       }
     ]
@@ -439,7 +439,7 @@ const adminMenu = [
         title: 'Add',
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'Account Wallet-write',
+        resource: 'Wallet Adjustment-write',
         navLink: "/wallet-adjustment/add",
       }
     ]
@@ -832,7 +832,7 @@ const adminMenu = [
         // icon: <Truck size={20} />,
         icon: <Circle size={12} />,
         action: 'admin-pages',
-        resource: 'Pickup Report-read',
+        resource: 'Cancel-Issue Report-read',
         navLink: "/cancel-issue/report"
       },
 
@@ -1536,7 +1536,7 @@ const hubMenu = [
 
   {
     id: "assignment",
-    title: "Assignment",
+    title: "Rider Assignment",
     icon: <CornerUpRight size={20} />,
     action: 'hub-pages',
     resource: 'Assignment-read',
