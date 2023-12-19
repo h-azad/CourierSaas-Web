@@ -361,7 +361,7 @@ const DelivaryView = ({ }) => {
               toast.success('Delivery Confirm')
               fetchDelivaryData()
             })
-            .catch((err) => console.log(err))
+            .catch((err) => {toast.error(err?.response?.data?.detail)})
         }
       }
     )
