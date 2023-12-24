@@ -16,7 +16,7 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, ADJUSTMENT_LIST, MARCHANT_ORDER_STATUS_UPDATE, CREATE_ORDER_DELETE, SEARCH_CREATE_ORDER } from "../../../constants/apiUrls"
+import { getApi, ADJUSTMENT, MARCHANT_ORDER_STATUS_UPDATE, CREATE_ORDER_DELETE, SEARCH_CREATE_ORDER } from "../../../constants/apiUrls"
 
 import SwalAlert from "../../../components/SwalAlert"
 
@@ -57,7 +57,7 @@ const WalletAdjustment = () => {
       if (result.value) {
 
         useJwt
-          .axiosDelete(getApi(ADJUSTMENT_LIST + id + '/'))
+          .axiosDelete(getApi(ADJUSTMENT + id + '/'))
           .then((res) => {
             SwalAlert("Deleted Successfully")
           })
@@ -72,7 +72,7 @@ const WalletAdjustment = () => {
   const defaultAddress = (e, info) => {
     e.preventDefault()
     useJwt
-      .axiosPatch(getApi(ADJUSTMENT_LIST + info.id + '/'), {
+      .axiosPatch(getApi(ADJUSTMENT + info.id + '/'), {
         id: info.id
       })
       .then((res) => {
@@ -87,8 +87,8 @@ const WalletAdjustment = () => {
 
   const fetchAdjustmentData = () => {
     return useJwt
-      // .axiosGet(getApi(ADJUSTMENT_LIST))
-      .axiosGet(getApi(ADJUSTMENT_LIST) + `?${qs.stringify(filterQuery)}`)
+      // .axiosGet(getApi(ADJUSTMENT))
+      .axiosGet(getApi(ADJUSTMENT) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
         console.log("res", res.data)
         setAdjustmentData(res?.data?.results)

@@ -122,6 +122,8 @@ import HubAdminList from '@src/views/hub_app/admin'
 import HubAdminDashboard from '@src/views/dashboard/hub_admin/hubAdminDashboard'
 import HubAdminCreateMerchant from '@src/views/merchants/hubAdmin/hubAdminCreateMarchant'
 import PendingCODCollectionList from '@src/views/assignment/adminCODCollection/PendingCODCollectionList'
+import FundTransferList from '@src/views/fund_transfer/list'
+import CreateFundTransfer from '@src/views/fund_transfer/add'
 
 
 const Home = lazy(() => import("../../views/Home"))
@@ -270,6 +272,17 @@ const DashboardRoutes = [
     path: "/withdraw-request/edit/:id",
     element: <WithdrawRequestEdit />
   },
+
+  {
+    path: "/fund-transfer/index/",
+    element: <FundTransferList />
+  },
+
+  {
+    path: "/fund-transfer/add/",
+    element: <CreateFundTransfer />
+  },
+
 
   {
     path: "/transactions",

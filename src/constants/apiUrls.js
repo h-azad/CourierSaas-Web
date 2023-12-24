@@ -286,7 +286,8 @@ export const GET_USER = "/api/user/get-user/"
 export const USER_LIST = "/api/user/user-viewset/"
 
 
-export const ADJUSTMENT_LIST = '/api/wallet-adjust/'
+export const ADJUSTMENT = '/api/wallet-adjust/'
+export const FUND_TRANSFER = '/api/fund-transfer/'
 
 export const TRANSECTIONS = "/api/transection/"
 

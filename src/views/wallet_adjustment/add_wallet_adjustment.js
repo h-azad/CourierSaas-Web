@@ -19,7 +19,7 @@ import {
   getApi,
   ACCOUNT_WALLET_FORM_LIST,
   AREAS_BY_CITY,
-  ADJUSTMENT_LIST
+  ADJUSTMENT
 } from "@src/constants/apiUrls"
 import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
@@ -95,20 +95,15 @@ const AddWalletAdjustment = () => {
       data.wallet_account.value !== null
     ) {
       let formData = {
-        amount: data.amount,
-        wallet_account: data.wallet_account.value,
-      }
-      const headers = {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-        }
+        adjust_amount: data.amount,
+        wallet: data.wallet_account.value,
       }
 
       useJwt
-        .axiosPost(getApi(ADJUSTMENT_LIST), formData, headers )
+        .axiosPost(getApi(ADJUSTMENT), formData)
         .then((res) => {
           SwalAlert("Wallet Adjust Added Successfully")
-          navigate("/wallet-adjustment")
+          // navigate("/wallet-adjustment")
         })
         .catch(err => console.log(err))
       }

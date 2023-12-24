@@ -160,12 +160,12 @@ const AddAreas = () => {
         .axiosPost(getApi(WITHDRAW_REQUEST_ADD), formData)
         .then((res) => {
           SwalAlert("Withdraw Request Successfully Added")
-          toast.success('Withdraw Request Successfully Done')
+          toast.success(res?.data?.message)
           navigate("/withdraw-request")
         })
         .catch((err) => {
-          toast.error(err?.response?.data?.errors?.non_field_errors[0]), 
-          setErr(err?.response?.data?.errors?.non_field_errors[0])
+          toast.error(err?.response?.data?.message), 
+            setErr(err?.response?.data?.message)
         })
     }
   }

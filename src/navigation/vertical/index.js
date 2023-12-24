@@ -446,6 +446,31 @@ const adminMenu = [
   },
 
   {
+    id: "fund_transfer",
+    title: "Fund Transfer",
+    icon: <DollarSign size={20} />,
+
+    children: [
+      {
+        id: 'fund-transfer-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Fund Transfer-read',
+        navLink: "/fund-transfer/index/",
+      },
+      {
+        id: 'fund-transfer-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Fund Transfer-write',
+        navLink: "/fund-transfer/add/",
+      }
+    ]
+  },
+
+  {
     header: 'Locations',
     action: 'admin-pages',
     resource: 'Cities-read',
