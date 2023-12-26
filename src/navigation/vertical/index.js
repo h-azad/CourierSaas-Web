@@ -1699,7 +1699,30 @@ const hubMenu = [
     ]
   },
 
+  {
+    id: "fund_transfer",
+    title: "Fund Transfer",
+    icon: <DollarSign size={20} />,
 
+    children: [
+      {
+        id: 'fund-transfer-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Fund Transfer-read',
+        navLink: "/hub/admin/fund-transfer/index/",
+      },
+      {
+        id: 'fund-transfer-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Fund Transfer-write',
+        navLink: "/hub/admin/fund-transfer/add/",
+      }
+    ]
+  },
   {
     id: "transactions",
     title: "Transactions",

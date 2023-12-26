@@ -124,6 +124,8 @@ import HubAdminCreateMerchant from '@src/views/merchants/hubAdmin/hubAdminCreate
 import PendingCODCollectionList from '@src/views/assignment/adminCODCollection/PendingCODCollectionList'
 import FundTransferList from '@src/views/fund_transfer/list'
 import CreateFundTransfer from '@src/views/fund_transfer/add'
+import CreateFundTransferByHubAdmin from '@src/views/fund_transfer/hub_admin/add'
+import FundTransferListFoHubAdmin from '@src/views/fund_transfer/hub_admin/list'
 
 
 const Home = lazy(() => import("../../views/Home"))
@@ -277,12 +279,23 @@ const DashboardRoutes = [
     path: "/fund-transfer/index/",
     element: <FundTransferList />
   },
+  
 
   {
     path: "/fund-transfer/add/",
     element: <CreateFundTransfer />
   },
 
+  {
+    path: "/hub/admin/fund-transfer/index/",
+    element: <FundTransferListFoHubAdmin />
+  },
+
+
+  {
+    path: "/hub/admin/fund-transfer/add/",
+    element: <CreateFundTransferByHubAdmin />
+  },
 
   {
     path: "/transactions",

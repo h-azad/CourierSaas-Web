@@ -1,34 +1,26 @@
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash, Search, Edit3 } from "react-feather"
+import { Search } from "react-feather"
 import {
-  // Table,
-  Badge,
-  UncontrolledDropdown,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
+
   Button,
   CardText,
-  Label,
-  Input,
+
 } from "reactstrap"
 import { useEffect, useState } from "react"
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
-import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, FUND_TRANSFER } from "../../../constants/apiUrls"
-import SwalAlert from "../../../components/SwalAlert"
-import SwalConfirm from "../../../components/SwalConfirm"
-import StatusModal from "../../../components/StatusModal"
 
-import { Table, Tag, Popover, Button as AntdButton, Dropdown } from "antd"
-import { DownOutlined } from '@ant-design/icons'
+import useJwt from '@src/auth/jwt/useJwt'
+import { getApi, FUND_TRANSFER } from "@src/constants/apiUrls"
+
+
+import { Table, Tag, Button as AntdButton } from "antd"
 import * as qs from 'qs'
-import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
-import FundTransferConfirm from "@src/components/FundTransferConfirm"
+import { GENERAL_ROW_SIZE } from "@src/constants/tableConfig"
+import SwalConfirm from "@src/components/SwalConfirm"
+import SwalAlert from "@src/components/SwalAlert"
 
 
 const ListTable = () => {
+
   const [fundTransderData, setFundTransferData] = useState([])
 
 
@@ -61,18 +53,19 @@ const ListTable = () => {
   }
 
 
-  const isFundTransfer = (e, id, status) => {
-    console.log('isFundTransfer', status)
+  const cancelFundTransfer = (e, info) => {
+    console.log('cancelFundTransfer', info)
     e.preventDefault()
-    return FundTransferConfirm(`${status} fund transfer!`, status, 'Yes').then(function (result) {
+    return SwalConfirm(`Cancel fund transfer!`, 'Yes').then(function (result) {
 
       let formData = {
-        status: status
+        status: 'Cancel'
+
       }
 
       if (result.value) {
         useJwt
-          .axiosPatch(getApi(FUND_TRANSFER) + id + '/', formData)
+          .axiosPatch(getApi(FUND_TRANSFER) + info.id + '/', formData)
           .then((res) => {
             SwalAlert("Fund Transfer Canceled Successfully")
           })
@@ -82,6 +75,8 @@ const ListTable = () => {
     })
 
   }
+
+
 
 
   const fetchFundTransferData = () => {
@@ -140,41 +135,10 @@ const ListTable = () => {
 
       case 'Cancel':
         return 'red'
-
+      
       default:
         return 'orange'
     }
-  }
-
-  const renderDropDownItems = (id) => {
-    const it = [
-      {
-        key: '1',
-        label: (
-          <p style={{fontSize: "15px"}} onClick={(e) =>{isFundTransfer(e, id, 'Accepted')}}>{" "}Accepted</p>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <p style={{ fontSize: "15px" }} onClick={(e)=>{isFundTransfer(e, id, 'Cancel')}}>{" "}Cancel</p>
-        ),
-      },
-      // {
-      //   key: '3',
-      //   label: (
-      //     <a href='/' onClick={(e) => deleteAction(e, info.id)}><Trash className="me-20" size={15} />{" "}Delete</a>
-      //   ),
-      // },
-      // {
-      //   key: '4',
-      //   label: (
-      //     <a href="/" onClick={e => changeStatusAction(e, info)}><Edit3 className="me-20" size={15} />{" "}Change Status</a>
-      //   ),
-      // },
-    ]
-
-    return it
   }
 
 
@@ -205,6 +169,7 @@ const ListTable = () => {
       title: 'Receiver',
       dataIndex: 'receiver',
     },
+
     {
       title: 'Status',
       dataIndex: 'status',
@@ -213,27 +178,14 @@ const ListTable = () => {
       ),
     },
     {
-      title: 'Action',
+      title: 'Cancel',
       render: (text, record) => (
-        // <>
-        //   {
-        //     record?.status === 'Pending' &&
-        //     <AntdButton onClick={(e) => { isFundTransfer(e, record) }}
-        //       type="primary" danger>Cancel</AntdButton>
-        //   }
-        // </>
-
         <>
-          <Dropdown
-            menu={{
-              items: renderDropDownItems(record.id)
-            }}
-            trigger={['click']}
-          >
-            <a onClick={(e) => e.preventDefault()} href="">
-              More <DownOutlined />
-            </a>
-          </Dropdown>
+          {
+          record?.status === 'Pending' && 
+          <AntdButton onClick={(e) => { cancelFundTransfer(e, record) }} 
+          type="primary" danger>Cancel</AntdButton>
+          }
         </>
       ),
     },
@@ -268,7 +220,7 @@ const ListTable = () => {
         <div className="row justify-content-between">
           <div className="col-lg-5">
             <div className="d-flex align-items-center">
-              <Link to={'/fund-transfer/add/'}>
+              <Link to={'/hub/admin/fund-transfer/add/'}>
                 <Button.Ripple color="primary">Fund Transfer</Button.Ripple>
               </Link>
             </div>

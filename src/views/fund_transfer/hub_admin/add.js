@@ -20,10 +20,11 @@ import {
   ACCOUNT_WALLET_FORM_LIST,
 } from "@src/constants/apiUrls"
 import { useEffect, useState } from "react"
-import SwalAlert from "../../components/SwalAlert"
+import SwalAlert from "@src/components/SwalAlert"
+
 import toast from 'react-hot-toast'
 
-const CreateFundTransfer = () => {
+const CreateFundTransferByHubAdmin = () => {
   const [data, setData] = useState(null)
 
   const [walletData, setWalletData] = useState([])
@@ -66,29 +67,12 @@ const CreateFundTransfer = () => {
   const onSubmit = (data) => {
     let isFormValid = true
 
-    if (!data.sender) {
-      setError("sender", {
-        type: "required",
-        message: "Sender request is required",
-      })
-      isFormValid = false
-    }
-    if (!data.receiver) {
-      setError("receiver", {
-        type: "required",
-        message: "Receiver request is required",
-      })
-      isFormValid = false
-    }
-
     if (!isFormValid) {
       return false
     }
 
-    if (data.sender !== null && data.receiver !== null) {
+    if (data.receiver !== null && data.amount !== null) {
       let formData = {
-        sender: data?.sender?.value,
-        receiver: data?.receiver?.value,
         amount: data?.amount
 
       }
@@ -97,7 +81,7 @@ const CreateFundTransfer = () => {
         .then((res) => {
           SwalAlert("Fund Transfer Successfully")
           toast.success(res?.data?.message)
-          navigate("/fund-transfer/index/")
+          navigate("/hub/admin/fund-transfer/index/")
         })
         .catch((err) => {
           toast.error(err?.response?.data?.message)
@@ -113,37 +97,33 @@ const CreateFundTransfer = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle tag="h4">Fund Transfer</CardTitle>
+        <CardTitle tag="h4">Fund Transfer To Admin</CardTitle>
       </CardHeader>
 
       <CardBody>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-12">
               <div className="mb-1">
-                <Label className="form-label" for="sender">
-                  Sender
+                <Label className="form-label" for="amount">
+                  Amount
                 </Label>
                 <Controller
-                  id="sender"
-                  name="sender"
                   control={control}
+                  id="amount"
+                  name="amount"
                   render={({ field }) => (
-                    <Select
-                      isClearable
-                      className={classnames("react-select", {
-                        "is-invalid":
-                          data !== null && data.sender === null,
-                      })}
-                      classNamePrefix="select"
-                      options={walletData}
+                    <Input
+                      type="number"
+                      placeholder="Amount"
+                      invalid={errors.balance && true}
                       {...field}
                     />
                   )}
                 />
               </div>
             </div>
-            <div class="col-lg-6">
+            {/* <div class="col-lg-6">
               <div className="mb-1">
                 <Label className="form-label" for="receiver">
                   Receiver
@@ -166,30 +146,7 @@ const CreateFundTransfer = () => {
                   )}
                 />
               </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-lg-6">
-              <div className="mb-1">
-                <Label className="form-label" for="amount">
-                  Amount
-                </Label>
-                <Controller
-                  control={control}
-                  id="amount"
-                  name="amount"
-                  render={({ field }) => (
-                    <Input
-                      type="number"
-                      placeholder="Amount"
-                      invalid={errors.balance && true}
-                      {...field}
-                    />
-                  )}
-                />
-              </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="d-flex">
@@ -202,4 +159,4 @@ const CreateFundTransfer = () => {
     </Card>
   )
 }
-export default CreateFundTransfer
+export default CreateFundTransferByHubAdmin
