@@ -242,6 +242,7 @@ export const PAYMENT_METHOD_STATISTICS = "/payment-method/statistics/"
 export const PAYMENT_METHOD_FORM_LIST = "/payment-method-form-list/statistics/"
 
 //Account Wallet
+export const SELF_WALLET = "/api/self/account-wallet/"
 export const ACCOUNT_WALLET_ADD = "/api/account-wallet/"
 export const ACCOUNT_WALLET_LIST = "/api/account-wallet/"
 export const ACCOUNT_WALLET_EDIT = "/api/account-wallet/"
@@ -250,6 +251,9 @@ export const ACCOUNT_WALLET_DETAILS = "/api/account-wallet/"
 export const ACCOUNT_WALLET_UPDATE_STATUS = "/api/account-wallet/"
 export const ACCOUNT_WALLET_SEARCH = "/api/account-wallet-search/"
 export const ACCOUNT_WALLET_FORM_LIST = "/api/account-wallet/form-list/"
+export const ADMIN_WALLET_FORM_LIST = "/api/admin-wallet/form-list/"
+export const HUB_ADMIN_WALLET_FORM_LIST = "/api/hub/admin-wallet/form-list/"
+
 
 
 

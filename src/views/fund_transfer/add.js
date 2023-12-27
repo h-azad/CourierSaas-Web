@@ -17,50 +17,62 @@ import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
   FUND_TRANSFER,
-  ACCOUNT_WALLET_FORM_LIST,
+  HUB_ADMIN_WALLET_FORM_LIST,
+  ADMIN_WALLET_FORM_LIST,
 } from "@src/constants/apiUrls"
 import { useEffect, useState } from "react"
 import SwalAlert from "../../components/SwalAlert"
 import toast from 'react-hot-toast'
 
 const CreateFundTransfer = () => {
-  const [data, setData] = useState(null)
 
-  const [walletData, setWalletData] = useState([])
-
-  const navigate = useNavigate()
   const {
-    watch,
     control,
     setError,
-    setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      balance: "",
-      marchant: {},
-    },
-  })
+  } = useForm({})
+  const navigate = useNavigate()
+
+  const [data, setData] = useState(null)
+  const [walletData, setWalletData] = useState([])
 
 
-  const getWalletData = () => {
+
+  const getHUBAdminWalletData = () => {
     useJwt
-      .axiosGet(getApi(ACCOUNT_WALLET_FORM_LIST))
+      .axiosGet(getApi(HUB_ADMIN_WALLET_FORM_LIST))
       .then((res) => {
-        let walletAccount = []
         res.data.map((data) => {
-          walletAccount.push({
+          walletData.push({
             value: data.id,
             label: data.account_name,
           })
         })
-        return setWalletData(walletAccount)
 
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        toast.error('Hub Admin Wallet List Error')
+      })
   }
 
+
+
+  const getAdminWalletData = () => {
+    useJwt
+      .axiosGet(getApi(ADMIN_WALLET_FORM_LIST))
+      .then((res) => {
+        res.data.map((data) => {
+          walletData.push({
+            value: data.id,
+            label: data.account_name,
+          })
+        })
+      })
+      .catch((err) => {
+        toast.error('Admin Wallet List Error')
+      })
+  }
 
 
   const onSubmit = (data) => {
@@ -106,9 +118,12 @@ const CreateFundTransfer = () => {
   }
 
 
-  useEffect(()=>{
-    getWalletData()
+
+  useEffect(() => {
+    getAdminWalletData()
+    getHUBAdminWalletData()
   }, [])
+
 
   return (
     <Card>

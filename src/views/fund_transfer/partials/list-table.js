@@ -1,36 +1,24 @@
 import { Link } from "react-router-dom"
-import { MoreVertical, Edit, Trash, Search, Edit3 } from "react-feather"
-import {
-  // Table,
-  Badge,
-  UncontrolledDropdown,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
-  Button,
-  CardText,
-  Label,
-  Input,
-} from "reactstrap"
+import { Search, } from "react-feather"
+import { Button, CardText } from "reactstrap"
 import { useEffect, useState } from "react"
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
-import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, FUND_TRANSFER } from "../../../constants/apiUrls"
-import SwalAlert from "../../../components/SwalAlert"
-import SwalConfirm from "../../../components/SwalConfirm"
-import StatusModal from "../../../components/StatusModal"
 
-import { Table, Tag, Popover, Button as AntdButton, Dropdown } from "antd"
+import { Table, Tag, Button as AntdButton, Dropdown } from "antd"
 import { DownOutlined } from '@ant-design/icons'
 import * as qs from 'qs'
-import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
-import FundTransferConfirm from "@src/components/FundTransferConfirm"
 
+import useJwt from '@src/auth/jwt/useJwt'
+import { getApi, FUND_TRANSFER } from "@src/constants/apiUrls"
+
+import FundTransferConfirm from "@src/components/FundTransferConfirm"
+import SwalAlert from "@src/components/SwalAlert"
+import toast from 'react-hot-toast'
+
+import { GENERAL_ROW_SIZE } from "@src/constants/tableConfig"
 
 const ListTable = () => {
-  const [fundTransderData, setFundTransferData] = useState([])
 
+  const [fundTransderData, setFundTransferData] = useState([])
 
   const [tableParams, setTableParams] = useState({
     pagination: {
@@ -47,22 +35,7 @@ const ListTable = () => {
 
 
 
-
-
-  const updateStatusAction = (e) => {
-    e.preventDefault()
-    useJwt
-      .axiosPatch(getApi(WITHDRAW_REQUEST_UPDATE_STATUS) + selectedInfo.id + "/", {
-        withdraw_status: selectedStatus, info: selectedInfo
-      })
-      .then((res) => {
-        setStatusModalState(false)
-      })
-  }
-
-
   const isFundTransfer = (e, id, status) => {
-    console.log('isFundTransfer', status)
     e.preventDefault()
     return FundTransferConfirm(`${status} fund transfer!`, status, 'Yes').then(function (result) {
 
@@ -74,10 +47,17 @@ const ListTable = () => {
         useJwt
           .axiosPatch(getApi(FUND_TRANSFER) + id + '/', formData)
           .then((res) => {
-            SwalAlert("Fund Transfer Canceled Successfully")
+            if (res?.data?.error === true) {
+              toast.error(`Fund Transfer ${err?.response?.data.status} Failed!`)
+            } else {
+              SwalAlert(`Fund Transfer ${res?.data?.status} Successfully`)
+              toast.success(`Fund Transfer ${res?.data?.status} Successfully!`)
+            }
+
+          }).catch((err) => {
+            toast.error(`Fund Transfer ${err?.response?.data.status} Successfully!`)
           })
           .finally(() => fetchFundTransferData())
-
       }
     })
 
@@ -86,7 +66,6 @@ const ListTable = () => {
 
   const fetchFundTransferData = () => {
     return useJwt
-      // .axiosGet(getApi(WITHDRAW_REQUEST_LIST))
       .axiosGet(getApi(FUND_TRANSFER) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
         setFundTransferData(res?.data?.results)
@@ -95,10 +74,13 @@ const ListTable = () => {
           pageSize: res?.data?.page_size,
           total: res?.data?.count,
         })
-        // return res.data
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        toast.error('Fund Transfer Response Error')
+      })
   }
+
+
 
   const handleTableChange = (pagination, filters, sorter) => {
     setTableParams({
@@ -112,6 +94,8 @@ const ListTable = () => {
     }
   }
 
+
+
   const updatePagination = (info) => {
     const _tableParams = { ...tableParams }
 
@@ -119,6 +103,8 @@ const ListTable = () => {
 
     setTableParams(_tableParams)
   }
+
+
 
   const updateFilterQUery = (term, value) => {
     let filters = { ...filterQuery }
@@ -133,6 +119,8 @@ const ListTable = () => {
     setFilterQuery(filters)
   }
 
+
+
   function colorSwitch(status) {
     switch (status) {
       case 'Accepted':
@@ -146,32 +134,27 @@ const ListTable = () => {
     }
   }
 
+
+
   const renderDropDownItems = (id) => {
     const it = [
       {
         key: '1',
         label: (
-          <p style={{fontSize: "15px"}} onClick={(e) =>{isFundTransfer(e, id, 'Accepted')}}>{" "}Accepted</p>
+          <p style={{ fontSize: "15px" }}
+            onClick={(e) => { isFundTransfer(e, id, 'Accepted') }}
+          >{" "}Accepted</p>
         ),
       },
       {
         key: '2',
         label: (
-          <p style={{ fontSize: "15px" }} onClick={(e)=>{isFundTransfer(e, id, 'Cancel')}}>{" "}Cancel</p>
+          <p style={{ fontSize: "15px" }}
+            onClick={(e) => { isFundTransfer(e, id, 'Cancel') }}
+          >{" "}Cancel</p>
         ),
       },
-      // {
-      //   key: '3',
-      //   label: (
-      //     <a href='/' onClick={(e) => deleteAction(e, info.id)}><Trash className="me-20" size={15} />{" "}Delete</a>
-      //   ),
-      // },
-      // {
-      //   key: '4',
-      //   label: (
-      //     <a href="/" onClick={e => changeStatusAction(e, info)}><Edit3 className="me-20" size={15} />{" "}Change Status</a>
-      //   ),
-      // },
+
     ]
 
     return it
@@ -191,16 +174,12 @@ const ListTable = () => {
     },
     {
       title: 'Account',
-      // dataIndex: 'account_wallet',
       dataIndex: 'amount'
     },
-
     {
       title: 'Sender',
       dataIndex: 'sender',
     },
-
-
     {
       title: 'Receiver',
       dataIndex: 'receiver',
@@ -215,33 +194,25 @@ const ListTable = () => {
     {
       title: 'Action',
       render: (text, record) => (
-        // <>
-        //   {
-        //     record?.status === 'Pending' &&
-        //     <AntdButton onClick={(e) => { isFundTransfer(e, record) }}
-        //       type="primary" danger>Cancel</AntdButton>
-        //   }
-        // </>
-
         <>
-          <Dropdown
-            menu={{
-              items: renderDropDownItems(record.id)
-            }}
-            trigger={['click']}
-          >
-            <a onClick={(e) => e.preventDefault()} href="">
-              More <DownOutlined />
-            </a>
-          </Dropdown>
+          {record?.status === 'Pending' &&
+            <Dropdown
+              menu={{
+                items: renderDropDownItems(record.id)
+              }}
+              trigger={['click']}
+            >
+              <a onClick={(e) => e.preventDefault()} href="">
+                More <DownOutlined />
+              </a>
+            </Dropdown>
+          }
+
         </>
       ),
     },
 
   ]
-
-
-
 
 
   useEffect(() => {
@@ -258,9 +229,12 @@ const ListTable = () => {
 
   }, [JSON.stringify(tableParams)])
 
+
+
   useEffect(() => {
     fetchFundTransferData()
   }, [JSON.stringify(filterQuery)])
+
 
   return (
     <>
@@ -280,7 +254,6 @@ const ListTable = () => {
                 name="marchant_name"
                 type="text"
                 class="form-control"
-                // onChange={handleSearch}
                 onChange={(e) => { updateFilterQUery('search', e.target.value) }}
               />
               <Button.Ripple className="btn-icon ms-1" outline color="primary">
@@ -291,7 +264,6 @@ const ListTable = () => {
         </div>
       </CardText>
       <Table scroll={{ x: true }} columns={columns} dataSource={fundTransderData} onChange={handleTableChange} pagination={tableParams.pagination} />
-      
     </>
   )
 }
