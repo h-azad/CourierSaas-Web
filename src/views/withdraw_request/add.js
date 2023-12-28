@@ -117,14 +117,14 @@ const AddAreas = () => {
     let isFormValid = true
 
     if (!data.withdraw_request) {
-      setError("Withdraw request", {
+      setError("withdraw_request", {
         type: "required",
         message: "wWthdraw request is required",
       })
       isFormValid = false
     }
     if (!data.withdrawbalance) {
-      setError("Withdraw request balance", {
+      setError("withdrawbalance", {
         type: "required",
         message: "Withdraw request is required",
       })
@@ -153,8 +153,6 @@ const AddAreas = () => {
         balance: data.balance,
         withdraw_balance: data.withdrawbalance,
         current_balance: data.current_balance,
-        withdraw_status: "Complete"
-
       }
       useJwt
         .axiosPost(getApi(WITHDRAW_REQUEST_ADD), formData)
@@ -197,6 +195,7 @@ const AddAreas = () => {
                       })}
                       classNamePrefix="select"
                       options={selectboxWithdrawRequest}
+                      required={true}
                       {...field}
                     />
                   )}
@@ -217,6 +216,7 @@ const AddAreas = () => {
                       readOnly={true}
                       type="number"
                       placeholder="Balance"
+                      required={true}
                       invalid={errors.balance && true}
                       {...field}
                     />
@@ -241,7 +241,7 @@ const AddAreas = () => {
                     <Input
                       type="number"
                       placeholder="Withdraw Balance"
-                      invalid={errors.balance && true}
+                      invalid={errors.withdrawbalance && true}
                       {...field}
                     />
                   )}

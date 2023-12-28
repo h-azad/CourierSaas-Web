@@ -1,34 +1,31 @@
+
+
 import { Link } from "react-router-dom"
-import { MoreVertical, Search, Edit3 } from "react-feather"
+import { Search } from "react-feather"
 import {
-  UncontrolledDropdown,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
   Button,
   CardText,
-  Label,
-  Input,
 } from "reactstrap"
 import { useEffect, useState } from "react"
+import { Table, Tag, Dropdown } from "antd"
+import { DownOutlined } from '@ant-design/icons'
+import * as qs from 'qs'
+import toast from "react-hot-toast"
+
+import {
+  getApi, WITHDRAW_REQUEST_LIST,
+  WITHDRAW_REQUEST_UPDATE_STATUS
+} from "@src/constants/apiUrls"
 import useJwt from '@src/auth/jwt/useJwt'
 
-import SwalAlert from "../../../../components/SwalAlert"
-import StatusModal from "../../../../components/StatusModal"
-import SwalConfirm from "../../../../components/SwalConfirm"
-import { getApi, WITHDRAW_REQUEST_LIST, WITHDRAW_REQUEST_DELETE, WITHDRAW_REQUEST_SEARCH, WITHDRAW_REQUEST_UPDATE_STATUS } from "../../../../constants/apiUrls"
-
-import { Table, Tag, Popover } from "antd"
-import * as qs from 'qs'
-import { GENERAL_ROW_SIZE } from "../../../../constants/tableConfig"
+import { GENERAL_ROW_SIZE } from "@src/constants/tableConfig"
+import SwalAlert from "@src/components/SwalAlert"
+import SweetAlartConfirm from "@src/components/SweetAlartConfirm"
 
 
 
 const MarchantBalanceWithrawRequestList = () => {
   const [withdrawRequest, setWithdrawRequest] = useState([])
-  const [statusModalState, setStatusModalState] = useState(false)
-  const [selectedStatus, setSelectedStatus] = useState(null)
-  const [selectedInfo, setSelectedInfo] = useState(null)
 
   const [tableParams, setTableParams] = useState({
     pagination: {
@@ -40,60 +37,38 @@ const MarchantBalanceWithrawRequestList = () => {
   const [filterQuery, setFilterQuery] = useState({
     page: 1,
     page_size: GENERAL_ROW_SIZE,
-    ordering: '-created_at'
+    // ordering: '-created_at'
   })
 
 
-  const deleteAction = (e, id) => {
+  const isWithdrawRequestCencel = (e, id, status) => {
     e.preventDefault()
-    return SwalConfirm(`You won't be able to revert this!`, 'Delete').then(function (result) {
+    return SweetAlartConfirm(`${status} Withdraw Request!`, 'red', 'Yes').then(function (result) {
+
+      let formData = {
+        withdraw_status: status
+      }
+
       if (result.value) {
-
         useJwt
-          .axiosDelete(getApi(WITHDRAW_REQUEST_DELETE + id + '/'))
+          .axiosPatch(getApi(WITHDRAW_REQUEST_UPDATE_STATUS) + id + '/', formData)
           .then((res) => {
-            // console.log("res", res.data)
-            SwalAlert("Deleted Successfully")
+            if (res?.data?.error === true) {
+              toast.error(`Withdraw Request ${err?.response?.data.status} Failed!`)
+            } else {
+              SwalAlert(`Withdraw Request ${res?.data?.status} Successfully`)
+              toast.success(`Withdraw Request ${res?.data?.status} Successfully!`)
+            }
 
-            // return res.data
+          }).catch((err) => {
+            toast.error(`Withdraw Request ${err?.response?.data.status} Failed!`)
           })
           .finally(() => fetchWithdrawRequestData())
-
       }
     })
 
   }
 
-
-  const updateStatusAction = (e) => {
-    e.preventDefault()
-    useJwt
-      .axiosPatch(getApi(WITHDRAW_REQUEST_UPDATE_STATUS) + selectedInfo.id + "/", {
-        withdraw_status: selectedStatus, info: selectedInfo
-      })
-      .then((res) => {
-        setStatusModalState(false)
-      })
-  }
-
-
-  const changeStatusAction = (e, info) => {
-    e.preventDefault()
-    setStatusModalState(true)
-    setSelectedStatus(info.withdraw_status)
-    setSelectedInfo(info)
-  }
-
-  // useEffect(() => {
-  //   fetchWithdrawRequestData()
-  // }, [])
-
-  // useEffect(() => {
-  //   if (!statusModalState) {
-  //     clearData()
-  //   }
-  //   fetchWithdrawRequestData()
-  // }, [statusModalState])
 
   const fetchWithdrawRequestData = () => {
     return useJwt
@@ -157,6 +132,23 @@ const MarchantBalanceWithrawRequestList = () => {
   }
 
 
+  const renderDropDownItems = (id) => {
+    const it = [
+      {
+        key: '2',
+        label: (
+          <p style={{ fontSize: "15px" }}
+            onClick={(e) => { isWithdrawRequestCencel(e, id, 'Cancel') }}
+          >{" "}Cancel</p>
+        ),
+      },
+
+    ]
+
+    return it
+  }
+
+
   const columns = [
     {
       title: 'Date',
@@ -197,37 +189,23 @@ const MarchantBalanceWithrawRequestList = () => {
 
       render: (_, record) =>
 
-        record.withdraw_status === "Pending" ? (
-          <Popover content={
-            <span onClick={e => changeStatusAction(e, record)} className="align-middle">Change Status</span>
-          } trigger="click">
-            <MoreVertical size={15} />
-          </Popover>
-        ) : null,
+        <>
+          {record?.withdraw_status === 'Pending' &&
+            <Dropdown
+              menu={{
+                items: renderDropDownItems(record.id)
+              }}
+              trigger={['click']}
+            >
+              <a onClick={(e) => e.preventDefault()} href="">
+                More <DownOutlined />
+              </a>
+            </Dropdown>
+          }
 
-        // record.withdraw_status === "Pending" ? (
-        //   <td>
-        //     <UncontrolledDropdown>
-        //       <DropdownToggle
-        //         className="icon-btn hide-arrow"
-        //         color="transparent"
-        //         size="sm"
-        //         caret
-        //       >
-        //         <MoreVertical size={15} />
-        //       </DropdownToggle>
-        //       <DropdownMenu>
-        //         <DropdownItem href="/" onClick={e => changeStatusAction(e, record)}>
-        //           <Edit3 className="me-50" size={15} />{" "}
-        //           <span className="align-middle">Cancel</span>
-        //         </DropdownItem>
-        //       </DropdownMenu>
-        //     </UncontrolledDropdown>
-        //   </td>
+        </>
+    }
 
-        // ) : null,
-
-    },
   ]
 
   useEffect(() => {
@@ -237,7 +215,7 @@ const MarchantBalanceWithrawRequestList = () => {
     if (_tableParams) {
       _filters['page'] = _tableParams.pagination?.current
       _filters['page_size'] = _tableParams.pagination?.pageSize
-      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+      // _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
     }
 
     setFilterQuery(_filters)
@@ -280,19 +258,6 @@ const MarchantBalanceWithrawRequestList = () => {
 
       <Table scroll={{ x: true }} columns={columns} dataSource={withdrawRequest} onChange={handleTableChange} pagination={tableParams.pagination} />
 
-      <StatusModal
-        statusModalState={statusModalState}
-        setStatusModalState={setStatusModalState}
-        updateStatusAction={updateStatusAction}
-        title={"Change Withdraw Request Status"}
-      >
-        <div className='form-check'>
-          <Input type='radio' name='ex1' id='ex1-inactive' checked={selectedStatus == "Cancel" ? true : false} onChange={() => setSelectedStatus("Cancel")} />
-          <Label className='form-check-label' for='ex1-inactive'>
-            Cancel
-          </Label>
-        </div>
-      </StatusModal>
     </>
   )
 }

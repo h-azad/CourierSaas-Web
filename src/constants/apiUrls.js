@@ -263,7 +263,6 @@ export const WITHDRAW_REQUEST_EDIT = "/api/withdraw-reques/"
 export const WITHDRAW_REQUEST_DELETE = "/api/withdraw-reques/"
 export const WITHDRAW_REQUEST_DETAILS = "/api/withdraw-reques/"
 export const WITHDRAW_REQUEST_UPDATE_STATUS = "/api/withdraw-reques/"
-export const WITHDRAW_REQUEST_SEARCH = "/api/withdraw-request-search/"
 
 
 export const ADMIN_ADD = "/api/user/admin-viewset/"

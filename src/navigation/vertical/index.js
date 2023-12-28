@@ -953,6 +953,15 @@ const marchantMenu = [
   },
 
   {
+    id: "transactions",
+    title: "Transactions",
+    icon: <Send size={20} />,
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+    navLink: "/transactions"
+  },
+
+  {
     id: "wallet",
     title: "My Wallet",
     icon: <CreditCard size={20} />,
@@ -1165,6 +1174,21 @@ const riderMenu = [
   //   resource: 'RIDER',
   //   navLink: "/rider-orders/return"
   // },
+
+  {
+    header: 'Transactions',
+    action: 'rider-pages',
+    resource: 'RIDER',
+  },
+
+  {
+    id: "transactions",
+    title: "Transactions",
+    icon: <Send size={20} />,
+    action: 'rider-pages',
+    resource: 'RIDER',
+    navLink: "/transactions"
+  },
 
   {
     header: 'Rider Tasks',
