@@ -1,8 +1,9 @@
+import { useEffect, useState, useRef } from "react"
 import { Link } from "react-router-dom"
 import Select from "react-select"
 import classNames from "classnames"
 import { MoreVertical, Edit, Trash, Edit3, Book, Navigation } from "react-feather"
-import { Checkbox, DatePicker, Input, Typography, Drawer, Pagination } from "antd"
+import { Table, Tag, Checkbox, DatePicker, Input, Typography } from "antd"
 import {
   UncontrolledDropdown,
   DropdownMenu,
@@ -14,7 +15,9 @@ import {
   Row,
   Col,
 } from "reactstrap"
-import { useEffect, useState, useRef } from "react"
+
+import * as qs from 'qs'
+
 import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
@@ -23,18 +26,15 @@ import {
   ORDER_INVOICE,
   SHIPPING_LEBEL,
   ORDER_INVOICE_SEND_TO_MERCHANT,
-} from "../../../constants/apiUrls"
-import SwalAlert from "../../../components/SwalAlert"
-import SwalConfirm from "../../../components/SwalConfirm"
-import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
+} from "@src/constants/apiUrls"
 
-import OrderDetailsDrawer from "../../../components/order/OrderDetailsDrawer"
-import * as qs from 'qs'
+import ChangeStatusModal from "./ChangeStatusModal"
+import SwalAlert from "@src/components/SwalAlert"
+import SwalConfirm from "@src/components/SwalConfirm"
+import OrderDetailsDrawer from "@src/components/order/OrderDetailsDrawer"
+import { AdminOrderStatusOptions, colorSwitch } from '@src/components/orderRelatedData'
 
-import { AdminOrderStatusOptions, colorSwitch } from '../../../components/orderRelatedData'
-import { Table, Tag } from "antd"
-import { GENERAL_ROW_SIZE } from "../../../constants/tableConfig"
-
+import { GENERAL_ROW_SIZE } from "@src/constants/tableConfig"
 import toast from 'react-hot-toast'
 
 import { handlePDFQuery } from "@src/components/reportRelatedData"
@@ -94,6 +94,7 @@ const CreateOrderList = () => {
   }
 
 
+  
   const ShippingLebelDownloadToPDF = (info) => {
     return useJwt
       .axiosGetFile(getApi(SHIPPING_LEBEL) + info.id + "/")
@@ -109,6 +110,8 @@ const CreateOrderList = () => {
       })
       .catch((err) => console.log(err))
   }
+
+
 
   const deleteAction = (e, id) => {
     e.preventDefault()
@@ -126,6 +129,8 @@ const CreateOrderList = () => {
       }
     )
   }
+
+
 
   const sendInvoice = (e, id) => {
     e.preventDefault()
@@ -168,6 +173,8 @@ const CreateOrderList = () => {
       .catch((err) => console.log(err))
   }
 
+
+
   const handleTableChange = (pagination, filters, sorter) => {
     setTableParams({
       pagination,
@@ -180,6 +187,8 @@ const CreateOrderList = () => {
     }
   }
 
+
+
   const updatePagination = (info) => {
     const _tableParams = { ...tableParams }
 
@@ -187,6 +196,8 @@ const CreateOrderList = () => {
 
     setTableParams(_tableParams)
   }
+
+
 
   const clearFilter = () => {
     setOrderStatus("")
@@ -198,6 +209,7 @@ const CreateOrderList = () => {
     setSelectedDate(null)
     setFilterQuery({})
   }
+
 
 
   function updateFilterQUery(term, value) {
@@ -363,6 +375,8 @@ const CreateOrderList = () => {
     },
   ]
 
+
+
   useEffect(() => {
     const _tableParams = tableParams
     const _filters = { ...filterQuery }
@@ -376,6 +390,8 @@ const CreateOrderList = () => {
     setFilterQuery(_filters)
 
   }, [JSON.stringify(tableParams)])
+
+
 
   useEffect(() => {
     fetchCreateOrderData()

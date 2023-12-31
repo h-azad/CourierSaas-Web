@@ -72,7 +72,7 @@ import RiderTasks from '../../views/assignment/rider/riderTaks'
 import DeliveryRiderTask from '../../views/assignment/rider/deliveryRiderTask'
 import Transections from '../../views/transection/transections'
 import WalletAdjustment from '../../views/wallet_adjustment/partials/wallet_adjustment'
-import AddWalletAdjustment from '../../views/wallet_adjustment/add_wallet_adjustment'
+import AddWalletAdjustment from '../../views/wallet_adjustment/add'
 import AdminOrderReport from '../../views/reports/adminOrderReport'
 import AdminGetTransectionReport from '../../views/reports/transectionReport'
 import AdminGetWithdrawRequestReport from '../../views/reports/withdrawRequest'
@@ -126,6 +126,7 @@ import FundTransferList from '@src/views/fund_transfer/list'
 import CreateFundTransfer from '@src/views/fund_transfer/add'
 import CreateFundTransferByHubAdmin from '@src/views/fund_transfer/hub_admin/add'
 import FundTransferListFoHubAdmin from '@src/views/fund_transfer/hub_admin/list'
+import WalletAdjustmentMerchantIndex from '@src/views/wallet_adjustment/partials/merchant_adjustment_index'
 
 
 const Home = lazy(() => import("../../views/Home"))
@@ -308,6 +309,11 @@ const DashboardRoutes = [
   {
     path: "/wallet-adjustment/add",
     element: <AddWalletAdjustment />
+  },
+
+  {
+    path: "/merchant/wallet-adjustment",
+    element: <WalletAdjustmentMerchantIndex />
   },
   
   {

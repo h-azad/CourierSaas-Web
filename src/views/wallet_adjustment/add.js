@@ -1,5 +1,3 @@
-
-
 import {
   Card,
   CardHeader,
@@ -14,38 +12,32 @@ import { useNavigate } from "react-router-dom"
 import Select from "react-select"
 import classnames from "classnames"
 import { useForm, Controller } from "react-hook-form"
-import useJwt from "@src/auth/jwt/useJwt"
+
 import {
   getApi,
   ACCOUNT_WALLET_FORM_LIST,
-  AREAS_BY_CITY,
   ADJUSTMENT
 } from "@src/constants/apiUrls"
-import { useEffect, useState } from "react"
-import SwalAlert from "../../components/SwalAlert"
+import useJwt from "@src/auth/jwt/useJwt"
 
-// import { getUserData } from "../../../auth/utils"
+import { useEffect, useState } from "react"
+import SwalAlert from "@src/components/SwalAlert"
+import toast from 'react-hot-toast'
+
+
 
 const AddWalletAdjustment = () => {
 
-  const [selectboxWalletAccount, setSelectboxWalletAccount] = useState([])
-  const [selectboxArea, setSelectboxArea] = useState([])
-  const [data, setData] = useState(null)
   const navigate = useNavigate()
+
+  const [selectboxWalletAccount, setSelectboxWalletAccount] = useState([])
+
   const {
-    reset,
     control,
-    watch,
-    resetField,
     setError,
-    setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-
-    },
-  })
+  } = useForm({})
   
 
   const fetchAccountWalletFormList = () => {
@@ -57,7 +49,6 @@ const AddWalletAdjustment = () => {
           walletAccount.push({ value: data.id, label: data.account_name })
         })
         setSelectboxWalletAccount(walletAccount)
-        return res.data
       })
       .catch((err) => console.log(err))
   }
@@ -89,23 +80,32 @@ const AddWalletAdjustment = () => {
       return false
     }
 
-    setData(data)
     if (
       data.amount !== null &&
       data.wallet_account.value !== null
     ) {
       let formData = {
-        adjust_amount: data.amount,
+        amount: data.amount,
         wallet: data.wallet_account.value,
       }
 
       useJwt
         .axiosPost(getApi(ADJUSTMENT), formData)
         .then((res) => {
-          SwalAlert("Wallet Adjust Added Successfully")
-          // navigate("/wallet-adjustment")
+          
+          if(res?.data?.error){
+            toast.error(res?.data?.message)
+            navigate("/wallet-adjustment/")
+          }else{
+            SwalAlert(res?.data?.message)
+            toast.success(res?.data?.message)
+            navigate("/wallet-adjustment/")
+          }
+          
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          toast.error(err?.response?.data?.message)
+        })
       }
   }
 

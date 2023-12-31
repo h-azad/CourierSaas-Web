@@ -952,14 +952,6 @@ const marchantMenu = [
     resource: 'MARCHANT',
   },
 
-  {
-    id: "transactions",
-    title: "Transactions",
-    icon: <Send size={20} />,
-    action: 'marchant-pages',
-    resource: 'MARCHANT',
-    navLink: "/transactions"
-  },
 
   {
     id: "wallet",
@@ -996,6 +988,33 @@ const marchantMenu = [
       },
 
     ]
+  },
+
+  {
+    id: "wallet_adjustment",
+    title: "Wallet Adjustment",
+    icon: <Plus size={20} />,
+
+    children: [
+      {
+        id: 'wallet-adjustment-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'marchant-pages',
+        resource: 'MARCHANT',
+        navLink: "/merchant/wallet-adjustment",
+      }
+    ]
+  },
+
+
+  {
+    id: "transactions",
+    title: "Transactions",
+    icon: <Send size={20} />,
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+    navLink: "/transactions"
   },
 
 

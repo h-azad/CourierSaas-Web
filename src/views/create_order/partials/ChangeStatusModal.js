@@ -74,7 +74,7 @@ function ChangeStatusModal({ statusModalState, setStatusModalState, orderInfo, f
 
   return (
     <Modal isOpen={statusModalState} toggle={() => setStatusModalState(!statusModalState)} className='modal-dialog-centered'>
-      <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Update Order Status</ModalHeader>
+      <ModalHeader toggle={() => setStatusModalState(!statusModalState)}>Update 2 Order Status</ModalHeader>
       {responseError && <h3 style={{ color: 'red' }}>{responseError}</h3>}
       
       {error && <ModalHeader><p className='text-danger'>{error}</p></ModalHeader>}

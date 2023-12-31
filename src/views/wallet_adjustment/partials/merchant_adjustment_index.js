@@ -10,7 +10,7 @@ import * as qs from 'qs'
 
 import {
   getApi,
- ADJUSTMENT
+  ADJUSTMENT
 } from "@src/constants/apiUrls"
 import useJwt from '@src/auth/jwt/useJwt'
 
@@ -18,7 +18,7 @@ import { GENERAL_ROW_SIZE } from "@src/constants/tableConfig"
 
 
 
-const WalletAdjustment = () => {
+const WalletAdjustmentMerchantIndex = () => {
 
   const [adjustmentData, setAdjustmentData] = useState([])
 
@@ -95,31 +95,31 @@ const WalletAdjustment = () => {
 
 
   const columns = [
-		{
-			title: 'Date',
-			dataIndex: 'created_at',
-
-			sorter: {
-				compare: (a, b) => a.created_at - b.created_at,
-				multiple: 2,
-			},
-      
-		},
     {
-			title: 'Marchant',
+      title: 'Date',
+      dataIndex: 'created_at',
+
+      sorter: {
+        compare: (a, b) => a.created_at - b.created_at,
+        multiple: 2,
+      },
+
+    },
+    {
+      title: 'Marchant',
       dataIndex: 'wallet'
-		},
+    },
 
-		{
-			title: 'Receiver Admin',
-			dataIndex: 'receiver',
-		},
+    {
+      title: 'Receiver Admin',
+      dataIndex: 'receiver',
+    },
 
-		{
-			title: 'Amount',
-			dataIndex: 'amount',
-		},
-	]
+    {
+      title: 'Amount',
+      dataIndex: 'amount',
+    },
+  ]
 
 
   useEffect(() => {
@@ -147,11 +147,11 @@ const WalletAdjustment = () => {
       <CardText>
         <div className="row justify-content-between">
           <div className="col-lg-5">
-            <div className="d-flex align-items-center">
+            {/* <div className="d-flex align-items-center">
               <Link to={'/wallet-adjustment/add'}>
                 <Button.Ripple color="primary">Adjustment Wallet</Button.Ripple>
               </Link>
-            </div>
+            </div> */}
           </div>
           <div className="col-lg-5">
             <div className="d-flex align-items-center ">
@@ -172,11 +172,11 @@ const WalletAdjustment = () => {
       </CardText>
       <div class="table-responsive">
 
-      <Table scroll={{ x: true }} columns={columns} dataSource={adjustmentData} onChange={handleTableChange} pagination={tableParams.pagination} />
+        <Table scroll={{ x: true }} columns={columns} dataSource={adjustmentData} onChange={handleTableChange} pagination={tableParams.pagination} />
 
       </div>
     </>
   )
 }
 
-export default WalletAdjustment
+export default WalletAdjustmentMerchantIndex
