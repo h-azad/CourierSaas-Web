@@ -17,7 +17,7 @@ import withReactContent from "sweetalert2-react-content"
 import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
-  RIDER_ASSIGNMENT,
+  RIDER_PICKED_ASSIGNMENT,
   RIDER_DELETE,
   UNPICKUP_ORDER_LIST,
   RIDER_SEARCH_FILTER,
@@ -121,7 +121,7 @@ const RiderAssignmentList = () => {
     enterLoading(true)
     e.preventDefault()
     useJwt
-      .axiosPost(getApi(RIDER_ASSIGNMENT + "/"), {
+      .axiosPost(getApi(RIDER_PICKED_ASSIGNMENT + "/"), {
         riderId: riderId,
         selectedOrderIds: selectedOrderIds
       })
@@ -164,25 +164,23 @@ const RiderAssignmentList = () => {
   }
 
 
-  const changeStatusAction = (e, info) => {
+  const pickedAssignToRider = (e, id) => {
     e.preventDefault()
     setselectedOrderid([])
     setAssignType('pickup')
-    setRiderId(info.id)
+    setRiderId(id)
     fetchOrderData()
     setStatusModalState(true)
   }
 
 
-  const deliveryAssign = (e, info) => {
+  const deliveryAssign = (e, id) => {
     e.preventDefault()
     setselectedOrderid([])
     setAssignType('delivery')
-    setRiderId(info.id)
+    setRiderId(id)
     fetchUnDeliveryData()
     setStatusModalState(true)
-    // setSelectedStatus(info)
-    // setSelectedInfo(info)
   }
 
 
@@ -277,37 +275,37 @@ const RiderAssignmentList = () => {
 
   
 
-  const renderDropDownItems = (info) => {
+  const renderDropDownItems = (id) => {
     const item = [
       {
         key: '1',
         label: (
-          <a onClick={e => changeStatusAction(e, info)}><TfiTruck className="me-20" size={16} />{" "}Pickup</a>
+          <a onClick={e => pickedAssignToRider(e, id)}><TfiTruck className="me-20" size={16} />{" "}Pickup</a>
         ),
       },
       {
         key: '2',
         label: (
-          <a onClick={e => deliveryAssign(e, info)} ><TbTruck className="me-20" size={18} />{" "}Delivary</a>
+          <a onClick={e => deliveryAssign(e, id)} ><TbTruck className="me-20" size={18} />{" "}Delivary</a>
         ),
       },
       {
         key: '3',
         label: (
-          <Link to={"/assignment/task/" + info.id}><Check className="me-20" size={15} />{" "}Pickup Tasks</Link>
+          <Link to={"/assignment/task/" + id}><Check className="me-20" size={15} />{" "}Pickup Tasks</Link>
         ),
       },
       {
         key: '4',
         label: (
-          <Link to={"/assignment/delivery/" + info.id}><Check className="me-20" size={15} />{" "}Delivery Tasks</Link>
+          <Link to={"/assignment/delivery/" + id}><Check className="me-20" size={15} />{" "}Delivery Tasks</Link>
         ),
       },
 
       {
         key: '5',
         label: (
-          <Link to={"/assignment/pending-cod/collection/" + info.id}><DollarSign className="me-20" size={15} />{" "}Collection</Link>
+          <Link to={"/assignment/pending-cod/collection/" + id}><DollarSign className="me-20" size={15} />{" "}Collection</Link>
         ),
       },
     ]
@@ -349,7 +347,7 @@ const RiderAssignmentList = () => {
 
         <Dropdown
           menu={{
-            items: renderDropDownItems(info)
+            items: renderDropDownItems(info?.id)
           }}
           trigger={['click']}
         >
@@ -357,85 +355,6 @@ const RiderAssignmentList = () => {
             More <DownOutlined />
           </a>
         </Dropdown>
-
-
-        // <div className="p-3">
-        //   <UncontrolledDropdown>
-        //     <DropdownToggle
-        //       className="icon-btn hide-arrow"
-        //       color="transparent"
-        //       size="sm"
-        //       caret
-        //     >
-        //       <MoreVertical size={15} />
-        //     </DropdownToggle>
-        //     <DropdownMenu>
-        //       <DropdownItem href="/" onClick={e => changeStatusAction(e, info)} >
-        //         <Edit3 className="me-50" size={15} />{" "}
-        //         <span className="align-middle">Pickup</span>
-        //       </DropdownItem>
-
-        //       <DropdownItem href="/" onClick={e => deliveryAssign(e, info)}>
-        //         <Edit3 className="me-50" size={15} />{" "}
-        //         <span className="align-middle">Delivary</span>
-        //       </DropdownItem>
-
-        //       <DropdownItem href={" /assignment/task/" + info.id} >
-        //         <Eye className="me-50" size={15} />{" "}
-        //         <span className="align-middle">Pickup Tasks</span>
-        //       </DropdownItem>
-
-        //       <DropdownItem href={"/assignment/delivery/" + info.id}>
-        //           <Eye className="me-50" size={15} />{" "}
-        //           <span className="align-middle">Delivery Tasks</span>
-        //       </DropdownItem>
-        //     </DropdownMenu>
-        //   </UncontrolledDropdown>
-        // </div>
-
-
-        // <Dropdown
-        //   overlay={
-        //     <Menu>
-
-        //       <Dropdown.Button onClick={e => changeStatusAction(e, info)}>
-                // <Edit3 className="me-50" size={15} />{" "}
-                // <span className="align-middle">Pickup</span>
-        //       </Dropdown.Button>
-        //       <Dropdown.Button href="/" onClick={e => deliveryAssign(e, info)}>
-        //         <Edit3 className="me-50" size={15} />{" "}
-        //         <span className="align-middle">Delivary</span>
-        //       </Dropdown.Button>
-
-
-        //       <Link to={"/assignment/task/" + info.id}>
-        //         {/* <Button> */}
-                //   <Eye className="me-50" size={15} />{" "}
-                // <span className="align-middle">Pickup Tasks</span>
-        //         {/* </Button> */}
-                
-        //       </Link>
-        //       <br></br>
-              // <Link to={"/assignment/delivery/" + info.id}>
-              //   <Eye className="me-50" size={15} />{" "}
-              //   <span className="align-middle">Delivery Tasks</span>
-              // </Link>
-
-        //     </Menu>
-        //   }
-        // >
-        //   <UncontrolledDropdown>
-        //     <DropdownToggle
-        //       className="icon-btn hide-arrow"
-        //       color="transparent"
-        //       size="sm"
-        //       caret
-        //     >
-        //       <MoreVertical size={15} />
-        //     </DropdownToggle>
-
-        //   </UncontrolledDropdown>
-        // </Dropdown>
     },
   ]
 

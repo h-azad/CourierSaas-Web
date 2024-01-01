@@ -19,7 +19,6 @@ import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
   ORDER_WAREHOUSE_RETURN,
-  RIDER_ASSIGNMENT,
   DELIVERY_ASSIGNMENT,
   CREATE_ORDER_LIST,
 } from "../../../../constants/apiUrls"
@@ -79,15 +78,18 @@ const CreateOrderList = () => {
       function (result) {
         if (result.value) {
           useJwt
-            .axiosPost(
+            .axiosGet(
               getApi(`${CREATE_ORDER_LIST}${info.id}/order_return/`),
-              { details: info }
             ) 
             .then((res) => {
-              toast.success('Order Return Confirm')
-              fetchCreateOrderData()
+              if (res?.data.error) {
+                toast.error(res?.data?.message)
+              } else {
+                toast.success(res?.data?.message)
+                fetchCreateOrderData()
+              }
             })
-            .catch((err) => console.log(err))
+            .catch((err) => toast.error(err?.response?.data?.message))
         }
       }
     )
@@ -101,16 +103,16 @@ const CreateOrderList = () => {
       function (result) {
         if (result.value) {
           useJwt
-            .axiosPost(
-              getApi(`${CREATE_ORDER_LIST}${info.id}/order_hold/`),
-              { details: info }
-            )
+            .axiosGet(getApi(`${CREATE_ORDER_LIST}${info.id}/order_hold/`))
             .then((res) => {
-              toast.success('Order Hold Confirm')
-              fetchCreateOrderData()
-
+              if(res?.data.error){
+                toast.error(res?.data?.message)
+              }else{
+                toast.success(res?.data?.message)
+                fetchCreateOrderData()
+              }
             })
-            .catch((err) => console.log(err))
+            .catch((err) => toast.error(err?.response?.data?.message) )
         }
       }
     )

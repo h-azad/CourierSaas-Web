@@ -18,6 +18,7 @@ import {
   getApi,
   RETURN_TO_MARCHANT,
   DELIVERY_ASSIGNMENT,
+  CREATE_ORDER_DETAILS
 } from "../../../../constants/apiUrls"
 
 import OrderDetailsDrawer from "../../../../components/order/OrderDetailsDrawer"
@@ -69,7 +70,7 @@ const CreateOrderList = () => {
         if (result.value) {
           useJwt
             .axiosGet(
-              getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/return_to_marchant_complete/`),
+              getApi(`${CREATE_ORDER_DETAILS}${info.id}/return_to_marchant_complete/`),
             )
             .then((res) => {
               fetchCreateOrderData()

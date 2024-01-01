@@ -19,7 +19,7 @@ import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
   ORDER_HOLD,
-  RIDER_ASSIGNMENT,
+  RIDER_PICKED_ASSIGNMENT,
   DELIVERY_ASSIGNMENT,
 } from "../../../constants/apiUrls"
 import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
@@ -144,7 +144,7 @@ const CreateOrderList = () => {
   }
 
   const fetchRiderData = () => {
-    return useJwt.axiosGet(getApi(RIDER_ASSIGNMENT))
+    return useJwt.axiosGet(getApi(RIDER_PICKED_ASSIGNMENT))
       .then((res) => {
         setRiders(res?.data)
       }).catch((err) => {

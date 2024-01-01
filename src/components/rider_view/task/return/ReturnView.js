@@ -300,13 +300,19 @@ const ReturnView = ({ }) => {
           useJwt
             .axiosGet(
               getApi(`${DELIVERY_ASSIGNMENT}/${info.id}/return_to_marchant/`),
-              // { details: info }
             )
             .then((res) => {
-              toast.success('Return To Marchant Successfully!')
-              fetchReturnOrderData()
+              if(res?.data?.error){
+                toast.error(res?.data?.message)
+              }else{
+                toast.success(res?.data?.message)
+                fetchReturnOrderData()
+              }
+              
             })
-            .catch((err) => console.log(err))
+            .catch((err) => {
+              toast.error(err?.response?.data?.message)
+            })
         }
       }
     )

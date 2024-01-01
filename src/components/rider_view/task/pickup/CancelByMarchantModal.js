@@ -1,7 +1,7 @@
 import { React, useEffect } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, RIDER_ASSIGNMENT } from "@src/constants/apiUrls"
+import { getApi, RIDER_PICKED_ASSIGNMENT } from "@src/constants/apiUrls"
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { Input, Radio} from 'antd'
@@ -21,7 +21,7 @@ function CancelByMarchantModal({ cancelByMarchantModalState, setCancelByMarchant
             'reason': reason
         }
         useJwt
-            .axiosPost(getApi(RIDER_ASSIGNMENT) + `/${taskInfo?.id}/cancel_by_marchant/`, formData)
+            .axiosPost(getApi(RIDER_PICKED_ASSIGNMENT) + `/${taskInfo?.id}/cancel_by_marchant/`, formData)
             .then((res) => {
                 setCancelByMarchantModalState(false)
                 fetchPickupData()

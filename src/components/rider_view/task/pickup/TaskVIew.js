@@ -14,7 +14,7 @@ import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
   RIDER_PICKUP_CREATE_ORDER_FILTER,
-  RIDER_ASSIGNMENT,
+  RIDER_PICKED_ASSIGNMENT,
   ORDER_INVOICE,
 } from "@src/constants/apiUrls"
 
@@ -107,7 +107,7 @@ const PickupView = ({ orderInfo }) => {
       function (result) {
         if (result.value) {
           useJwt
-            .axiosPost(getApi(`${RIDER_ASSIGNMENT}/${info.id}/confirm_pickup/`))
+            .axiosPost(getApi(`${RIDER_PICKED_ASSIGNMENT}/${info.id}/confirm_pickup/`))
             .then((res) => {
               toast.success('Pickup Confirm Successfully!')
               fetchPickupData()

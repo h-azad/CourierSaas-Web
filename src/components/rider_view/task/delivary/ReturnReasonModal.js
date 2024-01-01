@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 import { Input, Radio, Button as AntdButton  } from 'antd'
 const { TextArea } = Input
 
-function ReturnReasonModal({ returnModalState, setReturnModalState, taskInfo, fetchDelivaryData}) {
+function ReturnReasonModal({ returnModalState, setReturnModalState, selectOrderID, fetchDelivaryData}) {
     const [reason, setReason] = useState()
     const [value, setChekedValue] = useState()
     const [loadings, setLoadings] = useState([])
@@ -42,15 +42,22 @@ function ReturnReasonModal({ returnModalState, setReturnModalState, taskInfo, fe
 
         enterLoading(true)
         useJwt
-            .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${taskInfo?.id}/return_to_warehouse/`, formData)
+            .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${selectOrderID}/return_to_warehouse/`, formData)
             .then((res) => {
-                toast.success('Return Successfully!')
-                setReturnModalState(false)
-                fetchDelivaryData()
-                enterLoading(false)
+                if(res?.data?.error){
+                    toast.error(res?.data?.message)
+                    setReturnModalState(false)
+                    enterLoading(false)
+                }else{
+                    toast.success(res?.data?.message)
+                    setReturnModalState(false)
+                    fetchDelivaryData()
+                    enterLoading(false)
+                }
+                
             })
             .catch((err) => {
-                toast.error('Return Failed!')
+                toast.error(err?.response?.data?.message)
                 setReturnModalState(false)
                 enterLoading(false)
             })

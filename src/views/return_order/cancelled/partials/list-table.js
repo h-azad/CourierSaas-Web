@@ -19,7 +19,7 @@ import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
   ORDER_PICKUP_FAILED_LIST,
-  RIDER_ASSIGNMENT,
+  RIDER_PICKED_ASSIGNMENT,
   DELIVERY_ASSIGNMENT,
   CREATE_ORDER_LIST,
 } from "../../../../constants/apiUrls"
@@ -200,7 +200,7 @@ const CreateOrderList = () => {
 
 
   const fetchRiderData = () => {
-    return useJwt.axiosGet(getApi(RIDER_ASSIGNMENT))
+    return useJwt.axiosGet(getApi(RIDER_PICKED_ASSIGNMENT))
       .then((res) => {
         console.log('response data', res?.data)
         setRiders(res?.data)

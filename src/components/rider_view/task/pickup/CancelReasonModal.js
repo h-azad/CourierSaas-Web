@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, RIDER_ASSIGNMENT } from "@src/constants/apiUrls"
+import { getApi, RIDER_PICKED_ASSIGNMENT } from "@src/constants/apiUrls"
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { Input, Radio } from 'antd'
@@ -22,7 +22,7 @@ function CancelReasonModal({ cancleModalState, setCancleModalState, taskInfo }) 
             'reason': reason
         }
         useJwt
-            .axiosPost(getApi(RIDER_ASSIGNMENT) + `/${taskInfo?.id}/cancel_pickup/`, formData)
+            .axiosPost(getApi(RIDER_PICKED_ASSIGNMENT) + `/${taskInfo?.id}/cancel_pickup/`, formData)
             .then((res) => {   
                 // fetchCurrentTaskData()
                 toast.success('Cancelled Successfully!')   

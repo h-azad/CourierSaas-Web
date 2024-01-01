@@ -7,8 +7,7 @@ import toast from 'react-hot-toast'
 import { Input, Radio, Select, DatePicker, Space, Tag } from 'antd'
 const { TextArea } = Input
 
-function HoldReasonModal({ holdModalState, setHoldModalState, taskInfo, fetchDelivaryData }) {
-    console.log('taskInfo', taskInfo)
+function HoldReasonModal({ holdModalState, setHoldModalState, selectOrderID, fetchDelivaryData }) {
     const [reason, setReason] = useState()
     const [holdDate, setHoldDate] = useState()
     const [value, setChekedValue] = useState()
@@ -25,14 +24,20 @@ function HoldReasonModal({ holdModalState, setHoldModalState, taskInfo, fetchDel
             'hold_date': holdDate
         }
         useJwt
-            .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${taskInfo?.id}/hold_delivery/`, formData)
+            .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${selectOrderID}/hold_delivery/`, formData)
             .then((res) => {
-                toast.success('Hold Successfully!')
-                setHoldModalState(false)
-                fetchDelivaryData()
+                if (res?.data?.error) {
+                    toast.error(res?.data?.message)
+                    setHoldModalState(false)
+                }else{
+                    toast.success(res?.data?.message)
+                    setHoldModalState(false)
+                    fetchDelivaryData()
+                }
+                
             })
             .catch((err) => {
-                toast.error('Hold Failed!')
+                toast.error(err?.response?.data?.message)
                 setHoldModalState(false)
             })
     }

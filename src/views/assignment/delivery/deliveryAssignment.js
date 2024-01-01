@@ -19,7 +19,7 @@ import withReactContent from "sweetalert2-react-content"
 import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
-  RIDER_ASSIGNMENT,
+  RIDER_PICKED_ASSIGNMENT,
   RIDER_DELETE,
   UNPICKUP_ORDER_LIST,
   RIDER_SEARCH_FILTER,
@@ -61,7 +61,7 @@ const RiderAssignmentList = () => {
   const updateStatusAction = (e) => {
     e.preventDefault()
     useJwt
-      .axiosPost(getApi(RIDER_ASSIGNMENT + "/"), {
+      .axiosPost(getApi(RIDER_PICKED_ASSIGNMENT + "/"), {
         riderId: riderId,
         selectedOrderIds: selectedOrderIds
       })
@@ -110,7 +110,7 @@ const RiderAssignmentList = () => {
 
   const fetchRiderData = () => {
     return useJwt
-      .axiosGet(getApi(RIDER_ASSIGNMENT))
+      .axiosGet(getApi(RIDER_PICKED_ASSIGNMENT))
       .then((res) => {
         setRider(res.data)
         return res.data

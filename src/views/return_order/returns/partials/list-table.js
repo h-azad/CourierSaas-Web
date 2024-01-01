@@ -18,8 +18,8 @@ import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
   ORDER_RETURN,
-  RIDER_ASSIGNMENT,
-  DELIVERY_ASSIGNMENT,
+  RIDER_PICKED_ASSIGNMENT,
+  CREATE_ORDER_DETAILS,
 } from "../../../../constants/apiUrls"
 import ChangeStatusModal from "../../../create_order/partials/ChangeStatusModal"
 
@@ -136,7 +136,7 @@ const CreateOrderList = () => {
   }
 
   const fetchRiderData = (value) => {
-    return useJwt.axiosGet(getApi(RIDER_ASSIGNMENT + `?search=${value}`))
+    return useJwt.axiosGet(getApi(RIDER_PICKED_ASSIGNMENT + `?search=${value}`))
       .then((res) => {
         setRiders(res?.data)
       }).catch((err) => {
@@ -168,7 +168,7 @@ const CreateOrderList = () => {
     e.preventDefault()
     enterLoading(true)
     useJwt
-      .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${selectedInfo.id}/return_order/`, { orderIdInFo: orderIdInFo, selectedRiderIds: selectedRiderIds })
+      .axiosPost(getApi(CREATE_ORDER_DETAILS) +`${selectedInfo.id}/delivery_assign_to_rider/`, { orderIdInFo: orderIdInFo, selectedRiderIds: selectedRiderIds })
       .then((res) => {
         enterLoading(false)
         setStatusModalState(false)

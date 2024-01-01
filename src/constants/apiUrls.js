@@ -69,7 +69,7 @@ export const RIDER_DELIVERY_CREATE_ORDER_FILTER = '/rider_app/rider-delivery-ord
 export const RIDER_RETURN_CREATE_ORDER_FILTER = '/rider_app/rider-return-order-filter/'
 
 
-export const RIDER_ASSIGNMENT = '/rider_app/rider-assignment'
+export const RIDER_PICKED_ASSIGNMENT = '/rider_app/rider-picked-assignment'
 export const UNPICKUP_ORDER_LIST = '/rider_app/unpickup-order-list'
 export const PICKUP_RIDER_TASK= '/rider_app/pickup-rider-task'
 export const PICKUP_RIDER_TASK_SEARCH_FILTER = '/rider_app/pickup-rider-task-search-filter/'

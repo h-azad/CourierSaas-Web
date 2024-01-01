@@ -3,7 +3,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import Select from "react-select"
 import classnames from 'classnames'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, RIDER_ASSIGNMENT } from "@src/constants/apiUrls"
+import { getApi, RIDER_PICKED_ASSIGNMENT } from "@src/constants/apiUrls"
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { Input } from 'antd'
@@ -26,7 +26,7 @@ function PickupStatusModal({ statusModalState, setStatusModalState, taskInfo, fe
         }
 
         useJwt
-            .axiosPost(getApi(RIDER_ASSIGNMENT) + `/${taskInfo?.id}/return_to_reverso_ride/`, formData)
+            .axiosPost(getApi(RIDER_PICKED_ASSIGNMENT) + `/${taskInfo?.id}/return_to_reverso_ride/`, formData)
             .then((res) => {
                 setStatusModalState(false)
                 fetchCurrentTaskData()
