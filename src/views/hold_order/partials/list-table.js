@@ -21,6 +21,7 @@ import {
   ORDER_HOLD,
   RIDER_PICKED_ASSIGNMENT,
   DELIVERY_ASSIGNMENT,
+  CREATE_ORDER_DETAILS
 } from "../../../constants/apiUrls"
 import ChangeStatusModal from "../../create_order/partials/ChangeStatusModal"
 
@@ -128,7 +129,6 @@ const CreateOrderList = () => {
     } else {
       filters.hasOwnProperty(term) && delete filters[term]
     }
-    console.log('filter', filters)
     setFilterQuery(filters)
   }
 
@@ -155,17 +155,18 @@ const CreateOrderList = () => {
   const assignHandler = (e) => {
     e.preventDefault()
     useJwt
-      .axiosPost(getApi(DELIVERY_ASSIGNMENT) + `/${selectedInfo.id}/delivery_assign_to_rider/`, { orderIdInFo: orderIdInFo, selectedRiderIds: selectedRiderIds })
+      .axiosPost(getApi(CREATE_ORDER_DETAILS) + `${selectedInfo.id}/delivery_assign_to_rider/`, { orderIdInFo: orderIdInFo, selectedRiderIds: selectedRiderIds })
       .then((res) => {
         setStatusModalState(false)
         fetchCreateOrderData()
       })
       .then((res) => {
-        toast.success('Rider Assignment Successfully!') 
+        toast.success('Rider Assignment Successfully!')
         fetchCreateOrderData()
         setStatusModalState(false)
       })
   }
+
   const handleSelectedRiderId = (e) => {
     const { value, checked } = e.target
     if (checked) {
@@ -307,7 +308,7 @@ const CreateOrderList = () => {
 
       render: (_, record) =>
         <td>
-          <Input type='checkbox' value={record.id} onClick={(e) => { handleSelectedRiderId(e) }} name="order_id" id='remember-me' />
+          <Input type='radio' value={record.id} onClick={(e) => { handleSelectedRiderId(e) }} name="order_id" id='remember-me' />
         </td>
 
     },
@@ -330,6 +331,7 @@ const CreateOrderList = () => {
   useEffect(() => {
     fetchCreateOrderData()
   }, [JSON.stringify(filterQuery)])
+
 
   return (
     <Row>

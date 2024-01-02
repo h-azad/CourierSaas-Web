@@ -163,7 +163,7 @@ const DelivaryView = ({ }) => {
                             >
                               <Edit3 className="me-50" size={15} />{" "}
                               <span className="align-middle">
-                                Return
+                                Return To Warehouse
                               </span>
                             </DropdownItem>
                             <DropdownItem

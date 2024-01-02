@@ -168,7 +168,7 @@ const CreateOrderList = () => {
     e.preventDefault()
     enterLoading(true)
     useJwt
-      .axiosPost(getApi(CREATE_ORDER_DETAILS) +`${selectedInfo.id}/delivery_assign_to_rider/`, { orderIdInFo: orderIdInFo, selectedRiderIds: selectedRiderIds })
+      .axiosPost(getApi(CREATE_ORDER_DETAILS) + `${selectedInfo.id}/returned_assign_to_rider/`, { orderIdInFo: orderIdInFo, selectedRiderIds: selectedRiderIds })
       .then((res) => {
         enterLoading(false)
         setStatusModalState(false)
@@ -323,7 +323,7 @@ const CreateOrderList = () => {
 
       render: (_, record) =>
         <td>
-          <Input type='checkbox' value={record.id} onClick={(e) => { handleSelectedRiderId(e) }} name="order_id" id='remember-me' />
+          <Input type='radio' value={record.id} onClick={(e) => { handleSelectedRiderId(e) }} name="order_id" id='remember-me' />
         </td>
 
     },

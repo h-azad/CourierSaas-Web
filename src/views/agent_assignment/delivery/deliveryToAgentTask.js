@@ -20,7 +20,7 @@ import { useEffect, useState } from "react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, CREATE_ORDER_DELETE, DELIVERY_ASSIGN_TO_AGENT, CREATE_ORDER_EDIT, DELIVERY_RIDER_TASK_SEARCH_FILTER } from "../../../constants/apiUrls"
+import { getApi, CREATE_ORDER_DELETE, DELIVERY_ASSIGN_TO_AGENT, CREATE_ORDER_EDIT, DELIVERY_RIDER_TASK_SEARCH_FILTER, CREATE_ORDER_DETAILS } from "../../../constants/apiUrls"
 import SwalAlert from "../../../components/SwalAlert"
 import SwalConfirm from "../../../components/SwalConfirm"
 import StatusModal from "../../../components/StatusModal"
@@ -81,7 +81,7 @@ const DeliveryToAgentTask = () => {
   const changeStatusAction = (e, info) => {
     e.preventDefault()
     useJwt
-      .axiosPost(getApi(`${DELIVERY_ASSIGN_TO_AGENT}/${info.id}/admin_confirm_delivery/`), { details: info, status: "completed", })
+      .axiosPost(getApi(`${CREATE_ORDER_DETAILS}/${info.id}/admin_confirm_delivery/`), { details: info, status: "completed", })
       .then((res) => {
         SwalAlert("Delivery Confirm")
         fetchCreateOrderData()

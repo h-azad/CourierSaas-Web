@@ -137,7 +137,7 @@ const ParcelItems = ({ parcellItemPropsData }) => {
                     )}
                   </div>
                 </div>
-                <div className='col-md-2 css flex-between'>
+                {/* <div className='col-md-2 css flex-between'>
                   <Button className="me-1" color="danger"
                     style={{
                       marginTop: '20px',
@@ -146,7 +146,7 @@ const ParcelItems = ({ parcellItemPropsData }) => {
                   >
                     Remove
                   </Button>
-                </div>
+                </div> */}
 
               </>
 

@@ -149,13 +149,20 @@ const PendingCODCollectionList = () => {
       function (result) {
         let formData = {
           orderID: selectedorderID,
-          amount: sumAmount
         }
         if (result.value) {
           useJwt
             .axiosPost(getApi(`${PENDING_COD}${id}/`), formData)
             .then((res) => {
-              SwalAlert("Collection Amount Successfully")
+              if(res?.data?.error){
+                toast.error(res?.data?.message)
+              }else{
+                toast.success(res?.data?.message)
+                SwalAlert(res?.data?.message)
+                fetchOrderData()
+              }
+            }).catch((err)=>{
+              toast.error(err?.response?.data?.message)
             })
         }
       }

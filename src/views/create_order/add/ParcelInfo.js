@@ -19,7 +19,7 @@ import {
   SHIPMENT_TYPE_FORM_LIST,
   PRICING_POLICY_BY_PRODUCT,
   PRODUCT_TYPE_USEING_FORM,
-  MARCHANT_LIST,
+  MARCHANT_FORM_LIST,
   CITY_FORM_LIST,
   AREAS_BY_CITY,
   DELIVARY_CHARGE_BY_PERCEL_TYPE,
@@ -106,11 +106,11 @@ const AddOrder = ({ parcellInfoPropsData }) => {
 
   const fetchMarchantData = () => {
     return useJwt
-      .axiosGet(getApi(MARCHANT_LIST))
+      .axiosGet(getApi(MARCHANT_FORM_LIST))
       .then((res) => {
         let marchantData = []
 
-        res.data.data.map((data) => {
+        res.data.map((data) => {
           marchantData.push({ value: data.id, label: data.full_name })
         })
 
