@@ -30,9 +30,9 @@ const ReportHead = ({ propsData }) => {
 
     console.log(date, dateString)
     if (dateString.find(x => x != '')) {
-      propsData.updateFilterQUery('date', dateString.toString())
+      propsData.updateFilterQUery('created_at', dateString.toString())
     } else {
-      propsData.updateFilterQUery('date', '')
+      propsData.updateFilterQUery('created_at', )
     }
   }
 
@@ -101,7 +101,7 @@ const ReportHead = ({ propsData }) => {
                 <Search
                   placeholder="eg. ODR23031301d6"
                   onChange={(e) => {
-                    propsData.updateFilterQUery("search", e.target.value)
+                    propsData.updateFilterQUery("parcel_id", e.target.value)
 
                   }}
                   allowClear={true}
@@ -171,10 +171,10 @@ const ReportHead = ({ propsData }) => {
               }
 
               <Space>
-                <Button type="primary" onClick={submitFilter} size={20}>
+                {/* <Button type="primary" onClick={submitFilter} size={20}>
                   Filter
-                </Button>
-                <Button type="primary" onClick={(e)=>{propsData?.fetchDefalutData()}} danger size={20}>
+                </Button> */}
+                <Button type='primary' htmlType="reset" onClick={(e)=>{propsData?.resetFunction()}} danger size={20}>
                   Reset
                 </Button>
               </Space>

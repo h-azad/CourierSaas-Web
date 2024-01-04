@@ -61,6 +61,7 @@ export const RIDER_DELIVARY = '/rider_app/delivary/'
 export const RIDER_DELIVARY_STATUS_UPDATE = '/rider_app/delivary/'
 export const RIDER_ORDER_STATUS = '/rider_app/status/'
 export const RIDER_CURRENT_TASK_LIST = '/rider_app/current-task/'
+export const ACTIVE_RIDER = '/rider_app/active/rider/'
 export const RIDER_SEARCH_FILTER = '/rider_app/search-filter/'
 export const RIDER_STATISTICS = "/api/user/rider-statistics/"
 
@@ -68,6 +69,8 @@ export const RIDER_SEARCH_CREATE_ORDER_FILTER = '/rider_app/rider-serach-order-f
 export const RIDER_PICKUP_CREATE_ORDER_FILTER = '/rider_app/rider-pickup-order-filter/'
 export const RIDER_DELIVERY_CREATE_ORDER_FILTER = '/rider_app/rider-delivery-order-filter/'
 export const RIDER_RETURN_CREATE_ORDER_FILTER = '/rider_app/rider-return-order-filter/'
+
+export const RIDER_FORM_LIST = '/rider_app/rider-form/list'
 
 
 export const RIDER_PICKED_ASSIGNMENT = '/rider_app/rider-picked-assignment'
@@ -194,6 +197,8 @@ export const PRICING_POLICY_EDIT = '/pricing_policy/'
 export const PRICING_POLICY_LIST = '/pricing_policy/'
 export const PRICING_POLICY_DELETE = '/pricing_policy/'
 export const PRICING_POLICY_DETAILS = '/pricing_policy/'
+
+export const PRICING_POLIICY_FILTER_BY_PRODUCT_FROM_LIST = '/pricing-policy/form-price-policy/'
 export const PRICING_POLICY_UPDATE_STATUS = "/pricing_policy/"
 // export const SEARCH_PRICING_POLICY = '/search_pricing_policy/'
 export const SEARCH_PRICING_POLICY = "/search-pricing-policy/"
@@ -212,6 +217,7 @@ export const CREATE_ORDER_DETAILS = '/create_order/'
 export const SEARCH_CREATE_ORDER = '/search_create_order/'
 export const DIMENTION_BY_PRODUCT = '/create_order/get-dimention/'
 export const PRICING_POLICY_BY_PRODUCT = '/get-price-policy/'
+export const PRICING_POLICY_FORM_LIST = '/get-price-policy/form-list'
 export const DELIVARY_CHARGE_BY_PERCEL_TYPE = '/get-delivary-charge/'
 export const ORDER_STATUS_UPDATE = '/create-order/change-status/'
 export const ORDER_STATISTICS = "/api/user/order-statistics/"
@@ -299,6 +305,10 @@ export const TRANSECTIONS = "/api/transection/"
 
 
 // Report URL
+export const ORDER_REPORT_APIVIEW = "/api/order/report/"
+
+
+
 export const ADMIN_GET_ORDER_REPORT_APIVIEW = "/api/admin/order-report"
 export const ADMIN_GET_ORDER_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/order-report-generate-pdf"
 export const ADMIN_GET_TRANSECTION_REPORT_APIVIEW = "/api/admin/transection-report"

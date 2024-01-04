@@ -20,7 +20,7 @@ import {
   RIDER_PICKED_ASSIGNMENT,
   RIDER_DELETE,
   UNPICKUP_ORDER_LIST,
-  RIDER_SEARCH_FILTER,
+  ACTIVE_RIDER,
   UNDELIVERY_ORDER_LIST,
   DELIVERY_ASSIGNMENT,
   CREATE_ORDER_LIST,
@@ -187,7 +187,8 @@ const RiderAssignmentList = () => {
 
   const fetchRiderData = () => {
     return useJwt
-      .axiosGet(getApi(RIDER_SEARCH_FILTER) + `?${qs.stringify(filterQuery)}`)
+      .axiosGet(getApi(ACTIVE_RIDER) + `?${qs.stringify(filterQuery)}`)
+      
       .then((res) => {
         setRider(res?.data?.results)
         updatePagination({

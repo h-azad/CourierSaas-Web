@@ -14,7 +14,7 @@ import toast from 'react-hot-toast'
 import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 import useJwt from '@src/auth/jwt/useJwt'
-import { getApi, RIDER_ROUTE, ROUTE_FORM_LIST, RIDER_LIST } from '@src/constants/apiUrls'
+import { getApi, RIDER_ROUTE, ROUTE_FORM_LIST, RIDER_LIST, RIDER_FORM_LIST } from '@src/constants/apiUrls'
 import { useEffect, useState } from "react"
 import SwalAlert from "@src/components/SwalAlert"
 
@@ -53,11 +53,12 @@ const SetRiderInRoute = () => {
 
   const fetchRiderData = () => {
     return useJwt
-      .axiosGet(getApi(RIDER_LIST))
+      .axiosGet(getApi(RIDER_FORM_LIST))
       .then((res) => {
-        console.log(res)
+        console.log('response data', res)
         let riderData = []
-        res.data?.data.map((data) => {
+        res.data?.map((data) => {
+          
           riderData.push({ value: data.id, label: data.full_name })
         })
         setSelectRider(riderData)

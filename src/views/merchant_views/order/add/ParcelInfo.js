@@ -17,7 +17,7 @@ import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
   SHIPMENT_TYPE_FORM_LIST,
-  PRICING_POLICY_BY_PRODUCT,
+  PRICING_POLIICY_FILTER_BY_PRODUCT_FROM_LIST,
   PRODUCT_TYPE_USEING_FORM,
   MARCHANT_LIST,
   CITY_FORM_LIST,
@@ -153,7 +153,7 @@ const AddOrder = ({ parcellInfoPropsData }) => {
 
   const fetchPricingPolicyData = (productTypeId) => {
     return useJwt
-      .axiosGet(getApi(PRICING_POLICY_BY_PRODUCT) + productTypeId + "/" + '?request-location=form')
+      .axiosGet(getApi(PRICING_POLIICY_FILTER_BY_PRODUCT_FROM_LIST) + productTypeId + "/")
       .then((res) => {
         let pricingData = []
 

@@ -173,7 +173,7 @@ const ListTable = () => {
       },
     },
     {
-      title: 'Account',
+      title: 'Amount',
       dataIndex: 'amount'
     },
     {

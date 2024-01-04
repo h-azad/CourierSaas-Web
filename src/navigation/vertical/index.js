@@ -1,4 +1,8 @@
-import { Book, Type, CornerUpRight, Archive, Home, User, Truck, DollarSign, Navigation, Filter, Gift, Map, MapPin, Users, Sidebar, ShoppingCart, Shield, Circle, CreditCard, Send, Meh, Plus, ArrowDownRight, TrendingDown, Unlock } from "react-feather"
+import { 
+  Book, Home, User, Truck, DollarSign, Navigation, Filter, Gift, 
+  Map, MapPin, Users, Sidebar, ShoppingCart, Circle, CreditCard, 
+  Send, Plus, Unlock, Settings 
+} from "react-feather"
 
 
 const adminMenu = [
@@ -74,7 +78,7 @@ const adminMenu = [
         resource: 'Order-write',
         navLink: "/pickup/failed/",
       },
-      
+
 
       {
         id: "return-order-nav",
@@ -123,105 +127,22 @@ const adminMenu = [
 
     ]
   },
-  
 
-  // {
-  //   id: "assignment",
-  //   title: "Assignment",
-  //   icon: <CornerUpRight size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'Assignment-read',
-  //   navLink: "/assignment"
-  // },
 
   {
-    id: "assignment",
+    header: 'Order Assign To Rider',
+    action: 'admin-pages',
+    resource: 'Order-read',
+  },
+  {
+    id: "order-assign-to-rider",
     title: "Rider",
     icon: <Users size={20} />,
     action: 'admin-pages',
-    resource: 'Assignment-read',
+    resource: 'Order Assign To Rider-read',
     navLink: "/assignment"
   },
 
-  // {
-  //   id: "cod-collection",
-  //   title: "COD Amount",
-  //   icon: <DollarSign size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'Assignment-read',
-  //   navLink: "/cod-amount"
-  // },
-
-  // {
-  //   id: "agent-assignment",
-  //   title: "Agent Assignment",
-  //   icon: <CornerUpRight size={20} />,
-  //   action: 'admin-pages',
-  //   resource: 'Assignment-read',
-  //   navLink: "/agent-assignment"
-  // },
-
-
-
-  {
-    header: 'Hub',
-    action: 'admin-pages',
-    resource: 'Staff-read',
-  },
-
-
-  {
-    id: "hub",
-    title: "Hub",
-    icon: <Users size={20} />,
-
-    children: [
-      {
-        id: 'Hub-index',
-        title: 'Index',
-        icon: <Circle size={12} />,
-        action: 'admin-pages',
-        resource: 'Hub-read',
-        navLink: "/hub/",
-      },
-      {
-        id: 'Hub-add',
-        title: 'Add',
-        icon: <Circle size={12} />,
-        action: 'admin-pages',
-        resource: 'Hub-write',
-        navLink: "/hub/add/",
-      }
-    ]
-  },
-
-  {
-    id: "hub-admin",
-    title: "Hub Admin",
-    icon: <Users size={20} />,
-
-    children: [
-      {
-        id: 'hub-admin-index',
-        title: 'Index',
-        icon: <Circle size={12} />,
-        action: 'admin-pages',
-        resource: 'HubAdmin-read',
-        navLink: "/hub/admin/",
-      },
-      {
-        id: 'hub-admin-add',
-        title: 'Add',
-        icon: <Circle size={12} />,
-        action: 'admin-pages',
-        resource: 'HubAdmin-write',
-        navLink: "/hub/admin/add/",
-      }
-    ]
-  },
-
-
-  
 
   {
     header: 'Accounts',
@@ -249,10 +170,36 @@ const adminMenu = [
         icon: <Circle size={12} />,
         action: 'admin-pages',
         resource: 'Staff-write',
-        navLink: "/admin/add",
+        navLink: "/admin/add/",
       }
     ]
   },
+
+  {
+    id: "hub-admin",
+    title: "Hub Admin",
+    icon: <Users size={20} />,
+
+    children: [
+      {
+        id: 'hub-admin-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'HubAdmin-read',
+        navLink: "/hub-admin/",
+      },
+      {
+        id: 'hub-admin-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'HubAdmin-write',
+        navLink: "/hub-admin/add/",
+      }
+    ]
+  },
+
 
   {
     id: "merchants",
@@ -301,14 +248,7 @@ const adminMenu = [
         resource: 'Rider-write',
         navLink: "/rider/add",
       },
-      // {
-      //   id: 'rider-location',
-      //   title: 'Current Locations',
-      //   icon: <Circle size={12} />,
-      //   action: 'admin-pages',
-      //   resource: 'Rider-write',
-      //   navLink: "/user/current-locations",
-      // },
+
       {
         id: 'rider-get-location',
         title: 'Current Locations',
@@ -319,56 +259,6 @@ const adminMenu = [
       }
     ]
   },
-
-  // {
-  //   id: "agent-typ",
-  //   title: "Agent Type",
-  //   icon: <Type size={20} />,
-
-  //   children: [
-  //     {
-  //       id: 'agent-type-index',
-  //       title: 'Index',
-  //       icon: <Circle size={12} />,
-  //       action: 'admin-pages',
-  //       resource: 'Agent Type-read',
-  //       navLink: "/agent-type/",
-  //     },
-  //     {
-  //       id: 'agent-type-add',
-  //       title: 'Add',
-  //       icon: <Circle size={12} />,
-  //       action: 'admin-pages',
-  //       resource: 'Agent Type-read',
-  //       navLink: "/agent-type/add",
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   id: "agent",
-  //   title: "Agent",
-  //   icon: <User size={20} />,
-
-  //   children: [
-  //     {
-  //       id: 'agent-index',
-  //       title: 'Index',
-  //       icon: <Circle size={12} />,
-  //       action: 'admin-pages',
-  //       resource: 'Agent-read',
-  //       navLink: "/agent/",
-  //     },
-  //     {
-  //       id: 'agent-add',
-  //       title: 'Add',
-  //       icon: <Circle size={12} />,
-  //       action: 'admin-pages',
-  //       resource: 'Agent-write',
-  //       navLink: "/agent/add",
-  //     }
-  //   ]
-  // },
 
 
   {
@@ -383,6 +273,15 @@ const adminMenu = [
     action: 'admin-pages',
     resource: 'Account Wallet-read',
     navLink: "/account-wallet"
+  },
+
+  {
+    id: "transactions",
+    title: "Transactions",
+    icon: <Send size={20} />,
+    action: 'admin-pages',
+    resource: 'Transactions-read',
+    navLink: "/transactions"
   },
 
   {
@@ -408,16 +307,6 @@ const adminMenu = [
         navLink: "/withdraw-request/add",
       }
     ]
-  },
-
-
-  {
-    id: "transactions",
-    title: "Transactions",
-    icon: <Send size={20} />,
-    action: 'admin-pages',
-    resource: 'Transactions-read',
-    navLink: "/transactions"
   },
 
   {
@@ -471,9 +360,18 @@ const adminMenu = [
   },
 
   {
-    header: 'Locations',
+    header: 'Settings',
     action: 'admin-pages',
-    resource: 'Cities-read',
+    resource: 'settings-read',
+  },
+
+  {
+    id: "application-setting-create",
+    title: "Application Setting",
+    icon: <Settings size={20} />,
+    action: 'admin-pages',
+    resource: 'company-setting',
+    navLink: "/setting/application/create/"
   },
 
   {
@@ -536,7 +434,7 @@ const adminMenu = [
       {
         id: "_route",
         title: "Routes",
-        children:[
+        children: [
           {
             id: 'route-index',
             title: 'Index',
@@ -580,94 +478,54 @@ const adminMenu = [
         ]
       },
 
+    ]
+  },
+
+
+  // {
+  //   id: "Setting",
+  //   title: "Setting",
+  //   action: 'admin-pages',
+  //   resource: 'setting',
+  //   icon: <Archive size={20} />,
+
+    // children: [
+
+    //   {
+    //     id: "application-setting",
+    //     title: "Application Setting",
+    //     children: [
+
+    //       {
+    //         id: "application-setting-create",
+    //         title: "Application Setting",
+    //         icon: <Circle size={20} />,
+    //         action: 'admin-pages',
+    //         resource: 'company-setting',
+    //         navLink: "/setting/application/create/"
+    //       },
+    //     ]
+    //   },
 
       // {
-      //   id: "_route-area",
-      //   title: "Route Area",
+      //   id: "company-setting",
+      //   title: "Company Setting",
       //   children: [
       //     {
-      //       id: 'route-area',
-      //       title: 'Route Area',
-      //       icon: <Circle size={12} />,
+      //       id: "company-setting",
+      //       title: "Company Setting",
+      //       icon: <Circle size={20} />,
       //       action: 'admin-pages',
-      //       resource: 'Route-write',
-      //       navLink: "/route/area/",
-      //     },
-
-      //     {
-      //       id: 'set-route-area',
-      //       title: 'Set Route Area',
-      //       icon: <Circle size={12} />,
-      //       action: 'admin-pages',
-      //       resource: 'Route-write',
-      //       navLink: "/route/set-area/",
+      //       resource: 'company-setting',
+      //       navLink: "/setting/"
       //     },
       //   ]
       // },
-      
-      
 
-      
-    ]
-  },
-
-  // {
-  //   header: 'Settings',
-  //   action: 'admin-pages',
-  //   resource: 'setting',
+  //   ]
   // },
 
-  {
-    id: "Setting",
-    title: "Setting",
-    action: 'admin-pages',
-    resource: 'setting',
-    icon: <Archive size={20} />,
 
-    children: [
-
-      {
-        id: "application-setting",
-        title: "Application Setting",
-        children: [
-          // {
-          //   id: 'application-setting-index',
-          //   title: 'Index',
-          //   icon: <Circle size={12} />,
-          //   action: 'admin-pages',
-          //   resource: 'setting',
-          //   navLink: "/setting/application/",
-          // },
-          {
-            id: "application-setting-create",
-            title: "Application Setting",
-            icon: <Circle size={20} />,
-            action: 'admin-pages',
-            resource: 'company-setting',
-            navLink: "/setting/application/create/"
-          },
-        ]
-      },
-
-      {
-        id: "company-setting",
-        title: "Company Setting",
-        children: [
-          {
-            id: "company-setting",
-            title: "Company Setting",
-            icon: <Circle size={20} />,
-            action: 'admin-pages',
-            resource: 'company-setting',
-            navLink: "/setting/"
-          },
-        ]
-      },
-
-    ]
-  },
-
-  
 
   {
     id: "shipment_type",
@@ -767,6 +625,38 @@ const adminMenu = [
         navLink: "/payment_method/add",
       }
     ]
+  },
+
+
+  {
+    id: "hub",
+    title: "Hub",
+    icon: <Users size={20} />,
+
+    children: [
+      {
+        id: 'Hub-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Hub-read',
+        navLink: "/hub/",
+      },
+      {
+        id: 'Hub-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'admin-pages',
+        resource: 'Hub-write',
+        navLink: "/hub/add/",
+      }
+    ]
+  },
+
+  {
+    header: 'RBAC',
+    action: 'admin-pages',
+    resource: 'rbac-read',
   },
 
   {
@@ -894,6 +784,12 @@ const adminMenu = [
 ]
 
 
+
+
+
+
+
+
 const marchantMenu = [
   {
     id: "marchant-dashboard",
@@ -924,14 +820,6 @@ const marchantMenu = [
         resource: 'MARCHANT',
         navLink: "/marchant-orders/"
       },
-      // {
-      //   id: "my_order_create",
-      //   title: "Add New Orders",
-      //   icon: <Circle size={20} />,
-      //   action: 'marchant-pages',
-      //   resource: 'MARCHANT',
-      //   navLink: "/marchant-orders/create"
-      // },
 
       {
         id: "my_order_create_marchant",
@@ -962,6 +850,14 @@ const marchantMenu = [
     navLink: "/marchant-wallet"
   },
 
+  {
+    id: "transactions",
+    title: "Transactions",
+    icon: <Send size={20} />,
+    action: 'marchant-pages',
+    resource: 'MARCHANT',
+    navLink: "/transactions"
+  },
 
   {
     id: "marchant_withdraw",
@@ -1008,14 +904,7 @@ const marchantMenu = [
   },
 
 
-  {
-    id: "transactions",
-    title: "Transactions",
-    icon: <Send size={20} />,
-    action: 'marchant-pages',
-    resource: 'MARCHANT',
-    navLink: "/transactions"
-  },
+
 
 
   {
@@ -1112,6 +1001,13 @@ const marchantMenu = [
 ]
 
 
+
+
+
+
+
+
+
 const riderMenu = [
   {
     id: "rider-dashboard",
@@ -1150,7 +1046,7 @@ const riderMenu = [
         resource: 'RIDER',
         navLink: "/rider-orders/delivary"
       },
-    
+
       {
         id: "return",
         title: "Return",
@@ -1163,36 +1059,6 @@ const riderMenu = [
     ]
   },
 
-  // {
-  //   header: 'Current Tasks',
-  //   action: 'rider-pages',
-  //   resource: 'RIDER',
-  // },
-  // {
-  //   id: "pickup",
-  //   title: "Pickup Tasks",
-  //   icon: <Truck size={20} />,
-  //   action: 'rider-pages',
-  //   resource: 'RIDER',
-  //   navLink: "/rider-orders/pickup"
-  // },
-  // {
-  //   id: "delivary",
-  //   title: "Delivary",
-  //   icon: <Truck size={20} />,
-  //   action: 'rider-pages',
-  //   resource: 'RIDER',
-  //   navLink: "/rider-orders/delivary"
-  // },
-
-  // {
-  //   id: "return",
-  //   title: "Return",
-  //   icon: <Truck size={20} />,
-  //   action: 'rider-pages',
-  //   resource: 'RIDER',
-  //   navLink: "/rider-orders/return"
-  // },
 
   {
     header: 'Transactions',
@@ -1307,66 +1173,13 @@ const riderMenu = [
     ]
   },
 
-
-  // {
-  //   header: 'Report',
-  //   action: 'rider-pages',
-  //   resource: 'RIDER',
-  // },
-  // {
-  //   id: "pickup-report",
-  //   title: "Pickup Report",
-  //   icon: <Truck size={20} />,
-  //   action: 'rider-pages',
-  //   resource: 'RIDER',
-  //   navLink: "/rider-pickup-report"
-  // },
-  // {
-  //   id: "delivery-report",
-  //   title: "Delivery Report",
-  //   icon: <Truck size={20} />,
-  //   action: 'rider-pages',
-  //   resource: 'RIDER',
-  //   navLink: "/rider-delivery-report"
-  // },
-  // {
-  //   id: "delivery-collection-report",
-  //   title: "Collection Report",
-  //   icon: <Truck size={20} />,
-  //   action: 'rider-pages',
-  //   resource: 'RIDER',
-  //   navLink: "/rider-delivery-collection-report"
-  // },
-
-  // {
-  //   header: 'Assigned Pickup',
-  //   action: 'rider-pages',
-  //   resource: 'RIDER',
-  // },
-  // {
-  //   id: "pickup",
-  //   title: "Pickup",
-  //   icon: <CreditCard size={20} />,
-  //   action: 'rider-pages',
-  //   resource: 'RIDER',
-  //   navLink: "/rider-orders/pickup"
-  // },
-  // {
-  //   header: 'Assigned Delivary',
-  //   action: 'rider-pages',
-  //   resource: 'RIDER',
-  // },
-  // {
-  //   id: "delivary",
-  //   title: "Delivary",
-  //   icon: <ShoppingBag size={20} />,
-  //   action: 'rider-pages',
-  //   resource: 'RIDER',
-  //   navLink: "/rider-orders/delivary"
-  // },
-
-
 ]
+
+
+
+
+
+
 
 const agentMenu = [
   {
@@ -1403,104 +1216,6 @@ const agentMenu = [
 
 
 
-
-// const hubMenu = [
-//   {
-//     id: "hub-dashboard",
-//     title: "Dashboard",
-//     icon: <Home size={20} />,
-//     action: 'hub-pages',
-//     resource: 'hub-dashboard',
-//     navLink: "/hub/admin-dashboard"
-//   },
-
-//   {
-//     header: 'Orders',
-//     action: 'hub-pages',
-//     resource: 'Order-read',
-//   },
-
-//   {
-//     id: "create_order",
-//     title: "Order Manage",
-//     icon: <Gift size={20} />,
-
-//     children: [
-//       {
-//         id: 'order-add',
-//         title: 'Add',
-//         icon: <Circle size={12} />,
-//         action: 'hub-pages',
-//         resource: 'Order-write',
-//         navLink: "/create_order/add-order",
-//       },
-//       {
-//         id: 'order-index',
-//         title: 'Orders',
-//         icon: <Circle size={12} />,
-//         action: 'hub-pages',
-//         resource: 'Order-read',
-//         navLink: "/create_order/",
-//       },
-//       {
-//         id: 'pickup-failed',
-//         title: 'Pickup Failed',
-//         icon: <Circle size={12} />,
-//         action: 'hub-pages',
-//         resource: 'Order-write',
-//         navLink: "/pickup/failed/",
-//       },
-
-
-//       {
-//         id: "return-order-nav",
-//         title: "Return",
-//         icon: <Circle size={20} />,
-
-//         children: [
-
-//           {
-//             id: 'return-order-warehouse',
-//             title: 'Warehouse',
-//             icon: <Circle size={12} />,
-//             action: 'hub-pages',
-//             resource: 'Order-write',
-//             navLink: "/return-order/warehouse/",
-//           },
-
-//           {
-//             id: 'hold-order',
-//             title: 'Hold',
-//             icon: <Circle size={12} />,
-//             action: 'hub-pages',
-//             resource: 'Order-write',
-//             navLink: "/hold-order",
-//           },
-
-//           {
-//             id: 'return-order',
-//             title: 'Returns',
-//             icon: <Circle size={12} />,
-//             action: 'hub-pages',
-//             resource: 'Order-write',
-//             navLink: "/return-order/",
-//           },
-
-//           {
-//             id: 'return-order-marchant',
-//             title: 'To Marchant',
-//             icon: <Circle size={12} />,
-//             action: 'hub-pages',
-//             resource: 'Order-write',
-//             navLink: "/return-to/marchant",
-//           },
-//         ]
-//       },
-
-//     ]
-//   },
-
-// ]
 
 
 
@@ -1602,46 +1317,40 @@ const hubMenu = [
     ]
   },
 
+
   {
-    id: "assignment",
-    title: "Rider Assignment",
-    icon: <CornerUpRight size={20} />,
+    header: 'Order Assign To Rider',
     action: 'hub-pages',
-    resource: 'Assignment-read',
+    resource: 'Order-read',
+  },
+
+  {
+    id: "order-assign-to-rider",
+    title: "Rider",
+    icon: <Users size={20} />,
+    action: 'hub-pages',
+    resource: 'Order Assign To Rider-read',
     navLink: "/assignment"
   },
+
+  // {
+  //   id: "assignment",
+  //   title: "Rider Assignment",
+  //   icon: <CornerUpRight size={20} />,
+  //   action: 'hub-pages',
+  //   resource: 'Assignment-read',
+  //   navLink: "/assignment"
+  // },
+
+
 
 
   {
     header: 'Accounts',
     action: 'hub-pages',
-    resource: 'Staff-read',
+    resource: 'Marchant-read',
   },
 
-  // {
-  //   id: "admin",
-  //   title: "Staff Users",
-  //   icon: <Users size={20} />,
-
-  //   children: [
-  //     {
-  //       id: 'staff-index',
-  //       title: 'Index',
-  //       icon: <Circle size={12} />,
-  //       action: 'hub-pages',
-  //       resource: 'Staff-read',
-  //       navLink: "/admin/",
-  //     },
-  //     {
-  //       id: 'staff-add',
-  //       title: 'Add',
-  //       icon: <Circle size={12} />,
-  //       action: 'hub-pages',
-  //       resource: 'Staff-write',
-  //       navLink: "/admin/add",
-  //     }
-  //   ]
-  // },
 
   {
     id: "merchants",
@@ -1682,14 +1391,6 @@ const hubMenu = [
         resource: 'Rider-read',
         navLink: "/rider/",
       },
-      // {
-      //   id: 'rider-add',
-      //   title: 'Add',
-      //   icon: <Circle size={12} />,
-      //   action: 'hub-pages',
-      //   resource: 'Rider-write',
-      //   navLink: "/rider/add",
-      // },
 
       {
         id: 'rider-get-location',
@@ -1718,6 +1419,15 @@ const hubMenu = [
   },
 
   {
+    id: "transactions",
+    title: "Transactions",
+    icon: <Send size={20} />,
+    action: 'hub-pages',
+    resource: 'Transactions-read',
+    navLink: "/transactions"
+  },
+
+  {
     id: "withdraw_request",
     title: "Withdraw Request",
     icon: <Navigation size={20} />,
@@ -1740,39 +1450,6 @@ const hubMenu = [
         navLink: "/withdraw-request/add",
       }
     ]
-  },
-
-  {
-    id: "fund_transfer",
-    title: "Fund Transfer",
-    icon: <DollarSign size={20} />,
-
-    children: [
-      {
-        id: 'fund-transfer-index',
-        title: 'Index',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Fund Transfer-read',
-        navLink: "/hub/admin/fund-transfer/index/",
-      },
-      {
-        id: 'fund-transfer-add',
-        title: 'Add',
-        icon: <Circle size={12} />,
-        action: 'hub-pages',
-        resource: 'Fund Transfer-write',
-        navLink: "/hub/admin/fund-transfer/add/",
-      }
-    ]
-  },
-  {
-    id: "transactions",
-    title: "Transactions",
-    icon: <Send size={20} />,
-    action: 'hub-pages',
-    resource: 'Transactions-read',
-    navLink: "/transactions"
   },
 
   {
@@ -1801,6 +1478,34 @@ const hubMenu = [
   },
 
   {
+    id: "fund_transfer",
+    title: "Fund Transfer",
+    icon: <DollarSign size={20} />,
+
+    children: [
+      {
+        id: 'fund-transfer-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Fund Transfer-read',
+        navLink: "/hub/admin/fund-transfer/index/",
+      },
+      {
+        id: 'fund-transfer-add',
+        title: 'Add',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Fund Transfer-write',
+        navLink: "/hub/admin/fund-transfer/add/",
+      }
+    ]
+  },
+
+
+
+
+  {
     header: 'Locations',
     action: 'hub-pages',
     resource: 'Cities-read',
@@ -1820,14 +1525,7 @@ const hubMenu = [
         resource: 'Cities-read',
         navLink: "/cities/",
       },
-      // {
-      //   id: 'cities-add',
-      //   title: 'Add',
-      //   icon: <Circle size={12} />,
-      //   action: 'hub-pages',
-      //   resource: 'Cities-write',
-      //   navLink: "/cities/add",
-      // }
+
     ]
   },
 
@@ -1845,14 +1543,7 @@ const hubMenu = [
         resource: 'Areas-read',
         navLink: "/areas/",
       },
-      // {
-      //   id: 'areas-add',
-      //   title: 'Add',
-      //   icon: <Circle size={12} />,
-      //   action: 'hub-pages',
-      //   resource: 'Areas-write',
-      //   navLink: "/areas/add",
-      // }
+
     ]
   },
 
@@ -1862,236 +1553,17 @@ const hubMenu = [
     icon: <MapPin size={20} />,
 
     children: [
-
       {
-        id: "_route",
-        title: "Routes",
-        children: [
-          {
-            id: 'route-index',
-            title: 'Index',
-            icon: <Circle size={12} />,
-            action: 'hub-pages',
-            resource: 'Route-read',
-            navLink: "/route/",
-          },
-          // {
-          //   id: 'route-add',
-          //   title: 'Add',
-          //   icon: <Circle size={12} />,
-          //   action: 'hub-pages',
-          //   resource: 'Route-write',
-          //   navLink: "/route/add/",
-          // },
-        ]
+        id: 'route-index',
+        title: 'Index',
+        icon: <Circle size={12} />,
+        action: 'hub-pages',
+        resource: 'Route-read',
+        navLink: "/route/",
       },
-
-      // {
-      //   id: "rider-route",
-      //   title: "Rider Routes",
-      //   children: [
-      //     {
-      //       id: 'rider-route-index',
-      //       title: 'Rider Route',
-      //       icon: <Circle size={12} />,
-      //       action: 'hub-pages',
-      //       resource: 'Route-write',
-      //       navLink: "/rider-route",
-      //     },
-
-      //     {
-      //       id: 'set-rider',
-      //       title: 'Set Rider',
-      //       icon: <Circle size={12} />,
-      //       action: 'hub-pages',
-      //       resource: 'Route-write',
-      //       navLink: "/set-route-rider",
-      //     },
-      //   ]
-      // },
-
     ]
   },
 
-
-  // {
-  //   id: "Setting",
-  //   title: "Setting",
-  //   action: 'hub-pages',
-  //   resource: 'setting',
-  //   icon: <Archive size={20} />,
-
-  //   children: [
-
-  //     {
-  //       id: "application-setting",
-  //       title: "Application Setting",
-  //       children: [
-
-  //         {
-  //           id: "application-setting-create",
-  //           title: "Application Setting",
-  //           icon: <Circle size={20} />,
-  //           action: 'hub-pages',
-  //           resource: 'company-setting',
-  //           navLink: "/setting/application/create/"
-  //         },
-  //       ]
-  //     },
-
-  //     {
-  //       id: "company-setting",
-  //       title: "Company Setting",
-  //       children: [
-  //         {
-  //           id: "company-setting",
-  //           title: "Company Setting",
-  //           icon: <Circle size={20} />,
-  //           action: 'hub-pages',
-  //           resource: 'company-setting',
-  //           navLink: "/setting/"
-  //         },
-  //       ]
-  //     },
-
-  //   ]
-  // },
-
-
-
-  // {
-  //   id: "shipment_type",
-  //   title: "Shipment Type",
-  //   icon: <Truck size={20} />,
-
-  //   children: [
-  //     {
-  //       id: 'shipment-type-index',
-  //       title: 'Index',
-  //       icon: <Circle size={12} />,
-  //       action: 'hub-pages',
-  //       resource: 'Shipment Type-read',
-  //       navLink: "/shipment_type/",
-  //     },
-  //     {
-  //       id: 'shipment-type-add',
-  //       title: 'Add',
-  //       icon: <Circle size={12} />,
-  //       action: 'hub-pages',
-  //       resource: 'Shipment Type-write',
-  //       navLink: "/shipment_type/add",
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   id: "product-type",
-  //   title: "Product Type",
-  //   icon: <ShoppingCart size={20} />,
-
-  //   children: [
-  //     {
-  //       id: 'product-type-index',
-  //       title: 'Index',
-  //       icon: <Circle size={12} />,
-  //       action: 'hub-pages',
-  //       resource: 'Product Type-read',
-  //       navLink: "/product_type/",
-  //     },
-  //     {
-  //       id: 'product-type-add',
-  //       title: 'Add',
-  //       icon: <Circle size={12} />,
-  //       action: 'hub-pages',
-  //       resource: 'Product Type-write',
-  //       navLink: "/product_type/add",
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   id: "pricing-policy",
-  //   title: "Pricing Policy",
-  //   icon: <Filter size={20} />,
-
-  //   children: [
-  //     {
-  //       id: 'pricing-policy-index',
-  //       title: 'Index',
-  //       icon: <Circle size={12} />,
-  //       action: 'hub-pages',
-  //       resource: 'Pricing Policy-read',
-  //       navLink: "/pricing_policy/",
-  //     },
-  //     {
-  //       id: 'pricing-policy-add',
-  //       title: 'Add',
-  //       icon: <Circle size={12} />,
-  //       action: 'hub-pages',
-  //       resource: 'Pricing Policy-write',
-  //       navLink: "/pricing_policy/add",
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   id: "payment-method",
-  //   title: "Payment Method",
-  //   icon: <Send size={20} />,
-
-  //   children: [
-  //     {
-  //       id: 'payment-method-index',
-  //       title: 'Index',
-  //       icon: <Circle size={12} />,
-  //       action: 'hub-pages',
-  //       resource: 'Payment Method-read',
-  //       navLink: "/payment_method/",
-  //     },
-  //     {
-  //       id: 'payment-method-add',
-  //       title: 'Add',
-  //       icon: <Circle size={12} />,
-  //       action: 'hub-pages',
-  //       resource: 'Payment Method-write',
-  //       navLink: "/payment_method/add",
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   id: "admin-role",
-  //   title: "Admin Role",
-  //   icon: <User size={20} />,
-
-  //   children: [
-  //     {
-  //       id: 'admin-role-index',
-  //       title: 'Index',
-  //       icon: <Circle size={12} />,
-  //       action: 'hub-pages',
-  //       resource: 'Admin Role-read',
-  //       navLink: "/admin-role/",
-  //     },
-  //     {
-  //       id: 'admin-role-add',
-  //       title: 'Add',
-  //       icon: <Circle size={12} />,
-  //       action: 'hub-pages',
-  //       resource: 'Admin Role-write',
-  //       navLink: "/admin-role/add",
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   id: "permissions",
-  //   title: "Permission",
-  //   icon: <Unlock size={20} />,
-  //   action: 'hub-pages',
-  //   resource: 'Permission-read',
-  //   navLink: "/permission"
-  // },
 
   {
     header: 'Reports',

@@ -30,7 +30,7 @@ const CreateFundTransfer = () => {
     control,
     setError,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm({})
   const navigate = useNavigate()
 
@@ -77,6 +77,18 @@ const CreateFundTransfer = () => {
 
   const onSubmit = (data) => {
     let isFormValid = true
+
+    if (data?.sender?.value == data?.receiver?.value) {
+      setError("sender", {
+        type: "required",
+        message: "Sender request is required",
+      })
+      setError("receiver", {
+        type: "required",
+        message: "receiver request is required",
+      })
+      isFormValid = false
+    }
 
     if (!data.sender) {
       setError("sender", {
@@ -152,10 +164,13 @@ const CreateFundTransfer = () => {
                       })}
                       classNamePrefix="select"
                       options={walletData}
+                      required={true}
                       {...field}
                     />
                   )}
                 />
+                {errors && errors.sender && <span className="invalid-feedback">{errors.sender.message}</span>}
+                
               </div>
             </div>
             <div class="col-lg-6">
@@ -174,12 +189,16 @@ const CreateFundTransfer = () => {
                         "is-invalid":
                           data !== null && data.receiver === null,
                       })}
+                      invalid={errors.receiver && true}
                       classNamePrefix="select"
                       options={walletData}
+                      required={true}
+                      
                       {...field}
                     />
                   )}
                 />
+
               </div>
             </div>
           </div>
@@ -199,6 +218,7 @@ const CreateFundTransfer = () => {
                       type="number"
                       placeholder="Amount"
                       invalid={errors.balance && true}
+                      required={true}
                       {...field}
                     />
                   )}

@@ -80,6 +80,7 @@ const CreateFundTransferByHubAdmin = () => {
 
 
 
+
   const onSubmit = (data) => {
 
     let isFormValid = true
@@ -92,7 +93,7 @@ const CreateFundTransferByHubAdmin = () => {
       isFormValid = false
     }
 
-    if (selfWalletBalance < data?.amount) {
+    if (Number(selfWalletBalance) < Number(data?.amount)) {
       setError("amount", {
         type: "required",
         message: "Insufficient Balance",

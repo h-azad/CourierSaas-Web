@@ -127,6 +127,7 @@ import CreateFundTransfer from '@src/views/fund_transfer/add'
 import CreateFundTransferByHubAdmin from '@src/views/fund_transfer/hub_admin/add'
 import FundTransferListFoHubAdmin from '@src/views/fund_transfer/hub_admin/list'
 import WalletAdjustmentMerchantIndex from '@src/views/wallet_adjustment/partials/merchant_adjustment_index'
+import OrderReport from '@src/views/reports/orderReport'
 
 
 const Home = lazy(() => import("../../views/Home"))
@@ -184,7 +185,7 @@ const DashboardRoutes = [
 
   {
     path: "/order/report",
-    element: <AdminOrderReport />
+    element: <OrderReport />
   },
   {
     path: "/revenue-report",
@@ -364,17 +365,17 @@ const DashboardRoutes = [
   },
 
   {
-    path: "/hub/admin/",
+    path: "/hub-admin/",
     element: <HubAdminList />
   },
 
   {
-    path: "/hub/admin/add",
+    path: "/hub-admin/add",
     element: <HubAdminCreate />
   },
 
   {
-    path: "/hub/admin/edit/:id",
+    path: "/hub-admin/edit/:id",
     element: <HubAdminEdit />
   },
   

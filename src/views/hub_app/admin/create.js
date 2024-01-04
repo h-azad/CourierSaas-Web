@@ -106,7 +106,7 @@ const HubAdminCreate = () => {
         .then((res) => {
           SwalAlert("Hub Admin Added Successfully")
           toast.success("Hub Admin Added Successfully")
-          navigate("/hub/admin/")
+          navigate("/hub-admin/")
         })
         .catch(err => {
           toast.error(err?.message)
