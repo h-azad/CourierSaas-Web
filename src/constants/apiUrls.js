@@ -306,6 +306,14 @@ export const TRANSECTIONS = "/api/transection/"
 
 // Report URL
 export const ORDER_REPORT_APIVIEW = "/api/order/report/"
+export const PDF_ORDER_REPORT_APIVIEW = "/api/pdf/order/report/"
+
+export const TRANSECTIONS_REPORT_APIVIEW = "/api/transaction/report/"
+export const PDF_TRANSECTIONS_REPORT_APIVIEW = "/api/pdf/transaction/report/"
+
+export const WITHDRAW_REQUEST_REPORT_APIVIEW = "/api/withdraw-request/report/"
+export const PDF_WITHDRAW_REQUEST_REPORT_APIVIEW = "/api/pdf/withdraw-request/report/"
+export const PICKUP_ORDER_REPORT_APIVIEW = "/api/pickup/order/report/"
 
 
 

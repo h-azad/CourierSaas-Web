@@ -3,15 +3,21 @@
 // import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, ADMIN_GET_TRANSECTION_REPORT_APIVIEW, ADMIN_GET_TRANSECTION_REPORT_GENERATE_PDF_APIVIEW, ACCOUNT_WALLET_FORM_LIST } from "../../constants/apiUrls"
+import { 
+  getApi, 
+  TRANSECTIONS_REPORT_APIVIEW, 
+  ACCOUNT_WALLET_FORM_LIST,
+  PDF_TRANSECTIONS_REPORT_APIVIEW
+} from "@src/constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
 import { Table, Tag } from "antd"
 import * as qs from 'qs'
 
-import { handlePDFQuery, handleSearchQuery } from "../../components/reportRelatedData"
+import { DownloadPDFOrderReport } from "@src/components/reportRelatedData"
 
 import { GENERAL_ROW_SIZE } from "../../constants/tableConfig"
+
 
 const AdminGetTransectionReport = () => {
   const [transections, setTransections] = useState([])
@@ -19,8 +25,8 @@ const AdminGetTransectionReport = () => {
 
   const [tableParams, setTableParams] = useState({
     pagination: {
-      current: GENERAL_ROW_SIZE,
-      pageSize: 2,
+      current: 1,
+      pageSize: GENERAL_ROW_SIZE,
     },
   })
 
@@ -31,18 +37,32 @@ const AdminGetTransectionReport = () => {
   })
 
 
-
   const fetchDefalutData = () => {
-    return useJwt.axiosGet(getApi(ADMIN_GET_TRANSECTION_REPORT_APIVIEW))
+
+    return useJwt
+      .axiosGet(getApi(TRANSECTIONS_REPORT_APIVIEW) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
-        setTransections(res?.data?.results)
-        setFilterQuery({})
-      }).catch((err) => {
+        setTransections(res.data.results)
+        updatePagination({
+          current: res?.data?.page_number,
+          pageSize: res?.data?.page_size,
+          total: res?.data?.count,
+        })
+      })
+      .catch((err) => {
         setTransections([])
-        setFilterQuery({})
       })
   }
 
+
+  const resetFunction = () => {
+    setFilterQuery({
+      page: 1,
+      page_size: GENERAL_ROW_SIZE,
+      ordering: '-created_at'
+    })
+    fetchDefalutData()
+  }
 
 
   const fetchUserData = () => {
@@ -60,6 +80,8 @@ const AdminGetTransectionReport = () => {
       })
       .catch((err) => console.log(err))
   }
+
+
 
 
 
@@ -84,36 +106,23 @@ const AdminGetTransectionReport = () => {
 
 
 
-  function updateFilterQUery(term, value) {
-    let filters = { ...filterQuery }
-
-    if (term != 'page') {
-      filters['page'] = 1
-    }
-
-    if (value) {
-      filters[term] = value
-    } else {
-      filters.hasOwnProperty(term) && delete filters[term]
-    }
-    setFilterQuery(filters)
-  }
 
 
 
   const propsData = {
-    handleSearchQuery: handleSearchQuery,
-    handlePDFQuery: handlePDFQuery,
-    fetchDefalutData: fetchDefalutData,
-
-    getDataApiUrl: ADMIN_GET_TRANSECTION_REPORT_APIVIEW,
-    fetchReportPDF: ADMIN_GET_TRANSECTION_REPORT_GENERATE_PDF_APIVIEW,
+    DownloadPDFOrderReport: DownloadPDFOrderReport,
+    resetFunction: resetFunction,
 
     updateFilterQUery: updateFilterQUery,
     filterQuery: filterQuery,
 
+    reportURL: PDF_TRANSECTIONS_REPORT_APIVIEW,
+
     statusOptions: statusOptions,
     selectboxData: selectBoxUser,
+
+    filterBy: 'transection_id',
+    filterByFieldName: 'Transection ID',
 
     statusOptionPlaceholder: "Transaction Type",
     selectOptionKey: "type",
@@ -123,7 +132,6 @@ const AdminGetTransectionReport = () => {
     filterTable: 'wallet',
 
   }
-
 
 
   const columns = [
@@ -170,11 +178,11 @@ const AdminGetTransectionReport = () => {
       filters,
       sorter,
     })
+
     if (pagination.pageSize !== tableParams.pagination?.pageSize) {
       setData([])
     }
   }
-
 
 
   const updatePagination = (info) => {
@@ -185,28 +193,20 @@ const AdminGetTransectionReport = () => {
     setTableParams(_tableParams)
   }
 
+  function updateFilterQUery(term, value) {
+    let filters = { ...filterQuery }
+    if (term != 'page') {
+      filters['page'] = 1
+    }
 
+    if (value) {
+      filters[term] = value
+    } else {
+      filters.hasOwnProperty(term) && delete filters[term]
+    }
+    setFilterQuery(filters)
+  }
 
-  useEffect(() => {
-    handleSearchQuery(ADMIN_GET_TRANSECTION_REPORT_APIVIEW, qs.stringify(filterQuery))
-      .then(res => {
-        if (res?.results?.length > 0) {
-          setTransections(res?.results)
-          updatePagination({
-            current: res?.page_number,
-            pageSize: res?.page_size,
-            total: res?.count,
-          })
-        } else {
-          setTransections([])
-          updatePagination({
-            current: 1,
-            pageSize: GENERAL_ROW_SIZE,
-            total: 0,
-          })
-        }
-      })
-  }, [filterQuery])
 
 
   useEffect(() => {
@@ -224,6 +224,10 @@ const AdminGetTransectionReport = () => {
   }, [JSON.stringify(tableParams)])
 
 
+
+  useEffect(() => {
+    fetchDefalutData()
+  }, [JSON.stringify(filterQuery)])
 
   useEffect(() => {
     fetchUserData()

@@ -1,17 +1,24 @@
 
 
-// import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
-import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, ADMIN_GET_PICKUP_REPORT_APIVIEW, ADMIN_GET_PICKUP_REPORT_GENERATE_PDF_APIVIEW, RIDER_LIST } from "../../constants/apiUrls"
-import ReportHead from "./ReportHead"
-import React from 'react'
 import { Table, Tag } from "antd"
 import * as qs from 'qs'
-import { colorSwitch } from "../../components/orderRelatedData"
-import { handlePDFQuery, handleSearchQuery } from "../../components/reportRelatedData"
 
-import { GENERAL_ROW_SIZE } from "../../constants/tableConfig"
+import useJwt from "@src/auth/jwt/useJwt"
+import {
+  getApi, 
+  PICKUP_ORDER_REPORT_APIVIEW, 
+  ADMIN_GET_PICKUP_REPORT_GENERATE_PDF_APIVIEW, 
+  RIDER_LIST
+} from "@src/constants/apiUrls"
+
+import { AdminOrderStatusOptions, colorSwitch } from '@src/components/orderRelatedData'
+
+import { GENERAL_ROW_SIZE } from "@src/constants/tableConfig"
+
+import ReportHead from "./ReportHead"
+import { DownloadPDFOrderReport } from "@src/components/reportRelatedData"
+
 
 
 const GetAdminPickupReport = () => {
@@ -33,15 +40,28 @@ const GetAdminPickupReport = () => {
   })
 
 
-  const fetchDefalutData = () => {
-    return useJwt.axiosGet(getApi(ADMIN_GET_PICKUP_REPORT_APIVIEW))
+  const OrderReportData = () => {
+
+    return useJwt
+      .axiosGet(getApi(PICKUP_ORDER_REPORT_APIVIEW) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
-        setPickup(res?.data?.results)
-        setFilterQuery({})
-      }).catch((err) => {
-        setPickup([])
-        setFilterQuery({})
+        setPickup(res.data.results)
+        updatePagination({
+          current: res?.data?.page_number,
+          pageSize: res?.data?.page_size,
+          total: res?.data?.count,
+        })
       })
+      .catch((err) => console.log(err))
+  }
+
+  const resetFunction = () => {
+    setFilterQuery({
+      page: 1,
+      page_size: GENERAL_ROW_SIZE,
+      ordering: '-created_at'
+    })
+    OrderReportData()
   }
 
   const fetchRiderData = () => {
@@ -96,19 +116,45 @@ const GetAdminPickupReport = () => {
     setFilterQuery(filters)
   }
 
-  const propsData = {
-    handleSearchQuery: handleSearchQuery,
-    handlePDFQuery: handlePDFQuery,
-    fetchDefalutData: fetchDefalutData,
+  // const propsData = {
+  //   handleSearchQuery: handleSearchQuery,
+  //   handlePDFQuery: handlePDFQuery,
+  //   fetchDefalutData: fetchDefalutData,
 
-    getDataApiUrl: ADMIN_GET_PICKUP_REPORT_APIVIEW, 
-		fetchReportPDF: ADMIN_GET_PICKUP_REPORT_GENERATE_PDF_APIVIEW,
+  //   getDataApiUrl: ADMIN_GET_PICKUP_REPORT_APIVIEW, 
+	// 	fetchReportPDF: ADMIN_GET_PICKUP_REPORT_GENERATE_PDF_APIVIEW,
+
+  //   updateFilterQUery: updateFilterQUery,
+  //   filterQuery: filterQuery,
+
+  //   statusOptions: statusOptions,
+  //   selectboxData: rider,
+
+  //   statusOptionPlaceholder: "Status",
+  //   selectOptionKey: "pickup_status",
+  //   reportTitle: 'Pickup Report',
+  //   reportFileName: 'Pickup Report',
+  //   selectboxDataPlaceholder: 'Select Rider',
+  //   filterTable: 'pickup_rider',
+
+  // }
+
+
+  const propsData = {
+    DownloadPDFOrderReport: DownloadPDFOrderReport,
+    resetFunction: resetFunction,
 
     updateFilterQUery: updateFilterQUery,
     filterQuery: filterQuery,
 
+    // reportURL: PDF_WITHDRAW_REQUEST_REPORT_APIVIEW,
+
     statusOptions: statusOptions,
     selectboxData: rider,
+
+    filterBy: 'transection_id',
+    filterByFieldName: 'Transection ID',
+    filterByDate: 'pickup_date',
 
     statusOptionPlaceholder: "Status",
     selectOptionKey: "pickup_status",
@@ -118,6 +164,8 @@ const GetAdminPickupReport = () => {
     filterTable: 'pickup_rider',
 
   }
+
+
 
   const columns = [
 		{
@@ -185,26 +233,6 @@ const GetAdminPickupReport = () => {
     setTableParams(_tableParams)
   }
 
-  useEffect(() => {
-    handleSearchQuery(ADMIN_GET_PICKUP_REPORT_APIVIEW, qs.stringify(filterQuery))
-      .then(res => {
-        if (res?.results?.length > 0) {
-          setPickup(res?.results)
-          updatePagination({
-						current: res?.page_number,
-						pageSize: res?.page_size,
-						total: res?.count,
-					})
-        } else {
-          setPickup([])
-          updatePagination({
-						current: 1,
-						pageSize: GENERAL_ROW_SIZE,
-						total: 0,
-					})
-        }
-      })
-  }, [filterQuery])
 
   useEffect(() => {
     const _tableParams = tableParams
@@ -219,6 +247,11 @@ const GetAdminPickupReport = () => {
     setFilterQuery(_filters)
 
   }, [JSON.stringify(tableParams)])
+
+
+  useEffect(() => {
+    OrderReportData()
+  }, [JSON.stringify(filterQuery)])
 
 
   useEffect(() => {

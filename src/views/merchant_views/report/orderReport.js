@@ -1,76 +1,60 @@
 
-
 import { useEffect, useState } from "react"
-import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, MARCHANT_GET_ORDER_REPORT, MARCHANT_GET_ORDER_REPORT_PDF } from "../../../constants/apiUrls"
-import ReportHead from "./ReportHead"
-import React from 'react'
-import * as qs from 'qs'
 import { Table, Tag } from "antd"
-import { colorSwitch, MarchantOrderStatusOptions } from "../../../components/orderRelatedData"
-import { handlePDFQuery, handleSearchQuery } from "../../../components/reportRelatedData"
+import * as qs from 'qs'
 
-import { GENERAL_ROW_SIZE } from '../../../constants/tableConfig'
+import useJwt from "@src/auth/jwt/useJwt"
+import {
+	getApi,
+	ORDER_REPORT_APIVIEW,
+	PDF_ORDER_REPORT_APIVIEW,
+} from "@src/constants/apiUrls"
+
+import { MarchantOrderStatusOptions, colorSwitch } from '@src/components/orderRelatedData'
+
+import { GENERAL_ROW_SIZE } from "@src/constants/tableConfig"
+
+import ReportHead from "./ReportHead"
+import { DownloadPDFOrderReport } from "@src/components/reportRelatedData"
+
 
 
 const OrderReport = () => {
-	const [order, setOrder] = useState([])
+
+	const [orderData, setOrderData] = useState([])
 
 	const [tableParams, setTableParams] = useState({
-    pagination: {
-      current: GENERAL_ROW_SIZE	,
-      pageSize: 2,
-    },
-  })
+		pagination: {
+			current: 1,
+			pageSize: GENERAL_ROW_SIZE,
+		},
+	})
 
-  const [filterQuery, setFilterQuery] = useState({
-    page: 1,
-    page_size: GENERAL_ROW_SIZE,
-    ordering: '-created_at'
-  })
+	const [filterQuery, setFilterQuery] = useState({
+		page: 1,
+		page_size: GENERAL_ROW_SIZE,
+		ordering: '-created_at'
+	})
 
 
-	const fetchDefalutData = () => {
-		return useJwt.axiosGet(getApi(MARCHANT_GET_ORDER_REPORT))
+	const OrderReportData = () => {
+
+		return useJwt
+			.axiosGet(getApi(ORDER_REPORT_APIVIEW) + `?${qs.stringify(filterQuery)}`)
 			.then((res) => {
-				setOrder(res?.data?.results)
-				setFilterQuery({})
-			}).catch((err) => {
-				setOrder([])
-				setFilterQuery({})
+				setOrderData(res.data.results)
+				updatePagination({
+					current: res?.data?.page_number,
+					pageSize: res?.data?.page_size,
+					total: res?.data?.count,
+				})
 			})
+			.catch((err) => console.log(err))
 	}
 
 
-	function updateFilterQUery(term, value) {
-		let filters = { ...filterQuery }
-
-		if (value) {
-			filters[term] = value
-		} else {
-			filters.hasOwnProperty(term) && delete filters[term]
-		}
-		setFilterQuery(filters)
-	}
 
 
-	const propsData = {
-		handleSearchQuery: handleSearchQuery,
-		handlePDFQuery: handlePDFQuery,
-
-		reportApi: MARCHANT_GET_ORDER_REPORT_PDF,
-		getDataApiUrl: MARCHANT_GET_ORDER_REPORT,
-		
-
-		updateFilterQUery: updateFilterQUery,
-		filterQuery: filterQuery,
-		statusOptions: MarchantOrderStatusOptions,
-		fetchDefalutData: fetchDefalutData,
-
-		selectOptionKey: "status",
-		reportTitle: 'Orders Report',
-		reportFileName: 'Order Report',
-	}
 
 
 	const columns = [
@@ -88,7 +72,18 @@ const OrderReport = () => {
 			dataIndex: 'parcel_id',
 
 		},
-		
+		{
+			title: 'Marchant',
+			dataIndex: ['marchant', 'full_name'],
+		},
+		{
+			title: 'Delivery Rider',
+			dataIndex: ['delivary_rider', 'full_name'],
+			render: (text, record) => (
+				record?.delivary_rider?.full_name ? record?.delivary_rider?.full_name : 'N/A'
+			),
+		},
+
 		{
 			title: 'Delivery Charge',
 			dataIndex: 'delivary_charge',
@@ -106,8 +101,8 @@ const OrderReport = () => {
 			dataIndex: 'accumulated',
 		},
 		{
-			title: 'Total Amount',
-			dataIndex: 'total_amount',
+			title: 'Deducted Amount',
+			dataIndex: 'deducted_amount',
 		},
 		{
 			title: 'Status',
@@ -118,115 +113,108 @@ const OrderReport = () => {
 		},
 	]
 
+	const resetFunction = () => {
+		setFilterQuery({
+			page: 1,
+			page_size: GENERAL_ROW_SIZE,
+			ordering: '-created_at'
+		})
+		OrderReportData()
+	}
+
+
+
+
+	const propsData = {
+		DownloadPDFOrderReport: DownloadPDFOrderReport,
+		resetFunction: resetFunction,
+
+		updateFilterQUery: updateFilterQUery,
+		filterQuery: filterQuery,
+		reportURL: PDF_ORDER_REPORT_APIVIEW,
+
+		statusOptions: MarchantOrderStatusOptions,
+
+		filterBy: 'parcel_id',
+		filterByFieldName: 'Parcel ID',
+
+		statusOptionPlaceholder: "Order Status",
+		selectOptionKey: "status",
+		reportTitle: 'Orders Report',
+		reportFileName: 'Order Report',
+		filterTable: 'marchant',
+
+	}
+
+
+
 	const handleTableChange = (pagination, filters, sorter) => {
-    setTableParams({
-      pagination,
-      filters,
-      sorter,
-    })
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-      setData([])
-    }
-  }
+		setTableParams({
+			pagination,
+			filters,
+			sorter,
+		})
+
+		if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+			setData([])
+		}
+	}
+
 
 	const updatePagination = (info) => {
-    const _tableParams = { ...tableParams }
+		const _tableParams = { ...tableParams }
 
-    _tableParams.pagination = info
+		_tableParams.pagination = info
 
-    setTableParams(_tableParams)
-  }
+		setTableParams(_tableParams)
+	}
+
+	function updateFilterQUery(term, value) {
+		let filters = { ...filterQuery }
+		if (term != 'page') {
+			filters['page'] = 1
+		}
+
+		if (value) {
+			filters[term] = value
+		} else {
+			filters.hasOwnProperty(term) && delete filters[term]
+		}
+		setFilterQuery(filters)
+	}
+
 
 
 	useEffect(() => {
-    const _tableParams = tableParams
-    const _filters = { ...filterQuery }
+		const _tableParams = tableParams
+		const _filters = { ...filterQuery }
 
-    if (_tableParams) {
-      _filters['page'] = _tableParams.pagination?.current
-      _filters['page_size'] = _tableParams.pagination?.pageSize
-      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
-    }
+		if (_tableParams) {
+			_filters['page'] = _tableParams.pagination?.current
+			_filters['page_size'] = _tableParams.pagination?.pageSize
+			_filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+		}
 
-    setFilterQuery(_filters)
+		setFilterQuery(_filters)
 
-  }, [JSON.stringify(tableParams)])
+	}, [JSON.stringify(tableParams)])
+
+
 
 	useEffect(() => {
-		handleSearchQuery(MARCHANT_GET_ORDER_REPORT, qs.stringify(filterQuery))
-			.then(res => {
-				if (res?.results?.length > 0) {
-					setOrder(res?.results)
-					updatePagination({
-						current: res?.page_number,
-						pageSize: res?.page_size,
-						total: res?.count,
-					})
-				} else {
-					setOrder([])
-				}
-			})
-	}, [filterQuery])
+		OrderReportData()
+	}, [JSON.stringify(filterQuery)])
+
 
 
 
 	return (
 		<>
-
 			<ReportHead propsData={propsData} />
-			<Table scroll={{ x: true }} columns={columns} dataSource={order} onChange={handleTableChange} pagination={tableParams.pagination} />
-			{/* <div id="my-table" class="table-responsive">
-				<Table bordered>
-					<thead>
-						<tr>
-							<th>Date</th>
-							<th>Order ID</th>
-							<th>Status</th>
-							<th>Delivery Charge</th>
-							<th>COD Charge</th>
-							<th>COD Amount</th>
-							<th>Accumutated Amount</th>
-							<th>Total Amount</th>
-						</tr>
-					</thead>
-					<tbody>
-						{order &&
-							order.map((info) => (
-								<tr key={info.id}>
-									<td>
-										<span className="align-middle fw-bold">{info.created_at}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.parcel_id}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.status}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.delivary_charge}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.cash_on_delivery_charge}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.amount_to_be_collected}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.accumulated}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.total_amount}</span>
-									</td>
-								</tr>
-							))}
-					</tbody>
-				</Table>
-				<Pagination onChange={paginationUpdate} total={orderCount} defaultPageSize={50} />
-			</div> */}
-
+			<Table scroll={{ x: true }} columns={columns} dataSource={orderData} onChange={handleTableChange} pagination={tableParams.pagination} />
 		</>
 	)
+
 }
 
 export default OrderReport
-

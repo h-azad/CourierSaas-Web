@@ -6,6 +6,7 @@ import useJwt from "@src/auth/jwt/useJwt"
 import {
   getApi,
   ORDER_REPORT_APIVIEW,
+  PDF_ORDER_REPORT_APIVIEW,
   MARCHANT_FORM_LIST,
   RIDER_FORM_LIST,
 } from "@src/constants/apiUrls"
@@ -15,7 +16,7 @@ import { AdminOrderStatusOptions, colorSwitch } from '@src/components/orderRelat
 import { GENERAL_ROW_SIZE } from "@src/constants/tableConfig"
 
 import ReportHead from "./ReportHead"
-import { handleSearchQuery, handlePDFQuery } from "@src/components/reportRelatedData"
+import { DownloadPDFOrderReport } from "@src/components/reportRelatedData"
 
 
 
@@ -53,6 +54,7 @@ const OrderReport = () => {
       })
       .catch((err) => console.log(err))
   }
+
 
   const fetchMarchantData = () => {
     return useJwt
@@ -158,19 +160,20 @@ const OrderReport = () => {
 
 
   const propsData = {
-    handleSearchQuery: handleSearchQuery,
-    handlePDFQuery: handlePDFQuery,
+    DownloadPDFOrderReport: DownloadPDFOrderReport,
     resetFunction: resetFunction,
 
     updateFilterQUery: updateFilterQUery,
     filterQuery: filterQuery,
 
-    // getDataApiUrl: ADMIN_GET_ORDER_REPORT_APIVIEW,
-    // fetchReportPDF: ADMIN_GET_ORDER_REPORT_GENERATE_PDF_APIVIEW,
+    reportURL: PDF_ORDER_REPORT_APIVIEW,
 
     statusOptions: AdminOrderStatusOptions,
     selectboxData: selectboxMarchant,
     selectboxRider: selectboxRider,
+
+    filterBy: 'parcel_id',
+    filterByFieldName: 'Parcel ID',
 
     statusOptionPlaceholder: "Order Status",
     selectOptionKey: "status",

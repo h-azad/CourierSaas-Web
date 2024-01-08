@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react'
+import { React } from 'react'
 import { DatePicker, Select, Button, Input, Card, Form, Col, Row, Space, Divider } from 'antd'
 import { FilePptOutlined } from '@ant-design/icons'
 const { RangePicker } = DatePicker
@@ -10,8 +10,6 @@ import dayjs from 'dayjs'
 
 const ReportHead = ({ propsData }) => {
 
-  const [filterQuery, setFilterQuery] = useState({})
-
   const { Search } = Input
   const {
     formState: { errors },
@@ -22,51 +20,25 @@ const ReportHead = ({ propsData }) => {
   })
 
 
-  // useEffect(() => {
-  //   console.log(qs.stringify(filterQuery))
-  // }, [filterQuery])
-
   function onSelectDate(date, dateString) {
 
-    console.log(date, dateString)
     if (dateString.find(x => x != '')) {
       propsData.updateFilterQUery('created_at', dateString.toString())
+      propsData.updateFilterQUery(propsData?.filterByDate, dateString.toString())
     } else {
-      propsData.updateFilterQUery('created_at', )
+      propsData.updateFilterQUery(propsData?.filterByDate)
     }
   }
 
-  // function updateFilterQUery(term, value) {
-  //   let filters = { ...filterQuery }
 
-  //   if (value) {
-  //     filters[term] = value
-  //   } else {
-  //     filters.hasOwnProperty(term) && delete filters[term]
-  //   }
-  //   setFilterQuery(filters)
-  // }
 
-  // function submitFilter(e) {
-  //   e.preventDefault()
-  //   propsData.handleSearchQuery(qs.stringify(propsData.filterQuery))
-  // }
-
-  // function submitPDFFilter(e) {
-  //   e.preventDefault()
-  //   propsData.handleSearchQuery(qs.stringify(propsData.filterQuery))
-  //   propsData.handlePDFQuery(qs.stringify(propsData.filterQuery))
-  // }
-
-  function submitFilter(e){
+	function DownloadPDF(e) {
 		e.preventDefault()
-		propsData.handleSearchQuery(propsData.getDataApiUrl, qs.stringify(propsData.filterQuery))
-	}
-
-	function submitPDFFilter(e) {
-		e.preventDefault()
-		propsData.handleSearchQuery(propsData.getDataApiUrl, qs.stringify(propsData.filterQuery))
-		propsData.handlePDFQuery(propsData.fetchReportPDF, qs.stringify(propsData.filterQuery), propsData.reportFileName)
+    propsData.DownloadPDFOrderReport(
+      propsData.reportURL, 
+      qs.stringify(propsData.filterQuery), 
+      propsData.reportFileName
+      )
 	}
 
   const rangePresets = [
@@ -97,11 +69,11 @@ const ReportHead = ({ propsData }) => {
         <Form>
           <Row gutter={24}>
             <Col span={12}>
-              <Form.Item label="Search" name="search">
+              <Form.Item label={propsData?.filterByFieldName} name="search">
                 <Search
                   placeholder="eg. ODR23031301d6"
                   onChange={(e) => {
-                    propsData.updateFilterQUery("parcel_id", e.target.value)
+                    propsData.updateFilterQUery(propsData?.filterBy, e.target.value)
 
                   }}
                   allowClear={true}
@@ -189,7 +161,7 @@ const ReportHead = ({ propsData }) => {
       <Row justify={'end'}>
         <Col>
           <Space style={{ 'padding': '10px 0px' }}>
-            <Button type="primary" onClick={submitPDFFilter} icon={<FilePptOutlined />} size={20}>
+            <Button type="primary" onClick={DownloadPDF} icon={<FilePptOutlined />} size={20}>
               Export To PDF
             </Button>
           </Space>

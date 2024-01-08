@@ -3,18 +3,23 @@
 // import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, ADMIN_GET_WITHDRAW_REQUEST_REPORT_APIVIEW, ADMIN_GET_WITHDRAW_REQUEST_REPORT_GENERATE_PDF_APIVIEW, ACCOUNT_WALLET_FORM_LIST } from "../../constants/apiUrls"
+import { 
+  getApi, 
+  WITHDRAW_REQUEST_REPORT_APIVIEW,
+  PDF_WITHDRAW_REQUEST_REPORT_APIVIEW,
+  ACCOUNT_WALLET_FORM_LIST
+} from "../../constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
 
 import { Table, Tag } from "antd"
 import * as qs from 'qs'
 
-import { handlePDFQuery, handleSearchQuery } from "../../components/reportRelatedData"
+import { DownloadPDFOrderReport } from "@src/components/reportRelatedData"
 
-import { GENERAL_ROW_SIZE } from "../../constants/tableConfig"
+import { GENERAL_ROW_SIZE } from "@src/constants/tableConfig"
 
-const AdminGetWithdrawRequestReport = () => {
+const WithdrawRequestReport = () => {
   const [withdrawRequest, setWithdrawRequest] = useState([])
   const [selectAccountWallet, setselectAccountWallet] = useState([])
 
@@ -31,16 +36,37 @@ const AdminGetWithdrawRequestReport = () => {
     ordering: '-created_at'
   })
 
+
+  
+
   const fetchDefalutData = () => {
-    return useJwt.axiosGet(getApi(ADMIN_GET_WITHDRAW_REQUEST_REPORT_APIVIEW))
+
+    return useJwt
+      .axiosGet(getApi(WITHDRAW_REQUEST_REPORT_APIVIEW) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
-        setWithdrawRequest(res?.data?.results)
-        setFilterQuery({})
-      }).catch((err) => {
+        setWithdrawRequest(res.data.results)
+        updatePagination({
+          current: res?.data?.page_number,
+          pageSize: res?.data?.page_size,
+          total: res?.data?.count,
+        })
+      })
+      .catch((err) => {
         setWithdrawRequest([])
-        setFilterQuery({})
       })
   }
+
+
+  const resetFunction = () => {
+    setFilterQuery({
+      page: 1,
+      page_size: GENERAL_ROW_SIZE,
+      ordering: '-created_at'
+    })
+    fetchDefalutData()
+  }
+
+
 
   const fetchWalletData = () => {
     return useJwt
@@ -105,20 +131,45 @@ const AdminGetWithdrawRequestReport = () => {
   }
 
 
-  const propsData = {
-    handleSearchQuery: handleSearchQuery,
-    handlePDFQuery: handlePDFQuery,
-    fetchDefalutData: fetchDefalutData,
+  // const propsData = {
+  //   handleSearchQuery: handleSearchQuery,
+  //   handlePDFQuery: handlePDFQuery,
+  //   fetchDefalutData: fetchDefalutData,
 
-    getDataApiUrl: ADMIN_GET_WITHDRAW_REQUEST_REPORT_APIVIEW,
-		fetchReportPDF: ADMIN_GET_WITHDRAW_REQUEST_REPORT_GENERATE_PDF_APIVIEW,
+  //   getDataApiUrl: ADMIN_GET_WITHDRAW_REQUEST_REPORT_APIVIEW,
+	// 	fetchReportPDF: ADMIN_GET_WITHDRAW_REQUEST_REPORT_GENERATE_PDF_APIVIEW,
+
+  //   updateFilterQUery: updateFilterQUery,
+  //   filterQuery: filterQuery,
+
+  //   statusOptions: statusOptions,
+  //   selectboxData: selectAccountWallet,
+  //   // selectboxRider: selectboxRider,
+
+  //   statusOptionPlaceholder: "Status",
+  //   selectOptionKey: "withdraw_status",
+  //   reportTitle: 'Withdraw Request Report',
+  //   reportFileName: 'Withdraw Request Report',
+  //   selectboxDataPlaceholder: 'Select Wallet Account',
+  //   filterTable: 'account_wallet',
+    
+  // }
+
+
+  const propsData = {
+    DownloadPDFOrderReport: DownloadPDFOrderReport,
+    resetFunction: resetFunction,
 
     updateFilterQUery: updateFilterQUery,
     filterQuery: filterQuery,
 
+    reportURL: PDF_WITHDRAW_REQUEST_REPORT_APIVIEW,
+
     statusOptions: statusOptions,
     selectboxData: selectAccountWallet,
-    // selectboxRider: selectboxRider,
+
+    filterBy: 'transection_id',
+    filterByFieldName: 'Transection ID',
 
     statusOptionPlaceholder: "Status",
     selectOptionKey: "withdraw_status",
@@ -126,7 +177,7 @@ const AdminGetWithdrawRequestReport = () => {
     reportFileName: 'Withdraw Request Report',
     selectboxDataPlaceholder: 'Select Wallet Account',
     filterTable: 'account_wallet',
-    
+
   }
 
   const columns = [
@@ -188,26 +239,6 @@ const AdminGetWithdrawRequestReport = () => {
   }
 
 
-  useEffect(() => {
-    handleSearchQuery(ADMIN_GET_WITHDRAW_REQUEST_REPORT_APIVIEW, qs.stringify(filterQuery))
-			.then(res => {
-				if (res?.results?.length > 0) {
-					setWithdrawRequest(res?.results)
-          updatePagination({
-						current: res?.page_number,
-						pageSize: res?.page_size,
-						total: res?.count,
-					})
-				} else {
-					setWithdrawRequest([])
-          updatePagination({
-						current: 1,
-						pageSize: GENERAL_ROW_SIZE,
-						total: 0,
-					})
-				}
-			})
-  }, [filterQuery])
 
   useEffect(() => {
     const _tableParams = tableParams
@@ -225,6 +256,9 @@ const AdminGetWithdrawRequestReport = () => {
 
   useEffect(() => {
     fetchDefalutData()
+  }, [JSON.stringify(filterQuery)])
+
+  useEffect(() => {
     fetchWalletData()
   }, [])
 
@@ -265,7 +299,7 @@ const AdminGetWithdrawRequestReport = () => {
   )
 }
 
-export default AdminGetWithdrawRequestReport
+export default WithdrawRequestReport
 
 
 
