@@ -73,13 +73,12 @@ import DeliveryRiderTask from '../../views/assignment/rider/deliveryRiderTask'
 import Transections from '../../views/transection/transections'
 import WalletAdjustment from '../../views/wallet_adjustment/partials/wallet_adjustment'
 import AddWalletAdjustment from '../../views/wallet_adjustment/add'
-import AdminOrderReport from '../../views/reports/adminOrderReport'
-import AdminGetTransectionReport from '../../views/reports/transectionReport'
-import AdminGetWithdrawRequestReport from '../../views/reports/withdrawRequest'
-import GetAdminPickupReport from '../../views/reports/pickupReport'
-import GetAdminDeliveryReport from '../../views/reports/deliveryReport'
-import AdminGetCollectionReport from '../../views/reports/collectionReport'
-import AdminOrderRevenueReport from '../../views/reports/revenueOrderReport'
+import TransectionReport from '../../views/reports/transectionReport'
+import WithdrawRequestReport from '../../views/reports/withdrawRequest'
+import OrderPickupReport from '../../views/reports/pickupReport'
+import DeliveryReport from '../../views/reports/deliveryReport'
+import CollectionReport from '../../views/reports/collectionReport'
+import OrderRevenueReport from '../../views/reports/revenueOrderReport'
 import AddAgentType from '../../views/agent/agentType/add'
 import AgentTypeList from '../../views/agent/agentType/partials/list-table'
 import AgentTypeEdit from '../../views/agent/agentType/edit'
@@ -97,7 +96,7 @@ import EditAdminRole from '../../views/admin/role/EditAdminRole'
 import RouteList from '../../views/route/list'
 import AddRoute from '../../views/route/add'
 import EditRoute from '../../views/route/edit/edit'
-import GetAdminCencelIssue from '../../views/reports/cancelIssue'
+import OrderCancelIssueReport from '../../views/reports/cancelIssue'
 import ReturnWarehouseOrderList from '../../views/return_order/warehouse/list'
 import CurrentLocationSet from '../../views/rider/currentLocation/currentLocationSet'
 import GetCurrentLocationRider from '@src/views/rider/currentLocation/getRiderLocation'
@@ -189,32 +188,32 @@ const DashboardRoutes = [
   },
   {
     path: "/revenue-report",
-    element: <AdminOrderRevenueReport />
+    element: <OrderRevenueReport />
   },
   {
     path: "/transactions-report",
-    element: <AdminGetTransectionReport />
+    element: <TransectionReport />
   },
   {
     path: "/withdraw-request-report",
-    element: <AdminGetWithdrawRequestReport />
+    element: <WithdrawRequestReport />
   },
   {
     path: "/pickup-report",
-    element: <GetAdminPickupReport />
+    element: <OrderPickupReport />
   },
   {
     path: "/cancel-issue/report",
-    element: <GetAdminCencelIssue />
+    element: <OrderCancelIssueReport />
   },
 
   {
     path: "/delivery-report",
-    element: <GetAdminDeliveryReport />
+    element: <DeliveryReport />
   },
   {
     path: "/delivery-collection-report",
-    element: <AdminGetCollectionReport />
+    element: <CollectionReport />
   },
   
   {

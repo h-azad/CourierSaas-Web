@@ -1,25 +1,30 @@
-
-
-// import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
-import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, ADMIN_GET_CANCEL_ISSUE_REPORT_APIVIEW, ADMIN_GET_CANCEL_ISSUE_REPORT_GENERATE_PDF_APIVIEW, RIDER_LIST } from "../../constants/apiUrls"
-import ReportHead from "./ReportHead"
-import React from 'react'
 import { Table, Tag } from "antd"
 import * as qs from 'qs'
 
-import { handlePDFQuery, handleSearchQuery } from "../../components/reportRelatedData"
+import useJwt from "@src/auth/jwt/useJwt"
+import {
+  getApi,
+  CANCEL_ISSUE_ORDER_REPORT_APIVIEW,
+  PDF_CANCEL_ISSUE_ORDER_REPORT_APIVIEW,
+  RIDER_FORM_LIST
+} from "@src/constants/apiUrls"
 
-import { GENERAL_ROW_SIZE } from "../../constants/tableConfig"
+import { GENERAL_ROW_SIZE } from "@src/constants/tableConfig"
 
-const GetAdminCencelIssue = () => {
+import ReportHead from "./ReportHead"
+import { DownloadPDFOrderReport } from "@src/components/reportRelatedData"
+
+
+
+
+const OrderCancelIssueReport = () => {
   const [cancelIssueData, setCancelIssueData] = useState([])
   const [rider, setRider] = useState([])
 
   const [tableParams, setTableParams] = useState({
     pagination: {
-      current: GENERAL_ROW_SIZE	,
+      current: GENERAL_ROW_SIZE,
       pageSize: 2,
     },
   })
@@ -30,20 +35,34 @@ const GetAdminCencelIssue = () => {
     ordering: '-created_at'
   })
 
-  const fetchDefalutData = () => {
-    return useJwt.axiosGet(getApi(ADMIN_GET_CANCEL_ISSUE_REPORT_APIVIEW))
+
+  const OrderReportData = () => {
+
+    return useJwt
+      .axiosGet(getApi(CANCEL_ISSUE_ORDER_REPORT_APIVIEW) + `?${qs.stringify(filterQuery)}`)
       .then((res) => {
-        setCancelIssueData(res?.data?.results)
-        setFilterQuery({})
-      }).catch((err) => {
-        setCancelIssueData([])
-        setFilterQuery({})
+        setCancelIssueData(res.data.results)
+        updatePagination({
+          current: res?.data?.page_number,
+          pageSize: res?.data?.page_size,
+          total: res?.data?.count,
+        })
       })
+      .catch((err) => console.log(err))
+  }
+
+  const resetFunction = () => {
+    setFilterQuery({
+      page: 1,
+      page_size: GENERAL_ROW_SIZE,
+      ordering: '-created_at'
+    })
+    OrderReportData()
   }
 
   const fetchRiderData = () => {
     return useJwt
-      .axiosGet(getApi(RIDER_LIST))
+      .axiosGet(getApi(RIDER_FORM_LIST))
       .then((res) => {
         let riderData = []
 
@@ -66,17 +85,17 @@ const GetAdminCencelIssue = () => {
   ]
 
   function statusOptionsColorSwitch(option) {
-		switch (option) {
-			case 'Returned':
-				return 'orange'
-	
-			case 'Hold':
-				return 'yellow'
+    switch (option) {
+      case 'Returned':
+        return 'orange'
 
-			default:
-				return 'red'
-		}
-	}
+      case 'Hold':
+        return 'yellow'
+
+      default:
+        return 'red'
+    }
+  }
 
   function updateFilterQUery(term, value) {
     let filters = { ...filterQuery }
@@ -93,20 +112,25 @@ const GetAdminCencelIssue = () => {
     setFilterQuery(filters)
   }
 
-  const propsData = {
-    handleSearchQuery: handleSearchQuery,
-    handlePDFQuery: handlePDFQuery,
-    fetchDefalutData: fetchDefalutData,
 
-    getDataApiUrl: ADMIN_GET_CANCEL_ISSUE_REPORT_APIVIEW, 
-		fetchReportPDF: ADMIN_GET_CANCEL_ISSUE_REPORT_GENERATE_PDF_APIVIEW,
+
+
+  const propsData = {
+    DownloadPDFOrderReport: DownloadPDFOrderReport,
+    resetFunction: resetFunction,
 
     updateFilterQUery: updateFilterQUery,
     filterQuery: filterQuery,
 
+    reportURL: PDF_CANCEL_ISSUE_ORDER_REPORT_APIVIEW,
+
     statusOptions: statusOptions,
     selectboxData: rider,
-    // selectboxRider: selectboxRider,
+
+    filterBy: 'order__parcel_id',
+    filterByFieldName: 'Parcel ID',
+    filterByDate: 'created_at',
+
     statusOptionPlaceholder: "Status",
     selectOptionKey: "cancel_type",
     reportTitle: 'Cancel Issue Report',
@@ -116,31 +140,33 @@ const GetAdminCencelIssue = () => {
 
   }
 
+
+
   const columns = [
-		{
-			title: 'Date',
-			dataIndex: 'created_at',
-
-			sorter: {
-				compare: (a, b) => a.created_at - b.created_at,
-				multiple: 2,
-			},
-		},
     {
-			title: 'Order',
-			dataIndex: 'order',
+      title: 'Date',
+      dataIndex: 'created_at',
 
-		},
-    
+      sorter: {
+        compare: (a, b) => a.created_at - b.created_at,
+        multiple: 2,
+      },
+    },
     {
-			title: 'Rider',
-			dataIndex: 'rider',
+      title: 'Order',
+      dataIndex: 'order',
 
-		},
-		{
-			title: 'Reason',
-			dataIndex: 'reason',
-		},
+    },
+
+    {
+      title: 'Rider',
+      dataIndex: 'rider',
+
+    },
+    {
+      title: 'Reason',
+      dataIndex: 'reason',
+    },
 
     {
       title: 'Cancel Type',
@@ -150,7 +176,7 @@ const GetAdminCencelIssue = () => {
       ),
     },
 
-	]
+  ]
 
   const handleTableChange = (pagination, filters, sorter) => {
     setTableParams({
@@ -163,7 +189,7 @@ const GetAdminCencelIssue = () => {
     }
   }
 
-	const updatePagination = (info) => {
+  const updatePagination = (info) => {
     const _tableParams = { ...tableParams }
 
     _tableParams.pagination = info
@@ -171,26 +197,6 @@ const GetAdminCencelIssue = () => {
     setTableParams(_tableParams)
   }
 
-  useEffect(() => {
-    handleSearchQuery(ADMIN_GET_CANCEL_ISSUE_REPORT_APIVIEW, qs.stringify(filterQuery))
-      .then(res => {
-        if (res?.results?.length > 0) {
-          setCancelIssueData(res?.results)
-          updatePagination({
-						current: res?.page_number,
-						pageSize: res?.page_size,
-						total: res?.count,
-					})
-        } else {
-          setCancelIssueData([])
-          updatePagination({
-						current: 1,
-						pageSize: GENERAL_ROW_SIZE,
-						total: 0,
-					})
-        }
-      })
-  }, [filterQuery])
 
   useEffect(() => {
     const _tableParams = tableParams
@@ -207,6 +213,10 @@ const GetAdminCencelIssue = () => {
   }, [JSON.stringify(tableParams)])
 
   useEffect(() => {
+    OrderReportData()
+  }, [JSON.stringify(filterQuery)])
+
+  useEffect(() => {
     fetchRiderData()
   }, [])
 
@@ -214,48 +224,11 @@ const GetAdminCencelIssue = () => {
     <>
       <ReportHead propsData={propsData} />
       <Table scroll={{ x: true }} columns={columns} dataSource={cancelIssueData} onChange={handleTableChange} pagination={tableParams.pagination} />
-
-      {/* <div id="my-table" class="table-responsive">
-        <Table bordered>
-          <thead>
-            <tr>
-              <th style={{ textAlign: "center" }}>Date</th>
-              <th style={{ textAlign: "center" }}>Order</th>
-              <th style={{ textAlign: "center" }}>Type</th>
-              <th style={{ textAlign: "center" }}>Rider</th>
-              <th style={{ textAlign: "center" }}>Reason</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cancelIssueData &&
-              cancelIssueData.map((info) => (
-                <tr key={info.id}>
-                  <td style={{ textAlign: "center" }}>
-                    <span className="align-middle fw-bold">{info?.created_at}</span>
-                  </td>
-                  <td style={{ textAlign: "center" }}>
-                    <span className="align-middle fw-bold">{info?.order}</span>
-                  </td>
-                  <td style={{ textAlign: "center" }}>
-                    <span className="align-middle fw-bold">{info?.cancel_type}</span>
-                  </td>
-                  <td style={{ textAlign: "center" }}>
-                    <span className="align-middle fw-bold">{info?.rider}</span>
-                  </td>
-                  <td style={{ textAlign: "center" }}>
-                    <span className="align-middle fw-bold">{info?.reason}</span>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
-        <Pagination onChange={paginationUpdate} defaultCurrent={defaultPage} total={cancelOrderCount} defaultPageSize={50} />
-      </div> */}
     </>
   )
 }
 
-export default GetAdminCencelIssue
+export default OrderCancelIssueReport
 
 
 

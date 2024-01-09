@@ -307,36 +307,20 @@ export const TRANSECTIONS = "/api/transection/"
 // Report URL
 export const ORDER_REPORT_APIVIEW = "/api/order/report/"
 export const PDF_ORDER_REPORT_APIVIEW = "/api/pdf/order/report/"
-
 export const TRANSECTIONS_REPORT_APIVIEW = "/api/transaction/report/"
 export const PDF_TRANSECTIONS_REPORT_APIVIEW = "/api/pdf/transaction/report/"
-
 export const WITHDRAW_REQUEST_REPORT_APIVIEW = "/api/withdraw-request/report/"
 export const PDF_WITHDRAW_REQUEST_REPORT_APIVIEW = "/api/pdf/withdraw-request/report/"
 export const PICKUP_ORDER_REPORT_APIVIEW = "/api/pickup/order/report/"
-
-
-
-export const ADMIN_GET_ORDER_REPORT_APIVIEW = "/api/admin/order-report"
-export const ADMIN_GET_ORDER_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/order-report-generate-pdf"
-export const ADMIN_GET_TRANSECTION_REPORT_APIVIEW = "/api/admin/transection-report"
-export const ADMIN_GET_TRANSECTION_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/transection-report-generate-pdf"
-export const ADMIN_GET_WITHDRAW_REQUEST_REPORT_APIVIEW = "/api/admin/withdraw-request-report"
-export const ADMIN_GET_WITHDRAW_REQUEST_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/withdraw-request-report-generate-pdf"
-export const ADMIN_GET_PICKUP_REPORT_APIVIEW = "/api/admin/pickup-report"
-export const ADMIN_GET_PICKUP_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/pickup-report-generate-pdf"
-export const ADMIN_GET_DELIVERY_REPORT_APIVIEW = "/api/admin/delivery-report"
-export const ADMIN_GET_DELIVERY_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/delivery-report-generate-pdf"
-
-export const ADMIN_GET_CANCEL_ISSUE_REPORT_APIVIEW = "/api/admin/order-cancel-issue/report"
-export const ADMIN_GET_CANCEL_ISSUE_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/order-cancel-issue/report-generate-pdf"
-
-export const ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW = "/api/admin/delivery-collection-report"
-export const ADMIN_GET_DELIVERY_COLLECTION_REPORT_GENERATE_PDFAPIVIEW = "/api/admin/delivery-collection-report-generate-pdf"
-export const ADMIN_GET_ORDER_REVENUE_REPORT_APIVIEW = "/api/admin/order-revenue-report"
-export const ADMIN_GET_ORDER_REVENUE_REPORT_GENERATE_PDF_APIVIEW = "/api/admin/order-revenue-report-generate-pdf"
-
-
+export const PDF_PICKUP_ORDER_REPORT_APIVIEW = "/api/pdf/pickup/order/report/"
+export const DELIVERY_ORDER_REPORT_APIVIEW = "/api/delivery/order/report/"
+export const PDF_DELIVERY_ORDER_REPORT_APIVIEW = "/api/pdf/delivery/order/report/"
+export const CANCEL_ISSUE_ORDER_REPORT_APIVIEW = "/api/cancel-issue/order/report/"
+export const PDF_CANCEL_ISSUE_ORDER_REPORT_APIVIEW = "/api/pdf/cancel-issue/order/report/"
+export const DELIVERY_ORDER_COLLECTION_REPORT_APIVIEW = "/api/delivery-order/collection/order/report/"
+export const PDF_DELIVERY_ORDER_COLLECTION_REPORT_APIVIEW = "/api/pdf/delivery-order/collection/order/report/"
+export const ORDER_REVENUE_REPORT_APIVIEW = "/api/order/revenue/report/"
+export const PDF_ORDER_REVENUE_REPORT_APIVIEW = "/api/pdf/order/revenue/report/"
 
 
 

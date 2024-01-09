@@ -1,69 +1,154 @@
 
 
-import { Table } from "reactstrap"
+// import { Table } from "reactstrap"
+// import { useEffect, useState } from "react"
+// import useJwt from "@src/auth/jwt/useJwt"
+// import { getApi, ORDER_REVENUE_REPORT_APIVIEW, ADMIN_GET_ORDER_REVENUE_REPORT_GENERATE_PDF_APIVIEW } from "../../constants/apiUrls"
+// import React from 'react'
+// import { DatePicker, Select, Button, Input, Card, Form, Col, Row, Space, Divider } from 'antd'
+// import classNames from "classnames"
+
+// import * as qs from 'qs'
+
+
 import { useEffect, useState } from "react"
-import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, ADMIN_GET_ORDER_REVENUE_REPORT_APIVIEW, ADMIN_GET_ORDER_REVENUE_REPORT_GENERATE_PDF_APIVIEW } from "../../constants/apiUrls"
-import React from 'react'
-import { DatePicker, Select, Button, Input, Card, Form, Col, Row, Space, Divider } from 'antd'
-import classNames from "classnames"
+import { Table, Select, Button, Tag, Card, Form, Col, Row, Space, Divider } from 'antd'
 import { FilePptOutlined } from '@ant-design/icons'
+import classNames from "classnames"
 import * as qs from 'qs'
 
-const AdminOrderRevenueReport = () => {
+import useJwt from "@src/auth/jwt/useJwt"
+import {
+	getApi,
+	ORDER_REVENUE_REPORT_APIVIEW,
+	PDF_ORDER_REVENUE_REPORT_APIVIEW,
+} from "@src/constants/apiUrls"
+
+import { GENERAL_ROW_SIZE } from "@src/constants/tableConfig"
+
+import ReportHead from "./ReportHead"
+import { DownloadPDFOrderReport } from "@src/components/reportRelatedData"
+
+
+const OrderRevenueReport = () => {
 	const [order, setOrder] = useState([])
 	const [selectYear, setSelectYear] = useState([])
 	const [selectMonth, setSelectMonth] = useState([])
-	const [filterQuery, setFilterQuery] = useState({})
+	// const [filterQuery, setFilterQuery] = useState({})
+
+	const [tableParams, setTableParams] = useState({
+		pagination: {
+			current: GENERAL_ROW_SIZE,
+			pageSize: 2,
+		},
+	})
+	const [filterQuery, setFilterQuery] = useState({
+		page: 1,
+		page_size: GENERAL_ROW_SIZE,
+		ordering: '-created_at'
+	})
 
 
-	const handleSearchQuery = searchTerm => {
-		console.log('yes i am workgin searchTerm', searchTerm)
+	const OrderReportData = () => {
+
 		return useJwt
-				.axiosGet(getApi(ADMIN_GET_ORDER_REVENUE_REPORT_APIVIEW) + '?' + searchTerm)
-				.then((res) => {
-						if (res.data?.length > 0) {
-							setOrder(res.data)
-						} else {
-							setOrder('')
-						}
-						return res.data
+			.axiosGet(getApi(ORDER_REVENUE_REPORT_APIVIEW) + `?${qs.stringify(filterQuery)}`)
+			.then((res) => {
+				console.log('res.data.results', res.data.results)
+				setOrder(res.data.results)
+				updatePagination({
+					current: res?.data?.page_number,
+					pageSize: res?.data?.page_size,
+					total: res?.data?.count,
 				})
-				.catch((err) => console.log(err))
-}
+			})
+			.catch((err) => console.log(err))
+	}
 
+	const resetFunction = () => {
+		setFilterQuery({
+			page: 1,
+			page_size: GENERAL_ROW_SIZE,
+			ordering: '-created_at'
+		})
+		OrderReportData()
+	}
 
-	useEffect(() => {
-    console.log(qs.stringify(filterQuery))
-  }, [filterQuery])
 
 	function updateFilterQUery(term, value) {
-    let filters = { ...filterQuery }
+		let filters = { ...filterQuery }
 
 		if (term != 'page') {
 			filters['page'] = 1
 		}
 
-    if (value) {
-      filters[term] = value
-    } else {
-      filters.hasOwnProperty(term) && delete filters[term]
-    }
-    setFilterQuery(filters)
-  }
+		if (value) {
+			filters[term] = value
+		} else {
+			filters.hasOwnProperty(term) && delete filters[term]
+		}
+		setFilterQuery(filters)
+	}
 
-  function submitFilter(e) {
-    e.preventDefault()
-    handleSearchQuery(qs.stringify(filterQuery))
-  }
 
-  function submitPDFFilter(e) {
-    e.preventDefault()
-    handleSearchQuery(qs.stringify(filterQuery))
-    handlePDFQuery(qs.stringify(filterQuery))
-  }
+	const handleTableChange = (pagination, filters, sorter) => {
+		setTableParams({
+			pagination,
+			filters,
+			sorter,
+		})
+		if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+			setData([])
+		}
+	}
 
-	
+	const updatePagination = (info) => {
+		const _tableParams = { ...tableParams }
+
+		_tableParams.pagination = info
+
+		setTableParams(_tableParams)
+	}
+
+
+
+	useEffect(() => {
+		const _tableParams = tableParams
+		const _filters = { ...filterQuery }
+
+		if (_tableParams) {
+			_filters['page'] = _tableParams.pagination?.current
+			_filters['page_size'] = _tableParams.pagination?.pageSize
+			_filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+		}
+
+		setFilterQuery(_filters)
+
+	}, [JSON.stringify(tableParams)])
+
+	useEffect(() => {
+		OrderReportData()
+	}, [JSON.stringify(filterQuery)])
+
+
+
+
+	function submitPDFFilter(e) {
+		e.preventDefault()
+		handleSearchQuery(qs.stringify(filterQuery))
+		handlePDFQuery(qs.stringify(filterQuery))
+	}
+
+	function DownloadPDF(e) {
+		e.preventDefault()
+		DownloadPDFOrderReport(
+			PDF_ORDER_REVENUE_REPORT_APIVIEW,
+			qs.stringify(filterQuery),
+			'Order Revenue'
+		)
+	}
+
+
 
 	useEffect(() => {
 		const currentYear = new Date().getFullYear()
@@ -88,59 +173,30 @@ const AdminOrderRevenueReport = () => {
 	}, [])
 
 
-	const defaultFetchData = () => {
-		return useJwt.axiosGet(getApi(ADMIN_GET_ORDER_REVENUE_REPORT_APIVIEW))
-			.then((res) => {
-				console.log('response data', res.data)
-				setOrder(res.data)
-			}).catch((err) => {
-				console.log(err)
-			})
-	}
+	const columns = [
+		{
+			title: 'Date',
+			dataIndex: 'delivery_date',
+		},
+		{
+			title: 'Order ID',
+			dataIndex: 'parcel_id',
+		},
+		{
+			title: 'Delivery Charge',
+			dataIndex: 'delivary_charge',
+		},
 
+		{
+			title: 'COD Charge',
+			dataIndex: 'cash_on_delivery_charge',
+		},
+		{
+			title: 'Deducted Amount',
+			dataIndex: 'deducted_amount',
+		},
 
-
-
-
-	useEffect(() => {
-		defaultFetchData()
-	}, [])
-
-
-
-
-
-	function downloadPDFFile(file, fileName) {
-		var blob = new Blob([file], { type: 'application/pdf' })
-		var url = URL.createObjectURL(blob)
-		var link = document.createElement('a')
-		link.href = url
-		link.download = fileName
-		document.body.appendChild(link)
-		link.click()
-		document.body.removeChild(link)
-		URL.revokeObjectURL(url)
-	}
-
-	const handlePDFQuery = (searchTerm) => {
-
-		return useJwt
-			.axiosGet(getApi((ADMIN_GET_ORDER_REVENUE_REPORT_GENERATE_PDF_APIVIEW) + '?' + searchTerm))
-			.then((res) => {
-				if (res.data?.length > 0) {
-					// setOrder(res.data)
-					console.log('response file', res.data)
-					var file = new Blob([res.data], { type: 'application/pdf' })
-					var fileName = 'revenue_report.pdf'
-					downloadPDFFile(file, fileName)
-				} else {
-					// setOrder('')
-				}
-				return res.data
-			})
-			.catch((err) => console.log(err))
-
-	}
+	]
 
 
 
@@ -178,9 +234,6 @@ const AdminOrderRevenueReport = () => {
 							</Col>
 
 							<Col span={12}>
-
-
-
 								<Form.Item label="Select Month" name="month">
 									<Select
 										allowClear={true}
@@ -191,82 +244,37 @@ const AdminOrderRevenueReport = () => {
 											(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
 										}
 										options={selectMonth}
-									onChange={(e) => {
-										updateFilterQUery('month', e)
-
-									}}
+										onChange={(e) => {
+											updateFilterQUery('month', e)
+										}}
 									/>
 								</Form.Item>
 								<Space>
-                <Button type="primary" onClick={submitFilter} size={20}>
-                  Filter
-                </Button>
-                {/* <Button type="primary" onClick={propsData?.defaultFetchData} danger size={20}>
-                  Reset
-                </Button> */}
-              </Space>
+								</Space>
 							</Col>
-
 						</Row>
-
-
 					</Form>
 				</Card>
 				<Divider ></Divider>
 				<Row justify={'end'}>
 					<Col>
 						<Space style={{ 'padding': '10px 0px' }}>
-							<Button type="primary" onClick={submitPDFFilter} icon={<FilePptOutlined />} size={20}>
+							<Button type="primary" onClick={DownloadPDF} icon={<FilePptOutlined />} size={20}>
 								Export To PDF
 							</Button>
 						</Space>
 					</Col>
 				</Row>
-								
 			</div>
 
-
 			<div id="my-table" class="table-responsive">
-				<Table bordered>
-					<thead>
-						<tr>
-							<th>Date</th>
-							<th>Order ID</th>
-							<th>Delivery Charge</th>
-							<th>COD Charge</th>
-							<th>Deducted Amount</th>
-						</tr>
-					</thead>
-					<tbody>
-						{order &&
-							order.map((info) => (
-								<tr key={info.id}>
-									<td>
-										<span className="align-middle fw-bold">{info.delivery_date}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.parcel_id}</span>
-									</td>
-
-									<td>
-										<span className="align-middle fw-bold">{info.delivary_charge}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.cash_on_delivery_charge}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.deducted_amount}</span>
-									</td>
-								</tr>
-							))}
-					</tbody>
-				</Table>
+				<Table scroll={{ x: true }} columns={columns} dataSource={order} onChange={handleTableChange} pagination={tableParams.pagination} />
 			</div>
 		</>
 	)
 }
 
-export default AdminOrderRevenueReport
+export default OrderRevenueReport
 
 
 

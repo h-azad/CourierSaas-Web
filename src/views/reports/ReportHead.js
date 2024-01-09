@@ -23,7 +23,6 @@ const ReportHead = ({ propsData }) => {
   function onSelectDate(date, dateString) {
 
     if (dateString.find(x => x != '')) {
-      propsData.updateFilterQUery('created_at', dateString.toString())
       propsData.updateFilterQUery(propsData?.filterByDate, dateString.toString())
     } else {
       propsData.updateFilterQUery(propsData?.filterByDate)
@@ -32,14 +31,14 @@ const ReportHead = ({ propsData }) => {
 
 
 
-	function DownloadPDF(e) {
-		e.preventDefault()
+  function DownloadPDF(e) {
+    e.preventDefault()
     propsData.DownloadPDFOrderReport(
-      propsData.reportURL, 
-      qs.stringify(propsData.filterQuery), 
+      propsData.reportURL,
+      qs.stringify(propsData.filterQuery),
       propsData.reportFileName
-      )
-	}
+    )
+  }
 
   const rangePresets = [
     {
@@ -146,7 +145,7 @@ const ReportHead = ({ propsData }) => {
                 {/* <Button type="primary" onClick={submitFilter} size={20}>
                   Filter
                 </Button> */}
-                <Button type='primary' htmlType="reset" onClick={(e)=>{propsData?.resetFunction()}} danger size={20}>
+                <Button type='primary' htmlType="reset" onClick={(e) => { propsData?.resetFunction() }} danger size={20}>
                   Reset
                 </Button>
               </Space>

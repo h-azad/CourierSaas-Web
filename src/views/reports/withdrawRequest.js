@@ -3,12 +3,12 @@
 // import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
-import { 
-  getApi, 
+import {
+  getApi,
   WITHDRAW_REQUEST_REPORT_APIVIEW,
   PDF_WITHDRAW_REQUEST_REPORT_APIVIEW,
   ACCOUNT_WALLET_FORM_LIST
-} from "../../constants/apiUrls"
+} from "@src/constants/apiUrls"
 import ReportHead from "./ReportHead"
 import React from 'react'
 
@@ -25,7 +25,7 @@ const WithdrawRequestReport = () => {
 
   const [tableParams, setTableParams] = useState({
     pagination: {
-      current: GENERAL_ROW_SIZE	,
+      current: GENERAL_ROW_SIZE,
       pageSize: 2,
     },
   })
@@ -37,7 +37,7 @@ const WithdrawRequestReport = () => {
   })
 
 
-  
+
 
   const fetchDefalutData = () => {
 
@@ -85,7 +85,7 @@ const WithdrawRequestReport = () => {
       .catch((err) => console.log(err))
   }
 
-  
+
 
 
 
@@ -97,23 +97,23 @@ const WithdrawRequestReport = () => {
   ]
 
   function colorSwitch(status) {
-		switch (status) {
-			case 'Pending':
-				return 'yellow'
+    switch (status) {
+      case 'Pending':
+        return 'yellow'
 
-			case 'Accept':
-				return 'green'
+      case 'Accept':
+        return 'green'
 
-			case 'Complete':
-				return 'green'
+      case 'Complete':
+        return 'green'
 
-			case 'Cancel':
-				return 'red'
+      case 'Cancel':
+        return 'red'
 
-			default:
-				return 'orange'
-		}
-	}
+      default:
+        return 'orange'
+    }
+  }
 
   function updateFilterQUery(term, value) {
     let filters = { ...filterQuery }
@@ -131,31 +131,6 @@ const WithdrawRequestReport = () => {
   }
 
 
-  // const propsData = {
-  //   handleSearchQuery: handleSearchQuery,
-  //   handlePDFQuery: handlePDFQuery,
-  //   fetchDefalutData: fetchDefalutData,
-
-  //   getDataApiUrl: ADMIN_GET_WITHDRAW_REQUEST_REPORT_APIVIEW,
-	// 	fetchReportPDF: ADMIN_GET_WITHDRAW_REQUEST_REPORT_GENERATE_PDF_APIVIEW,
-
-  //   updateFilterQUery: updateFilterQUery,
-  //   filterQuery: filterQuery,
-
-  //   statusOptions: statusOptions,
-  //   selectboxData: selectAccountWallet,
-  //   // selectboxRider: selectboxRider,
-
-  //   statusOptionPlaceholder: "Status",
-  //   selectOptionKey: "withdraw_status",
-  //   reportTitle: 'Withdraw Request Report',
-  //   reportFileName: 'Withdraw Request Report',
-  //   selectboxDataPlaceholder: 'Select Wallet Account',
-  //   filterTable: 'account_wallet',
-    
-  // }
-
-
   const propsData = {
     DownloadPDFOrderReport: DownloadPDFOrderReport,
     resetFunction: resetFunction,
@@ -170,6 +145,7 @@ const WithdrawRequestReport = () => {
 
     filterBy: 'transection_id',
     filterByFieldName: 'Transection ID',
+    filterByDate: 'created_at',
 
     statusOptionPlaceholder: "Status",
     selectOptionKey: "withdraw_status",
@@ -181,34 +157,34 @@ const WithdrawRequestReport = () => {
   }
 
   const columns = [
-		{
-			title: 'Date',
-			dataIndex: 'created_at',
-
-			sorter: {
-				compare: (a, b) => a.created_at - b.created_at,
-				multiple: 2,
-			},
-		},
     {
-			title: 'Account',
-			dataIndex: 'account_wallet',
-		},
-		
-		{
-			title: 'Previous Balance',
-			dataIndex: 'balance',
-		},
+      title: 'Date',
+      dataIndex: 'created_at',
+
+      sorter: {
+        compare: (a, b) => a.created_at - b.created_at,
+        multiple: 2,
+      },
+    },
+    {
+      title: 'Account',
+      dataIndex: 'account_wallet',
+    },
+
+    {
+      title: 'Previous Balance',
+      dataIndex: 'balance',
+    },
 
 
-		{
-			title: 'Withdraw Balance',
-			dataIndex: 'withdraw_balance',
-		},
-		{
-			title: 'Current Balance',
-			dataIndex: 'current_balance',
-		},
+    {
+      title: 'Withdraw Balance',
+      dataIndex: 'withdraw_balance',
+    },
+    {
+      title: 'Current Balance',
+      dataIndex: 'current_balance',
+    },
     {
       title: 'Status',
       dataIndex: 'withdraw_status',
@@ -216,7 +192,7 @@ const WithdrawRequestReport = () => {
         <Tag color={colorSwitch(record.withdraw_status)}>{text.toUpperCase()}</Tag>
       ),
     },
-	]
+  ]
 
 
   const handleTableChange = (pagination, filters, sorter) => {
@@ -230,7 +206,7 @@ const WithdrawRequestReport = () => {
     }
   }
 
-	const updatePagination = (info) => {
+  const updatePagination = (info) => {
     const _tableParams = { ...tableParams }
 
     _tableParams.pagination = info
@@ -262,39 +238,11 @@ const WithdrawRequestReport = () => {
     fetchWalletData()
   }, [])
 
-  
+
   return (
     <>
       <ReportHead propsData={propsData} />
       <Table scroll={{ x: true }} columns={columns} dataSource={withdrawRequest} onChange={handleTableChange} pagination={tableParams.pagination} />
-      {/* <div id="my-table" class="table-responsive">
-        <Table bordered>
-          <thead>
-            <tr>
-              <th style={{ textAlign: "center" }}>Date</th>
-              <th style={{ textAlign: "center" }}>Account</th>
-              <th style={{ textAlign: "center" }}>PREVIOUS BALANCE</th>
-              <th style={{ textAlign: "center" }}>WITHDRAW BALANCE</th>
-              <th style={{ textAlign: "center" }}>CURRENT BALANCE</th>
-              <th style={{ textAlign: "center" }}>STATUS</th>
-            </tr>
-          </thead>
-          <tbody>
-            {withdrawRequest &&
-              withdrawRequest.map((info) => (
-                <tr key={info.id}>
-                  <td style={{ textAlign: "center" }}>{info.created_at}</td>
-                  <td style={{ textAlign: "center" }}>{info.account_wallet}</td>
-                  <td style={{ textAlign: "center" }}>{info.balance}</td>
-                  <td style={{ textAlign: "center" }}>{info.withdraw_balance}</td>
-                  <td style={{ textAlign: "center" }}>{info.current_balance}</td>
-                  <td style={{ textAlign: "center" }}>{info.withdraw_status}</td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
-        <Pagination onChange={paginationUpdate} defaultCurrent={defaultPage} total={withdrawRequestCount} defaultPageSize={50} />
-      </div> */}
     </>
   )
 }

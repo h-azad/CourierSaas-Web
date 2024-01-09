@@ -6,13 +6,11 @@ import * as qs from 'qs'
 
 import useJwt from "@src/auth/jwt/useJwt"
 import {
-  getApi, 
-  PICKUP_ORDER_REPORT_APIVIEW, 
-  ADMIN_GET_PICKUP_REPORT_GENERATE_PDF_APIVIEW, 
-  RIDER_LIST
+  getApi,
+  PICKUP_ORDER_REPORT_APIVIEW,
+  PDF_PICKUP_ORDER_REPORT_APIVIEW,
+  RIDER_FORM_LIST
 } from "@src/constants/apiUrls"
-
-import { AdminOrderStatusOptions, colorSwitch } from '@src/components/orderRelatedData'
 
 import { GENERAL_ROW_SIZE } from "@src/constants/tableConfig"
 
@@ -21,14 +19,14 @@ import { DownloadPDFOrderReport } from "@src/components/reportRelatedData"
 
 
 
-const GetAdminPickupReport = () => {
+const OrderPickupReport = () => {
   const [pickup, setPickup] = useState([])
   const [rider, setRider] = useState([])
   // const [filterQuery, setFilterQuery] = useState({})
 
   const [tableParams, setTableParams] = useState({
     pagination: {
-      current: GENERAL_ROW_SIZE	,
+      current: GENERAL_ROW_SIZE,
       pageSize: 2,
     },
   })
@@ -36,7 +34,7 @@ const GetAdminPickupReport = () => {
   const [filterQuery, setFilterQuery] = useState({
     page: 1,
     page_size: GENERAL_ROW_SIZE,
-    ordering: '-created_at'
+    ordering: '-pickup_date'
   })
 
 
@@ -59,14 +57,14 @@ const GetAdminPickupReport = () => {
     setFilterQuery({
       page: 1,
       page_size: GENERAL_ROW_SIZE,
-      ordering: '-created_at'
+      ordering: '-pickup_date'
     })
     OrderReportData()
   }
 
   const fetchRiderData = () => {
     return useJwt
-      .axiosGet(getApi(RIDER_LIST))
+      .axiosGet(getApi(RIDER_FORM_LIST))
       .then((res) => {
         let riderData = []
 
@@ -80,7 +78,7 @@ const GetAdminPickupReport = () => {
       .catch((err) => console.log(err))
   }
 
- 
+
 
 
   const statusOptions = [
@@ -116,29 +114,6 @@ const GetAdminPickupReport = () => {
     setFilterQuery(filters)
   }
 
-  // const propsData = {
-  //   handleSearchQuery: handleSearchQuery,
-  //   handlePDFQuery: handlePDFQuery,
-  //   fetchDefalutData: fetchDefalutData,
-
-  //   getDataApiUrl: ADMIN_GET_PICKUP_REPORT_APIVIEW, 
-	// 	fetchReportPDF: ADMIN_GET_PICKUP_REPORT_GENERATE_PDF_APIVIEW,
-
-  //   updateFilterQUery: updateFilterQUery,
-  //   filterQuery: filterQuery,
-
-  //   statusOptions: statusOptions,
-  //   selectboxData: rider,
-
-  //   statusOptionPlaceholder: "Status",
-  //   selectOptionKey: "pickup_status",
-  //   reportTitle: 'Pickup Report',
-  //   reportFileName: 'Pickup Report',
-  //   selectboxDataPlaceholder: 'Select Rider',
-  //   filterTable: 'pickup_rider',
-
-  // }
-
 
   const propsData = {
     DownloadPDFOrderReport: DownloadPDFOrderReport,
@@ -147,13 +122,13 @@ const GetAdminPickupReport = () => {
     updateFilterQUery: updateFilterQUery,
     filterQuery: filterQuery,
 
-    // reportURL: PDF_WITHDRAW_REQUEST_REPORT_APIVIEW,
+    reportURL: PDF_PICKUP_ORDER_REPORT_APIVIEW,
 
     statusOptions: statusOptions,
     selectboxData: rider,
 
-    filterBy: 'transection_id',
-    filterByFieldName: 'Transection ID',
+    filterBy: 'parcel_id',
+    filterByFieldName: 'Parcel ID',
     filterByDate: 'pickup_date',
 
     statusOptionPlaceholder: "Status",
@@ -168,42 +143,34 @@ const GetAdminPickupReport = () => {
 
 
   const columns = [
-		{
-			title: 'Date',
-			dataIndex: 'pickup_date',
-
-			sorter: {
-				compare: (a, b) => a.created_at - b.created_at,
-				multiple: 2,
-			},
-		},
     {
-			title: 'Rider',
-			dataIndex: 'pickup_rider',
+      title: 'Date',
+      dataIndex: 'pickup_date',
 
-		},
-		{
-			title: 'Order ID',
-			dataIndex: 'parcel_id',
+      sorter: {
+        compare: (a, b) => a.pickup_date - b.pickup_date,
+        multiple: 2,
+      },
+    },
+    {
+      title: 'Rider',
+      dataIndex: 'pickup_rider',
 
-		},
+    },
+    {
+      title: 'Order ID',
+      dataIndex: 'parcel_id',
 
-		// {
-		// 	title: 'Status',
-		// 	dataIndex: 'status',
-		// 	render: (text, record) => (
-		// 		<Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
-		// 	),
-		// },
-		
-		{
-			title: 'Phone',
-			dataIndex: 'phone',
-		},
-		{
-			title: 'Address',
-			dataIndex: 'pickup_address',
-		},
+    },
+
+    {
+      title: 'Phone',
+      dataIndex: 'phone',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'pickup_address',
+    },
     {
       title: 'Pickup Status',
       dataIndex: 'pickup_status',
@@ -212,7 +179,7 @@ const GetAdminPickupReport = () => {
       ),
 
     },
-	]
+  ]
 
   const handleTableChange = (pagination, filters, sorter) => {
     setTableParams({
@@ -225,7 +192,7 @@ const GetAdminPickupReport = () => {
     }
   }
 
-	const updatePagination = (info) => {
+  const updatePagination = (info) => {
     const _tableParams = { ...tableParams }
 
     _tableParams.pagination = info
@@ -258,61 +225,19 @@ const GetAdminPickupReport = () => {
     fetchRiderData()
   }, [])
 
-  
 
-  
+
+
 
   return (
     <>
       <ReportHead propsData={propsData} />
       <Table scroll={{ x: true }} columns={columns} dataSource={pickup} onChange={handleTableChange} pagination={tableParams.pagination} />
-
-      {/* <div id="my-table" class="table-responsive">
-        <Table bordered>
-          <thead>
-            <tr>
-              <th style={{ textAlign: "center" }}>Pickup Date</th>
-              <th style={{ textAlign: "center" }}>Rider</th>
-              <th style={{ textAlign: "center" }}>Order ID</th>
-              <th style={{ textAlign: "center" }}>Status</th>
-              <th style={{ textAlign: "center" }}>Phone</th>
-              <th style={{ textAlign: "center" }}>Address</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pickup &&
-              pickup.map((info) => (
-                <tr key={info.id}>
-                  <td style={{ textAlign: "center" }}>
-                    <span className="align-middle fw-bold">{info.pickup_date}</span>
-                  </td>
-                  <td style={{ textAlign: "center" }}>
-                    <span className="align-middle fw-bold">{info.pickup_rider}</span>
-                  </td>
-
-                  <td style={{ textAlign: "center" }}>
-                    <span className="align-middle fw-bold">{info.parcel_id}</span>
-                  </td>
-                  <td style={{ textAlign: "center" }}>
-                    <span className="align-middle fw-bold">{info.pickup_status}</span>
-                  </td>
-                  <td style={{ textAlign: "center" }}>
-                    <span className="align-middle fw-bold">{info.phone}</span>
-                  </td>
-                  <td style={{ textAlign: "center" }}>
-                    <span className="align-middle fw-bold">{info.pickup_address}</span>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
-        <Pagination onChange={paginationUpdate} defaultCurrent={defaultPage} total={pickupCount} defaultPageSize={50} />
-      </div> */}
     </>
   )
 }
 
-export default GetAdminPickupReport
+export default OrderPickupReport
 
 
 

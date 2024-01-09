@@ -3,9 +3,9 @@
 // import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
 import useJwt from "@src/auth/jwt/useJwt"
-import { 
-  getApi, 
-  TRANSECTIONS_REPORT_APIVIEW, 
+import {
+  getApi,
+  TRANSECTIONS_REPORT_APIVIEW,
   ACCOUNT_WALLET_FORM_LIST,
   PDF_TRANSECTIONS_REPORT_APIVIEW
 } from "@src/constants/apiUrls"
@@ -19,7 +19,7 @@ import { DownloadPDFOrderReport } from "@src/components/reportRelatedData"
 import { GENERAL_ROW_SIZE } from "../../constants/tableConfig"
 
 
-const AdminGetTransectionReport = () => {
+const TransectionReport = () => {
   const [transections, setTransections] = useState([])
   const [selectBoxUser, setSelectBoxUser] = useState([])
 
@@ -123,6 +123,7 @@ const AdminGetTransectionReport = () => {
 
     filterBy: 'transection_id',
     filterByFieldName: 'Transection ID',
+    filterByDate: 'created_at',
 
     statusOptionPlaceholder: "Transaction Type",
     selectOptionKey: "type",
@@ -241,7 +242,7 @@ const AdminGetTransectionReport = () => {
   )
 }
 
-export default AdminGetTransectionReport
+export default TransectionReport
 
 
 

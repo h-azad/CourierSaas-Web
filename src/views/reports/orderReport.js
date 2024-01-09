@@ -174,6 +174,7 @@ const OrderReport = () => {
 
     filterBy: 'parcel_id',
     filterByFieldName: 'Parcel ID',
+    filterByDate: 'created_at',
 
     statusOptionPlaceholder: "Order Status",
     selectOptionKey: "status",

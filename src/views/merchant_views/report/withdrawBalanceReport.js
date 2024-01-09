@@ -21,17 +21,17 @@ const WithdrawBalanceReport = () => {
 	const [withdrawRequest, setWithdrawRequest] = useState([])
 
 	const [tableParams, setTableParams] = useState({
-    pagination: {
-      current: GENERAL_ROW_SIZE	,
-      pageSize: 2,
-    },
-  })
+		pagination: {
+			current: GENERAL_ROW_SIZE,
+			pageSize: 2,
+		},
+	})
 
-  const [filterQuery, setFilterQuery] = useState({
-    page: 1,
-    page_size: GENERAL_ROW_SIZE,
-    ordering: '-created_at'
-  })
+	const [filterQuery, setFilterQuery] = useState({
+		page: 1,
+		page_size: GENERAL_ROW_SIZE,
+		ordering: '-created_at'
+	})
 
 
 	const fetchDefalutData = () => {
@@ -136,7 +136,7 @@ const WithdrawBalanceReport = () => {
 				multiple: 2,
 			},
 		},
-		
+
 		{
 			title: 'Previous Balance',
 			dataIndex: 'balance',
@@ -161,38 +161,38 @@ const WithdrawBalanceReport = () => {
 	]
 
 	const handleTableChange = (pagination, filters, sorter) => {
-    setTableParams({
-      pagination,
-      filters,
-      sorter,
-    })
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-      setData([])
-    }
-  }
+		setTableParams({
+			pagination,
+			filters,
+			sorter,
+		})
+		if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+			setData([])
+		}
+	}
 
 	const updatePagination = (info) => {
-    const _tableParams = { ...tableParams }
+		const _tableParams = { ...tableParams }
 
-    _tableParams.pagination = info
+		_tableParams.pagination = info
 
-    setTableParams(_tableParams)
-  }
+		setTableParams(_tableParams)
+	}
 
 
 	useEffect(() => {
-    const _tableParams = tableParams
-    const _filters = { ...filterQuery }
+		const _tableParams = tableParams
+		const _filters = { ...filterQuery }
 
-    if (_tableParams) {
-      _filters['page'] = _tableParams.pagination?.current
-      _filters['page_size'] = _tableParams.pagination?.pageSize
-      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
-    }
+		if (_tableParams) {
+			_filters['page'] = _tableParams.pagination?.current
+			_filters['page_size'] = _tableParams.pagination?.pageSize
+			_filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+		}
 
-    setFilterQuery(_filters)
+		setFilterQuery(_filters)
 
-  }, [JSON.stringify(tableParams)])
+	}, [JSON.stringify(tableParams)])
 
 
 	useEffect(() => {

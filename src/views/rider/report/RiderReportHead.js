@@ -1,8 +1,8 @@
-import { React, useState, useEffect } from 'react'
-import { DatePicker, Select, Button, Input } from 'antd'
+import { React } from 'react'
+// import { DatePicker, Select, Button, Input } from 'antd'
+import { DatePicker, Select, Button, Input, Card, Form, Col, Row, Space, Divider } from 'antd'
 import { FilePptOutlined, FileExcelOutlined } from '@ant-design/icons'
 const { RangePicker } = DatePicker
-import { useForm } from "react-hook-form"
 import classNames from "classnames"
 import * as qs from 'qs'
 import dayjs from 'dayjs'
@@ -11,22 +11,20 @@ const ReportHead = ({ propsData }) => {
 	const { Search } = Input
 
 	function onSelectDate(date, dateString) {
-		if (dateString.find(x => x != '')){
-			propsData.updateFilterQUery('date', dateString.toString())
-		}else{
-			propsData.updateFilterQUery('date', '')
+		if (dateString.find(x => x != '')) {
+			propsData.updateFilterQUery(propsData?.filterByDate, dateString.toString())
+		} else {
+			propsData.updateFilterQUery(propsData?.filterByDate, '')
 		}
 	}
-	
-	function submitFilter(e){
-		e.preventDefault()
-		propsData.handleSearchQuery(propsData.getDataApiUrl, qs.stringify(propsData.filterQuery))
-	}
 
-	function submitPDFFilter(e) {
+	function DownloadPDF(e) {
 		e.preventDefault()
-		propsData.handleSearchQuery(propsData.getDataApiUrl, qs.stringify(propsData.filterQuery))
-		propsData.handlePDFQuery(propsData.reportApi, qs.stringify(propsData.filterQuery), propsData.reportFileName)
+		propsData.DownloadPDFOrderReport(
+			propsData.reportURL,
+			qs.stringify(propsData.filterQuery),
+			propsData.reportFileName
+		)
 	}
 
 	const rangePresets = [
@@ -50,71 +48,71 @@ const ReportHead = ({ propsData }) => {
 
 	return (
 		<div className='report_head_wrapper mt-1'>
+			<Card
+				title={propsData?.reportTitle}
+				bordered={false}
+			>
+				<Form>
+					<Row gutter={24}>
+						<Col span={12}>
+							<Form.Item label={propsData?.filterByFieldName} name="search">
+								<Search
+									placeholder="eg. ODR23031301d6"
+									onChange={(e) => {
+										propsData.updateFilterQUery(propsData?.filterBy, e.target.value)
 
-			<div className='row'>
-				<div className='col-lg-3'>{ propsData.reportTitle }</div>
-				<div className='col-lg-9'>
+									}}
+									allowClear={true}
+								/>
+							</Form.Item>
 
-					<div className='row g-1'>
-						<div className='col-lg-4'>
-							<Search
-								placeholder="eg. ODR23031301d6"
-								onChange={(e) => {
-									propsData.updateFilterQUery("parcel_id", e.target.value)
+							<Form.Item label={propsData?.statusOptionPlaceholder} name="order_type">
+								<Select
+									style={{
+										width: '100%',
+									}}
 
-								}}
-								allowClear={true}
-							/>
-						</div>
+									id="status"
+									name="status"
+									placeholder={propsData?.statusOptionPlaceholder}
+									isClearable={true}
+									className={classNames("react-select")}
+									classNamePrefix="select"
+									onChange={(e) => {
+										propsData.updateFilterQUery(propsData.selectOptionKey, e)
+									}}
+									options={propsData?.statusOptions}
+									allowClear={true}
+								/>
+							</Form.Item>
+						</Col>
 
-						<div className="col-lg-4">
-							<Select
-								style={{
-									width: '100%',
-								}}
-								
-								id="status"
-								name="status"
-								placeholder="Select Order Status"
-								isClearable={true}
-								className={classNames("react-select")}
-								classNamePrefix="select"
-								onChange={(e) => {
-									propsData.updateFilterQUery(propsData.selectOptionKey, e)
-								}}
-								options={propsData.statusOptions}
-								allowClear={true}
-							/>
-						</div>
+						<Col span={12}>
+							<Form.Item label="Filter by Date" name="date_filter">
+								<RangePicker presets={rangePresets} onChange={onSelectDate} />
+							</Form.Item>
 
-						<div className='col-lg-4'>
-							<RangePicker presets={rangePresets} onChange={onSelectDate} />
-						</div>
-					</div>
-				</div>
-			</div>
-			<div className='row mt-3'>
-				<div className='row'>
-					<div className='col-6'>
+							<Space>
+								<Button type='primary' htmlType="reset" onClick={(e) => { propsData?.resetFunction() }} danger size={20}>
+									Reset
+								</Button>
+							</Space>
 
-					</div>
-					<div className='d-flex justify-content-end align-items-center gap-1 mb-2 col-6'>
-						<div className=''><Button type="primary" onClick={submitFilter} size={20}>
-							Filter
-						</Button></div>
-						<div className=''><Button type="primary" onClick={propsData.fetchDefalutData} danger size={20}>
-							Reset
-						</Button></div>
-						<div className=''><Button type="primary" onClick={submitPDFFilter} icon={<FilePptOutlined />} size={20}>
+						</Col>
+					</Row>
+				</Form>
+			</Card>
+			<Divider ></Divider>
+			<Row justify={'end'}>
+				<Col>
+					<Space style={{ 'padding': '10px 0px' }}>
+						<Button type="primary" onClick={DownloadPDF} icon={<FilePptOutlined />} size={20}>
 							Export To PDF
-						</Button></div>
-						{/* <div className=''><Button type="primary" icon={<FileExcelOutlined />} size={20}>
-							Export To Excel
-						</Button></div> */}
-					</div>
-				</div>
+						</Button>
+					</Space>
+				</Col>
+			</Row>
 
-			</div>
 		</div>
 	)
 }

@@ -1,17 +1,23 @@
 
-// import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
-import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW, ADMIN_GET_DELIVERY_COLLECTION_REPORT_GENERATE_PDFAPIVIEW, RIDER_LIST } from "../../constants/apiUrls"
-import ReportHead from "./ReportHead"
-import React from 'react'
 import { Table, Tag } from "antd"
 import * as qs from 'qs'
 
-import { GENERAL_ROW_SIZE } from "../../constants/tableConfig"
-import { handlePDFQuery, handleSearchQuery } from "../../components/reportRelatedData"
+import useJwt from "@src/auth/jwt/useJwt"
+import {
+  getApi,
+  DELIVERY_ORDER_COLLECTION_REPORT_APIVIEW,
+  PDF_DELIVERY_ORDER_COLLECTION_REPORT_APIVIEW,
+  RIDER_FORM_LIST
+} from "@src/constants/apiUrls"
 
-const AdminGetCollectionReport = () => {
+import { GENERAL_ROW_SIZE } from "@src/constants/tableConfig"
+
+import ReportHead from "./ReportHead"
+import { DownloadPDFOrderReport } from "@src/components/reportRelatedData"
+
+
+const CollectionReport = () => {
   const [order, setOrder] = useState([])
   const [rider, setRider] = useState([])
   // const [filterQuery, setFilterQuery] = useState({})
@@ -28,22 +34,35 @@ const AdminGetCollectionReport = () => {
     ordering: '-created_at'
   })
 
-  const fetchDefalutData = () => {
-		return useJwt.axiosGet(getApi(ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW))
-			.then((res) => {
-				setOrder(res?.data?.results)
-				setFilterQuery({})
-			}).catch((err) => {
-				setOrder([])
-				setFilterQuery({})
-			})
-	}
+  const OrderReportData = () => {
+
+    return useJwt
+      .axiosGet(getApi(DELIVERY_ORDER_COLLECTION_REPORT_APIVIEW) + `?${qs.stringify(filterQuery)}`)
+      .then((res) => {
+        setOrder(res.data.results)
+        updatePagination({
+          current: res?.data?.page_number,
+          pageSize: res?.data?.page_size,
+          total: res?.data?.count,
+        })
+      })
+      .catch((err) => console.log(err))
+  }
+
+  const resetFunction = () => {
+    setFilterQuery({
+      page: 1,
+      page_size: GENERAL_ROW_SIZE,
+      ordering: '-created_at'
+    })
+    OrderReportData()
+  }
+
 
   const fetchRiderData = () => {
     return useJwt
-      .axiosGet(getApi(RIDER_LIST))
+      .axiosGet(getApi(RIDER_FORM_LIST))
       .then((res) => {
-        console.log('RIDER_LIST', res)
         let riderData = []
 
         res.data.data.map((data) => {
@@ -56,7 +75,7 @@ const AdminGetCollectionReport = () => {
       .catch((err) => console.log(err))
   }
 
-  
+
   const statusOptions = [
     { value: 'pre-paid', label: "Pre-Paid" },
     { value: 'COD', label: "COD" },
@@ -79,21 +98,21 @@ const AdminGetCollectionReport = () => {
   }
 
 
-
-
   const propsData = {
-    handleSearchQuery: handleSearchQuery,
-    handlePDFQuery: handlePDFQuery,
-    fetchDefalutData: fetchDefalutData,
-
-    getDataApiUrl: ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW,
-		fetchReportPDF: ADMIN_GET_DELIVERY_COLLECTION_REPORT_GENERATE_PDFAPIVIEW,
+    DownloadPDFOrderReport: DownloadPDFOrderReport,
+    resetFunction: resetFunction,
 
     updateFilterQUery: updateFilterQUery,
     filterQuery: filterQuery,
 
+    reportURL: PDF_DELIVERY_ORDER_COLLECTION_REPORT_APIVIEW,
+
     statusOptions: statusOptions,
     selectboxData: rider,
+
+    filterBy: 'parcel_id',
+    filterByFieldName: 'Parcel ID',
+    filterByDate: 'created_at',
 
     statusOptionPlaceholder: "Delivery Type",
     selectOptionKey: "order_type",
@@ -106,58 +125,38 @@ const AdminGetCollectionReport = () => {
 
 
   const columns = [
-		{
-			title: 'Date',
-			dataIndex: 'date',
-		},
-		{
-			title: 'Total Delivery',
-			dataIndex: 'total_delivery',
-		},
+    {
+      title: 'Date',
+      dataIndex: 'date',
+    },
+    {
+      title: 'Total Delivery',
+      dataIndex: 'total_delivery',
+    },
 
-		{
-			title: 'Total COD',
-			dataIndex: 'total_cod',
-		},
-		{
-			title: 'Total Pre-Paid',
-			dataIndex: 'total_pre_paid',
-		},
-		{
-			title: 'Total Delivery Charge',
-			dataIndex: 'total_delivery_charge',
-		},
-		{
-			title: 'Total Collected Amount',
-			dataIndex: 'total_collect_amount',
-		},
-		{
-			title: 'Total Amount',
-			dataIndex: 'total',
-		},
-	]
+    {
+      title: 'Total COD',
+      dataIndex: 'total_cod',
+    },
+    {
+      title: 'Total Pre-Paid',
+      dataIndex: 'total_pre_paid',
+    },
+    {
+      title: 'Total Delivery Charge',
+      dataIndex: 'total_delivery_charge',
+    },
+    {
+      title: 'Total Collected Amount',
+      dataIndex: 'total_collect_amount',
+    },
+    {
+      title: 'Total Amount',
+      dataIndex: 'total',
+    },
+  ]
 
 
-  useEffect(() => {
-    handleSearchQuery(ADMIN_GET_DELIVERY_COLLECTION_REPORT_APIVIEW, qs.stringify(filterQuery))
-      .then(res => {
-        if (res?.results?.length > 0) {
-          setOrder(res?.results)
-          updatePagination({
-            current: res?.page_number,
-            pageSize: res?.page_size,
-            total: res?.count,
-          })
-        } else {
-          setOrder([])
-          updatePagination({
-            current: 1,
-            pageSize: GENERAL_ROW_SIZE,
-            total: 0,
-          })
-        }
-      })
-  }, [filterQuery])
 
   const handleTableChange = (pagination, filters, sorter) => {
     setTableParams({
@@ -179,10 +178,6 @@ const AdminGetCollectionReport = () => {
   }
 
 
-  useEffect(() => {
-    fetchRiderData()
-  }, [])
-
 
   useEffect(() => {
     const _tableParams = tableParams
@@ -198,6 +193,14 @@ const AdminGetCollectionReport = () => {
 
   }, [JSON.stringify(tableParams)])
 
+  useEffect(() => {
+    OrderReportData()
+  }, [JSON.stringify(filterQuery)])
+
+  useEffect(() => {
+    fetchRiderData()
+  }, [])
+
 
   return (
     <>
@@ -207,5 +210,5 @@ const AdminGetCollectionReport = () => {
   )
 }
 
-export default AdminGetCollectionReport
+export default CollectionReport
 

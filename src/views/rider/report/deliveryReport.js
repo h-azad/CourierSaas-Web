@@ -1,44 +1,60 @@
 
-
-// import { Table } from "reactstrap"
 import { useEffect, useState } from "react"
-import useJwt from "@src/auth/jwt/useJwt"
-import { getApi, RIDER_GET_DELIVERY_REPORT, RIDER_GET_DELIVERY_REPORT_PDF } from "../../../constants/apiUrls"
-import ReportHead from "./RiderReportHead"
-import React from 'react'
 import { Table, Tag } from "antd"
 import * as qs from 'qs'
-import { colorSwitch } from "../../../components/orderRelatedData"
-import { handlePDFQuery, handleSearchQuery } from "../../../components/reportRelatedData"
 
-import { GENERAL_ROW_SIZE } from '../../../constants/tableConfig'
+import useJwt from "@src/auth/jwt/useJwt"
+import {
+	getApi,
+	DELIVERY_ORDER_REPORT_APIVIEW,
+	PDF_DELIVERY_ORDER_REPORT_APIVIEW,
+} from "@src/constants/apiUrls"
+
+import { GENERAL_ROW_SIZE } from "@src/constants/tableConfig"
+
+import ReportHead from "./RiderReportHead"
+import { DownloadPDFOrderReport } from "@src/components/reportRelatedData"
+
 
 const DeliveryReport = () => {
 	const [order, setOrder] = useState([])
 	// const [filterQuery, setFilterQuery] = useState({})
 
 	const [tableParams, setTableParams] = useState({
-    pagination: {
-      current: GENERAL_ROW_SIZE	,
-      pageSize: 2,
-    },
-  })
+		pagination: {
+			current: GENERAL_ROW_SIZE,
+			pageSize: 2,
+		},
+	})
 
-  const [filterQuery, setFilterQuery] = useState({
-    page: 1,
-    page_size: GENERAL_ROW_SIZE,
-    ordering: '-created_at'
-  })
+	const [filterQuery, setFilterQuery] = useState({
+		page: 1,
+		page_size: GENERAL_ROW_SIZE,
+		ordering: '-delivery_date'
+	})
 
-	const fetchDefalutData = () => {
-		return useJwt.axiosGet(getApi(RIDER_GET_DELIVERY_REPORT))
+	const OrderReportData = () => {
+
+		return useJwt
+			.axiosGet(getApi(DELIVERY_ORDER_REPORT_APIVIEW) + `?${qs.stringify(filterQuery)}`)
 			.then((res) => {
-				setOrder(res?.data?.results)
-				setFilterQuery({})
-			}).catch((err) => {
-				setOrder([])
-				setFilterQuery({})
+				setOrder(res.data.results)
+				updatePagination({
+					current: res?.data?.page_number,
+					pageSize: res?.data?.page_size,
+					total: res?.data?.count,
+				})
 			})
+			.catch((err) => console.log(err))
+	}
+
+	const resetFunction = () => {
+		setFilterQuery({
+			page: 1,
+			page_size: GENERAL_ROW_SIZE,
+			ordering: '-delivery_date'
+		})
+		OrderReportData()
 	}
 
 
@@ -52,10 +68,10 @@ const DeliveryReport = () => {
 		switch (option) {
 			case 'Delivered':
 				return 'green'
-	
+
 			case 'UnDelivered':
 				return 'yellow'
-			
+
 			case 'Delivery Failed':
 				return 'red'
 
@@ -76,7 +92,7 @@ const DeliveryReport = () => {
 		setFilterQuery(filters)
 	}
 
-	
+
 	const onChangeSorter = (pagination, filters, sorter, extra) => {
 		if (sorter.order === 'ascend') {
 			updateFilterQUery("ordering", sorter.field)
@@ -88,21 +104,31 @@ const DeliveryReport = () => {
 		}
 	}
 
-	const propsData = {
-		handleSearchQuery: handleSearchQuery,
-		handlePDFQuery: handlePDFQuery,
 
-		reportApi: RIDER_GET_DELIVERY_REPORT_PDF,
-		getDataApiUrl: RIDER_GET_DELIVERY_REPORT,
+
+	const propsData = {
+		DownloadPDFOrderReport: DownloadPDFOrderReport,
+		resetFunction: resetFunction,
 
 		updateFilterQUery: updateFilterQUery,
 		filterQuery: filterQuery,
-		statusOptions: statusOptions,
-		fetchDefalutData: fetchDefalutData,
 
+		reportURL: PDF_DELIVERY_ORDER_REPORT_APIVIEW,
+
+		statusOptions: statusOptions,
+
+		filterBy: 'parcel_id',
+		filterByFieldName: 'Parcel ID',
+		filterByDate: 'delivery_date',
+
+
+		statusOptionPlaceholder: "Status",
 		selectOptionKey: "delivery_status",
 		reportTitle: 'Delivery Report',
 		reportFileName: 'Delivery Report',
+		selectboxDataPlaceholder: 'Select Rider',
+		filterTable: 'delivary_rider',
+
 	}
 
 	const columns = [
@@ -111,7 +137,7 @@ const DeliveryReport = () => {
 			dataIndex: 'delivery_date',
 
 			sorter: {
-				compare: (a, b) => a.created_at - b.created_at,
+				compare: (a, b) => a.delivery_date - b.delivery_date,
 				multiple: 2,
 			},
 		},
@@ -121,14 +147,6 @@ const DeliveryReport = () => {
 
 		},
 
-		// {
-		// 	title: 'Status',
-		// 	dataIndex: 'status',
-		// 	render: (text, record) => (
-		// 		<Tag color={colorSwitch(record.status)}>{text.toUpperCase()}</Tag>
-		// 	),
-		// },
-		
 		{
 			title: 'Phone',
 			dataIndex: 'phone_number',
@@ -146,55 +164,44 @@ const DeliveryReport = () => {
 		},
 	]
 
+
 	const handleTableChange = (pagination, filters, sorter) => {
-    setTableParams({
-      pagination,
-      filters,
-      sorter,
-    })
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-      setData([])
-    }
-  }
+		setTableParams({
+			pagination,
+			filters,
+			sorter,
+		})
+		if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+			setData([])
+		}
+	}
 
 	const updatePagination = (info) => {
-    const _tableParams = { ...tableParams }
+		const _tableParams = { ...tableParams }
 
-    _tableParams.pagination = info
+		_tableParams.pagination = info
 
-    setTableParams(_tableParams)
-  }
+		setTableParams(_tableParams)
+	}
 
-
-	useEffect(() => {
-    const _tableParams = tableParams
-    const _filters = { ...filterQuery }
-
-    if (_tableParams) {
-      _filters['page'] = _tableParams.pagination?.current
-      _filters['page_size'] = _tableParams.pagination?.pageSize
-      _filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
-    }
-
-    setFilterQuery(_filters)
-
-  }, [JSON.stringify(tableParams)])
 
 	useEffect(() => {
-		handleSearchQuery(RIDER_GET_DELIVERY_REPORT, qs.stringify(filterQuery))
-			.then(res => {
-				if (res?.results?.length > 0) {
-					setOrder(res?.results)
-					updatePagination({
-						current: res?.page_number,
-						pageSize: res?.page_size,
-						total: res?.count,
-					})
-				} else {
-					setOrder([])
-				}
-			})
-	}, [filterQuery])
+		const _tableParams = tableParams
+		const _filters = { ...filterQuery }
+
+		if (_tableParams) {
+			_filters['page'] = _tableParams.pagination?.current
+			_filters['page_size'] = _tableParams.pagination?.pageSize
+			_filters['ordering'] = _tableParams?.sorter?.order == 'ascend' ? _tableParams?.sorter?.field : `-${_tableParams?.sorter?.field}`
+		}
+
+		setFilterQuery(_filters)
+
+	}, [JSON.stringify(tableParams)])
+
+	useEffect(() => {
+		OrderReportData()
+	}, [JSON.stringify(filterQuery)])
 
 	return (
 		<>
@@ -202,46 +209,6 @@ const DeliveryReport = () => {
 			<ReportHead propsData={propsData} />
 			<Table scroll={{ x: true }} columns={columns} dataSource={order} onChange={handleTableChange} pagination={tableParams.pagination} />
 
-			{/* <div id="my-table" class="table-responsive">
-				<Table bordered>
-					<thead>
-						<tr>
-							<th>Delivery Date</th>
-							<th>Order ID</th>
-							<th>Status</th>
-							<th>Delivery Status</th>
-							<th>Phone</th>
-							<th>Address</th>
-						</tr>
-					</thead>
-					<tbody>
-						{order &&
-							order.map((info) => (
-								<tr key={info.id}>
-									<td>
-										<span className="align-middle fw-bold">{info.delivery_date}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.parcel_id}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.status}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.delivery_status}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.phone_number}</span>
-									</td>
-									<td>
-										<span className="align-middle fw-bold">{info.delivary_address}</span>
-									</td>
-								</tr>
-							))}
-					</tbody>
-				</Table>
-				<Pagination onChange={paginationUpdate} defaultCurrent={1} total={orderCount} defaultPageSize={50} />
-			</div> */}
 		</>
 	)
 }
