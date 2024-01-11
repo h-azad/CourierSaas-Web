@@ -317,10 +317,10 @@ export const DELIVERY_ORDER_REPORT_APIVIEW = "/api/delivery/order/report/"
 export const PDF_DELIVERY_ORDER_REPORT_APIVIEW = "/api/pdf/delivery/order/report/"
 export const CANCEL_ISSUE_ORDER_REPORT_APIVIEW = "/api/cancel-issue/order/report/"
 export const PDF_CANCEL_ISSUE_ORDER_REPORT_APIVIEW = "/api/pdf/cancel-issue/order/report/"
-export const DELIVERY_ORDER_COLLECTION_REPORT_APIVIEW = "/api/delivery-order/collection/order/report/"
-export const PDF_DELIVERY_ORDER_COLLECTION_REPORT_APIVIEW = "/api/pdf/delivery-order/collection/order/report/"
-export const ORDER_REVENUE_REPORT_APIVIEW = "/api/order/revenue/report/"
-export const PDF_ORDER_REVENUE_REPORT_APIVIEW = "/api/pdf/order/revenue/report/"
+export const DELIVERY_ORDER_COLLECTION_REPORT_APIVIEW = "/api/collection/order/report/"
+export const PDF_DELIVERY_ORDER_COLLECTION_REPORT_APIVIEW = "/api/pdf/collection/order/report/"
+export const ORDER_REVENUE_REPORT_APIVIEW = "/api/revenue/report/"
+export const PDF_ORDER_REVENUE_REPORT_APIVIEW = "/api/pdf/revenue/report/"
 
 
 
