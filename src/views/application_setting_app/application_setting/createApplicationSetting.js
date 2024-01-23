@@ -22,7 +22,8 @@ const CreateApplicationSetting = () => {
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [weekends, setWeekends] = useState('')
-  const [officeTime, setOfficeTime] = useState('')
+  const [officeStartTime, setOfficeStartTime] = useState()
+  const [officeEndTime, setOfficeEndTime] = useState()
   const [googleMap, setGoogleMap] = useState('')
   const [address, setAddress] = useState('')
 
@@ -45,7 +46,8 @@ const CreateApplicationSetting = () => {
     formData.append('address', address)
     formData.append('weekends', JSON.stringify(weekends))
 
-    // formData.append("office_time", officeTime)
+    formData.append("office_start_time", officeStartTime)
+    formData.append("office_end_time", officeEndTime)
 
     formData.append("application_logo", applicationLogo)
 
@@ -71,8 +73,12 @@ const CreateApplicationSetting = () => {
     setWeekends: setWeekends,
     weekends: weekends,
 
-    setOfficeTime: setOfficeTime,
-    officeTime: officeTime,
+    setOfficeStartTime: setOfficeStartTime,
+    officeStartTime: officeStartTime,
+
+    setOfficeEndTime: setOfficeEndTime,
+    officeEndTime: officeEndTime,
+    
 
     setGoogleMap: setGoogleMap,
     googleMap: googleMap,
@@ -115,6 +121,8 @@ const CreateApplicationSetting = () => {
         setAddress(res?.data[0]?.address)
         setWeekends(res?.data[0]?.weekends)
         setCurrentApplicationLogo(res?.data[0]?.application_logo)
+        setOfficeStartTime(res?.data[0]?.office_start_time)
+        setOfficeEndTime(res?.data[0]?.office_end_time)
       })
       .catch((err) => console.log(err))
   }

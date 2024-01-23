@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Checkbox, Form, Input, TimePicker, Select } from 'antd'
 
-const { RangePicker } = TimePicker
+import dayjs from 'dayjs'
+const format = 'HH:mm'
+// const format = 'hh:mm[:ss[.uuuuuu]]'
+// const format = 'HH:mm:ss.SSSSSS'
 
+const { RangePicker } = TimePicker
+import moment from 'moment'
 
 const CompanySetting = ({ propsData }) => {
 
   const [form] = Form.useForm()
   const [selectedValues, setSelectedValues] = useState([])
-
-
 
   const handleSelectChange = (values) => {
     setSelectedValues(values)
@@ -18,8 +21,13 @@ const CompanySetting = ({ propsData }) => {
 
 
   function onSelectTime(value, valueString) {
-    // propsData?.setOfficeTime(valueString)
-    // console.log('value string', valueString)
+
+    const startTime = valueString[0]
+    propsData?.setOfficeStartTime(startTime)
+
+    const endTime = valueString[1]
+    propsData?.setOfficeEndTime(endTime)
+
   }
 
 
@@ -51,8 +59,12 @@ const CompanySetting = ({ propsData }) => {
       form.setFieldValue("email", propsData?.email)
       form.setFieldValue("google_map", propsData?.googleMap)
       form.setFieldValue("weekends", propsData?.weekends)
-      // form.setFieldValue("office_time", propsData?.officeTime)
+      form.setFieldValue("office_time", [
+        dayjs(propsData?.officeStartTime, format),
+        dayjs(propsData?.officeEndTime, format),
+      ])
       form.setFieldValue("address", propsData?.address)
+      
 
     }
   }, [propsData])
@@ -164,8 +176,8 @@ const CompanySetting = ({ propsData }) => {
       //   },
       // ]}
       >
-        {/* <Input onChange={(e) => { propsData.SetEmailPort(e.target.value) }} /> */}
-        <RangePicker use12Hours onChange={onSelectTime} />
+        <RangePicker onChange={onSelectTime} />
+        {/* <TimePicker defaultValue={dayjs('12:08', format)} use12Hours onChange={onSelectTime} /> */}
       </Form.Item>
 
       <Form.Item
